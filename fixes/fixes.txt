@@ -1,0 +1,132 @@
+#random("part.rand4","4")
+
+# 001 - Id
+marc_map('001','sysno')
+# 024a2 - DOI
+if marc_match('024[7]2','DOI')
+  marc_map('024[7]a','doi.$append')
+end
+# 041 - Idioma
+marc_map('041a','language',join:' - ')
+split_field('language',' - ')
+lookup('language.*','../fixes/language.csv',-sep_char=>',')
+
+# 044 - País
+marc_map('044a','country')
+lookup('country','../fixes/country.csv',-sep_char=>',')
+
+#- 245 - Titulo
+marc_map('245ab','title', join:': ')
+
+#- 260a - Imprenta - Local
+marc_map('260a','publisher-place')
+#- 260b - Imprenta - Editora
+marc_map('260b','publisher')
+
+
+# 100 - Autores
+marc_map('100a','authors.$append')
+# 1007 - Colaboração - Internacionalização
+marc_map('1007','colab_int.$append')
+# 1008 - Colaboração - Instituição
+marc_map('1008','colab_instituicao.$append')
+# 1009 - Colaboração
+marc_map('1009','colab.$append')
+# 510 - Indexado em
+marc_map('510a','indexado.$append')
+
+# 536a - Agência de fomento
+marc_map('536a','fomento.$append')
+
+
+# 590d - Area de concentração
+marc_map('590d','areaconcentracao.$append')
+# 590m - Fator de impacto
+marc_map('590m','fatorimpacto.$append')
+# 590n - Grupo de pesquisa
+marc_map('590n','grupopesquisa')
+split_field('grupopesquisa',';')
+
+
+# 650 - Assunto
+marc_map('650[ 7]a','subject.$append')
+# 651 - Assunto
+marc_map('651[ 7]a','subject.$append')
+# 700 - Autores
+marc_map('700a','authors.$append')
+# 7007 - Colaboração - Internacionalização
+marc_map('7007','colab_int.$append')
+# 7008 - Colaboração - Instituição
+marc_map('7008','colab_instituicao.$append')
+# 7009 - Colaboração
+marc_map('7009','colab.$append')
+
+# Colaboração - Instituição - Trabalhos
+copy_field("colab_instituicao","colab_instituicao_trab")
+uniq(colab_instituicao_trab)
+
+# Colaboração - Internacionalização - Trabalhos
+copy_field("colab_int","colab_int_trab")
+uniq(colab_int_trab)
+
+# 711 - Nome do evento
+marc_map('711a','evento.$append')
+# 773t - É parte de
+marc_map('773t','ispartof')
+# 773x - ISSN
+marc_map('773x','issn_part')
+# 773h - Dados de publicação
+marc_map('773h','ispartof_data')
+split_field("ispartof_data",",")
+
+split_field("issn_part","; ")
+# 856 - Texto completo
+
+marc_map('856[41]u','url',join:' - ')
+split_field('url',' - ')
+replace_all('url.*','.*?buscatextual.*','')
+replace_all('url.*','.*?lattes.*','')
+
+# 945b - Tipo
+marc_map('945b','type')
+# 945j - Data
+marc_map('945j','year')
+# 945l - Internacionalização
+marc_map('945l','internacionalizacao')
+# 946a - Autor USP
+marc_map('946a','authorUSP.$append')
+# 946a - Número USP
+marc_map('946be','codpes.$append',join:'/')
+# 946a - Número USP - Busca
+marc_map('946b','codpesbusca.$append')
+# 946e - Unidade USP - Participações
+marc_map('946e','unidadeUSP.$append')
+replace_all("unidadeUSP.*","IFQSC-Q","IQSC")
+replace_all("unidadeUSP.*","IFQSC-F","IFSC")
+replace_all("unidadeUSP.*","ICMSC","ICMC")
+replace_all("unidadeUSP.*","CBM","CEBIMAR")
+replace_all("unidadeUSP.*","HPRLLP","HRAC")
+# Unidade USP - Trabalhos
+copy_field("unidadeUSP","unidadeUSPtrabalhos")
+uniq(unidadeUSPtrabalhos)
+# 946eg - Unidade USP / Departamento - Participações
+marc_map('946eg','departamento.$append',join:'/')
+# Unidade USP / Departamento - Trabalhos
+copy_field("departamento","departamentotrabalhos")
+uniq(departamentotrabalhos)
+#- Year cleanup
+#   replace_all('year','^(?<=-)?0+','')
+#   unless all_match('year','^-?([0-9]|[123456789][0-9]+)$')
+#       remove_field('year')
+#   end
+#Pegar data do CAT
+marc_map('CATc','dataregistro.$append')
+substring("dataregistro.*",0,6)
+sort_field("dataregistro", numeric:1)
+
+
+
+# Delete all the empty fields
+vacuum()
+# Remover record
+#remove_field("record")
