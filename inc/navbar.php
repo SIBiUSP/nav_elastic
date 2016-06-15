@@ -4,14 +4,16 @@
         <a class="item" href="index.php">
           Início
         </a>
-        <a class="item">
-          Link
+        <a class="item" href="advanced_search.php">
+          Busca Avançada
         </a>
         <div class="right menu">  
             <div class="ui category search item">
                 <div class="ui transparent icon input">
-                  <input class="prompt" placeholder="Buscar..." type="text">
-                  <i class="search link icon"></i>
+                    <form role="form" action="result.php" method="get">    
+                        <input class="prompt" placeholder="Buscar..." type="text" name="search_index">
+                        <i class="search link icon"></i>
+                    </form>    
                 </div>
                 <div class="results"></div>
             </div>      
@@ -40,14 +42,16 @@
         <a class="item" href="index.php">
           Início
         </a>
-        <a class="item">
-          Link
+        <a class="item" href="advanced_search.php">
+          Busca avançada
         </a>
         <div class="right menu">  
             <div class="ui category search item">
                 <div class="ui transparent icon input">
-                  <input class="prompt" placeholder="Buscar..." type="text">
-                  <i class="search link icon"></i>
+                    <form role="form" action="result.php" method="get"> 
+                        <input class="prompt" placeholder="Buscar..." type="text" name="search_index">
+                        <i class="search link icon"></i>
+                    </form>    
                 </div>
                 <div class="results"></div>
             </div>      
@@ -67,9 +71,3 @@
       </div>
   </div>
 </div>
-
-<script>
-    $('.ui.dropdown')
-      .dropdown()
-    ;
-</script>

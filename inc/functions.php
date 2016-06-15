@@ -1,0 +1,200 @@
+<?php
+
+function query_elastic ($query) {
+    $ch = curl_init();
+    $method = "POST";
+    $url = "http://localhost/sibi/producao/_search";
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    return $data;
+
+
+}
+
+function contar_registros () {
+    $ch = curl_init();
+    $method = "POST";
+    $url = "http://localhost/sibi/producao/_count";
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    print_r($data["count"]);
+
+
+}
+
+function ultimos_registros() {
+    
+     $query = '{
+                "size": 10,
+                "sort" : [
+                    { "_id" : {"order" : "desc"}}
+                    ]
+                }';
+    $data = query_elastic($query);
+
+echo '<h3>Últimos registros</h3>';
+echo '<div class="ui divided items">';
+foreach ($data["hits"]["hits"] as $r){
+#print_r($r);
+echo '<div class="item">
+<div class="ui tiny image">';
+if (!empty($r["_source"]['unidadeUSP'])) {
+$file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+}
+if (file_exists($file)) {
+echo '<img src="'.$file.'"></a>';
+} else {
+#echo ''.$r['unidadeUSP'].'</a>';
+};
+echo '</div>';
+echo '<div class="content">';
+if (!empty($r["_source"]['title'])){
+echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</a>';
+};
+echo '<div class="extra">';
+if (!empty($r["_source"]['authors'])) {
+foreach ($r["_source"]['authors'] as $autores) {
+echo '<div class="ui label" style="color:black;"><i class="user icon"></i><a href="result.php?authors='.$autores.'">'.$autores.'</a></div>';
+}
+};
+echo '</div></div>';
+echo '</div>';
+}
+echo '</div>';
+     
+}
+
+
+function criar_unidadeUSP_inicio () {
+
+    $query = '{
+        "size": 0,
+        "aggs": {
+            "group_by_state": {
+                "terms": {
+                    "field": "unidadeUSPtrabalhos",
+                    "order" : { "_term" : "asc" },
+                    "size" : 100
+                }
+            }
+        }
+    }';
+    
+    $data = query_elastic($query);
+    
+    echo '<h3>Unidades USP</h3>';
+    echo '<div class="ui five stackable doubling cards">';
+    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
+        echo ' <a href="result.php?unidadeUSP='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
+                $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
+                if (file_exists($file)) {
+                echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
+                } else {
+                  echo ''.strtoupper($facets['key']).'</a>';
+              };
+              echo'</div></a>';
+        echo '<div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div>
+                <div id="imagelogo" class="floating ui mini teal label" style="z-index:0;">
+                '.$facets['doc_count'].'
+                </div>';
+        echo '</div>';
+
+    };
+    echo '</div>'; 
+
+}
+
+function gerar_faceta($campo,$tamanho,$nome_do_campo) {
+
+    $query = '
+    {
+        "size": 0,
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+    
+    $data = query_elastic($query);
+    
+
+    echo '<div class="item">';
+    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
+    echo '<div class="content">';
+    echo '<div class="ui list">';
+    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<div class="item">';
+        echo '<a href="'.$url.'&'.$campo.'='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
+        echo '</div>';
+    };
+    echo   '</div>
+      </div>
+  </div>';
+
+}
+
+/* Recupera os exemplares do DEDALUS */
+function load_itens ($sysno) {
+    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
+    if ($xml->error == "No associated items"){
+
+    } else {
+            echo "<h4 class=\"ui sub header\">Exemplares físicos disponíveis nas Bibliotecas</h4>
+            <table class=\"ui celled table\">
+                    <thead>
+                      <tr>
+                        <th>Biblioteca</th>
+                        <th>Código de barras</th>
+                        <th>Status</th>
+                        <th>Número de chamada</th>";
+                        if ($xml->item->{'loan-status'} == "A"){
+                        echo "<th>Status</th>
+                        <th>Data provável de devolução</th>";
+                      } else {
+                        echo "<th>Status</th>";
+                      }
+                      echo "</tr>
+                    </thead>
+                  <tbody>";
+          foreach ($xml->item as $item) {
+            echo '<tr>';
+            echo '<td>'.$item->{'sub-library'}.'</td>';
+            echo '<td>'.$item->{'barcode'}.'</td>';
+            echo '<td>'.$item->{'item-status'}.'</td>';
+            echo '<td>'.$item->{'call-no-1'}.'</td>';
+            if ($item->{'loan-status'} == "A"){
+            echo '<td>Emprestado</td>';
+            echo '<td>'.$item->{'loan-due-date'}.'</td>';
+          } else {
+            echo '<td>Disponível</td>';
+          }
+            echo '</tr>';
+          }
+          echo "</tbody></table>";
+          }
+  }
+
+
+
+?>
