@@ -15,9 +15,25 @@ function query_elastic ($query) {
     curl_close($ch);
     $data = json_decode($result, TRUE);
     return $data;
-
-
 }
+
+function query_one_elastic ($_id) {
+    $ch = curl_init();
+    $method = "GET";
+    $url = "http://localhost/sibi/producao/$_id";
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    return $data;
+}
+
 
 function contar_registros () {
     $ch = curl_init();
@@ -201,6 +217,25 @@ function load_itens ($sysno) {
           }
   }
 
-
+/* Pegar o tipo de material */
+function get_type($material_type){
+  switch ($material_type) {
+  case "ARTIGO DE PERIODICO":
+      return "article-journal";
+      break;
+  case "PARTE DE MONOGRAFIA/LIVRO":
+      return "chapter";
+      break;
+  case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
+      return "interview";
+      break;
+  case "TRABALHO DE EVENTO-RESUMO":
+      return "paper-conference";
+      break;
+  case "TEXTO NA WEB":
+      return "post-weblog";
+      break;
+  }
+}
 
 ?>
