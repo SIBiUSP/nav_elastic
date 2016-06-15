@@ -120,8 +120,12 @@ function criar_unidadeUSP_inicio () {
 
 }
 
-function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo) {
+function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
+    if (!empty($sort)){
+         
+         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+        }
     $query = '
     {
         "size": 0,
@@ -130,6 +134,7 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo) {
           "counts": {
             "terms": {
               "field": "'.$campo.'",
+              '.$sort_query.'
               "size":'.$tamanho.'
             }
           }
@@ -139,7 +144,7 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo) {
     
     $data = query_elastic($query);
     
-
+   
     echo '<div class="item">';
     echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
     echo '<div class="content">';

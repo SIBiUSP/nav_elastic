@@ -20,6 +20,22 @@ $prev = ($page - 1);
 $sort = array('year' => -1);
 
 /* Montar a consulta */
+if (!empty($_GET["date_init"])||(!empty($_GET["date_end"]))) {
+$date_range = '
+{
+    "range" : {
+        "year" : {
+            "gte" : '.$_GET["date_init"].',
+            "lte" : '.$_GET["date_end"].'
+        }
+    }
+}
+';
+unset($_GET["date_init"]);
+unset($_GET["date_end"]); 
+}
+
+
 
 if (empty($_GET)) {
     $search_term = '"match_all": {}';
@@ -31,6 +47,10 @@ if (empty($_GET)) {
     
    foreach ($_GET as $key => $value) {
         $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
+    }
+    
+    if (!empty($date_range)) {
+        $filter[] = $date_range;
     }
     
     if (count($filter) > 0) {
@@ -46,6 +66,10 @@ if (empty($_GET)) {
     foreach ($_GET as $key => $value) {
         $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
     }
+    
+    if (!empty($date_range)) {
+        $filter[] = $date_range;
+    }
 
     if (count($filter) > 0) {
         $filter_query = ''.implode(",", $filter).''; 
@@ -54,25 +78,12 @@ if (empty($_GET)) {
     }
 }
 
-/*
-$query_complete = '
-{
-    "query": {
-        "filtered": {
-            '.$search_term.',            
-            "filter": [
-                '.$filter_query.'
-            ]
-        }
-    },
-    "from": '.$skip.',
-    "size": '.$limit.'
-}';
-*/
-
 $query_complete = '
 
 {
+    "sort" : [
+            { "year" : "desc" }
+        ],    
   "query": {
     "bool": {
       "must": {
@@ -116,6 +127,9 @@ $total = $cursor["hits"]["total"];
         <title>BDPI USP - Biblioteca Digital da Produção Intelectual da Universidade de São Paulo</title>
         <?php include('inc/meta-header.php'); ?>
         
+        <!-- Altmetric Script -->
+        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+        
     </head>
     <body>
         <?php include('inc/barrausp.php'); ?>
@@ -148,9 +162,22 @@ $total = $cursor["hits"]["total"];
                         </div>
                         <h3>Navegação</h3>
                         <div class="ui fluid vertical accordion menu">
-                            <?php gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material"); ?>
-                            <?php gerar_faceta($query_aggregate,$escaped_url,unidadeUSP,30,"Unidade USP"); ?>
-                            <?php gerar_faceta($query_aggregate,$escaped_url,language,30,"Idioma"); ?>
+                            <?php 
+                                gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material");
+                                gerar_faceta($query_aggregate,$escaped_url,unidadeUSPtrabalhos,30,"Unidade USP");
+                                gerar_faceta($query_aggregate,$escaped_url,departamentotrabalhos,30,"Departamento");
+                                gerar_faceta($query_aggregate,$escaped_url,authors,30,"Autores");
+                                gerar_faceta($query_aggregate,$escaped_url,year,30,"Ano de publicação","desc");
+                                gerar_faceta($query_aggregate,$escaped_url,subject,30,"Assuntos");
+                                gerar_faceta($query_aggregate,$escaped_url,language,30,"Idioma");
+                                gerar_faceta($query_aggregate,$escaped_url,ispartof,30,"Obra da qual a produção faz parte");
+                                gerar_faceta($query_aggregate,$escaped_url,evento,30,"Nome do evento");
+                                gerar_faceta($query_aggregate,$escaped_url,country,30,"País de publicação");
+                            ?>                            
+                            
+
+
+                            
                         </div>
 
                         <h3>Filtrar por data</h3>
