@@ -4,60 +4,12 @@
         
 /* Pegar a URL atual */
 if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
-      $url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+      $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'';
 } else {
-      $url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}?";
+      $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'?';
 }
     $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
    
-/* Montar a consulta */
-
-if (empty($_GET)) {
-    $search_term = '"match_all": {}';
-    $filter = '';
-} elseif (!empty($_GET['search_index'])) {
-    $search_term ='"query": {"term": {"title": "'.$_GET['search_index'].'"} }';     
-    unset($_GET['search_index']);
-    
-   foreach ($_GET as $key => $value) {
-        $filter[] = '"term":{"'.$key.'":"'.$value.'"}';
-    }
-    
-    if (count($filter) > 0) {
-        $filter_query = ''.implode(",", $filter).''; 
-    } else {
-        $filter_query = '';
-    }
-
-    
-} else {
-    $search_term = '"query": {"match_all": {}}';
-    foreach ($_GET as $key => $value) {
-        $filter[] = '"term":{"'.$key.'":"'.$value.'"}';
-    }
-
-    if (count($filter) > 0) {
-        $filter_query = ''.implode(",", $filter).''; 
-    } else {
-        $filter_query = '';
-    }
-}
-
-$query_complete = '
-{
-    "query": {
-        "filtered": {
-            '.$search_term.',
-            "filter": {
-                '.$filter_query.'
-            }
-        }
-    }
-}';
-
-
-$cursor = query_elastic($query_complete);
-$total = $cursor["hits"]["total"];
 
 /* Pagination variables */
 $page = isset($_POST['page']) ? (int) $_POST['page'] : 1;
@@ -66,6 +18,96 @@ $skip = ($page - 1) * $limit;
 $next = ($page + 1);
 $prev = ($page - 1);
 $sort = array('year' => -1);
+
+/* Montar a consulta */
+
+if (empty($_GET)) {
+    $search_term = '"match_all": {}';
+    $filter_query = '';
+} elseif (!empty($_GET['search_index'])) {
+    $search_term ='"query": {"term": {"title": "'.$_GET['search_index'].'"} }'; 
+    $termo = $_GET['search_index']; 
+    unset($_GET['search_index']);
+    
+   foreach ($_GET as $key => $value) {
+        $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
+    }
+    
+    if (count($filter) > 0) {
+        $filter_query = ''.implode(",", $filter).''; 
+    } else {
+        $filter_query = '';
+    }
+    $_GET['search_index'] = $termo;
+
+    
+} else {
+    $search_term = '"match_all": {}';
+    foreach ($_GET as $key => $value) {
+        $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
+    }
+
+    if (count($filter) > 0) {
+        $filter_query = ''.implode(",", $filter).''; 
+    } else {
+        $filter_query = '';
+    }
+}
+
+/*
+$query_complete = '
+{
+    "query": {
+        "filtered": {
+            '.$search_term.',            
+            "filter": [
+                '.$filter_query.'
+            ]
+        }
+    },
+    "from": '.$skip.',
+    "size": '.$limit.'
+}';
+*/
+
+$query_complete = '
+
+{
+  "query": {
+    "bool": {
+      "must": {
+        '.$search_term.'
+      },
+      "filter":[
+        '.$filter_query.'
+        ]
+      }
+    },
+    "from": '.$skip.',
+    "size": '.$limit.'
+  }
+
+';
+
+
+$query_aggregate = '
+"query": {
+    "bool": {
+      "must": {
+        '.$search_term.'
+      },
+      "filter":[
+        '.$filter_query.'
+        ]
+      }
+    },
+';
+
+
+$cursor = query_elastic($query_complete);
+$total = $cursor["hits"]["total"];
+
+
 
 ?>
 
@@ -106,9 +148,9 @@ $sort = array('year' => -1);
                         </div>
                         <h3>Navegação</h3>
                         <div class="ui fluid vertical accordion menu">
-                            <?php gerar_faceta(type,30,"Tipo de material"); ?>
-                            <?php gerar_faceta(unidadeUSP,30,"Unidade USP"); ?>
-                            <?php gerar_faceta(language,30,"Idioma"); ?>
+                            <?php gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material"); ?>
+                            <?php gerar_faceta($query_aggregate,$escaped_url,unidadeUSP,30,"Unidade USP"); ?>
+                            <?php gerar_faceta($query_aggregate,$escaped_url,language,30,"Idioma"); ?>
                         </div>
 
                         <h3>Filtrar por data</h3>

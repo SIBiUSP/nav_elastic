@@ -120,11 +120,12 @@ function criar_unidadeUSP_inicio () {
 
 }
 
-function gerar_faceta($campo,$tamanho,$nome_do_campo) {
+function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo) {
 
     $query = '
     {
         "size": 0,
+        '.$consulta.'
         "aggregations": {
           "counts": {
             "terms": {
