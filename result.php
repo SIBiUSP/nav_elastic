@@ -168,21 +168,41 @@ $total = $cursor["hits"]["total"];
                         </div>
                         <h3>Navegação</h3>
                         <div class="ui fluid vertical accordion menu">
-                            <?php 
-                                gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material");
-                                gerar_faceta($query_aggregate,$escaped_url,unidadeUSPtrabalhos,30,"Unidade USP");
-                                gerar_faceta($query_aggregate,$escaped_url,departamentotrabalhos,30,"Departamento");
-                                gerar_faceta($query_aggregate,$escaped_url,authors,30,"Autores");
-                                gerar_faceta($query_aggregate,$escaped_url,year,30,"Ano de publicação","desc");
-                                gerar_faceta($query_aggregate,$escaped_url,subject,30,"Assuntos");
-                                gerar_faceta($query_aggregate,$escaped_url,language,30,"Idioma");
-                                gerar_faceta($query_aggregate,$escaped_url,ispartof,30,"Obra da qual a produção faz parte");
-                                gerar_faceta($query_aggregate,$escaped_url,evento,30,"Nome do evento");
-                                gerar_faceta($query_aggregate,$escaped_url,country,30,"País de publicação");
-                            ?>                            
+                        <?php 
+                            gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material");
+                            gerar_faceta($query_aggregate,$escaped_url,unidadeUSPtrabalhos,30,"Unidade USP");
+                            gerar_faceta($query_aggregate,$escaped_url,departamentotrabalhos,30,"Departamento");
+                            gerar_faceta($query_aggregate,$escaped_url,authors,30,"Autores");
+                            gerar_faceta($query_aggregate,$escaped_url,year,30,"Ano de publicação","desc");
+                            gerar_faceta($query_aggregate,$escaped_url,subject,30,"Assuntos");
+                            gerar_faceta($query_aggregate,$escaped_url,language,30,"Idioma");
+                            gerar_faceta($query_aggregate,$escaped_url,ispartof,30,"Obra da qual a produção faz parte");
+                            gerar_faceta($query_aggregate,$escaped_url,evento,30,"Nome do evento");
+                            gerar_faceta($query_aggregate,$escaped_url,country,30,"País de publicação");
+                        ?>
+                        </div>
+                        <h3>Informações administrativas</h3>
+                        <div class="ui fluid vertical accordion menu">   
+                        <?php 
+                            gerar_faceta($query_aggregate,$escaped_url,authorUSP,30,"Autores USP");
+                            gerar_faceta($query_aggregate,$escaped_url,codpesbusca,30,"Número USP");
+                            gerar_faceta($query_aggregate,$escaped_url,codpes,30,"Número USP / Unidade");
+                            gerar_faceta($query_aggregate,$escaped_url,authors,30,"Autores");
+                            gerar_faceta($query_aggregate,$escaped_url,internacionalizacao,30,"Internacionalização");
+                            gerar_faceta($query_aggregate,$escaped_url,fomento,30,"Agência de fomento");
+                            gerar_faceta($query_aggregate,$escaped_url,indexado,30,"Indexado em");
+                            gerar_faceta($query_aggregate,$escaped_url,issn_part,30,"ISSN");
+                            gerar_faceta($query_aggregate,$escaped_url,areaconcentracao,30,"Área de concentração");
+                            gerar_faceta($query_aggregate,$escaped_url,fatorimpacto,30,"Fator de impacto");
+                            gerar_faceta($query_aggregate,$escaped_url,grupopesquisa,30,"Grupo de pesquisa");
+                            gerar_faceta($query_aggregate,$escaped_url,colab,30,"País dos autores externos à USP");
+                            gerar_faceta($query_aggregate,$escaped_url,colab_int_trab,30,"Colaboração - Internacionalização");
+                            gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_trab,30,"Colaboração - Instituição");
+                            gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_corrigido,30,"Colaboração - Instituição - Corrigido");
+                            gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_naocorrigido,30,"Colaboração - Instituição - Não corrigido");
+                            gerar_faceta($query_aggregate,$escaped_url,dataregistro,30,"Data de registro e alterações");
+                        ?>
                             
-
-
                             
                         </div>
 
