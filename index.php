@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>BDPI USP - Biblioteca Digital da Produção Intelectual da Universidade de São Paulo</title>

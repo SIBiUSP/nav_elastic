@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php 
 include 'inc/functions.php';
 
@@ -158,190 +159,205 @@ $total = $cursor["hits"]["total"];
             <?php include('inc/navbar.php'); ?>
             <div id="main">
                 
-<h3>Relatório com os seguintes parâmetros:
-<?php foreach ($_GET as $filters) : ?>
-<?php echo $filters;?>
-<?php endforeach;?>
-</h3><br/><br/>
+                <h3>Relatório com os seguintes parâmetros:
+                    <?php foreach ($_GET as $filters) : ?>
+                    <?php echo $filters;?>
+                    <?php endforeach;?>
+                </h3><br/><br/>
 
 
-<div class="ui vertical stripe segment">
-<div class="ui text container">
-<h3 class="ui header">Total</h3><br/><br/>
-<div class="ui one statistics">
-<div class="statistic">
-<div class="value">
-<i class="file icon"></i> <?php echo $total; ?>
-</div>
-<div class="label">
-Quantidade de registros
-</div>
-</div>
-</div>
-</div>
-</div>
+                <div class="ui vertical stripe segment">
+                    <div class="ui text container">
+                        <h3 class="ui header">Total</h3><br/><br/>
+                        <div class="ui one statistics">
+                            <div class="statistic">
+                                <div class="value">
+                                    <i class="file icon"></i> <?php echo $total; ?>
+                                </div>
+                                <div class="label">
+                                    Quantidade de registros
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
-<h3>Tipo de publicação (Somente os primeiros)</h3>
-<?php $type_mat_bar = generateDataGraphBar($url, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 4); ?>
+                <h3>Tipo de publicação (Somente os primeiros)</h3>
+                <?php $type_mat_bar = generateDataGraphBar($url, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 4); ?>
        
                 
-<div id="type_chart" style="font-size:10px"></div>
-<script type="application/javascript">
-var graphdef = {
-categories : ['Tipo'],
-dataset : {
-'Tipo' : [<?= $type_mat_bar; ?>]
-}
-}
-var chart = uv.chart ('Bar', graphdef, {
-meta : {
-position: '#type_chart',
-caption : 'Tipo de trabalho',
-hlabel : 'Tipo',
-vlabel : 'Registros',
-isDownloadable: true,
-downloadLabel: 'Baixar'
-},
-graph : {
-orientation : "Vertical"
-},
-dimension : {
-width: 900,
-height: 300
-}
-})
-</script> 
-<?php generateDataTable($url, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 9); ?>
+                <div id="type_chart" style="font-size:10px"></div>
+                <script type="application/javascript">
+                    var graphdef = {
+                        categories : ['Tipo'],
+                        dataset : {
+                            'Tipo' : [<?= $type_mat_bar; ?>]
+                        }
+                    }
+                    var chart = uv.chart ('Bar', graphdef, {
+                        meta : {
+                            position: '#type_chart',
+                            caption : 'Tipo de trabalho',
+                            hlabel : 'Tipo',
+                            vlabel : 'Registros',
+                            isDownloadable: true,
+                            downloadLabel: 'Baixar'
+                        },
+                        graph : {
+                            orientation : "Vertical"
+                        },
+                        dimension : {
+                            width: 900,
+                            height: 300
+                        }
+                    })
+                </script> 
+                <?php generateDataTable($url, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 9); ?>
 
-<?php $csv_type = generateCSV($url, $query_aggregate, 'type',  "_count", "desc", 'Tipo de publicação', 500); ?> 
-<button class="ui blue label" onclick="SaveAsFile('<?php echo $csv_type; ?>','tipo_de_material.csv','text/plain;charset=utf-8')">
-Exportar todos os tipos de publicação em csv
-</button>
-
-
-<h3>Unidade USP - Trabalhos (10 primeiros)</h3>
-<?php $unidadeUSP_trab_bar = generateDataGraphBar($url, $query_aggregate, "unidadeUSPtrabalhos", "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
+                <?php $csv_type = generateCSV($url, $query_aggregate, 'type',  "_count", "desc", 'Tipo de publicação', 500); ?> 
+                <button class="ui blue label" onclick="SaveAsFile('<?php echo $csv_type; ?>','tipo_de_material.csv','text/plain;charset=utf-8')">
+                    Exportar todos os tipos de publicação em csv
+                </button>
 
 
-<div id="unidadeUSP_chart"></div>
-<script type="application/javascript">
-var graphdef = {
-categories : ['Unidade USP'],
-dataset : {
-'Unidade USP' : [<?= $unidadeUSP_trab_bar; ?>]
-}
-}
-var chart = uv.chart ('Bar', graphdef, {
-meta : {
-position: '#unidadeUSP_chart',
-caption : 'Unidade USP',
-hlabel : 'Unidade USP',
-vlabel : 'Registros',
-isDownloadable: true,
-downloadLabel: 'Baixar'
-},
-graph : {
-orientation : "Vertical"
-},
-dimension : {
-width: 900,
-height: 300
-}
-})
-</script> 
-
-<?php generateDataTable($url, $query_aggregate, 'unidadeUSPtrabalhos', "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
-<?php $csv_unidadeUSPtrabalhos = generateCSV($url, $query_aggregate, 'unidadeUSPtrabalhos', "_count", 'desc', 'Unidade USP - Trabalhos', 10000); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_unidadeUSPtrabalhos; ?>','unidadeUSP_trabalhos.csv','text/plain;charset=utf-8')">Exportar todas os trabalhos por unidades em csv</button>      
-
-<h3>Unidade USP - Participações (10 primeiros)</h3>
-<?php generateDataTable($url, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
-<?php $csv_unidadeUSP = generateCSV($url, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 10000); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">Exportar todas participações por Unidade em csv</button>
+                <h3>Unidade USP - Trabalhos (10 primeiros)</h3>
+                <?php $unidadeUSP_trab_bar = generateDataGraphBar($url, $query_aggregate, "unidadeUSPtrabalhos", "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
 
 
+                <div id="unidadeUSP_chart"></div>
+                <script type="application/javascript">
+                    var graphdef = {
+                        categories : ['Unidade USP'],
+                        dataset : {
+                            'Unidade USP' : [<?= $unidadeUSP_trab_bar; ?>]
+                        }
+                    }
+                    var chart = uv.chart ('Bar', graphdef, {
+                        meta : {
+                            position: '#unidadeUSP_chart',
+                            caption : 'Unidade USP',
+                            hlabel : 'Unidade USP',
+                            vlabel : 'Registros',
+                            isDownloadable: true,
+                            downloadLabel: 'Baixar'
+                        },
+                        graph : {
+                            orientation : "Vertical"
+                        },
+                        dimension : {
+                            width: 900,
+                            height: 300
+                        }
+                    })
+                </script> 
 
+                <?php generateDataTable($url, $query_aggregate, 'unidadeUSPtrabalhos', "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
+                <?php $csv_unidadeUSPtrabalhos = generateCSV($url, $query_aggregate, 'unidadeUSPtrabalhos', "_count", 'desc', 'Unidade USP - Trabalhos', 10000); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_unidadeUSPtrabalhos; ?>','unidadeUSP_trabalhos.csv','text/plain;charset=utf-8')">
+                    Exportar todas os trabalhos por unidades em csv
+                </button>      
 
-<h3>Departamento - Participações</h3>
-<?php generateDataTable($url, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 9); ?>
-<?php $csv_departamento = generateCSV($url, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 10000); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_departamento); ?>','departamento_part.csv','text/plain;charset=utf-8')">
-Exportar todos as participações dos departamentos em csv
-</button>
+                <h3>Unidade USP - Participações (10 primeiros)</h3>
+                <?php generateDataTable($url, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
+                <?php $csv_unidadeUSP = generateCSV($url, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 10000); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">
+                    Exportar todas participações por Unidade em csv
+                </button>
 
 
 
-<h3>Autores USP (10 primeiros)</h3>
-<?php generateDataTable($url, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 9); ?>
-<?php $csv_authorUSP = generateCSV($url, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 10000); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_authorUSP); ?>','autoresUSP.csv','text/plain;charset=utf-8')">Exportar todos os autores em csv</button>
+
+                <h3>Departamento - Participações</h3>
+                <?php generateDataTable($url, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 9); ?>
+                <?php $csv_departamento = generateCSV($url, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 10000); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_departamento); ?>','departamento_part.csv','text/plain;charset=utf-8')">
+                    Exportar todos as participações dos departamentos em csv
+                </button>
 
 
-<h3>Obra da qual a produção faz parte (10 primeiros)</h3>      
-<?php generateDataTable($url, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
-<?php $csv_ispartof = generateCSV($url, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
-<?php $csv_ispartof = str_replace('"', '', $csv_ispartof); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_ispartof); ?>','obras.csv','text/plain;charset=utf-8')">Exportar todos as obras em csv</button>
+
+                <h3>Autores USP (10 primeiros)</h3>
+                <?php generateDataTable($url, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 9); ?>
+                <?php $csv_authorUSP = generateCSV($url, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 10000); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_authorUSP); ?>','autoresUSP.csv','text/plain;charset=utf-8')">
+                    Exportar todos os autores em csv
+                </button>
 
 
-<h3>Nome do evento (10 primeiros)</h3>        
-<?php generateDataTable($url, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 9); ?>
-<?php $csv_evento = generateCSV($url, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 10000); ?>
-<?php $csv_evento = str_replace('"', '', $csv_evento); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_evento); ?>','evento.csv','text/plain;charset=utf-8')">Exportar todos os eventos em csv</button>
+                <h3>Obra da qual a produção faz parte (10 primeiros)</h3>      
+                <?php generateDataTable($url, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
+                <?php $csv_ispartof = generateCSV($url, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
+                <?php $csv_ispartof = str_replace('"', '', $csv_ispartof); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_ispartof); ?>','obras.csv','text/plain;charset=utf-8')">
+                    Exportar todos as obras em csv
+                </button>
 
 
-<h3>Ano de publicação</h3>  
-<?php $ano_bar = generateDataGraphBar($url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 19); ?>
+                <h3>Nome do evento (10 primeiros)</h3>        
+                <?php generateDataTable($url, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 9); ?>
+                <?php $csv_evento = generateCSV($url, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 10000); ?>
+                <?php $csv_evento = str_replace('"', '', $csv_evento); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_evento); ?>','evento.csv','text/plain;charset=utf-8')">
+                    Exportar todos os eventos em csv
+                </button>
 
 
-<div id="ano_chart"></div>
-<script type="application/javascript">
-var graphdef = {
-categories : ['Ano'],
-dataset : {
-'Ano' : [<?= $ano_bar; ?>]
-}
-}
-var chart = uv.chart ('Bar', graphdef, {
-meta : {
-position: '#ano_chart',
-caption : 'Ano de publicação',
-hlabel : 'Ano',
-vlabel : 'Registros',
-isDownloadable: true,
-downloadLabel: 'Baixar'
-},
-graph : {
-orientation : "Vertical"
-},
-dimension : {
-width: 900,
-height: 300
-}
-})
-</script>       
+                <h3>Ano de publicação</h3>  
+                <?php $ano_bar = generateDataGraphBar($url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 19); ?>
 
-<?php generateDataTable($url, $query_aggregate, 'year', "_term", 'desc', 'Ano de publicação', 200); ?>
-<?php $csv_year = generateCSV($url, $query_aggregate, 'year', "_term", 'asc', 'Ano de publicação', 10000); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_year; ?>','ano.csv','text/plain;charset=utf-8')">Exportar todos os anos em csv</button>
+                <div id="ano_chart"></div>
+                <script type="application/javascript">
+                    var graphdef = {
+                        categories : ['Ano'],
+                        dataset : {
+                            'Ano' : [<?= $ano_bar; ?>]
+                        }
+                    }
+                    var chart = uv.chart ('Bar', graphdef, {
+                        meta : {
+                            position: '#ano_chart',
+                            caption : 'Ano de publicação',
+                            hlabel : 'Ano',
+                            vlabel : 'Registros',
+                            isDownloadable: true,
+                            downloadLabel: 'Baixar'
+                        },
+                        graph : {
+                            orientation : "Vertical"
+                        },
+                        dimension : {
+                            width: 900,
+                            height: 300
+                        }
+                    })
+                </script>       
 
-<h3>Idioma</h3>       
-<?php generateDataTable($url, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10); ?>
-<?php $csv_language = generateCSV($url, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10000); ?>
-<button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_language; ?>','idioma.csv','text/plain;charset=utf-8')">Exportar todos os idiomas em csv</button>
+                <?php generateDataTable($url, $query_aggregate, 'year', "_term", 'desc', 'Ano de publicação', 200); ?>
+                <?php $csv_year = generateCSV($url, $query_aggregate, 'year', "_term", 'asc', 'Ano de publicação', 10000); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_year; ?>','ano.csv','text/plain;charset=utf-8')">
+                    Exportar todos os anos em csv
+                </button>
 
-<h3>Internacionalização</h3>  
+                <h3>Idioma</h3>       
+                <?php generateDataTable($url, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10); ?>
+                <?php $csv_language = generateCSV($url, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10000); ?>
+                <button  class="ui blue label" onclick="SaveAsFile('<?php echo $csv_language; ?>','idioma.csv','text/plain;charset=utf-8')">
+                    Exportar todos os idiomas em csv
+                </button>
+
+                <h3>Internacionalização</h3>  
 
 
-<div id="internacionalização_chart"></div>
+
 <?php $internacionalizacao_bar = generateDataGraphBar($url, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
+<?php print_r($internacionalizacao_bar); ?>
+<div id="internacionalização_chart"></div>         
 <script type="application/javascript">
 var graphdef = {
-categories : ['Internacionalização'],
+categories : ['internacionalização'],
 dataset : {
-'Internacionalização' : [<?= $internacionalizacao_bar; ?>]
+'internacionalização' : [<?= $internacionalizacao_bar; ?>]
 }
 }
 var chart = uv.chart ('Pie', graphdef, {
