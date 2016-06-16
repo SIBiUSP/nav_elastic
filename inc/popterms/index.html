@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PopTerms is a simple web application that allows to use controlled vocabularies managed by TemaTres and integrate it with any web form or web application">
+    <meta name="author" content="Diego Ferreyra">
+
+    <title>PopTerms :: Integrating controlled vocabularies with web tools</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script>
+function creaPopup(url)
+{
+  tesauro=window.open(url, 
+  "Tesauro", 
+  "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
+  )
+}
+</script>
+</head>
+
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#whatPopTerms">What is PopTerms?</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#configPopTerms">Config PopTerms</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#howPopTerms">How to use PopTerms?</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#demoPopTerms">Demo</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#downloadPopTerms">Download</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#techPopTerms">Technology</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contactPopTerms">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- whatPopTerms Section -->
+    <section id="whatPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>What is PopTerms?</h1>
+                    <p><span class="popterms">PopTerms</span> is a simple web application that allows to use controlled vocabularies managed by <a href="http://www.vocabularyserver.com">TemaTres</a> and integrate it with any web form or web application.</p>
+                    <p><span class="popterms">PopTerms</span> use the <a href="http://vocabularyserver.com/wiki/index.php?title=Terminological_web_services_tools">terminological web services</a> provided by <a href="http://www.vocabularyserver.com">TemaTres</a>. You can browse, search and select terms and use them in your tool or system</p>
+                    <p><span class="popterms">PopTerms</span> do not requires <a href="http://www.vocabularyserver.com">TemaTres</a>, You dont need to have your own <a href="http://www.vocabularyserver.com">TemaTres</a> installation.  You can use any <a href="http://www.vocabularyserver.com/vocabularies.php">vocabulary</a> available in TemaTres.</p>
+                    <p><span class="popterms">PopTerms</span> was inspired in  <a href="http://adullact.net/projects/tematresview/">TemaTresView</a> developed by Nicolas Poulain.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- configPopTerms Section -->
+    <section id="configPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+
+                <h2>Config PopTerms</h2>
+                <div>
+                    <p>To config <span class="popterms">PopTerms</span> you need to edit the config file  <code>config.ws.php</code>.</p>
+                    <p>Config the following options:
+                    <ol>
+                        <li>The available sources of terminological webs services provided by <a href="http://vocabularyserver.com">TemaTres</a>. You can define many sources. There are no limited number of sources. To add source, add occurrence to the array <code>$CFG_VOCABS</code>. The first source is the default source. (<code>$CFG_VOCABS[1]</code>). 
+                        <p>Example:<br/>
+                        <code>$CFG_VOCABS[1]["URL_BASE"]="http://vocabularyserver.com/unesco/es/services.php";</code><br/> 
+                        <code>$CFG_VOCABS[2]["URL_BASE"]="http://r020.com.ar/tematres/demo/services.php";</code> : 
+                        </p>
+                        </li>
+
+                        <li>Characters to use in alphabetical navigation. You need to define one list to each source.
+                        <p>Example:<br/>
+                        <code>$CFG_VOCABS[1]["URL_BASE"]="http://vocabularyserver.com/unesco/es/services.php";</code><br/> 
+                        <code>$CFG_VOCABS[1]["ALPHA"]=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");</code>
+                        </p>
+                        </li>
+
+                        <li>Character to use for concatenate terms in the form. This character will be used in <strong>all the terminological sources</strong>.
+                        <p>Example:<br/>
+                        <code>$_PARAMS["_STRING_SEPARATOR"]=';</code><br/> 
+                        </p>
+                        </li>
+                </ol>
+                </p>
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- howPopTerms Section -->
+    <section id="howPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-02">
+                    <h1>How to use PopTerms in my web tool?</h1>
+
+                    <h2>Code for the web form</h2>
+                  <p><strong>First step: include in the header the javascript function to create popups</strong></p>
+                <div class="code css">
+                <pre class="css">
+                    <span class="coMULTI">
+                    &lt;script&gt;
+                    function creaPopup(url)
+                    {
+                      tesauro=window.open(url, 
+                      "Tesauro", 
+                      "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
+                      )
+                    }
+                    &lt;/script&gt;
+                    </span>
+                </pre>
+
+                </div>
+
+
+                <p><strong>Second step: Include link to your PopTerms</strong></p>
+                  The link must to have the following GET values:
+                  <ul>
+                  <li>v : <strong>URL</strong> of the terminological web services provided by TemaTres</li>
+                  <li>f : DOM identify of the <strong>form</strong></li>
+                  <li>t : DOM identify of the <strong>form tag</strong></li>
+                  <li>loadConfig : instruction to reload values and params, <strong>1 (true) is de default value</strong></li>
+                  </ul>
+                <div class="code css">
+                <pre class="css"><span class="coMULTI">
+                  &lt;a href="#" onclick="creaPopup('index.php?t=cdu&f=forma1&v=http://r020.com.ar/tematres/demo/services.php&loadConfig=1'); return false;"&gt;Abrir vocabulario controlado&lt;/a&gt;
+                </span>
+                </pre>
+                </div>
+
+
+
+            </div>
+        </div>
+        </div>
+    </section>
+
+
+    <!-- demoPopTerms Section -->
+    <section id="demoPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Demo</h1>
+   <div class="span0">
+      <form name="forma1" class="order-form" id="order">
+        <p>If you config the GET value as <code>GET c=0</code> you only can select <strong>one term</strong>.</p>
+        <label for="cdu"><a href="#" onclick="creaPopup('index.php?t=cdu&f=forma1&v=http://vocabularios.caicyt.gov.ar/afip/services.php&loadConfig=1'); return false;">Select one term</a></label><br>
+        <input name="campo" class="order-input" id="cdu" type="text" size="50">
+        <div class="hr"><hr></div>
+
+        <p>If you config the GET value as <code>GET c=1</code> you can select <strong>many terms</strong>.</p>
+        <label for="salud"><a href="#" onclick="creaPopup('index.php?t=salud&f=forma1&v=http://vocabularios.caicyt.gov.ar/salud/services.php&c=1&loadConfig=1'); return false;">Select many terms</a></label><br>
+        <textarea name="campo2" id="salud" class="order-textarea" cols="50" rows="4"></textarea>
+        <div class="hr"><hr></div>
+
+        <p>If you config the GET value as <code>GET c=1</code> you can select <strong>many terms</strong>.</p>
+        <label for="salud2"><a href="#" onclick="creaPopup('index.php?v=http://bibliotesauro.aecid.es/vocab/services.php&amp;f=forma1&amp;t=salud2&amp;c=1&amp;loadConfig=1'); return false;">Select many terms</a></label><br>
+        <textarea name="campo2" id="salud2" class="order-textarea" cols="50" rows="4"></textarea>
+        <div class="hr"><hr></div>
+
+    </div>  
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- downloadPopTerms Section -->
+    <section id="downloadPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Download</h1>
+                    <ul>
+                    <li><a href="popterms.zip">PopTerms 1.0</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- downloadPopTerms Section -->
+    <section id="techPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Technology</h1>
+                    <p><span class="popterms">PopTerms</span> requiere PHP. Use <a href="http://php.net/manual/en/book.curl.php">cURL</a>.</p>
+                    <p>PopTerms use the following libraries<ul>
+                    <li>Bootstrap v3.3.2</li>
+                    <li>jQuery</li>
+                    <li><a href="http://mbraak.github.io/jqTree/">jqTree</a></li>
+                    <li><a href="https://plugins.jquery.com/devbridge-autocomplete/">DevBridge Autocomplete</a></li>
+                    <li><a href="http://htmlpurifier.org/">HTML Purifier</a></li>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- contactPopTerms Section -->
+    <section id="contactPopTerms" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Contacto</h1>
+                    <p><span class="popterms">PopTerms</span> is developed by <a href="mailto:tematres@r020.com.ar">Diego Ferreyra</a></p>
+                    <a class="btn btn-default page-scroll" href="#page-top">Top</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+
+</body>
+</html>

@@ -42,6 +42,7 @@
           </script>
     </head>
     <body>
+        <?php include('inc/barrausp.php'); ?>
         <div class="ui main container">
             <?php include('inc/header.php'); ?>
             <?php include('inc/navbar.php'); ?>
