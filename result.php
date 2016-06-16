@@ -41,7 +41,13 @@ if (empty($_GET)) {
     $search_term = '"match_all": {}';
     $filter_query = '';
 } elseif (!empty($_GET['search_index'])) {
-    $search_term ='"query": {"term": {"title": "'.$_GET['search_index'].'"} }'; 
+    $search_term ='"query": {
+    "match" : {
+        "_all" : {
+        "query": "'.$_GET['search_index'].'",
+        "operator" : "and"
+        }
+    }}'; 
     $termo = $_GET['search_index']; 
     unset($_GET['search_index']);
     
