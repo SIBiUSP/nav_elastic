@@ -238,4 +238,120 @@ function get_type($material_type){
   }
 }
 
+/* Function to generate Graph Bar */
+function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+
+    if (!empty($sort)){
+         
+         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+        }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+    
+    $facet = query_elastic($query);    
+    
+    $data_array= array();
+    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+        array_push($data_array,'{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
+    };
+    $comma_separated = implode(",", $data_array);
+    return $comma_separated;
+
+};
+
+/* Function to generate Tables */
+function generateDataTable($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+    if (!empty($sort)){
+        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+    
+    $facet = query_elastic($query);    
+
+
+
+echo "<table class=\"ui celled table\">
+  <thead>
+    <tr>
+      <th>".$facet_display_name."</th>
+      <th>Quantidade</th>
+    </tr>
+  </thead>
+  <tbody>";
+
+    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+        echo "<tr>
+              <td>".$facets['key']."</td>
+              <td>".$facets['doc_count']."</td>
+            </tr>";
+    };
+
+  echo"</tbody>
+    </table>";
+
+
+};
+
+
+/* Function to generate CSV */
+function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+
+    if (!empty($sort)){
+        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+    
+    $facet = query_elastic($query);   
+
+    $data_array= array();
+    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+        array_push($data_array,''.$facets["key"].'\\t'.$facets["doc_count"].'');
+    };
+    $comma_separated = implode("\\n", $data_array);
+    return $comma_separated;
+
+};
+
+
 ?>

@@ -1,6 +1,6 @@
 <?php 
 
-    include('inc/functions.php');
+include('inc/functions.php');
         
 /* Pegar a URL atual */
 if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
