@@ -62,8 +62,7 @@ function ultimos_registros() {
                  },
                 "size": 10,
                 "sort" : [
-                    {"year" : {"order" : "desc"}},
-                    {"dataregistro" : {"order" : "desc"}}
+                    {"_id" : {"order" : "desc"}}
                     ]
                 }';
     $data = query_elastic($query);
