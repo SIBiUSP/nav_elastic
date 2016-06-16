@@ -200,7 +200,7 @@ $total = $cursor["hits"]["total"];
                             gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_trab,30,"Colaboração - Instituição");
                             gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_corrigido,30,"Colaboração - Instituição - Corrigido");
                             gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_naocorrigido,30,"Colaboração - Instituição - Não corrigido");
-                            gerar_faceta($query_aggregate,$escaped_url,dataregistro,30,"Data de registro e alterações");
+                            gerar_faceta($query_aggregate,$escaped_url,dataregistro,30,"Data de registro e alterações","desc");
                         ?>
                             
                             
