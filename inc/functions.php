@@ -57,9 +57,12 @@ function contar_registros () {
 function ultimos_registros() {
     
      $query = '{
+                "query": {
+                    "match_all": {}
+                 },
                 "size": 10,
                 "sort" : [
-                    { "_id" : {"order" : "desc"}}
+                    { "dataregistro" : {"order" : "desc"}}
                     ]
                 }';
     $data = query_elastic($query);

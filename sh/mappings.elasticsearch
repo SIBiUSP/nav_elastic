@@ -33,7 +33,15 @@ PUT sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "colab_int": {
+	   "colab_instituicao_corrigido": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+	   "colab_instituicao_naocorrigido": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+       "colab_int": {
 		  "type": "string",
           "index": "not_analyzed"
 	   },
