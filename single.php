@@ -121,6 +121,30 @@ $record_blob = implode("\\n", $record);
                 }
 
         </script>        
+
+        <!-- Generate metadata to Google Scholar - START -->
+        <meta name="citation_title" content="<?php echo $cursor["_source"]['title'];?>">
+        <?php if (!empty($cursor["_source"]['authors'])): ?>
+        <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
+        <meta name="citation_author" content="<?php echo $autores;?>">
+        <?php endforeach;?>
+        <?php endif; ?>
+        <meta name="citation_publication_date" content="<?php echo $cursor["_source"]['year']; ?>">
+        <meta name="citation_journal_title" content="<?php echo $cursor["_source"]['ispartof'];?>">
+        <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
+        <meta name="citation_volume" content="<?php echo $cursor["_source"]['ispartof_data'][0];?>">
+        <?php endif; ?>
+
+        <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
+        <meta name="citation_issue" content="<?php echo $cursor["_source"]['ispartof_data'][1];?>">
+        <?php endif; ?>
+
+        <!--
+        <meta name="citation_firstpage" content="11761">
+        <meta name="citation_lastpage" content="11766">
+        <meta name="citation_pdf_url" content="http://www.example.com/content/271/20/11761.full.pdf">
+        -->
+        <!-- Generate metadata to Google Scholar - END -->        
         
     </head>
     <body>
