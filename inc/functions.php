@@ -62,7 +62,7 @@ function ultimos_registros() {
                  },
                 "size": 10,
                 "sort" : [
-                    {"_id" : {"order" : "desc"}}
+                    {"_uid" : {"order" : "desc"}}
                     ]
                 }';
     $data = query_elastic($query);

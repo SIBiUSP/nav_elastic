@@ -2,6 +2,10 @@ PUT sibi/producao/_mapping
 {
  "producao": {
 	"properties": {
+	   "_id": {
+		  "type": "integer",
+          "index": "not_analyzed"
+	   },    
 	   "areaconcentracao": {
 		  "type": "string",
           "index": "not_analyzed"
