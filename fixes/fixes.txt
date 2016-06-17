@@ -124,7 +124,8 @@ marc_map('CATc','dataregistro.$append')
 substring("dataregistro.*",0,6)
 sort_field("dataregistro", numeric:1)
 
-
+#Mover _id para Elasticsearch
+move_field(_id, sibi_id)
 
 # Delete all the empty fields
 vacuum()

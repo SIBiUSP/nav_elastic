@@ -2,10 +2,6 @@ PUT sibi/producao/_mapping
 {
  "producao": {
 	"properties": {
-	   "_id": {
-		  "type": "integer",
-          "index": "not_analyzed"
-	   },    
 	   "areaconcentracao": {
 		  "type": "string",
           "index": "not_analyzed"
@@ -58,7 +54,8 @@ PUT sibi/producao/_mapping
           "index": "not_analyzed"
 	   },
 	   "dataregistro": {
-		  "type": "string"
+		  "type": "string",
+          "index": "not_analyzed"
 	   },
 	   "departamento": {
 		  "type": "string",
@@ -121,7 +118,8 @@ PUT sibi/producao/_mapping
           "index": "not_analyzed"
 	   },
 	   "sysno": {
-		  "type": "string"
+		  "type": "string",
+          "index": "not_analyzed"
 	   },
 	   "title": {
 		  "type": "string"
@@ -139,7 +137,8 @@ PUT sibi/producao/_mapping
 	       "index": "not_analyzed"
 	   },
 	   "url": {
-		  "type": "string"
+		  "type": "string",
+          "index": "not_analyzed"
 	   },
 	   "year": {
 		  "type": "string",

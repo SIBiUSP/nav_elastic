@@ -1,0 +1,8 @@
+# in your catmandu.yml
+store:
+  sibi_elastic:
+    package: ElasticSearch
+    options:
+      # use my_id instead of _id
+      key_prefix: sibi_
+      index_name: sibi     
