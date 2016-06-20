@@ -90,7 +90,7 @@
                                 <div class="ui one statistics">
                                     <div class="statistic">
                                         <div class="value">
-                                            <i class="file icon"></i> <?php contar_registros(); ?>
+                                            <i class="file icon"></i> <?php contar_registros(); ?>                    
                                         </div>
                                         <div class="label">
                                             Quantidade de registros
@@ -102,6 +102,7 @@
                         <div class="ui vertical stripe segment">
                             <?php ultimos_registros(); ?>
                         </div>
+            
                     </div>
                     <div class="six wide column">
                         <div class="ui search search_unidade">

@@ -31,6 +31,10 @@ $mode = "reference";
 
 $cursor = query_one_elastic($_GET['_id']);
 
+
+/* Contador */
+counter($_GET['_id']);
+
 ?>
 
 <?php

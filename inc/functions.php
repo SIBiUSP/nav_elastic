@@ -35,6 +35,38 @@ function query_one_elastic ($_id) {
 }
 
 
+
+function counter ($_id) {
+    $ch = curl_init();
+    $method = "POST";
+    $url = "http://localhost/sibi/producao_metrics/$_id/_update";
+    $query = 
+             '{
+                "script" : {
+                    "inline": "ctx._source.counter += count",
+                    "params" : {
+                        "count" : 1
+                    }
+                },
+                "upsert" : {
+                    "counter" : 1
+                }
+            }';
+    
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    return $data;
+}
+
+
 function contar_registros () {
     $ch = curl_init();
     $method = "POST";
@@ -109,7 +141,8 @@ function criar_unidadeUSP_inicio () {
                 "terms": {
                     "field": "unidadeUSPtrabalhos",
                     "order" : { "_term" : "asc" },
-                    "size" : 100
+                    "size" : 100,
+                    "missing": "Sem unidade cadastrada"
                 }
             }
         }
@@ -153,6 +186,7 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
           "counts": {
             "terms": {
               "field": "'.$campo.'",
+              "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
@@ -256,6 +290,7 @@ function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation,
           "counts": {
             "terms": {
               "field": "'.$campo.'",
+              "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
@@ -288,6 +323,7 @@ function generateDataTable($url, $consulta, $campo, $sort, $sort_orientation, $f
           "counts": {
             "terms": {
               "field": "'.$campo.'",
+              "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
@@ -337,6 +373,7 @@ function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_d
           "counts": {
             "terms": {
               "field": "'.$campo.'",
+              "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
