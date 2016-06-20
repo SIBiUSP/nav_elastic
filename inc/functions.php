@@ -393,5 +393,62 @@ function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_d
 
 };
 
+/* Comparar registros */
+
+function compararRegistros ($query_title,$query_authors) {
+
+    $query = '
+    {
+        "query":{
+            "bool": {
+                "should": [
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_title.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "title" ],
+                            "minimum_should_match": "90%" 
+                         }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_authors.'",
+                            "type":       "best_fields",
+                            "fields":     [ "authors" ],
+                            "minimum_should_match": "10%" 
+                        }
+                    }
+                ],
+                "minimum_should_match" : 1                
+            }
+        }
+    }
+    ';
+    
+    $result = query_elastic($query);
+        
+    if ($result["hits"]["total"] > 0) {
+    
+    foreach ($result['hits']['hits'] as $results) {
+            echo '
+                <tr>
+                  <td>'.$query_title.'</td>
+                  <td>'.$results["_source"]["title"].'</td>
+                  <td>'.$results["_score"].'</td>
+                  <td>'.$results["_id"].'</td>
+                </tr>                
+                ';
+        }
+    } else {
+            echo '
+                <tr>
+                  <td>'.$query_title.'</td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                </tr>
+                ';
+    }
+}
 
 ?>

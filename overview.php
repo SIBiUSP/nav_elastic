@@ -6,7 +6,8 @@ if (!empty($_GET['unidade'])) {
     $key = "departamento";    
     $value = urldecode($_GET['departamento']);    
 } else {
-    
+    $key = "unidadeUSPtrabalhos";
+    $value = "_all";  
 }
 ?>
 <!DOCTYPE html>

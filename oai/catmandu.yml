@@ -40,15 +40,15 @@ store:
 plugins:
   'Catmandu::OAI':
     store: oai
-    bag: producao
+    bag: sibi
     datestamp_field: datestamp
-    repositoryName: "My OAI DataProvider"
+    repositoryName: "Biblioteca Digital da Produção Intelectual"
     uri_base: "http://bdpife2.sibi.usp.br:3000/oai"
     adminEmail: tiago.murakami@dt.sibi.usp.br
     earliestDatestamp: "1970-01-01T00:00:01Z"
     deletedRecord: persistent
     repositoryIdentifier: oai.producao.usp.br
-    cql_filter: "datestamp>2014-12-01T00:00:00Z"
+    cql_filter: "datestamp>2016-12-01T00:00:00Z"
     limit: 200
     delimiter: ":"
     sampleIdentifier: "oai:oai.producao.usp.br:001585315"
