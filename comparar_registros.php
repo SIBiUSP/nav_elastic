@@ -24,9 +24,14 @@ if (isset($_FILES['file'])) {
     echo '<table class="ui celled table">
         <thead>
             <tr>
+                <th>Ano do material pesquisado</th>
+                <th>Tipo de material pesquisado</th>
                 <th>Título pesquisado</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
                 <th>Título recuperado</th>
                 <th>Autores</th>
+                <th>Ano recuperado</th>
                 <th>Pontuação</th>
                 <th>ID</th>
             </tr>
@@ -38,8 +43,10 @@ if (isset($_FILES['file'])) {
     while( ($row = fgetcsv($fh, 8192,";")) !== FALSE ) {    
         $authors[] = $row[9];
         $authors[] = $row[10];
+        unset($authors[0]);
+        unset($authors[1]);
         
-        compararRegistros($row[8],$authors);
+        compararRegistros($row[1],$row[0],$row[8],$authors);
     }
     
     echo '</tbody></table>';

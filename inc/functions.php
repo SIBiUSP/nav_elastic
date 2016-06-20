@@ -395,7 +395,7 @@ function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_d
 
 /* Comparar registros */
 
-function compararRegistros ($query_title,$query_authors) {
+function compararRegistros ($query_type,$query_year,$query_title,$query_authors) {
 
     $query = '
     {
@@ -432,9 +432,14 @@ function compararRegistros ($query_title,$query_authors) {
     foreach ($result['hits']['hits'] as $results) {
             echo '
                 <tr>
+                  <td>'.$query_type.'</td>
+                  <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
+                  <td>'.implode("|",$query_authors).'</td>
+                  <td>'.$results["_source"]["type"].'</td>
                   <td>'.$results["_source"]["title"].'</td>
                   <td>'. implode("|",$results["_source"]["authors"]).'</td>
+                  <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
                   <td>'.$results["_id"].'</td>
                 </tr>                
@@ -443,7 +448,12 @@ function compararRegistros ($query_title,$query_authors) {
     } else {
             echo '
                 <tr>
+                  <td>'.$query_type.'</td>
+                  <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
