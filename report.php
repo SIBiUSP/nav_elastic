@@ -351,7 +351,6 @@ $total = $cursor["hits"]["total"];
 
 
 <?php $internacionalizacao_bar = generateDataGraphBar($url, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
-<?php print_r($internacionalizacao_bar); ?>
 <div id="internacionalização_chart"></div>         
 <script type="application/javascript">
 var graphdef = {
