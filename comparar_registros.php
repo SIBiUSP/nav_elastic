@@ -26,6 +26,7 @@ if (isset($_FILES['file'])) {
             <tr>
                 <th>Título pesquisado</th>
                 <th>Título recuperado</th>
+                <th>Autores</th>
                 <th>Pontuação</th>
                 <th>ID</th>
             </tr>

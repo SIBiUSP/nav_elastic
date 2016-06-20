@@ -434,6 +434,7 @@ function compararRegistros ($query_title,$query_authors) {
                 <tr>
                   <td>'.$query_title.'</td>
                   <td>'.$results["_source"]["title"].'</td>
+                  <td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_score"].'</td>
                   <td>'.$results["_id"].'</td>
                 </tr>                
