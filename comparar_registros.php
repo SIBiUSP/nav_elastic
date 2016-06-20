@@ -47,6 +47,9 @@ if (isset($_FILES['file'])) {
         unset($authors[1]);
         
         compararRegistros($row[1],$row[0],$row[8],$authors);
+        
+        unset($authors);
+        
     }
     
     echo '</tbody></table>';
