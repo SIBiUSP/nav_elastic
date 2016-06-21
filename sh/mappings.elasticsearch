@@ -58,7 +58,19 @@ PUT sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "departamento": {
+	   "dataregistroinicial": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+       "dataregistrocompleta": {
+		  "type": "date",
+          "index": "not_analyzed"
+	   },
+	   "datestamp": {
+		  "type": "date",
+          "index": "not_analyzed"
+	   },       
+       "departamento": {
 		  "type": "string",
           "index": "not_analyzed"
 	   },

@@ -435,7 +435,7 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_authors)
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
-                  <td>'.implode("|",$query_authors).'</td>
+                  <td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
                   <td>'.$results["_source"]["title"].'</td>
                   <td>'. implode("|",$results["_source"]["authors"]).'</td>
@@ -451,6 +451,7 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_authors)
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
+                  <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>

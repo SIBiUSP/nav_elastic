@@ -123,6 +123,14 @@ uniq(departamentotrabalhos)
 marc_map('CATc','dataregistro.$append')
 substring("dataregistro.*",0,6)
 sort_field("dataregistro", numeric:1)
+copy_field("dataregistro.0","dataregistroinicial")
+
+#datestamp
+marc_map('CATc','dataregistrocompleta.$append')
+parse_text("dataregistrocompleta.*", '(\d\d\d\d)(\d\d)(\d\d)')
+join_field("dataregistrocompleta.*","-")
+sort_field("dataregistrocompleta")
+copy_field("dataregistrocompleta.0","datestamp")
 
 #Mover _id para Elasticsearch
 move_field(_id, sibi_id)

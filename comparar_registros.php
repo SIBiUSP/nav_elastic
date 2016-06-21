@@ -19,7 +19,7 @@
 <?php
 if (isset($_FILES['file'])) {    
     $fh = fopen($_FILES['file']['tmp_name'], 'r+');
-    $lines = array();
+
     
     echo '<table class="ui celled table">
         <thead>
@@ -41,15 +41,7 @@ if (isset($_FILES['file'])) {
     
     
     while( ($row = fgetcsv($fh, 8192,";")) !== FALSE ) {    
-        $authors[] = $row[9];
-        $authors[] = $row[10];
-        unset($authors[0]);
-        unset($authors[1]);
-        
-        compararRegistros($row[1],$row[0],$row[8],$authors);
-        
-        unset($authors);
-        
+        compararRegistros($row[1],$row[0],$row[8],$row[9]);
     }
     
     echo '</tbody></table>';
