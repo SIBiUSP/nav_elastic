@@ -474,7 +474,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
                         "multi_match" : {
                             "query":      "'.$query_DOI.'",
                             "type":       "cross_fields",
-                            "fields":     [ "DOI" ]                             
+                            "fields":     [ "DOI" ]                            
                          }
                     },                
                     {
@@ -499,13 +499,15 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
     foreach ($result['hits']['hits'] as $results) {
             echo '
                 <tr>
-                  <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
+                  <td>'.$query_type.'</td>                  
                   <td>'.$query_title.'</td>
                   <td>'.$query_DOI.'</td>
+                  <td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
                   <td>'.$results["_source"]["title"].'</td>
-                  <td>'. implode("|",$results["_source"]["DOI"]).'</td>
+                  <td>'.$results["_source"]["doi"].'</td>
+                  <td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
                   <td>'.$results["_id"].'</td>
@@ -518,7 +520,9 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
-                  <td>'.$query_DOI.'</td>                  
+                  <td>'.$query_DOI.'</td>
+                  <td>'.$query_authors.'</td>
+                  <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>

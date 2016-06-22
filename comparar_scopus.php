@@ -29,9 +29,11 @@ if (isset($_FILES['file'])) {
                 <th>Ano do material pesquisado</th>
                 <th>Tipo de material pesquisado</th>
                 <th>Título pesquisado</th>
+                <th>DOI pesquisado</th>
                 <th>Autores</th>
                 <th>Tipo de material recuperado</th>
                 <th>Título recuperado</th>
+                <th>DOI recuperado</th>
                 <th>Autores</th>
                 <th>Ano recuperado</th>
                 <th>Pontuação</th>
