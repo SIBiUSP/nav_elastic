@@ -516,12 +516,12 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
         $row[]= $results["_id"];
         $result_row = implode("\\t", $row);
         $result_row = preg_replace( "/\r|\n/", "", $result_row );
-        return $result_row;
+        return addslashes($result_row);
         }
     } else {
             $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
             $row = preg_replace( "/\r|\n/", "", $row );
-            return $row;
+            return addslashes($row);
     }
 }
 
