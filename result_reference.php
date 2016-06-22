@@ -470,6 +470,11 @@ print_r($output)
                         $('.ui.checkbox')   
                             .checkbox();
                     </script>
+                     <script>
+                        $('.ui.accordion')
+                          .accordion()
+                        ;
+                    </script>
         
 
         </div>
