@@ -506,7 +506,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
                   <td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
                   <td>'.$results["_source"]["title"].'</td>
-                  <td>'.$results["_source"]["doi"].'</td>
+                  <td>'. implode("|",$results["_source"]["doi"]).'</td>
                   <td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
