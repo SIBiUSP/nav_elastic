@@ -4,6 +4,20 @@
     <head>
         <title>Comparar registros</title>
         <?php include('inc/meta-header.php'); ?>
+        
+        <!-- Save as javascript -->
+        <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+        <script>
+              function SaveAsFile(t,f,m) {
+                    try {
+                        var b = new Blob([t],{type:m});
+                        saveAs(b, f);
+                    } catch (e) {
+                        window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
+                    }
+                }
+        </script>    
+        
     </head>
     <body>
         <!-- < ?php include('inc/barrausp.php'); ?> -->
@@ -18,37 +32,31 @@
 <input type="file" name="file">
 <input type="submit" name="btn_submit" value="Upload File" />
 
+
+
+    
+    
+    
 <?php
 if (isset($_FILES['file'])) {    
     $fh = fopen($_FILES['file']['tmp_name'], 'r+');
 
-    
-    echo '<table class="ui celled table">
-        <thead>
-            <tr>
-                <th>Ano do material pesquisado</th>
-                <th>Tipo de material pesquisado</th>
-                <th>Título pesquisado</th>
-                <th>DOI pesquisado</th>
-                <th>Autores</th>
-                <th>Tipo de material recuperado</th>
-                <th>Título recuperado</th>
-                <th>DOI recuperado</th>
-                <th>Autores</th>
-                <th>Ano recuperado</th>
-                <th>Pontuação</th>
-                <th>ID</th>
-            </tr>
-        </thead>
-        <tbody>
-     ';
+    $record_scopus = [];
+    $record_scopus[] = 'Ano do material pesquisado\\tTipo de material pesquisado\\tTítulo pesquisado\\tDOI pesquisado\\tAutores\\tTipo de material recuperado\\tTítulo recuperado\\tDOI recuperado\\tAutores\\tAno recuperado\\tPontuação\\tID';
     
     
     while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
-        compararRegistrosScopus("Artigo",$row[3],$row[0],$row[1],$row[13]);
+         $record_scopus[] = compararRegistrosScopus("Artigo",$row[3],$row[0],$row[1],$row[13]);
     }
     
-    echo '</tbody></table>';
+    $record_blob = implode("\\n", $record_scopus);
+     
+    echo '<br/><br/><br/>
+    <button class="ui blue label" onclick="SaveAsFile(\''.$record_blob.'\',\'comparativo_scopus.csv\',\'text/plain;charset=utf-8\')">
+        Exportar resultado em CSV
+    </button>
+    ';
+    
 }
 ?>
                 

@@ -497,40 +497,14 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
     if ($result["hits"]["total"] > 0) {
     
     foreach ($result['hits']['hits'] as $results) {
-            echo '
-                <tr>
-                  <td>'.$query_year.'</td>
-                  <td>'.$query_type.'</td>                  
-                  <td>'.$query_title.'</td>
-                  <td>'.$query_DOI.'</td>
-                  <td>'.$query_authors.'</td>
-                  <td>'.$results["_source"]["type"].'</td>
-                  <td>'.$results["_source"]["title"].'</td>
-                  <td>'. implode("|",$results["_source"]["doi"]).'</td>
-                  <td>'. implode("|",$results["_source"]["authors"]).'</td>
-                  <td>'.$results["_source"]["year"].'</td>
-                  <td>'.$results["_score"].'</td>
-                  <td>'.$results["_id"].'</td>
-                </tr>                
-                ';
+            $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\t'.$results["_source"]["type"].'\\t'.$results["_source"]["title"].'\\t'. implode("|",$results["_source"]["doi"]).'\\t'. implode("|",$results["_source"]["authors"]).'\\t'.$results["_source"]["year"].'\\t'.$results["_score"].'\\t'.$results["_id"].'';            
+            $row = preg_replace( "/\r|\n/", "", $row );
+            return $row;
         }
     } else {
-            echo '
-                <tr>
-                  <td>'.$query_type.'</td>
-                  <td>'.$query_year.'</td>
-                  <td>'.$query_title.'</td>
-                  <td>'.$query_DOI.'</td>
-                  <td>'.$query_authors.'</td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                  <td><p style="color:red">Não encontrado</p></td>
-                </tr>
-                ';
+            $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
+            $row = preg_replace( "/\r|\n/", "", $row );
+            return $row;
     }
 }
 
