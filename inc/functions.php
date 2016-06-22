@@ -514,7 +514,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
         $row[]= $results["_source"]["year"];
         $row[]= $results["_score"];
         $row[]= $results["_id"];
-        $row[]= $results["_source"]["unidadeUSPtrabalhos"];
+        $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
         $result_row = implode("\\t", $row);
         $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
         return $result_row;
