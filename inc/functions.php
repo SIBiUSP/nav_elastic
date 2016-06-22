@@ -520,7 +520,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
         }
     } else {
             $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
-            $result_row = preg_replace( "/\r|\n|\'/", "", $result_row );       
+            $result_row = preg_replace( "/\r|\n|\'/", "", $row );       
             return $result_row;
     }
 }
