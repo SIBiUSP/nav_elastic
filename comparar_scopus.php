@@ -42,7 +42,7 @@ if (isset($_FILES['file'])) {
     $fh = fopen($_FILES['file']['tmp_name'], 'r+');
 
     $record_scopus = [];
-    $record_scopus[] = 'Ano do material pesquisado\\tTipo de material pesquisado\\tTítulo pesquisado\\tDOI pesquisado\\tAutores\\tTipo de material recuperado\\tTítulo recuperado\\tDOI recuperado\\tAutores\\tAno recuperado\\tPontuação\\tID';
+    $record_scopus[] = 'Ano do material pesquisado\\tTipo de material pesquisado\\tTítulo pesquisado\\tDOI pesquisado\\tAutores\\tTipo de material recuperado\\tTítulo recuperado\\tDOI recuperado\\tAutores\\tAno recuperado\\tPontuação\\tID\\Unidade';
     
     
     while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
