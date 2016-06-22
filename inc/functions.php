@@ -463,4 +463,72 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_authors)
     }
 }
 
+function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+
+    $query = '
+    {
+        "query":{
+            "bool": {
+                "should": [
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_DOI.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "DOI" ]                             
+                         }
+                    },                
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_title.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "title" ],
+                            "minimum_should_match": "90%" 
+                         }
+                    }
+                ],
+                "minimum_should_match" : 1                
+            }
+        }
+    }
+    ';
+    
+    $result = query_elastic($query);
+        
+    if ($result["hits"]["total"] > 0) {
+    
+    foreach ($result['hits']['hits'] as $results) {
+            echo '
+                <tr>
+                  <td>'.$query_type.'</td>
+                  <td>'.$query_year.'</td>
+                  <td>'.$query_title.'</td>
+                  <td>'.$query_DOI.'</td>
+                  <td>'.$results["_source"]["type"].'</td>
+                  <td>'.$results["_source"]["title"].'</td>
+                  <td>'. implode("|",$results["_source"]["DOI"]).'</td>
+                  <td>'.$results["_source"]["year"].'</td>
+                  <td>'.$results["_score"].'</td>
+                  <td>'.$results["_id"].'</td>
+                </tr>                
+                ';
+        }
+    } else {
+            echo '
+                <tr>
+                  <td>'.$query_type.'</td>
+                  <td>'.$query_year.'</td>
+                  <td>'.$query_title.'</td>
+                  <td>'.$query_DOI.'</td>                  
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                </tr>
+                ';
+    }
+}
+
+
 ?>

@@ -12,7 +12,7 @@
             <?php include('inc/navbar.php'); ?>
             <div id="main">
                 
-                <h1>CSV do weRUSP</h1>
+                <h1>CSV do Scopus</h1>
                 
 <form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 <input type="file" name="file">
@@ -42,8 +42,8 @@ if (isset($_FILES['file'])) {
      ';
     
     
-    while( ($row = fgetcsv($fh, 8192,";")) !== FALSE ) {    
-        compararRegistros($row[1],$row[0],$row[8],$row[9]);
+    while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
+        compararRegistrosScopus("Artigo",$row[3],$row[0],$row[1],$row[13]);
     }
     
     echo '</tbody></table>';
