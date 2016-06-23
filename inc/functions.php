@@ -395,13 +395,21 @@ function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_d
 
 /* Comparar registros */
 
-function compararRegistros ($query_type,$query_year,$query_title,$query_authors) {
+function compararRegistros ($query_type,$query_year,$query_title,$query_doi,$query_authors) {
 
     $query = '
     {
         "query":{
             "bool": {
                 "should": [
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_doi.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "doi" ],
+                            "minimum_should_match": "100%" 
+                         }
+                    },
                     {
                         "multi_match" : {
                             "query":      "'.$query_title.'",
@@ -435,9 +443,11 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_authors)
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
+                  <td>'.$query_doi.'</td>
                   <td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
                   <td>'.$results["_source"]["title"].'</td>
+                  <td>'.$results["_source"]["doi"].'</td>
                   <td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
@@ -451,6 +461,7 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_authors)
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
                   <td>'.$query_title.'</td>
+                  <td>'.$query_doi.'</td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
@@ -462,6 +473,95 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_authors)
                 ';
     }
 }
+
+function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
+
+    $query = '
+    {
+        "query":{
+            "bool": {
+                "should": [
+                    {
+                        "multi_match" : {
+                            "query":      "'.$codpes.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "codpesbusca" ],
+                            "minimum_should_match": "100%" 
+                         }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_doi.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "doi" ],
+                            "minimum_should_match": "100%" 
+                         }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_title.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "title" ],
+                            "minimum_should_match": "90%" 
+                         }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_authors.'",
+                            "type":       "best_fields",
+                            "fields":     [ "authors" ],
+                            "minimum_should_match": "10%" 
+                        }
+                    }
+                ],
+                "minimum_should_match" : 2                
+            }
+        }
+    }
+    ';
+    
+    $result = query_elastic($query);
+        
+    if ($result["hits"]["total"] > 0) {
+    
+    foreach ($result['hits']['hits'] as $results) {
+            echo '
+                <tr>
+                  <td>'.$query_type.'</td>
+                  <td>'.$query_year.'</td>
+                  <td>'.$query_title.'</td>
+                  <td>'.$query_doi.'</td>
+                  <td>'.$query_authors.'</td>
+                  <td>'.$results["_source"]["type"].'</td>
+                  <td>'.$results["_source"]["title"].'</td>
+                  <td>'.$results["_source"]["doi"].'</td>
+                  <td>'. implode("|",$results["_source"]["authors"]).'</td>
+                  <td>'.$results["_source"]["year"].'</td>
+                  <td>'.$results["_score"].'</td>
+                  <td>'.$results["_id"].'</td>
+                </tr>                
+                ';
+        }
+    } else {
+            echo '
+                <tr>
+                  <td>'.$query_type.'</td>
+                  <td>'.$query_year.'</td>
+                  <td>'.$query_title.'</td>
+                  <td>'.$query_doi.'</td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                  <td><p style="color:red">Não encontrado</p></td>
+                </tr>
+                ';
+    }
+}
+
+
 
 function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 

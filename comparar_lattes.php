@@ -14,9 +14,14 @@
                 
                 <h1>XML do Lattes</h1>
                 
-<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="ui form">
+
+<div class="field">
+    <label>Número USP</label>
+    <input name="codpes" placeholder="Número USP" type="text">
+</div>  
 <input type="file" name="file">
-<input type="submit" name="btn_submit" value="Upload File" />
+<input type="submit" name="btn_submit" value="Subir arquivo" />
 
 <?php
 if (isset($_FILES['file'])) {    
@@ -29,16 +34,69 @@ if (isset($_FILES['file'])) {
     echo '<br/><br/><br/>';
     
     
+    echo '<table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>                
+                <th>Título pesquisado</th>
+                <th>DOI</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
+                <th>Título recuperado</th>
+                <th>DOI recuperado</th>
+                <th>Autores</th>
+                <th>Ano recuperado</th>
+                <th>Pontuação</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+     ';
     
     foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'}->{'TRABALHO-EM-EVENTOS'} as $trab_evento) {
-        print_r($trab_evento);
-        echo '<br/><br/>';
+        $title = $trab_evento->{'DADOS-BASICOS-DO-TRABALHO'}->attributes()->{'TITULO-DO-TRABALHO'};
+        $year = $trab_evento->{'DADOS-BASICOS-DO-TRABALHO'}->attributes()->{'ANO-DO-TRABALHO'};
+        $author = $xml->{'DADOS-GERAIS'}[0]->attributes()->{'NOME-COMPLETO'};
+        compararRegistrosLattes("TRABALHO EM EVENTOS",$ano,$title,$author);        
     } 
     
-    print_r($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'}[0]);
+    echo '</tbody></table>';
+
+  
+    echo '<table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>                
+                <th>Título pesquisado</th>
+                <th>DOI</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
+                <th>Título recuperado</th>
+                <th>DOI recuperado</th>
+                <th>Autores</th>
+                <th>Ano recuperado</th>
+                <th>Pontuação</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+     ';    
     
-    echo '<br/><br/><br/>';
-    print_r($xml);
+    foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'}->{'ARTIGO-PUBLICADO'} as $artigo) {
+        $title = $artigo->{'DADOS-BASICOS-DO-ARTIGO'}->attributes()->{'TITULO-DO-ARTIGO'};
+        $year = $artigo->{'DADOS-BASICOS-DO-ARTIGO'}->attributes()->{'ANO-DO-ARTIGO'};
+        $author = $xml->{'DADOS-GERAIS'}[0]->attributes()->{'NOME-COMPLETO'};
+        compararRegistrosLattes("ARTIGO PUBLICADO",$ano,$title,$author);        
+    }     
+    
+     echo '</tbody></table>';
+    
+//    print_r($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'}[0]);
+    
+//    echo '<br/><br/><br/>';
+//    print_r($xml);
     
     
     

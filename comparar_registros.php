@@ -26,12 +26,14 @@ if (isset($_FILES['file'])) {
     echo '<table class="ui celled table">
         <thead>
             <tr>
-                <th>Ano do material pesquisado</th>
                 <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>
                 <th>Título pesquisado</th>
+                <th>DOI</th>
                 <th>Autores</th>
                 <th>Tipo de material recuperado</th>
                 <th>Título recuperado</th>
+                <th>DOI recuperado</th>
                 <th>Autores</th>
                 <th>Ano recuperado</th>
                 <th>Pontuação</th>
