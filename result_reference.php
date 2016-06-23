@@ -279,6 +279,22 @@ $total = $cursor["hits"]["total"];
                         /* Pagination - End */
                         ?>
                         
+                          <h3> Escolha o estilo da Citação:</h3>
+                          <div class="ui compact menu">
+                            <form method="post" action="result_reference.php?<?php echo $_SERVER['QUERY_STRING']; ?>">
+                              <button  type="submit" name="citation_style" class="ui icon button" value="apa">APA</button>
+                            </form>
+                            <form method="post" action="result_reference.php?<?php echo $_SERVER['QUERY_STRING']; ?>">
+                              <button type="submit" name="citation_style" class="ui icon button" value="abnt">ABNT</button>
+                            </form>
+                            <form method="post" action="result_reference.php?<?php echo $_SERVER['QUERY_STRING']; ?>">
+                              <button type="submit" name="citation_style" class="ui icon button" value="nlm">NLM</button>
+                            </form>
+                            <form method="post" action="result_reference.php?<?php echo $_SERVER['QUERY_STRING']; ?>">
+                              <button type="submit" name="citation_style" class="ui icon button" value="vancouver">Vancouver</button>
+                            </form>
+                          </div>
+                        
                         <div class="ui divided items">
                             <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
                             <div class="item">
