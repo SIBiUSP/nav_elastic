@@ -58,7 +58,7 @@ if (isset($_FILES['file'])) {
         $title = $trab_evento->{'DADOS-BASICOS-DO-TRABALHO'}->attributes()->{'TITULO-DO-TRABALHO'};
         $year = $trab_evento->{'DADOS-BASICOS-DO-TRABALHO'}->attributes()->{'ANO-DO-TRABALHO'};
         $author = $xml->{'DADOS-GERAIS'}[0]->attributes()->{'NOME-COMPLETO'};
-        compararRegistrosLattes("TRABALHO EM EVENTOS",$ano,$title,$author);        
+        compararRegistrosLattes("TRABALHO EM EVENTOS",$year,$title,$author);        
     } 
     
     echo '</tbody></table>';
@@ -88,7 +88,7 @@ if (isset($_FILES['file'])) {
         $title = $artigo->{'DADOS-BASICOS-DO-ARTIGO'}->attributes()->{'TITULO-DO-ARTIGO'};
         $year = $artigo->{'DADOS-BASICOS-DO-ARTIGO'}->attributes()->{'ANO-DO-ARTIGO'};
         $author = $xml->{'DADOS-GERAIS'}[0]->attributes()->{'NOME-COMPLETO'};
-        compararRegistrosLattes("ARTIGO PUBLICADO",$ano,$title,$author);        
+        compararRegistrosLattes("ARTIGO PUBLICADO",$year,$title,$author);        
     }     
     
      echo '</tbody></table>';

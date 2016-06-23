@@ -493,8 +493,7 @@ function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_do
                         "multi_match" : {
                             "query":      "'.$query_doi.'",
                             "type":       "cross_fields",
-                            "fields":     [ "doi" ],
-                            "minimum_should_match": "100%" 
+                            "fields":     [ "doi" ]
                          }
                     },
                     {
@@ -514,7 +513,7 @@ function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_do
                         }
                     }
                 ],
-                "minimum_should_match" : 2                
+                "minimum_should_match" : 1               
             }
         }
     }
