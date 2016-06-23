@@ -166,7 +166,7 @@ $total = $cursor["hits"]["total"];
                             <div class="active content">
                                 <div class="ui form">
                                     <div class="grouped fields">
-                                        <form method="get" action="result.php">
+                                        <form method="get" action="result_reference.php">
                                             <?php foreach ($_GET as $key => $value) : ?>
                                             <div class="field">
                                                 <div class="ui checkbox">
@@ -321,7 +321,7 @@ $total = $cursor["hits"]["total"];
                                         <?php foreach ($r["_source"]['authors'] as $autores) : ?>
                                             <div class="ui label" style="color:black;">
                                                 <i class="user icon"></i>
-                                                <a href="result.php?authors=<?php echo $autores;?>"><?php echo $autores;?></a>
+                                                <a href="result_reference.php?authors=<?php echo $autores;?>"><?php echo $autores;?></a>
                                             </div>
                                         <?php endforeach;?>
                                         <?php endif; ?>
