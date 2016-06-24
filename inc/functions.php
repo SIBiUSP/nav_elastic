@@ -528,12 +528,17 @@ function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_do
                 <tr>
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
-                  <td>'.$query_title.'</td>
-                  <td>'.$query_doi.'</td>
-                  <td>'.$query_authors.'</td>
+                  <td>'.$query_title.'</td>';
+                  if (!empty($query_doi)) {
+                      echo '<td>'.$query_doi.'</td>';
+                  } else {
+                      echo '<td>Sem DOI</td>';
+                  }  
+                  
+                  echo '<td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
                   <td>'.$results["_source"]["title"].'</td>
-                  <td>'.$results["_source"]["doi"].'</td>
+                  <td>'.$results["_source"]["doi"][0].'</td>
                   <td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
@@ -546,8 +551,13 @@ function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_do
                 <tr>
                   <td>'.$query_type.'</td>
                   <td>'.$query_year.'</td>
-                  <td>'.$query_title.'</td>
-                  <td>'.$query_doi.'</td>
+                  <td>'.$query_title.'</td>';
+                  if (!empty($query_doi)) {
+                      echo '<td>'.$query_doi.'</td>';
+                  } else {
+                      echo '<td>Sem DOI</td>';
+                  } 
+                  echo '
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
                   <td><p style="color:red">Não encontrado</p></td>
