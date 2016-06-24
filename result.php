@@ -11,6 +11,14 @@ if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
 }
     $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
    
+///* Missing query */
+foreach( $_GET as $k => $v ){
+    if($v == 'N/D'){
+        $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
+        unset($_GET[$k]); 
+    }    
+}
+
 
 /* Pagination variables */
 $page = isset($_POST['page']) ? (int) $_POST['page'] : 1;
@@ -91,13 +99,13 @@ $query_complete = '
     "sort" : [
             { "year" : "desc" }
         ],    
-  "query": {
+    "query": {    
     "bool": {
       "must": {
         '.$search_term.'
       },
       "filter":[
-        '.$filter_query.'
+        '.$filter_query.'        
         ]
       }
     },
@@ -106,6 +114,8 @@ $query_complete = '
   }
 
 ';
+
+print_r($query_complete);
 
 
 $query_aggregate = '
@@ -153,7 +163,7 @@ $total = $cursor["hits"]["total"];
                                 <div class="ui form">
                                     <div class="grouped fields">
                                         <form method="get" action="result.php">
-                                            <?php foreach ($_GET as $key => $value) : ?>
+                                            <?php foreach ($_REQUEST as $key => $value) : ?>
                                             <div class="field">
                                                 <div class="ui checkbox">
                                                     <input type="checkbox" checked="checked"  name="<?php echo $key; ?>" value="<?php echo $value; ?>">
@@ -243,7 +253,8 @@ $total = $cursor["hits"]["total"];
                     <div class="twelve wide column">
                         
                         <div class="page-header"><h3>Resultado da busca: <?php print_r($total);?> registros</h3></div>
-                            
+                           
+                        
                         <?php
                         echo '<br/><br/>';
                         /* Pagination - Start */
