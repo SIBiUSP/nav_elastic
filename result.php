@@ -169,7 +169,8 @@ $total = $cursor["hits"]["total"];
                         </div>
                         <h3>Navegação</h3>
                         <div class="ui fluid vertical accordion menu">
-                        <?php 
+                        <?php
+                            gerar_faceta($query_aggregate,$escaped_url,base,10,"Base");
                             gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material");
                             gerar_faceta($query_aggregate,$escaped_url,unidadeUSPtrabalhos,30,"Unidade USP");
                             gerar_faceta($query_aggregate,$escaped_url,departamentotrabalhos,30,"Departamento");

@@ -1,5 +1,10 @@
 #random("part.rand4","4")
 
+#Pegar a base
+marc_map('BAS','base')
+replace_all("base","04","Produção científica")
+replace_all("base","03","Teses e dissertações") 
+
 # 001 - Id
 marc_map('001','sysno')
 # 024a2 - DOI

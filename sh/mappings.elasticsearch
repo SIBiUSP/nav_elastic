@@ -14,7 +14,11 @@ PUT sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "codpes": {
+	   "base": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+        "codpes": {
 		  "type": "string",
           "index": "not_analyzed"
 	   },
