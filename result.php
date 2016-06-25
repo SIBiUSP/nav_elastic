@@ -200,6 +200,7 @@ $total = $cursor["hits"]["total"];
                             gerar_faceta($query_aggregate,$escaped_url,codpesbusca,30,"Número USP");
                             gerar_faceta($query_aggregate,$escaped_url,codpes,30,"Número USP / Unidade");
                             gerar_faceta($query_aggregate,$escaped_url,internacionalizacao,30,"Internacionalização");
+                            gerar_faceta($query_aggregate,$escaped_url,tipotese,30,"Tipo de tese");
                             gerar_faceta($query_aggregate,$escaped_url,fomento,30,"Agência de fomento");
                             gerar_faceta($query_aggregate,$escaped_url,indexado,30,"Indexado em");
                             gerar_faceta($query_aggregate,$escaped_url,issn_part,30,"ISSN");

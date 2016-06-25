@@ -140,7 +140,11 @@ PUT sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "title": {
+	   "tipotese": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+       "title": {
 		  "type": "string"
 	   },
 	   "type": {

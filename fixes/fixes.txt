@@ -40,6 +40,10 @@ marc_map('1009','colab.$append')
 # 510 - Indexado em
 marc_map('510a','indexado.$append')
 
+# 502 - Tipo de tese
+marc_map('502a','tipotese')
+
+
 # 536a - Agência de fomento
 marc_map('536a','fomento.$append')
 
