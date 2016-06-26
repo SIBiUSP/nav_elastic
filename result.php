@@ -115,9 +115,6 @@ $query_complete = '
 
 ';
 
-print_r($query_complete);
-
-
 $query_aggregate = '
 "query": {
     "bool": {
