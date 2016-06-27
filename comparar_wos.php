@@ -52,7 +52,7 @@ if (isset($_FILES['file'])) {
     $record_blob = implode("\\n", $record_scopus);
      
     echo '<br/><br/><br/>
-    <button class="ui blue label" onclick="SaveAsFile(\''.$record_blob.'\',\'comparativo_scopus.csv\',\'text/plain;charset=utf-8\')">
+    <button class="ui blue label" onclick="SaveAsFile(\''.$record_blob.'\',\'comparativo_wos.csv\',\'text/plain;charset=utf-8\')">
         Exportar resultado em CSV
     </button>
     ';
