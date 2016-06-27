@@ -162,7 +162,7 @@ function criar_unidadeUSP_inicio () {
               };
               echo'</div></a>';
         echo '<div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div>
-                <div id="imagelogo" class="floating ui mini teal label">
+                <div id="imagelogo" class="floating ui mini teal label" style="z-index:0">
                 '.$facets['doc_count'].'
                 </div>';
         echo '</div>';
