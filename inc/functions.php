@@ -635,5 +635,67 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
     }
 }
 
+function compararRegistrosWos ($query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+
+    $query = '
+    {
+        "query":{
+            "bool": {
+                "should": [
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_DOI.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "DOI" ]                            
+                         }
+                    },                
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_title.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "title" ],
+                            "minimum_should_match": "90%" 
+                         }
+                    }
+                ],
+                "minimum_should_match" : 1                
+            }
+        }
+    }
+    ';
+    
+    $result = query_elastic($query);
+        
+    if ($result["hits"]["total"] > 0) {
+    
+    foreach ($result['hits']['hits'] as $results) {
+        $row = [];
+        $row[]= $query_year;
+        $row[]= $query_type;
+        $row[]= $query_title;
+        $row[]= $query_DOI;
+        $row[]= $query_authors;
+        $row[]= $results["_source"]["type"];
+        $row[]= $results["_source"]["title"];
+        if (!empty($results["_source"]["doi"])){
+            $row[]= implode("|",$results["_source"]["doi"]);
+        } else {
+            $row[] = "Sem DOI";
+        }        
+        $row[]= implode("|",$results["_source"]["authors"]);
+        $row[]= $results["_source"]["year"];
+        $row[]= $results["_score"];
+        $row[]= $results["_id"];
+        $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
+        $result_row = implode("\\t", $row);
+        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
+        return $result_row;
+        }
+    } else {
+            $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
+            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
+            return $result_row;
+    }
+}
 
 ?>
