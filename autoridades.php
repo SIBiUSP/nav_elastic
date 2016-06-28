@@ -41,12 +41,13 @@ $cursor = query_one_elastic($_GET['_id']);
                            $termo_geolocalizacao[] = $termo_xml->{'result'}->{'term'}->{'code'};
                         } 
                     } else {
-                        
+                        $termo_naocorrigido[] = $termo_limpo;
                     }
                      
                     }
                     
                     $termo_edit = implode("\",\"",$termo_corrigido);
+                    $termo_nao_corrigido = implode("\",\"",$termo_naocorrigido);
                     $geocode_edit = implode("\",\"",$termo_geolocalizacao);
                     echo $termo_edit;
                     echo '<br/>';
@@ -95,7 +96,7 @@ $cursor = query_one_elastic($_GET['_id']);
                                                 $query = '
                                 {
                                    "doc" : {
-                                      "colab_instituicao_naocorrigido" : [ "'.$termo_corrigido.'" ]
+                                      "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ]
 
                                    }
                                 }
