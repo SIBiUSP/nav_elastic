@@ -34,6 +34,23 @@ function query_one_elastic ($_id) {
     return $data;
 }
 
+function update_elastic ($_id,$query) {
+    $ch = curl_init();
+    $method = "POST";
+    $url = "http://localhost/sibi/producao/$_id/_update";
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    return $data;
+}
+
 
 
 function counter ($_id) {
@@ -696,6 +713,31 @@ function compararRegistrosWos ($query_type,$query_year,$query_title,$query_autho
             $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
             return $result_row;
     }
+}
+
+function limpar($text) {
+    $utf8 = array(
+        '/[áàâãªä]/u'   =>   'a',
+        '/[ÁÀÂÃÄ]/u'    =>   'A',
+        '/[ÍÌÎÏ]/u'     =>   'I',
+        '/[íìîï]/u'     =>   'i',
+        '/[éèêë]/u'     =>   'e',
+        '/[ÉÈÊË]/u'     =>   'E',
+        '/[óòôõºö]/u'   =>   'o',
+        '/[ÓÒÔÕÖ]/u'    =>   'O',
+        '/[úùûü]/u'     =>   'u',
+        '/[ÚÙÛÜ]/u'     =>   'U',
+        '/ç/'           =>   'c',
+        '/Ç/'           =>   'C',
+        '/ñ/'           =>   'n',
+        '/Ñ/'           =>   'N',
+        '//'           =>   '', // UTF-8 hyphen to "normal" hyphen
+        '/[’‘]/u'    =>   ' ', // Literally a single quote
+        '/[“”«»„]/u'    =>   ' ', // Double quote
+        '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
+        '/[^A-Za-z0-9\\s]/' => '',
+    );
+    return preg_replace(array_keys($utf8), array_values($utf8), $text);
 }
 
 ?>

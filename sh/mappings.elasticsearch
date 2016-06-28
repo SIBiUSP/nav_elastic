@@ -46,6 +46,9 @@ PUT sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
+	   "colab_instituicao_geocode": {
+		  "type": "geo_point"
+	   },
        "colab_int": {
 		  "type": "string",
           "index": "not_analyzed"
