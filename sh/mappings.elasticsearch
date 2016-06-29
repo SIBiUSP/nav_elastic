@@ -97,7 +97,11 @@ PUT sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "grupopesquisa": {
+	   "fomento": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+       "grupopesquisa": {
 		  "type": "string",
           "index": "not_analyzed"
 	   },
@@ -171,5 +175,5 @@ PUT sibi/producao/_mapping
           "index": "not_analyzed"
 	   }
 	}
- }
+  }
 }
