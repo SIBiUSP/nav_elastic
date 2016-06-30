@@ -168,8 +168,8 @@ $record_blob = implode("\\n", $record);
 
 <button  class="ui blue label" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
 
-<?php if (!empty($cursor["result"][0]["files"][0]["visitors"])) : ?>
-<h4>Visitas ao registro: <?php echo ''.$cursor["result"][0]["files"][0]["visitors"].''; ?></h4>
+<?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
+<h4>Visitas ao registro: <?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
 <?php endif; ?>
 </div>
 <div class="ten wide column">
@@ -276,13 +276,13 @@ Data de publicação: <a href="result.php?year=<?php echo $cursor["_source"]['ye
 
 <!-- Fonte -->
 <div class="ui middle aligned selection list">
-<?php if (!empty($cursor["result"][0]['ispartof'])): ?>
+<?php if (!empty($cursor["_source"]['ispartof'])): ?>
 <h4>Fonte:</h4>
 <div class="item">
 <i class="user icon"></i>
 <div class="content">
 Título: <a href="result.php?ispartof=<?php echo $cursor["_source"]['ispartof'];?>"><?php echo $cursor["_source"]['ispartof'];?></a><br/>
-<?php if (!empty($cursor["result"][0]['issn_part'])): ?>
+<?php if (!empty($cursor["_source"]['issn_part'])): ?>
 ISSN: <a href="result.php?issn_part=<?php echo $cursor["_source"]['issn_part'][0];?>"><?php echo $cursor["_source"]['issn_part'][0];?></a><br/>
 <?php endif; ?>
 <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
@@ -333,9 +333,9 @@ Acesso online
 <div class="extra" style="color:black;">
 <h4>Como citar (<?php echo strtoupper($_SESSION["citation_style"]); ?>)</h4>
 <?php
-$type = get_type($cursor["result"][0]["type"]);
+$type = get_type($cursor["_source"]["type"]);
 $author_array = array();
-foreach ($cursor["result"][0]["authors"] as $autor_citation){
+foreach ($cursor["_source"]["authors"] as $autor_citation){
 
 $array_authors = explode(',', $autor_citation);
 $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
