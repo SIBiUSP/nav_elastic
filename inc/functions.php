@@ -286,6 +286,12 @@ function get_type($material_type){
   case "TRABALHO DE EVENTO-RESUMO":
       return "paper-conference";
       break;
+  case "TRABALHO DE EVENTO":
+      return "paper-conference";
+      break;     
+  case "TESE":
+      return "thesis";
+      break;          
   case "TEXTO NA WEB":
       return "post-weblog";
       break;
