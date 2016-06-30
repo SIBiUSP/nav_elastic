@@ -8,12 +8,12 @@
     <div class="content usppanel">
         <div class="ui stackable four column grid">
             <div class="column">
-                <a href=http://www.usp.br/sibi/><img src="http://www.producao.usp.br/a/barrausp/images/sibi.png" title="SIBi - Sistema Integrado de Bibliotecas da USP" width=150 height=69 border=0 /></a>
+                <a href=http://www.usp.br/sibi/><img src="inc/images/sibi.png" title="SIBi - Sistema Integrado de Bibliotecas da USP" width=150 height=69 border=0 /></a>
                 <div class="uspmenu_top_usp">
                     <ul>
                         <li><a href="http://www.producao.usp.br/a/barrausp/barra/creditos.html" target=_blank>Créditos</a></li>
                         <li><a href="http://www.producao.usp.br/a/barrausp/barra/contato.html" target=_blank>Fale com o SIBi</a></li>
-                        <div><img src="http://www.producao.usp.br/a/barrausp/images/spacer.gif" width=10 height=10 /></div>
+                        <div><img src="inc/images/spacer.gif" width=10 height=10 /></div>
                         <div class="panel-heading">PORTAL DE BUSCA INTEGRADA</div>
                         <div class="panel-body">Um único ponto de acesso a todos os conteúdos informacionais disponíveis para a comunidade USP.</div>
                         <br />

@@ -428,110 +428,111 @@ print_r($output)
 </thead>
 <tbody>
 <?php foreach ($cursor["_source"]["record"] as $fields){
+    
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[3].'';
-echo '<td>'.$fields[4].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[3]).'';
+echo '<td>'.htmlentities($fields[4]).'';
 echo '</tr>';
 if (!empty($fields[5])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[5].'';
-echo '<td>'.$fields[6].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[5]).'';
+echo '<td>'.htmlentities($fields[6]).'';
 echo '</tr>';
 }
 if (!empty($fields[7])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[7].'';
-echo '<td>'.$fields[8].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[7]).'';
+echo '<td>'.htmlentities($fields[8]).'';
 echo '</tr>';
 }
 if (!empty($fields[9])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[9].'';
-echo '<td>'.$fields[10].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[9]).'';
+echo '<td>'.htmlentities($fields[10]).'';
 echo '</tr>';
 }
 if (!empty($fields[11])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[11].'';
-echo '<td>'.$fields[12].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[11]).'';
+echo '<td>'.htmlentities($fields[12]).'';
 echo '</tr>';
 }
 if (!empty($fields[13])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[13].'';
-echo '<td>'.$fields[14].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[13]).'';
+echo '<td>'.htmlentities($fields[14]).'';
 echo '</tr>';
 }
 if (!empty($fields[15])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[15].'';
-echo '<td>'.$fields[16].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[15]).'';
+echo '<td>'.htmlentities($fields[16]).'';
 echo '</tr>';
 }
 if (!empty($fields[17])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[17].'';
-echo '<td>'.$fields[18].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[17]).'';
+echo '<td>'.htmlentities($fields[18]).'';
 echo '</tr>';
 }
 if (!empty($fields[19])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[19].'';
-echo '<td>'.$fields[20].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[19]).'';
+echo '<td>'.htmlentities($fields[20]).'';
 echo '</tr>';
 }
 if (!empty($fields[21])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[21].'';
-echo '<td>'.$fields[22].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[21]).'';
+echo '<td>'.htmlentities($fields[22]).'';
 echo '</tr>';
 }
 if (!empty($fields[23])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[23].'';
-echo '<td>'.$fields[24].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[23]).'';
+echo '<td>'.htmlentities($fields[24]).'';
 echo '</tr>';
 }
 if (!empty($fields[25])){
 echo '<tr>';
-echo '<td>'.$fields[0].'';
-echo '<td>'.$fields[1].'';
-echo '<td>'.$fields[2].'';
-echo '<td>'.$fields[25].'';
-echo '<td>'.$fields[26].'';
+echo '<td>'.htmlentities($fields[0]).'';
+echo '<td>'.htmlentities($fields[1]).'';
+echo '<td>'.htmlentities($fields[2]).'';
+echo '<td>'.htmlentities($fields[25]).'';
+echo '<td>'.htmlentities($fields[26]).'';
 echo '</tr>';
 }
 };
