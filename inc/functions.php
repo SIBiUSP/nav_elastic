@@ -172,7 +172,7 @@ function criar_unidadeUSP_inicio () {
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
         
         
-        $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL');
+        $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF');
 
         if (in_array($facets['key'],$programas_pos))
         {
@@ -198,7 +198,7 @@ function criar_unidadeUSP_inicio () {
    
         }
     echo '</div>';
-    echo '<h3>Programas de Pós Graduação</h3>';
+    echo '<h3>Programas de Pós Graduação Interunidades</h3>';
     echo '<div class="ui five stackable doubling cards">';
     echo implode("",$programas);
     echo '</div>';
