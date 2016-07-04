@@ -49,6 +49,7 @@ unset($_GET["date_end"]);
 if (empty($_GET)) {
     $search_term = '"match_all": {}';
     $filter_query = '';
+    
 } elseif (!empty($_GET['search_index'])) {
     $search_term ='"query": {
     "match" : {
@@ -76,26 +77,7 @@ if (empty($_GET)) {
     $_GET['search_index'] = $termo;
 
     
-} else {
-    $search_term = '"match_all": {}';
-    foreach ($_GET as $key => $value) {
-        $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
-    }
-    
-    if (!empty($date_range)) {
-        $filter[] = $date_range;
-    }
-
-    if (count($filter) > 0) {
-        $filter_query = ''.implode(",", $filter).''; 
-    } else {
-        $filter_query = '';
-    }
-}
-
-$query_complete = '
-
-{
+    $query_complete = '{
     "sort" : [
             { "year" : "desc" }
         ],    
@@ -111,23 +93,28 @@ $query_complete = '
     },
     "from": '.$skip.',
     "size": '.$limit.'
-  }
-
-';
-
-$query_aggregate = '
-"query": {
-    "bool": {
-      "must": {
-        '.$search_term.'
-      },
-      "filter":[
-        '.$filter_query.'
-        ]
-      }
-    },
-';
-
+    }';
+    
+    $query_aggregate = '
+        "query": {
+            "bool": {
+              "must": {
+                '.$search_term.'
+              },
+              "filter":[
+                '.$filter_query.'
+                ]
+              }
+            },
+        ';
+    
+    
+} else {
+    
+    $query_complete = monta_consulta($_GET,$skip,$limit);   
+    $query_aggregate = monta_aggregate($_GET);
+    
+}
 
 $cursor = query_elastic($query_complete);
 $total = $cursor["hits"]["total"];
@@ -163,8 +150,8 @@ $total = $cursor["hits"]["total"];
                                             <?php foreach ($_REQUEST as $key => $value) : ?>
                                             <div class="field">
                                                 <div class="ui checkbox">
-                                                    <input type="checkbox" checked="checked"  name="<?php echo $key; ?>" value="<?php echo $value; ?>">
-                                                    <label><?php echo $value; ?></label>
+                                                    <input type="checkbox" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
+                                                    <label><?php echo $key; ?>: <?php echo implode(",",$value); ?></label>
                                                 </div>
                                             </div>
                                             <?php endforeach;?>

@@ -1,5 +1,97 @@
 <?php
 
+function monta_consulta($get_content,$skip,$limit){
+        
+    foreach ($get_content as $key => $value) {
+        
+        $conta_value = count($value);
+    
+        if ($conta_value > 1) {
+            foreach ($value as $valor){
+                $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+            }                        
+        } else {
+             foreach ($value as $valor){
+                 $get_query2[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+             }
+        }       
+    }
+    
+    $query_part = '"must" : ['.implode(",",$get_query1).']';
+    $query_part2 = implode(",",$get_query2);
+    
+    $query = '
+                {
+                   "sort" : [
+                       { "year" : "desc" }
+                   ],    
+                   "query" : {
+                      "constant_score" : {
+                         "filter" : {
+                            "bool" : {
+                              "should" : [
+                                { "bool" : {
+                                '.$query_part.'
+                               }} 
+                              ],
+                              "filter": [
+                                '.$query_part2.'
+                              ]
+                           }
+                         }
+                      }
+                   },
+                  "from": '.$skip.',
+                  "size": '.$limit.'
+                }    
+    ';
+    
+    return $query;
+}
+
+function monta_aggregate($get_content){
+        
+    foreach ($get_content as $key => $value) {
+        
+        $conta_value = count($value);
+    
+        if ($conta_value > 1) {
+            foreach ($value as $valor){
+                $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+            }                        
+        } else {
+             foreach ($value as $valor){
+                 $get_query2[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+             }
+        }       
+    }
+    
+    $query_part = '"must" : ['.implode(",",$get_query1).']';
+    $query_part2 = implode(",",$get_query2);
+    
+    $query = '
+                    "query" : {
+                      "constant_score" : {
+                         "filter" : {
+                            "bool" : {
+                              "should" : [
+                                { "bool" : {
+                                '.$query_part.'
+                               }} 
+                              ],
+                              "filter": [
+                                '.$query_part2.'
+                              ]
+                           }
+                         }
+                      }
+                   },
+    ';
+    
+    return $query;
+}
+
+
 function query_elastic ($query) {
     $ch = curl_init();
     $method = "POST";
@@ -176,11 +268,11 @@ function criar_unidadeUSP_inicio () {
 
         if (in_array($facets['key'],$programas_pos))
         {
-          $programas[] =  '<a href="result.php?unidadeUSP='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
+          $programas[] =  '<a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
         
         } else { 
         
-        echo '<a href="result.php?unidadeUSP='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
+        echo '<a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
                 $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
                 if (file_exists($file)) {
                 echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
@@ -229,7 +321,7 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
         }
      }
      ';
-    
+        
     $data = query_elastic($query);
     
    
@@ -239,7 +331,7 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
     echo '<div class="ui list">';
     foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<div class="item">';
-        echo '<a href="'.$url.'&'.$campo.'='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
+        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
         echo '</div>';
     };
     echo   '</div>
