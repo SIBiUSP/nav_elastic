@@ -67,54 +67,45 @@ if (empty($_GET)) {
     $_GET['search_index'] = $termo;
 
     
-} else {
-    $search_term = '"match_all": {}';
-    foreach ($_GET as $key => $value) {
-        $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
-    }
-    
-    if (!empty($date_range)) {
-        $filter[] = $date_range;
-    }
-
-    if (count($filter) > 0) {
-        $filter_query = ''.implode(",", $filter).''; 
-    } else {
-        $filter_query = '';
-    }
-}
-
-$query_complete = '
-
-{
-    size:0,
-    "query": {
+    $query_complete = '{
+    "sort" : [
+            { "year" : "desc" }
+        ],    
+    "query": {    
     "bool": {
       "must": {
         '.$search_term.'
       },
       "filter":[
-        '.$filter_query.'
-        ]
-      }
-    }
-  }
-
-';
-
-
-$query_aggregate = '
-"query": {
-    "bool": {
-      "must": {
-        '.$search_term.'
-      },
-      "filter":[
-        '.$filter_query.'
+        '.$filter_query.'        
         ]
       }
     },
-';
+    "from": '.$skip.',
+    "size": '.$limit.'
+    }';
+    
+    $query_aggregate = '
+        "query": {
+            "bool": {
+              "must": {
+                '.$search_term.'
+              },
+              "filter":[
+                '.$filter_query.'
+                ]
+              }
+            },
+        ';
+    
+
+    
+} else {
+    
+    $query_complete = monta_consulta($_GET,$skip,$limit);   
+    $query_aggregate = monta_aggregate($_GET);
+    
+}
 
 
 $cursor = query_elastic($query_complete);
