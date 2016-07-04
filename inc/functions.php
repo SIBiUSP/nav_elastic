@@ -340,6 +340,51 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
 }
 
+function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+
+    if (!empty($sort)){
+         
+         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+        }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggs" : {
+            "ranges" : {
+                "range" : {
+                    "field" : "'.$campo.'",
+                    "ranges" : [
+                        { "to" : 50 },
+                        { "from" : 50, "to" : 100 },
+                        { "from" : 100 }
+                    ]
+                }
+            }
+        }
+     }
+     ';
+    
+            
+    $data = query_elastic($query);
+    
+   
+    echo '<div class="item">';
+    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
+    echo '<div class="content">';
+    echo '<div class="ui list">';
+    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<div class="item">';
+        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
+        echo '</div>';
+    };
+    echo   '</div>
+      </div>
+  </div>';
+
+}
+
+
 /* Recupera os exemplares do DEDALUS */
 function load_itens ($sysno) {
     $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');

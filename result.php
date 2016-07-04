@@ -189,7 +189,7 @@ $total = $cursor["hits"]["total"];
                             gerar_faceta($query_aggregate,$escaped_url,indexado,30,"Indexado em");
                             gerar_faceta($query_aggregate,$escaped_url,issn_part,30,"ISSN");
                             gerar_faceta($query_aggregate,$escaped_url,areaconcentracao,30,"Área de concentração");
-                            gerar_faceta($query_aggregate,$escaped_url,fatorimpacto,30,"Fator de impacto");
+                            gerar_faceta($query_aggregate,$escaped_url,fatorimpacto,30,"Fator de impacto","desc");
                             gerar_faceta($query_aggregate,$escaped_url,grupopesquisa,30,"Grupo de pesquisa");
                             gerar_faceta($query_aggregate,$escaped_url,colab,30,"País dos autores externos à USP");
                             gerar_faceta($query_aggregate,$escaped_url,colab_int_trab,30,"Colaboração - Internacionalização");
