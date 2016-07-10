@@ -40,6 +40,7 @@ unset($_GET["date_end"]);
 if (empty($_GET)) {
     $search_term = '"match_all": {}';
     $filter_query = '';
+    
 } elseif (!empty($_GET['search_index'])) {
     $search_term ='"query": {
     "match" : {
@@ -98,7 +99,6 @@ if (empty($_GET)) {
             },
         ';
     
-
     
 } else {
     

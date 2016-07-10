@@ -28,10 +28,10 @@
                 
                 <h1>CSV do Scopus</h1>
                 
-<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-<input type="file" name="file">
-<input type="submit" name="btn_submit" value="Upload File" />
-
+                <form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                    <input type="file" name="file">
+                    <input type="submit" name="btn_submit" value="Upload File" />
+                </form>
 
 
     
