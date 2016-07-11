@@ -1,6 +1,10 @@
 <?php
 
-function monta_consulta($get_content,$skip,$limit){
+function monta_consulta($get_content,$skip,$limit,$date_range){
+    
+    if (!empty($date_range)){
+        $get_query2[] = $date_range;
+    }
         
     foreach ($get_content as $key => $value) {
         

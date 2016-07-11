@@ -111,7 +111,7 @@ if (empty($_GET)) {
     
 } else {
     
-    $query_complete = monta_consulta($_GET,$skip,$limit);   
+    $query_complete = monta_consulta($_GET,$skip,$limit,$date_range);   
     $query_aggregate = monta_aggregate($_GET);
     
 }
@@ -133,7 +133,7 @@ $total = $cursor["hits"]["total"];
         
     </head>
     <body>
-        <?php include('inc/barrausp.php'); ?>
+        <? php include('inc/barrausp.php'); ?>
         <div class="ui main container">
             <?php include('inc/header.php'); ?>
             <?php include('inc/navbar.php'); ?>
@@ -218,7 +218,7 @@ $total = $cursor["hits"]["total"];
                                 </div>
                             </div>
                             <?php foreach ($_GET as $key => $value) {
-                                echo '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+                                echo '<input type="hidden" name="'.$key.'[]" value="'.$value[0].'">';
                             };?>
                             <?php if (!empty($q)) {
                                 echo '<input type="hidden" name="category" value="buscaindice">';
