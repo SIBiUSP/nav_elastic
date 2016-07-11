@@ -112,7 +112,8 @@ if (empty($_GET)) {
 } else {
     
     $query_complete = monta_consulta($_GET,$skip,$limit,$date_range);   
-    $query_aggregate = monta_aggregate($_GET);
+    $query_aggregate = monta_aggregate($_GET,$date_range);
+
     
 }
 
@@ -133,7 +134,7 @@ $total = $cursor["hits"]["total"];
         
     </head>
     <body>
-        <? php include('inc/barrausp.php'); ?>
+        <?php include('inc/barrausp.php'); ?>
         <div class="ui main container">
             <?php include('inc/header.php'); ?>
             <?php include('inc/navbar.php'); ?>

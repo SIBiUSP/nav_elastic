@@ -53,7 +53,11 @@ function monta_consulta($get_content,$skip,$limit,$date_range){
     return $query;
 }
 
-function monta_aggregate($get_content){
+function monta_aggregate($get_content,$date_range){
+
+    if (!empty($date_range)){
+        $get_query2[] = $date_range;
+    }
         
     foreach ($get_content as $key => $value) {
         
@@ -325,10 +329,9 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
         }
      }
      ';
-        
+       
     $data = query_elastic($query);
     
-   
     echo '<div class="item">';
     echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
     echo '<div class="content">';
