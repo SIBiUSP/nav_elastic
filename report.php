@@ -83,7 +83,7 @@ if (empty($_GET)) {
       }
     },
     "from": '.$skip.',
-    "size": '.$limit.'
+    "size": 0
     }';
     
     $query_aggregate = '
@@ -109,6 +109,7 @@ if (empty($_GET)) {
 
 
 $cursor = query_elastic($query_complete);
+
 $total = $cursor["hits"]["total"];
 
 
@@ -152,7 +153,7 @@ $total = $cursor["hits"]["total"];
                 
                 <h3>Relatório com os seguintes parâmetros:
                     <?php foreach ($_GET as $filters) : ?>
-                    <?php echo $filters;?>
+                    <?php echo implode(",",$filters);?>
                     <?php endforeach;?>
                 </h3><br/><br/>
 
