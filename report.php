@@ -83,7 +83,7 @@ if (empty($_GET)) {
       }
     },
     "from": '.$skip.',
-    "size": 0
+    "size": '.$limit.'
     }';
     
     $query_aggregate = '
@@ -104,6 +104,7 @@ if (empty($_GET)) {
     
     $query_complete = monta_consulta($_GET,$skip,$limit,$date_range);   
     $query_aggregate = monta_aggregate($_GET,$date_range);
+
     
 }
 

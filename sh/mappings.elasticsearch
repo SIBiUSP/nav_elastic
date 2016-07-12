@@ -1,4 +1,14 @@
-PUT sibi/producao/_mapping
+DELETE /sibi
+
+PUT /sibi
+{
+    "settings": {
+        "number_of_shards" :   4,
+        "number_of_replicas" : 3
+    }
+}
+
+PUT /sibi/producao/_mapping
 {
  "producao": {
 	"properties": {
@@ -176,4 +186,36 @@ PUT sibi/producao/_mapping
 	   }
 	}
   }
+}
+
+PUT /sibi/producao_metrics/_mapping
+{
+         "producao_metrics": {
+            "properties": {
+               "counter": {
+                  "type": "long"
+               },
+               "script": {
+                  "properties": {
+                     "inline": {
+                        "type": "string"
+                     },
+                     "params": {
+                        "properties": {
+                           "count": {
+                              "type": "long"
+                           }
+                        }
+                     }
+                  }
+               },
+               "upsert": {
+                  "properties": {
+                     "counter": {
+                        "type": "long"
+                     }
+                  }
+               }
+            }
+         }
 }

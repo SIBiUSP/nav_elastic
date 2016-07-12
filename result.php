@@ -287,7 +287,7 @@ $total = $cursor["hits"]["total"];
                                         <?php if (!empty($r["_source"]['ispartof'])) : ?>
                                         <a href="result.php?ispartof=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a> |
                                         <?php endif; ?>
-                                        <a href="result.php?type=<?php echo $r["_source"]['type'];?>"><?php echo $r["_source"]['type'];?></a>
+                                        <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo $r["_source"]['type'];?></a>
                                         <br/><br/><br/>
                                         <a class="ui blue label" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $r['_id'];?>">
                                             Ver no Dedalus
@@ -312,7 +312,7 @@ $total = $cursor["hits"]["total"];
                                         <?php foreach ($r["_source"]['authors'] as $autores) : ?>
                                             <div class="ui label" style="color:black;">
                                                 <i class="user icon"></i>
-                                                <a href="result.php?authors=<?php echo $autores;?>"><?php echo $autores;?></a>
+                                                <a href="result.php?authors[]=<?php echo $autores;?>"><?php echo $autores;?></a>
                                             </div>
                                         <?php endforeach;?>
                                         <?php endif; ?>
@@ -325,7 +325,7 @@ $total = $cursor["hits"]["total"];
                                         <?php foreach ($unique as $unidadeUSP) : ?>
                                         <div class="ui label" style="color:black;">
                                             <i class="university icon"></i>
-                                            <a href="result.php?unidadeUSP=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
+                                            <a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
                                         </div>
                                         <?php endforeach;?>
                                         <?php endif; ?>
@@ -337,7 +337,7 @@ $total = $cursor["hits"]["total"];
                                         <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
                                         <div class="ui label" style="color:black;">
                                             <i class="globe icon"></i> 
-                                            <a href="result.php?subject=<?php echo $assunto;?>"><?php echo $assunto;?></a>
+                                            <a href="result.php?subject[]=<?php echo $assunto;?>"><?php echo $assunto;?></a>
                                         </div>
                                         <?php endforeach;?>
                                         <?php endif; ?>
