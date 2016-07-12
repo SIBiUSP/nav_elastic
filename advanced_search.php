@@ -18,7 +18,7 @@
 <div class="ui form">
 <div class="field">
 <label>Número USP</label>
-<input type="text" name="codpesbusca">
+<input type="text" name="codpesbusca[]">
 </div>
 </div>
 <button type="submit" id="s" class="ui large button">Buscar</button>
@@ -35,7 +35,7 @@ Consultar o VCUSP
 <div class="ui form">
 <div class="field">
 <label>Assunto</label>
-<input type="text" name="subject">
+<input type="text" name="subject[]">
 </div>
 </div>
 <button type="submit" id="s" class="ui large button">Buscar</button>
