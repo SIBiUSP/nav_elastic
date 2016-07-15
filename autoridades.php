@@ -27,7 +27,7 @@ $query='
       }
     }
   },
-  "size":10
+  "size":1000
 }
 ';
 $cursor = query_elastic($query);
