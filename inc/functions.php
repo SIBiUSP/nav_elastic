@@ -258,7 +258,7 @@ function criar_unidadeUSP_inicio () {
                 "terms": {
                     "field": "unidadeUSPtrabalhos",
                     "order" : { "_term" : "asc" },
-                    "size" : 100,
+                    "size" : 150,
                     "missing": "Sem unidade cadastrada"
                 }
             }
