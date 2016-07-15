@@ -2,8 +2,35 @@
 
 include('inc/functions.php');
 
-/* Montar a consulta */
-$cursor = query_one_elastic($_GET['_id']);
+/* Consulta n registros ainda não corrigidos */
+
+
+$query='
+{
+  "query": {
+    "filtered": {
+      "query": {
+        "match_all": {}
+      },
+      "filter": {
+        "bool": {
+          "must": [{
+            "missing": {
+              "field": "colab_instituicao_tematres"
+            }},{
+                "exists":{
+                    "field":"colab_instituicao_trab"
+                }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "size":10
+}
+';
+$cursor = query_elastic($query);
 
 ?>
 <!DOCTYPE html>
@@ -19,7 +46,9 @@ $cursor = query_one_elastic($_GET['_id']);
             <?php include('inc/navbar.php'); ?>
             <div id="main">
                 
-                <?php 
+                <?php print_r($cursor); ?>
+                
+                <!-- < ?php 
                 
                 $termo_corrigido = [];
                 $termo_geolocalizacao = [];
@@ -106,7 +135,7 @@ $cursor = query_one_elastic($_GET['_id']);
                         print_r($result);  
                         
                     }
-                 ?>
+                 ?> -->
             </div>            
         </div>
         <?php include('inc/footer.php'); ?>
