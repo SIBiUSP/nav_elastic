@@ -347,6 +347,46 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
 }
 
+function corrigir_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+
+    if (!empty($sort)){
+         
+         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+        }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              "missing": "N/D",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+       
+    $data = query_elastic($query);
+    
+    echo '<div class="item">';
+    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
+    echo '<div class="content">';
+    echo '<div class="ui list">';
+    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<div class="item">';
+        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
+        echo '</div>';
+    };
+    echo   '</div>
+      </div>
+  </div>';
+
+}
+
 function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
@@ -904,7 +944,10 @@ function limpar($text) {
         '/[“”«»„]/u'    =>   ' ', // Double quote
         '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
         '/[^A-Za-z0-9\\s]/' => '',
+        '/( )+/' => ' ',
     );
+    
+    
     return preg_replace(array_keys($utf8), array_values($utf8), $text);
 }
 
