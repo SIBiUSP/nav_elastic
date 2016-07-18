@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Entre em contato</title>
+        <title>BDPI USP - Busca avançada</title>
         <?php include('inc/meta-header.php'); ?>
     </head>
     <body>
