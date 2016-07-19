@@ -1693,6 +1693,7 @@ class csl_mapper {
                                 'first-reference-note-number' => 'first-reference-note-number',
                                 'year-suffix' => 'year-suffix',
                                 'jurisdiction' => 'jurisdiction',
+                                'tipotese' => 'tipotese',
 
       //Date Variables'
 

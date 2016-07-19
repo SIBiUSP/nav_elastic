@@ -28,6 +28,8 @@ marc_map('260a','publisher-place')
 #- 260b - Imprenta - Editora
 marc_map('260b','publisher')
 
+#- 300a - Descrição física
+marc_map('300a','descricaofisica')
 
 # 100 - Autores
 marc_map('100a','authors.$append')
@@ -37,6 +39,7 @@ marc_map('1007','colab_int.$append')
 marc_map('1008','colab_instituicao.$append')
 # 1009 - Colaboração
 marc_map('1009','colab.$append')
+
 # 510 - Indexado em
 marc_map('510a','indexado.$append')
 

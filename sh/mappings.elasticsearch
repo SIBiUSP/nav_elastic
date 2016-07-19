@@ -95,7 +95,11 @@ PUT /sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "doi": {
+	   "descricaofisica": {
+		  "type": "string",
+          "index": "not_analyzed"
+	   },
+        "doi": {
 		  "type": "string",
           "index": "not_analyzed"
 	   },

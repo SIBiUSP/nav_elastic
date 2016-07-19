@@ -10,7 +10,8 @@ if (empty($_SESSION["citation_style"])) {
 }
 if (isset($_POST["citation_style"])) {
     $_SESSION["citation_style"] = $_POST['citation_style'];
-}    
+}  
+
 
 
 /* Pegar a URL atual */
@@ -334,12 +335,21 @@ $record_blob = implode("\\n", $record);
                                 <h4>Como citar (<?php echo strtoupper($_SESSION["citation_style"]); ?>)</h4>
                                 <?php
                                 $type = get_type($cursor["_source"]["type"]);
+                                
                                 $author_array = array();
-                                foreach ($cursor["_source"]["authors"] as $autor_citation){
-                                    $array_authors = explode(',', $autor_citation);
-                                    $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
-                                };
-                                $authors = implode(",",$author_array);
+                                
+                                if ($type == "thesis") {
+                                    $array_authors = explode(',', $cursor["_source"]["authors"][0]);
+                                    $authors = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';                                    
+                                } else {
+                                    foreach ($cursor["_source"]["authors"] as $autor_citation){
+                                        $array_authors = explode(',', $autor_citation);
+                                        $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
+                                    };
+                                    $authors = implode(",",$author_array);                                    
+                                }
+                                
+                                
 
                                 if (!empty($cursor["_source"]["ispartof"])) {
                                     $container = '"container-title": "'.$cursor["_source"]["ispartof"].'",';
@@ -360,9 +370,15 @@ $record_blob = implode("\\n", $record);
 
                                 if (!empty($cursor["_source"]["publisher"])) {
                                     $publisher = '"publisher": "'.$cursor["_source"]["publisher"].'",';
+                                } elseif ($type == "thesis") {
+                                    $publisher = '"publisher":"Universidade de São Paulo",';
                                 } else {
                                     $publisher = "";
                                 };
+                                if (!empty($cursor["_source"]["tipotese"])) {
+                                    $tese = '"tipotese":"'.$cursor["_source"]["tipotese"].'",';                                    
+                                }
+                                
 
                                 if (!empty($cursor["_source"]["publisher-place"])) {
                                     $publisher_place = '"publisher-place": "'.$cursor["_source"]["publisher-place"].'",';
@@ -385,6 +401,12 @@ $record_blob = implode("\\n", $record);
                                         }
                                     }
                                 } 
+                                
+                                $accessed = '"accessed": {
+                                                "date-parts": [
+                                                ["'.date("Y").'","'.date("m").'","'.date("d").'"]
+                                                ]
+                                                },';
 
                                 $data = json_decode('{
                                 "title": "'.$cursor["_source"]["title"].'",
@@ -392,6 +414,8 @@ $record_blob = implode("\\n", $record);
                                 '.$container.'
                                 '.$doi.'
                                 '.$url.'
+                                '.$accessed.'
+                                '.$tese.'
                                 '.$publisher.'
                                 '.$publisher_place.'
                                 '.$volume.'
@@ -408,8 +432,9 @@ $record_blob = implode("\\n", $record);
                                     '.$authors.'
                                 ]
                                 }');
+                                print_r($data);
                                 $output = $citeproc->render($data, $mode);
-                                print_r($output)
+                                print_r($output);
                                 ?>
                             </div>
                             
