@@ -131,7 +131,10 @@ PUT /sibi/producao/_mapping
 		  "type": "string",
           "index": "not_analyzed"
 	   },
-	   "ispartof_data": {
+	   "ispartof_capitulo": {
+		  "type": "string"
+	   },
+       "ispartof_data": {
 		  "type": "string"
 	   },
 	   "issn_part": {

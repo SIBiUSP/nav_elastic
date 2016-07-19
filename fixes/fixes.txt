@@ -91,6 +91,9 @@ marc_map('773x','issn_part')
 marc_map('773h','ispartof_data')
 split_field("ispartof_data",",")
 
+# 773d - Dados de publicação - Livro
+marc_map('773d','ispartof_capitulo')
+
 split_field("issn_part","; ")
 # 856 - Texto completo
 
