@@ -17,7 +17,7 @@
 
                         <div class="ui instant move reveal">
                             <img class="visible content" src="inc/images/BDPI.png">
-                            <img class="hidden content" src="http://www.producao.usp.br/jspui/image/08102014imagensdocampusfotomarcossantos015.jpg">
+                            <img class="hidden content" src="inc/images/08102014imagensdocampusfotomarcossantos015.jpg">
                         </div>    
 
                         <div class="ui vertical stripe segment" id="search">
