@@ -432,7 +432,7 @@ $record_blob = implode("\\n", $record);
                                     '.$authors.'
                                 ]
                                 }');
-                                print_r($data);
+                                
                                 $output = $citeproc->render($data, $mode);
                                 print_r($output);
                                 ?>
