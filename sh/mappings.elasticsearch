@@ -10,189 +10,201 @@ PUT /sibi
 
 PUT /sibi/producao/_mapping
 {
- "producao": {
-	"properties": {
-	   "areaconcentracao": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "authorUSP": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "authors": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "base": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-        "codpes": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "codpesbusca": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab_instituicao": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab_instituicao_trab": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab_instituicao_corrigido": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab_instituicao_naocorrigido": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab_instituicao_geocode": {
-		  "type": "geo_point"
-	   },
-       "colab_int": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "colab_int_trab": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "country": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "dataregistro": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "dataregistroinicial": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-       "dataregistrocompleta": {
-		  "type": "date",
-          "index": "not_analyzed"
-	   },
-	   "datestamp": {
-		  "type": "date",
-          "index": "not_analyzed"
-	   },       
-       "departamento": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "departamentotrabalhos": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "descricaofisica": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-        "doi": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "evento": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "fatorimpacto": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "fomento": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-       "grupopesquisa": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "indexado": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "internacionalizacao": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "ispartof": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "ispartof_capitulo": {
-		  "type": "string"
-	   },
-       "ispartof_data": {
-		  "type": "string"
-	   },
-	   "issn_part": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "language": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "publisher": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "publisher-place": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "record": {
-		  "type": "string"
-	   },
-	   "subject": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "sysno": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "tipotese": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-       "title": {
-		  "type": "string"
-	   },
-	   "type": {
-		  "type": "string",
-		  "index": "not_analyzed"
-	   },
-	   "unidadeUSP": {
-		  "type": "string",
-		  "index": "not_analyzed"
-	   },
-	   "unidadeUSPtrabalhos": {
-		  "type": "string",
-	       "index": "not_analyzed"
-	   },
-	   "url": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   },
-	   "year": {
-		  "type": "string",
-          "index": "not_analyzed"
-	   }
-	}
-  }
+    "producao": {
+        "properties": {
+            "areaconcentracao": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "authorUSP": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "authors": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "authors_complete": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "base": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "cat": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "codpes": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "codpesbusca": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab_instituicao": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab_instituicao_trab": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab_instituicao_corrigido": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab_instituicao_naocorrigido": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab_instituicao_geocode": {
+                "type": "geo_point"
+            },
+            "colab_int": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "colab_int_trab": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "country": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "dataregistro": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "dataregistroinicial": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "dataregistrocompleta": {
+                "type": "date",
+                "index": "not_analyzed"
+            },
+            "datestamp": {
+                "type": "date",
+                "index": "not_analyzed"
+            },       
+            "departamento": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "departamentotrabalhos": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "descricaofisica": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "doi": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "evento": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "fatorimpacto": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "fomento": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "grupopesquisa": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "indexado": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "internacionalizacao": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "ispartof": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "ispartof_capitulo": {
+                "type": "string"
+            },
+            "ispartof_data": {
+                "type": "string"
+            },
+            "issn_part": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "language": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "orientador_complete": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "publisher": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "publisher-place": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "record": {
+                "type": "string"
+            },
+            "subject": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "sysno": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "tipotese": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "title": {
+                "type": "string"
+            },
+            "type": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "unidadeUSP": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "unidadeUSPtrabalhos": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "url": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "year": {
+                "type": "string",
+                "index": "not_analyzed"
+            }
+        }
+    }
 }
 
 PUT /sibi/producao_metrics/_mapping

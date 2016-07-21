@@ -31,14 +31,22 @@ marc_map('260b','publisher')
 #- 300a - Descrição física
 marc_map('300a','descricaofisica')
 
-# 100 - Autores
+# Autores
+marc_map('100a4789','authors_complete.$append' , -pluck => 1, -split =>1)
+if marc_match('7004','orient')
+    marc_map('700a4789','orientador_complete.$append' , -pluck => 1, -split =>1)
+else
+    marc_map('700a4789','authors_complete.$append' , -pluck => 1, -split =>1)
+end
 marc_map('100a','authors.$append')
-# 1007 - Colaboração - Internacionalização
 marc_map('1007','colab_int.$append')
-# 1008 - Colaboração - Instituição
 marc_map('1008','colab_instituicao.$append')
-# 1009 - Colaboração
 marc_map('1009','colab.$append')
+marc_map('700a','authors.$append')
+marc_map('7007','colab_int.$append')
+marc_map('7008','colab_instituicao.$append')
+marc_map('7009','colab.$append')
+
 
 # 510 - Indexado em
 marc_map('510a','indexado.$append')
@@ -64,14 +72,7 @@ split_field('grupopesquisa',';')
 marc_map('650[ 7]a','subject.$append')
 # 651 - Assunto
 marc_map('651[ 7]a','subject.$append')
-# 700 - Autores
-marc_map('700a','authors.$append')
-# 7007 - Colaboração - Internacionalização
-marc_map('7007','colab_int.$append')
-# 7008 - Colaboração - Instituição
-marc_map('7008','colab_instituicao.$append')
-# 7009 - Colaboração
-marc_map('7009','colab.$append')
+
 
 # Colaboração - Instituição - Trabalhos
 copy_field("colab_instituicao","colab_instituicao_trab")
@@ -146,6 +147,11 @@ parse_text("dataregistrocompleta.*", '(\d\d\d\d)(\d\d)(\d\d)')
 join_field("dataregistrocompleta.*","-")
 sort_field("dataregistrocompleta")
 copy_field("dataregistrocompleta.0","datestamp")
+
+marc_map('CATabc1h','cat.$append' , -pluck => 1, -split =>1)
+marc_remove('CAT')
+
+marc_remove('946')
 
 #Mover _id para Elasticsearch
 move_field(_id, sibi_id)
