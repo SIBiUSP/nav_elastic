@@ -1,0 +1,3 @@
+"Field name","Field source","Base","Type","Description"
+"title","245ab","all","String","Title and subtitle"
+"authors","100a and 700a","String","Array of authors"
