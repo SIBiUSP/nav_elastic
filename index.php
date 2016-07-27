@@ -1,149 +1,773 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br" dir="ltr">
     <head>
-        <title>BDPI USP - Biblioteca Digital da Produção Intelectual da Universidade de São Paulo</title>
-        <?php include('inc/meta-header.php'); ?>
-        <?php include('inc/functions.php'); ?>       
+        <?php include('inc/functions.php'); ?> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
+        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
+        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
+        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
+        <link rel="stylesheet" href="inc/css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
+        <script src="inc/uikit/js/uikit.min.js"></script>
+        <script src="inc/uikit/js/components/grid.js"></script>
+        <script src="inc/uikit/js/components/slideset.js"></script>
     </head>
-    <body>
-        <?php include('inc/barrausp.php'); ?>
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
-            <?php include('inc/navbar.php'); ?>
-            <div id="main">
 
-                <div class="ui two column stackable grid">
-                    <div class="ten wide column">
+    <body>        
+        <div class="barrausp">
+            <div class="uk-container uk-container-center">
 
-                        <div class="ui instant move reveal">
-                            <img class="visible content" src="inc/images/BDPI.png">
-                            <img class="hidden content" src="inc/images/08102014imagensdocampusfotomarcossantos015.jpg">
-                        </div>    
+            <nav class="uk-margin-top">
+                <a class="uk-navbar-brand uk-hidden-small" href="index.php" style="color:white">BDPI USP</a>
+                <ul class="uk-navbar-nav uk-hidden-small">
+                    <li>
+                        <a href="index.php" style="color:white">Início</a>
+                    </li>
+                    <li>
+                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
+                    </li>
+                </ul>
+                    <div class="uk-navbar-flip">
+                        <ul class="uk-navbar-nav">
+                            <li data-uk-dropdown="{mode:'click'}">
+                                <a href="" style="color:white">
+                                    Idioma
+                                    <i class="uk-icon-caret-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li style="color:black"><a href="">Português</a></li>
+                                        <li><a href="">Inglês</a></li>
+                                    </ul>
+                                </div> 
+                            </li>
+                            <li>
+                                <a href="contato.php" style="color:white">Contato</a>
+                            </li>
+                            <li>
+                                <a href="about.php" style="color:white">Sobre</a>
+                            </li>
+                            <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
+                                <a href="" style="color:white"><i class="uk-icon-home"></i> Admin</a>
 
-                        <div class="ui vertical stripe segment" id="search">
-                            <h3 class="ui header">Buscar</h3>
-                            <form role="form" action="result.php" method="get">
-                                <div class="ui fluid action input">
-                                    <input placeholder="Pesquisar..." type="text" name="search_index">
-                                    <button class="ui button" type="submit">Buscar</button>
+                                <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
+                                    <ul class="uk-nav uk-nav-navbar">
+                                        <li class="uk-nav-header">Ferramentas</li>
+                                        <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
+                                        <li><a href="comparar_wos.php">Comparador WoS</a></li>
+                                        <li><a href="comparar_registros.php">Comparador weRUSP</a></li>
+                                        <li class="uk-nav-divider"></li>
+                                        <li class="uk-nav-header">Acesso</li>
+                                        <li><a href="login.php">Login</a></li>
+                                    </ul>
                                 </div>
+
+                            </li>
+                            <a class="uk-navbar-brand uk-hidden-small" href="http://sibi.usp.br" style="color:white">SIBiUSP</a>
+                        </ul>
+                    </div>                
+                <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
+                <div class="uk-navbar-brand uk-navbar-center uk-visible-small" style="color:white">BDPI USP</div>
+            </nav>
+                
+            </div>
+            
+            <div id="busca_avancada" class="uk-container uk-container-center uk-grid uk-hidden" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <div class="uk-alert uk-alert-large">
+                        
+                        
+<form class="uk-form" role="form" action="result.php" method="get">
+
+    <fieldset data-uk-margin>
+        <legend>Número USP</legend>
+        <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
+        <button class="uk-button" type="submit">Buscar</button>
+    </fieldset>
+
+</form>
+                        
+<form class="uk-form" role="form" action="result.php" method="get" name="assunto">
+
+    <fieldset data-uk-margin>
+        <legend>Assunto do Vocabulário Controlado</legend>
+        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+        <input type="text" name="assunto">
+        <button class="uk-button" type="submit">Buscar</button>
+    </fieldset>
+
+</form>                          
+                        
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+            
+            <div class="uk-grid uk-margin-large-bottom" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <div class="uk-vertical-align uk-text-center uk-responsive-width" style="background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjQsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTEzMHB4IiBoZWlnaHQ9IjQ1MHB4IiB2aWV3Qm94PSIwIDAgMTEzMCA0NTAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDExMzAgNDUwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxyZWN0IGZpbGw9IiNGNUY1RjUiIHdpZHRoPSIxMTMwIiBoZWlnaHQ9IjQ1MCIvPg0KPC9zdmc+DQo=') 50% 0 no-repeat; height: 400px;">
+                        <div class="uk-vertical-align-middle uk-width-1-2">
+                            <h1>Base de Produção Intelectual da USP</h1>
+                            <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
+                            <form class="uk-form" action="result.php" method="get">
+                                <fieldset data-uk-margin>
+                                    <legend>Pesquisa</legend>
+                                    <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-medium" name="search_index">                                        
+                                    <select name="base">
+                                        <option value="all">Todas as bases</option>
+                                        <option value="Produção científica">Produção científica</option>
+                                        <option value="Teses e dissertações">Teses e dissertações</option>
+                                    </select>
+                                    <button class="uk-button-primary">Buscar</button>                                    
+                                </fieldset>
                             </form>
                         </div>
-
-                        <div class="ui vertical stripe segment">
-                            <div class="ui text container">
-                                <h3 class="ui header">Alguns números</h3><br/><br/>
-                                <div class="ui one statistics">
-                                    <div class="statistic">
-                                        <div class="value">
-                                            <i class="file icon"></i> <?php contar_registros(); ?>                    
-                                        </div>
-                                        <div class="label">
-                                            Quantidade de registros
-                                        </div>
-                                    </div> 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui vertical stripe segment">
-                            <?php ultimos_registros(); ?>
-                        </div>
-            
                     </div>
-                    
-                    <div class="six wide column">
-                        
+                </div>
+            </div>
 
-                        
-                        <div class="ui search search_unidade">
-                            <div class="ui fluid icon input">
-                                <form role="form" action="result.php" method="get">
-                                    <div class="ui form">
-                                      <div class="field prompt">
-                                        <label>Escolha a Unidade USP</label>
-                                        <select multiple="" class="ui dropdown" name="unidadeUSPtrabalhos[]">
-                                            <option value="">Selecione a Unidade</option>
-                                            <option value="CEBIMAR">Centro de Biologia Marinha (CEBIMar)</option>  
-                                            <option value="CENA">Centro de Energia Nuclear na Agricultura (CENA)</option>
-                                            <option value="EACH">Escola de Artes, Ciências e Humanidades (EACH)</option>
-                                            <option value="ECA">Escola de Comunicações e Artes (ECA)</option>                                            
-                                            <option value="EE">Escola de Enfermagem (EE)</option>
-                                            <option value="EEFE">Escola de Educação Física e Esporte (EEFE)</option>
-                                            <option value="EEFERP">Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)</option>
-                                            <option value="EEL">Escola de Engenharia de Lorena (EEL)</option>
-                                            <option value="EERP">Escola de Enfermagem de Ribeirão Preto (EERP)</option>
-                                            <option value="EP">Escola Politécnica (Poli)</option>
-                                            <option value="EESC">Escola de Engenharia de São Carlos (EESC)</option>
-                                            <option value="ESALQ">Escola Superior de Agricultura Luiz de Queiroz (ESALQ)</option>
-                                            <option value="FAU">Faculdade de Arquitetura e Urbanismo (FAU)</option>
-                                            <option value="FCF">Faculdade de Ciências Farmacêuticas (FCF)</option>
-                                            <option value="FCFRP">Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)</option>
-                                            <option value="FD">Faculdade de Direito (FD)</option>
-                                            <option value="FDRP">Faculdade de Direito de Ribeirão Preto (FDRP)</option>
-                                            <option value="FEA">Faculdade de Economia, Administração e Contabilidade (FEA)</option>
-                                            <option value="FEARP">Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)</option>
-                                            <option value="FE">Faculdade de Educação (FE)</option>
-                                            <option value="FFCLRP">Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)</option>
-                                            <option value="FFLCH">Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)</option>
-                                            <option value="FM">Faculdade de Medicina (FM)</option>
-                                            <option value="FMRP">Faculdade de Medicina de Ribeirão Preto (FMRP)</option>
-                                            <option value="FMVZ">Faculdade de Medicina Veterinária e Zootecnia (FMVZ)</option>
-                                            <option value="FO">Faculdade de Odontologia (FO)</option>
-                                            <option value="FOB">Faculdade de Odontologia de Bauru (FOB)</option>
-                                            <option value="FORP">Faculdade de Odontologia de Ribeirão Preto (FORP)</option>
-                                            <option value="FSP">Faculdade de Saúde Pública (FSP)</option>
-                                            <option value="FZEA">Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)</option>
-                                            <option value="IAG">Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)</option>
-                                            <option value="IAU">Instituto de Arquitetura e Urbanismo (IAU)</option>
-                                            <option value="IB">Instituto de Biociências (IB)</option>
-                                            <option value="ICB">Instituto de Ciências Biomédicas (ICB)</option>
-                                            <option value="ICMC">Instituto de Ciências Matemáticas e de Computação (ICMC)</option>
-                                            <option value="IEE">Instituto de Energia e Ambiente (IEE)</option>
-                                            <option value="IEA">Instituto de Estudos Avançados (IEA)</option>
-                                            <option value="IEB">Instituto de Estudos Brasileiros (IEB)</option>
-                                            <option value="IF">Instituto de Física (IF)</option>
-                                            <option value="IFSC">Instituto de Física de São Carlos (IFSC)</option>
-                                            <option value="IGc">Instituto de Geociências (IGc)</option>
-                                            <option value="IME">Instituto de Matemática e Estatística (IME)</option>
-                                            <option value="IMT">Instituto de Medicina Tropical de São Paulo (IMT)</option>
-                                            <option value="IP">Instituto de Psicologia (IP)</option>
-                                            <option value="IQ">Instituto de Química (IQ)</option>
-                                            <option value="IQSC">Instituto de Química de São Carlos (IQSC)</option>
-                                            <option value="IRI">Instituto de Relações Internacionais (IRI)</option>
-                                            <option value="IO">Instituto Oceanográfico (IO)</option>
-                                        </select>
-                                      </div>
-                                    </div>  
-                                    <button class="ui button" type="submit"><i class="search icon" ></i></button>
-                                </form>
-                            </div>
-                            <div class="results"></div>
-                        </div>    
-
-                        <?php criar_unidadeUSP_inicio (); ?>
+                <div class="uk-container uk-container-center uk-margin-large-bottom">
+        
+            <hr class="uk-grid-divider">
+            
+            <div class="uk-grid" data-uk-grid-margin>
+                <div class="uk-width-medium-1-3">
+                    <div class="uk-grid">
+                        <div class="uk-width-1-6">
+                            <i class="uk-icon-university uk-icon-large uk-text-primary"></i>
+                        </div>
+                        <div class="uk-width-5-6">
+                            <h2 class="uk-h3">Unidades USP e Programas de Pós-Graduação Interunidades</h2>
+                            <ul class="uk-list uk-list-striped">
+                                <?php unidadeUSP_inicio(); ?>
+                            </ul>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-width-medium-1-3">
+                    <div class="uk-grid">
+                        <div class="uk-width-1-6">
+                            <i class="uk-icon-file uk-icon-large uk-text-primary"></i>
+                        </div>
+                        <div class="uk-width-5-6">
+                            <h2 class="uk-h3">Base</h2>
+                            <ul class="uk-list uk-list-striped">
+                                <?php base_inicio(); ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-width-medium-1-3">
+                    <div class="uk-grid">
+                        <div class="uk-width-1-6">
+                            <i class="uk-icon-bar-chart uk-icon-large uk-text-primary"></i>
+                        </div>
+                        <div class="uk-width-5-6">
+                            <h2 class="uk-h3">Nossos números</h2>
+                            <ul class="uk-list uk-list-striped">
+                                <li><?php contar_registros(); ?> registros</li>
+                                <li><?php contar_unicos(authorUSP); ?> autores vinculados à USP</li>                                
+                            </ul>
+                        </div>
                     </div>
                 </div>                
             </div>
+
+                
+            <div id="unidades" class="uk-grid" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <h2 class="uk-h3">Todas as Unidades USP</h2>           
+
+                    <ul id="filter" class="uk-subnav uk-subnav-pill">
+                        <li class="uk-active" data-uk-filter=""><a href="">Todas</a></li>
+                        <li data-uk-filter="filter-h" class=""><a href="">Humanas</a></li>
+                        <li data-uk-filter="filter-e" class=""><a href="">Exatas</a></li>
+                        <li data-uk-filter="filter-b" class=""><a href="">Biológicas</a></li>
+                        <li data-uk-filter="filter-i" class=""><a href="">Centros, Institutos Especializados e Museus</a></li>
+                    </ul>
+
+                            <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -10px; height: 394px;">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
+                                    <a href="result.php?unidadeUSP[]=CEBIMAR">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CEBIMAR.jpg" alt="CEBIMAR">
+                                            </div>
+                                            <small><p class="uk-text-center">Centro de Biologia Marinha (CEBIMAR)</p></small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
+                                    <a href="result.php?unidadeUSP[]=CDCC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CDCC.jpg" alt="CDCC">
+                                            </div>
+                                            <small><p class="uk-text-center">Centro de Divulgação Científica e Cultural (CDCC)</p></small>
+                                        </div>
+                                    </a>
+                                </div>                                
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
+                                    <a href="result.php?unidadeUSP[]=CENA">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CENA.jpg" alt="CENA">
+                                            </div>
+                                            <small><p class="uk-text-center">Centro de Energia Nuclear na Agricultura (CENA)</p></small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EACH">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EACH.jpg" alt="EACH">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Artes, Ciências e Humanidades (EACH)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 632.049px; opacity: 1; display: block;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=ECA">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ECA.jpg" alt="ECA">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Comunicações e Artes (ECA)</p></small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 132px; left: 0px; opacity: 1; display: block;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EE">
+                                        <div class="uk-panel uk-panel-box uk-text-center" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EE.jpg" alt="EE">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Enfermagem (EE)</p></small>
+                                        </div>
+                                    </a>                                    
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false">
+                                    <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel-teaser uk-text-center">
+                                            <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EERP.jpg" alt="EERP">
+                                        </div>
+                                        <small><p class="uk-text-center">Escola de Enfermagem de Ribeirão Preto (EERP)</p></small>
+                                    </div> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EEFE">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEFE.jpg" alt="EEFE">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Educação Física e Esporte (EEFE)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EEFERP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEFERP.jpg" alt="EEFERP">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EEL">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEL.jpg" alt="EEL">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Engenharia de Lorena (EEL)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EESC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EESC.jpg" alt="EESC">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Engenharia de São Carlos (EESC)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=EP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EP.jpg" alt="EP">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola Politécnica (EP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b,filter-e,filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=ESALQ">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ESALQ.jpg" alt="ESALQ">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FAU">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FAU.jpg" alt="FAU">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Arquitetura e Urbanismo (FAU)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FCF">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FCF.jpg" alt="FCF">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Ciências Farmacêuticas (FCF)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FCFRP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FCFRP.jpg" alt="FCFRP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FD">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FD.jpg" alt="FD">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Direito (FD)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FDRP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FDRP.jpg" alt="FDRP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Direito de Ribeirão Preto (FDRP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FEA">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FEA.jpg" alt="FEA">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Economia, Administração e Contabilidade (FEA)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FEARP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FEARP.jpg" alt="FEARP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FE">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FE.jpg" alt="FE">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Educação (FE)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FFCLRP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FFCLRP.jpg" alt="FFCLRP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FFLCH">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FFLCH.jpg" alt="FFLCH">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FM">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FM.jpg" alt="FM">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Medicina (FM)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FMRP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FMRP.jpg" alt="FMRP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Medicina de Ribeirão Preto (FMRP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FMVZ">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FMVZ.jpg" alt="FMVZ">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Medicina Veterinária e Zootecnia (FMVZ)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                 
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FO" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-box">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FO.jpg" alt="FO">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Odontologia (FO)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FOB" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-box" style="padding:0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FOB.jpg" alt="FOB">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Odontologia de Bauru (FOB)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FORP" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-box" style="padding:0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FORP.jpg" alt="FORP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Odontologia de Ribeirão Preto (FORP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FSP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FSP.jpg" alt="FSP">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Saúde Pública (FSP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=FZEA">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FZEA.jpg" alt="FZEA">
+                                            </div>
+                                            <small><p class="uk-text-center">Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IAU">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IAU.jpg" alt="IAU">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Arquitetura e Urbanismo (IAU)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IAG">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IAG.jpg" alt="IAG">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IB">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IB.jpg" alt="IB">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Biociências (IB)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=ICB">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ICB.jpg" alt="ICB">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Ciências Biomédicas (ICB)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=ICMC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ICMC.jpg" alt="ICMC">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Ciências Matemáticas e de Computação (ICMC)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IEE">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IEE.jpg" alt="IEE">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Energia e Ambiente (IEE)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IEB">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IEB.jpg" alt="IEB">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Estudos Brasileiros (IEB)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IF">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IF.jpg" alt="IF">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Física (IF)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IFSC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IFSC.jpg" alt="IFSC">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Física de São Carlos (IFSC)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IGC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IGC.jpg" alt="IGC">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Geociências (IGc)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IME">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IME.jpg" alt="IME">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Matemática e Estatística (IME)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IMT">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IMT.jpg" alt="IMT">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Medicina Tropical de São Paulo (IMT)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IP.jpg" alt="IP">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Psicologia (IP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IQ">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IQ.jpg" alt="IQ">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Química (IQ)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IQSC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IQSC.jpg" alt="IQSC">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Química de São Carlos (IQSC)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IRI">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IRI.jpg" alt="IRI">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto de Relações Internacionais (IRI)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=IO">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IO.jpg" alt="IO">
+                                            </div>
+                                            <small><p class="uk-text-center">Instituto Oceanográfico (IO)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=MAE">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MAE.jpg" alt="MAE">
+                                            </div>
+                                            <small><p class="uk-text-center">Museu de Arqueologia e Etnologia (MAE)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=MAC">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MAC.jpg" alt="MAC">
+                                            </div>
+                                            <small><p class="uk-text-center">Museu de Arte Contemporânea (MAC)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=MZ">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MZ.jpg" alt="MZ">
+                                            </div>
+                                            <small><p class="uk-text-center">Museu de Zoologia (MZ)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                  
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                    <a href="result.php?unidadeUSP[]=MP">
+                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MP.jpg" alt="MP">
+                                            </div>
+                                            <small><p class="uk-text-center">Museu Paulista (MP)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                               
+                    </div>                
+                </div>
+            </div> 
+
+            <hr class="uk-grid-divider">
+            
+            <div class="uk-grid" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <h2 class="uk-h3">Últimos registros</h2>
+                    <?php ultimos_registros_new();?>       
+                     
+                </div>
+            </div>               
+            
+            <hr class="uk-grid-divider">
+            
+            <div id="footer" class="uk-grid" data-uk-grid-margin>
+                <p>Sistema Integrado de Bibliotecas da Universidade de São Paulo</p>
+            </div>
+
+        </div>
+        
+        
+
+        <div id="offcanvas" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas">
+                    <li class="uk-active">
+                        <a href="index.php">Início</a>
+                    </li>
+                    <li>
+                        <a href="#">Busca avançada</a>
+                    </li>
+                    <li>
+                        <a href="contact.php">Contato</a>
+                    </li>
+                    <li>
+                        <a href="login.php">Login</a>
+                    </li>
+                    <li>
+                        <a href="about.php">Sobre</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <?php include('inc/footer.php'); ?>
-    
-        <script>
-        $('.ui.fluid.card')
-          .popup()
-        ;
-        </script>
-        <script>
-        $('.ui.dropdown')
-          .dropdown()
-        ;
-        </script>
-        <script>
-        $(document).ready(function()
-        {
-          $('div#logosusp').attr("style", "z-index:0;");
-        });
-        </script> 
-
+<!-- ###### Script para criar o pop-up do popterms ###### -->
+<script>
+    function creaPopup(url)
+    {
+      tesauro=window.open(url,
+      "Tesauro",
+      "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
+      )
+    }
+ </script>             
+        
     </body>
 </html>

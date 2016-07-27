@@ -1,442 +1,485 @@
 <!DOCTYPE html>
 <?php 
+    include('inc/functions.php');
 
-include('inc/functions.php');
-        
-/* Pegar a URL atual */
-if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
-      $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'';
-} else {
-      $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'?';
-}
-    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
-   
-///* Missing query */
-foreach( $_GET as $k => $v ){
-    if($v == 'N/D'){
-        $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
-        unset($_GET[$k]); 
-    }    
+/* Missing query */
+    foreach( $_GET as $k => $v ){
+        if($v == 'N/D'){
+            $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
+            unset($_GET[$k]); 
+        }    
+    }
+
+/* limpar base all */
+if (isset($_GET['base']) && $_GET['base'] == 'all'){
+    unset($_GET['base']);
 }
 
+/* Subject */
+if (isset($_GET['assunto'])){   
+    $_GET['subject'][] = $_GET['assunto'];
+    unset($_GET['assunto']);
+}
 
 /* Pagination variables */
-$page = isset($_POST['page']) ? (int) $_POST['page'] : 1;
-$limit = 15;
-$skip = ($page - 1) * $limit;
-$next = ($page + 1);
-$prev = ($page - 1);
-$sort = array('year' => -1);
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+        unset($_GET['page']); 
+    } else {
+        $page = 1;
+    }
+
+    $limit = 20;
+    $skip = ($page - 1) * $limit;
+
+    $next = ($page + 1);
+    $prev = ($page - 1);
+    $sort = array('year' => -1);
+
+/* Pegar a URL atual */
+if (isset($_GET)){
+    foreach ($_GET as $key => $value){
+        $new_get[] = ''.$key.'[]='.$value[0].'';
+        $query_get = implode("&",$new_get);
+}
+    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$query_get.'';
+} else {
+    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
+}
+    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+
+/*
+    if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
+        $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'';          
+    } else {
+        $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'?';        
+    }
+        $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+*/
+
 
 /* Montar a consulta */
-if (!empty($_GET["date_init"])||(!empty($_GET["date_end"]))) {
-$date_range = '
-{
-    "range" : {
-        "year" : {
-            "gte" : '.$_GET["date_init"].',
-            "lte" : '.$_GET["date_end"].'
+    if (!empty($_GET["date_init"])||(!empty($_GET["date_end"]))) {
+        $date_range = '
+        {
+            "range" : {
+                "year" : {
+                    "gte" : '.$_GET["date_init"].',
+                    "lte" : '.$_GET["date_end"].'
+                }
+            }
         }
-    }
-}
-';
-unset($_GET["date_init"]);
-unset($_GET["date_end"]); 
-}
-
-
-
-if (empty($_GET)) {
-    $search_term = '"match_all": {}';
-    $filter_query = '';
-    
-} elseif (!empty($_GET['search_index'])) {
-    $search_term ='"query": {
-    "match" : {
-        "_all" : {
-        "query": "'.$_GET['search_index'].'",
-        "operator" : "and"
-        }
-    }}'; 
-    $termo = $_GET['search_index']; 
-    unset($_GET['search_index']);
-    
-   foreach ($_GET as $key => $value) {
-        $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
-    }
-    
-    if (!empty($date_range)) {
-        $filter[] = $date_range;
-    }
-    
-    if (count($filter) > 0) {
-        $filter_query = ''.implode(",", $filter).''; 
-    } else {
-        $filter_query = '';
-    }
-    $_GET['search_index'] = $termo;
-
-    
-    $query_complete = '{
-    "sort" : [
-            { "year" : "desc" }
-        ],    
-    "query": {    
-    "bool": {
-      "must": {
-        '.$search_term.'
-      },
-      "filter":[
-        '.$filter_query.'        
-        ]
-      }
-    },
-    "from": '.$skip.',
-    "size": '.$limit.'
-    }';
-    
-    $query_aggregate = '
-        "query": {
-            "bool": {
-              "must": {
-                '.$search_term.'
-              },
-              "filter":[
-                '.$filter_query.'
-                ]
-              }
-            },
         ';
-    
-    
-} else {
-    
-    $query_complete = monta_consulta($_GET,$skip,$limit,$date_range);   
-    $query_aggregate = monta_aggregate($_GET,$date_range);
-
-    
-}
-
-$cursor = query_elastic($query_complete);
-$total = $cursor["hits"]["total"];
+        unset($_GET["date_init"]);
+        unset($_GET["date_end"]); 
+    }
 
 
 
+    if (empty($_GET)) {
+        $search_term = '"match_all": {}';
+        $filter_query = '';
+
+    } elseif (!empty($_GET['search_index'])) {
+        $search_term ='"query": {
+        "match" : {
+            "_all" : {
+            "query": "'.$_GET['search_index'].'",
+            "operator" : "and"
+            }
+        }}'; 
+        $termo = $_GET['search_index']; 
+        unset($_GET['search_index']);
+
+       foreach ($_GET as $key => $value) {
+            $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
+        }
+
+        if (!empty($date_range)) {
+            $filter[] = $date_range;
+        }
+
+        if (count($filter) > 0) {
+            $filter_query = ''.implode(",", $filter).''; 
+        } else {
+            $filter_query = '';
+        }
+        $_GET['search_index'] = $termo;
+
+
+        $query_complete = '{
+        "sort" : [
+                { "year" : "desc" }
+            ],    
+        "query": {    
+        "bool": {
+          "must": {
+            '.$search_term.'
+          },
+          "filter":[
+            '.$filter_query.'        
+            ]
+          }
+        },
+        "from": '.$skip.',
+        "size": '.$limit.'
+        }';
+
+        $query_aggregate = '
+            "query": {
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'
+                    ]
+                  }
+                },
+            ';
+
+
+    } else {
+
+        $query_complete = monta_consulta($_GET,$skip,$limit,$date_range);   
+        $query_aggregate = monta_aggregate($_GET,$date_range);
+
+
+    }
+
+    $cursor = query_elastic($query_complete);
+    $total = $cursor["hits"]["total"];
 ?>
-
 <html>
     <head>
-        <title>BDPI USP - Biblioteca Digital da Produção Intelectual da Universidade de São Paulo</title>
-        <?php include('inc/meta-header.php'); ?>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BDPI USP - Resultado da busca</title>
+        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
+        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
+        <link rel="stylesheet" href="inc/css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
+        <script src="inc/uikit/js/uikit.min.js"></script>
+        <script src="inc/uikit/js/components/accordion.min.js"></script>
+        <script src="inc/uikit/js/components/pagination.min.js"></script>
+        <script src="inc/uikit/js/components/datepicker.min.js"></script>
         
-        <!-- Altmetric Script -->
-        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+        <!-- D3.js Libraries and CSS -->
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
+
+        <!-- UV Charts -->
+        <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
         
     </head>
-    <body>
-        <?php include('inc/barrausp.php'); ?>
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
-            <?php include('inc/navbar.php'); ?>
-            <div id="main">
-                
-                <div class="ui main two column stackable grid">
-                    <div class="four wide column">
-                        <div class="item">
-                            Filtros ativos
-                            <div class="active content">
-                                <div class="ui form">
-                                    <div class="grouped fields">
-                                        <form method="get" action="result.php">
-                                            <?php foreach ($_REQUEST as $key => $value) : ?>
-                                            <div class="field">
-                                                <div class="ui checkbox">
-                                                    <input type="checkbox" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
-                                                    <label><?php echo $key; ?>: <?php echo implode(",",$value); ?></label>
-                                                </div>
-                                            </div>
-                                            <?php endforeach;?>
-                                            <button type="submit" class="ui icon button">Retirar filtros</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h3>Navegação</h3>
-                        <div class="ui fluid vertical accordion menu">
-                        <?php
-                            gerar_faceta($query_aggregate,$escaped_url,base,10,"Base");
-                            gerar_faceta($query_aggregate,$escaped_url,type,30,"Tipo de material");
-                            gerar_faceta($query_aggregate,$escaped_url,unidadeUSPtrabalhos,30,"Unidade USP");
-                            gerar_faceta($query_aggregate,$escaped_url,departamentotrabalhos,30,"Departamento");
-                            gerar_faceta($query_aggregate,$escaped_url,authors,30,"Autores");
-                            gerar_faceta($query_aggregate,$escaped_url,year,30,"Ano de publicação","desc");
-                            gerar_faceta($query_aggregate,$escaped_url,subject,30,"Assuntos");
-                            gerar_faceta($query_aggregate,$escaped_url,language,30,"Idioma");
-                            gerar_faceta($query_aggregate,$escaped_url,ispartof,30,"Obra da qual a produção faz parte");
-                            gerar_faceta($query_aggregate,$escaped_url,evento,30,"Nome do evento");
-                            gerar_faceta($query_aggregate,$escaped_url,country,30,"País de publicação");
-                        ?>
-                        </div>
-                        <h3>Informações administrativas</h3>
-                        <div class="ui fluid vertical accordion menu">   
-                        <?php 
-                            gerar_faceta($query_aggregate,$escaped_url,authorUSP,30,"Autores USP");
-                            gerar_faceta($query_aggregate,$escaped_url,codpesbusca,30,"Número USP");
-                            gerar_faceta($query_aggregate,$escaped_url,codpes,30,"Número USP / Unidade");
-                            gerar_faceta($query_aggregate,$escaped_url,internacionalizacao,30,"Internacionalização");
-                            gerar_faceta($query_aggregate,$escaped_url,tipotese,30,"Tipo de tese");
-                            gerar_faceta($query_aggregate,$escaped_url,fomento,30,"Agência de fomento");
-                            gerar_faceta($query_aggregate,$escaped_url,indexado,30,"Indexado em");
-                            gerar_faceta($query_aggregate,$escaped_url,issn_part,30,"ISSN");
-                            gerar_faceta($query_aggregate,$escaped_url,areaconcentracao,30,"Área de concentração");
-                            gerar_faceta($query_aggregate,$escaped_url,fatorimpacto,30,"Fator de impacto","desc");
-                            gerar_faceta($query_aggregate,$escaped_url,grupopesquisa,30,"Grupo de pesquisa");
-                            gerar_faceta($query_aggregate,$escaped_url,colab,30,"País dos autores externos à USP");
-                            gerar_faceta($query_aggregate,$escaped_url,colab_int_trab,30,"Colaboração - Internacionalização");
-                            gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_trab,30,"Colaboração - Instituição");
-                            gerar_faceta($query_aggregate,$escaped_url,colab_instituicao_corrigido,30,"Colaboração - Instituição - Corrigido");
-                            corrigir_faceta($query_aggregate,$escaped_url,colab_instituicao_naocorrigido,30,"Colaboração - Instituição - Não corrigido");
-                            gerar_faceta($query_aggregate,$escaped_url,dataregistroinicial,30,"Data de registro","desc");
-                            gerar_faceta($query_aggregate,$escaped_url,dataregistro,30,"Data de registro e alterações","desc");
-                        ?>
-                            
-                            
-                        </div>
+    <body>        
+        <div class="barrausp">
+            <div class="uk-container uk-container-center">
 
-                        <h3>Filtrar por data</h3>
-                        <form method="get" action="<?php echo $escaped_url; ?>">
-                            <div class="ui calendar" id="date_init">
-                                <div class="ui input left icon">
-                                    <i class="time icon"></i>
-                                    <input type="text" placeholder="Ano inicial" name="date_init">
-                                </div>
-                            </div>
-                            <div class="ui calendar" id="date_end">
-                                <div class="ui input left icon">
-                                    <i class="time icon"></i>
-                                    <input type="text" placeholder="Ano final" name="date_end">
-                                </div>
-                            </div>
-                            <?php foreach ($_GET as $key => $value) {
-                                echo '<input type="hidden" name="'.$key.'[]" value="'.$value[0].'">';
-                            };?>
-                            <?php if (!empty($q)) {
-                                echo '<input type="hidden" name="category" value="buscaindice">';
-                                echo '<input type="hidden" name="q" value="'.$q.'">';
-                            }; ?>
-                            <button type="submit" class="ui icon button">Limitar datas</button>
-                        </form>
-                        <div>
-                            <form method="post" action="report.php?<?php echo $_SERVER['QUERY_STRING']; ?>">
-                                <button type="submit" name="page" class="ui icon button" value="<?php echo $escaped_url;?>">
-                                    Gerar relatório
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="twelve wide column">
-                        
-                        <div class="page-header"><h3>Resultado da busca: <?php print_r($total);?> registros</h3></div>
-                           
-                        
-                        <?php
-                        echo '<br/><br/>';
-                        /* Pagination - Start */
-                        echo '<div class="ui buttons">';
-                        if ($page > 1) {
-                            echo '<form method="post" action="'.$escaped_url.'">';
-                            echo '<input type="hidden" name="extra_submit_param" value="extra_submit_value">';
-                            echo '<button type="submit" name="page" class="ui labeled icon button active" value="'.$prev.'">
-                            <i class="left chevron icon"></i>Anterior</button>';
-                            echo '<button class="ui button">Página: '.$page.' de '.ceil($total / $limit).'</button>';
-                            if ($page * $limit < $total) {
-                                echo '<button type="submit" name="page" value="'.$next.'" class="ui right labeled icon button active">
-                                Próximo
-                                <i class="right chevron icon"></i></button>';
-                            } else {
-                                echo '<button class="ui right labeled icon button disabled">
-                                Próximo
-                                <i class="right chevron icon"></i></button>';
-                            }
-                            echo '</form>';
-                        } else {
-                            if ($page * $limit < $total) {
-                                echo '<form method="post" action="'.$escaped_url.'">';
-                                echo '<input type="hidden" name="extra_submit_param" value="extra_submit_value">';
-                                echo '<button class="ui labeled icon button disabled"><i class="left chevron icon"></i>Anterior</button>';
-                                echo '<button class="ui button">Página: '.$page.' de '.ceil($total / $limit).'</button>';
-                                echo '<button type="submit" name="page" value="'.$next.'" class="ui right labeled icon button active">
-                                Próximo
-                                <i class="right chevron icon"></i></button>';
-                                echo '</form>';
-                            }
-                        }
-                        echo '</div>';
-                        echo '<br/><br/>';
-                        /* Pagination - End */
-                        ?>
-                        
-                        <div class="ui divided items">
-                            <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
-                            <div class="item">
-                                <div class="image">
-                                    <h4 class="ui center aligned icon header">
-                                        <i class="circular file icon"></i>
-                                        <?php if (!empty($r["_source"]['ispartof'])) : ?>
-                                        <a href="result.php?ispartof=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a> |
-                                        <?php endif; ?>
-                                        <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo $r["_source"]['type'];?></a>
-                                        <br/><br/><br/>
-                                        <a class="ui blue label" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $r['_id'];?>">
-                                            Ver no Dedalus
-                                        </a>
-
-                                        <?php if (!empty($r["_source"]['doi'])) : ?>
-                                        <br/><br/>
-                                        <object height="50" style="overflow:hidden" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
-                                        <div data-badge-popover="right" data-badge-type="donut" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                        <?php endif; ?>          
-
-                                    </h4>
-                                </div>
-                                <div class="content">
-                                    <a class="ui medium header" href="single.php?_id=<?php echo $r['_id'];?>">
-                                        <?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)
-                                    </a>
-                                    <!--List authors -->
-                                    <div class="extra">
-                                        <a class="ui sub header">Autores:</a>
-                                        <?php if (!empty($r["_source"]['authors'])) : ?>
-                                        <?php foreach ($r["_source"]['authors'] as $autores) : ?>
-                                            <div class="ui label" style="color:black;">
-                                                <i class="user icon"></i>
-                                                <a href="result.php?authors[]=<?php echo $autores;?>"><?php echo $autores;?></a>
-                                            </div>
-                                        <?php endforeach;?>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- List Unidades -->
-                                    <div class="extra">
-                                        <a class="ui sub header">Unidades USP:</a>
-                                        <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
-                                        <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
-                                        <?php foreach ($unique as $unidadeUSP) : ?>
-                                        <div class="ui label" style="color:black;">
-                                            <i class="university icon"></i>
-                                            <a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
-                                        </div>
-                                        <?php endforeach;?>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- List assuntos -->
-                                    <div class="extra"> 
-                                        <a class="ui sub header">Assuntos:</a>
-                                        <?php if (!empty($r["_source"]['subject'])) : ?>
-                                        <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
-                                        <div class="ui label" style="color:black;">
-                                            <i class="globe icon"></i> 
-                                            <a href="result.php?subject[]=<?php echo $assunto;?>"><?php echo $assunto;?></a>
-                                        </div>
-                                        <?php endforeach;?>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- URL e DOI  -->
-                                    <div class="extra">
-
-                                        <?php if (!empty($r["_source"]['url'])) : ?>
-                                        <?php foreach ($r["_source"]['url'] as $url) : ?>
-                                        <?php if ($url != '') : ?>
-                                        <br/><br/>
-                                        <a href="<?php echo $url;?>" target="_blank">
-                                            <div class="ui right floated primary button">
-                                                Acesso online
-                                                <i class="right chevron icon"></i>
-                                            </div>
-                                        </a>
-                                        <?php endif; ?>
-                                        <?php endforeach;?>
-                                        <?php endif; ?>
-                                        <?php if (!empty($r['doi'])) : ?>
-                                        <br/><br/>
-                                        <a href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">
-                                            <div class="ui right floated primary button">
-                                                Acesso online
-                                                <i class="right chevron icon"></i>
-                                            </div></a>
-                                        <?php endif; ?>
-                                        
-                                    </div>
-                                    <?php load_itens($r['_id']); ?>
-                                </div>    
-                            </div>
-                            <?php endforeach;?>
-                            
-                        <?php
-                        echo '<br/><br/>';
-                        /* Pagination - Start */
-                        echo '<div class="ui buttons">';
-                        if ($page > 1) {
-                            echo '<form method="post" action="'.$escaped_url.'">';
-                            echo '<input type="hidden" name="extra_submit_param" value="extra_submit_value">';
-                            echo '<button type="submit" name="page" class="ui labeled icon button active" value="'.$prev.'">
-                            <i class="left chevron icon"></i>Anterior</button>';
-                            echo '<button class="ui button">Página: '.$page.' de '.ceil($total / $limit).'</button>';
-                            if ($page * $limit < $total) {
-                                echo '<button type="submit" name="page" value="'.$next.'" class="ui right labeled icon button active">
-                                Próximo
-                                <i class="right chevron icon"></i></button>';
-                            } else {
-                                echo '<button class="ui right labeled icon button disabled">
-                                Próximo
-                                <i class="right chevron icon"></i></button>';
-                            }
-                            echo '</form>';
-                        } else {
-                            if ($page * $limit < $total) {
-                                echo '<form method="post" action="'.$escaped_url.'">';
-                                echo '<input type="hidden" name="extra_submit_param" value="extra_submit_value">';
-                                echo '<button class="ui labeled icon button disabled"><i class="left chevron icon"></i>Anterior</button>';
-                                echo '<button class="ui button">Página: '.$page.' de '.ceil($total / $limit).'</button>';
-                                echo '<button type="submit" name="page" value="'.$next.'" class="ui right labeled icon button active">
-                                Próximo
-                                <i class="right chevron icon"></i></button>';
-                                echo '</form>';
-                            }
-                        }
-                        echo '</div>';
-                        echo '<br/><br/>';
-                        /* Pagination - End */
-                        ?>                            
-                            
-                        </div>
-                    
-                    </div>
-
-                    <?php include('inc/footer.php'); ?>
-    
-                    <script>
-                        $('.ui.dropdown')
-                            .dropdown()
-                        ;
-                    </script>
-                    <script>
-                        $('#date_init').calendar({
-                            type: 'year'
-                        });
-                    </script>
-                    <script>
-                        $('#date_end').calendar({
-                            type: 'year'
-                        });
-                    </script>
-                    <script>
-                        $('.ui.checkbox')   
-                            .checkbox();
-                    </script>
-        
-
+            <nav class="uk-margin-top">
+                <a class="uk-navbar-brand uk-hidden-small" href="http://sibi.usp.br" style="color:white">SIBiUSP</a>
+                <ul class="uk-navbar-nav uk-hidden-small">
+                    <li>
+                        <a href="index.php" style="color:white">Início</a>
+                    </li>
+                    <li>
+                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
+                    </li>
+                    <div class="uk-navbar-flip">
+                        <ul class="uk-navbar-nav">
+                            <li data-uk-dropdown="{mode:'click'}">
+                                <a href="" style="color:white">
+                                    Idioma
+                                    <i class="uk-icon-caret-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li style="color:black"><a href="">Português</a></li>
+                                        <li><a href="">Inglês</a></li>
+                                    </ul>
+                                </div> 
+                            </li>
+                            <li>
+                                <a href="contato.php" style="color:white">Contato</a>
+                            </li>
+                            <li>
+                                <a href="login.php" style="color:white">Login</a>
+                            </li>
+                            <li>
+                                <a href="about.php" style="color:white">Sobre</a>
+                            </li>
+                        </ul>
+                    </div>    
+                </ul>
+                <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
+                <div class="uk-navbar-brand uk-navbar-center uk-visible-small" style="color:white">BDPI USP</div>
+            </nav>
+            
+            </div>
+            <div id="busca_avancada" class="uk-container uk-container-center uk-grid uk-hidden" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <div class="uk-alert uk-alert-large"><p>Teste</p></div>
+                </div>
+            </div>
         </div>
+        <div class="uk-container uk-container-center">
+            <div class="uk-grid" data-uk-grid>                        
+                <div class="uk-width-small-1-2 uk-width-medium-2-6">                    
+                    
+
+<div class="uk-panel uk-panel-box">
+    <h3 class="uk-panel-title">Refinar meus resultados</h3>    
+    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+        <hr>
+    <?php 
+        gerar_faceta_new($query_aggregate,$escaped_url,base,10,"Base");
+        gerar_faceta_new($query_aggregate,$escaped_url,type,10,"Tipo de material");
+        gerar_faceta_new($query_aggregate,$escaped_url,unidadeUSPtrabalhos,100,"Unidade USP");              gerar_faceta_new($query_aggregate,$escaped_url,departamentotrabalhos,100,"Departamento");             gerar_faceta_new($query_aggregate,$escaped_url,authors,120,"Autores");
+        gerar_faceta_new($query_aggregate,$escaped_url,year,120,"Ano de publicação","desc");
+        gerar_faceta_new($query_aggregate,$escaped_url,subject,100,"Assuntos");
+        gerar_faceta_new($query_aggregate,$escaped_url,language,40,"Idioma");
+        gerar_faceta_new($query_aggregate,$escaped_url,ispartof,100,"É parte de ...");
+        gerar_faceta_new($query_aggregate,$escaped_url,evento,100,"Nome do evento");
+        gerar_faceta_new($query_aggregate,$escaped_url,country,200,"País de publicação");    
+    ?>
+    </ul>
+    <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
+    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+        <hr>
+    <?php 
+        gerar_faceta_new($query_aggregate,$escaped_url,authorUSP,100,"Autores USP");
+        gerar_faceta_new($query_aggregate,$escaped_url,codpesbusca,100,"Número USP");
+        gerar_faceta_new($query_aggregate,$escaped_url,codpes,100,"Número USP / Unidade"); gerar_faceta_new($query_aggregate,$escaped_url,internacionalizacao,30,"Internacionalização");                           gerar_faceta_new($query_aggregate,$escaped_url,tipotese,30,"Tipo de tese");
+        gerar_faceta_new($query_aggregate,$escaped_url,fomento,100,"Agência de fomento");
+        gerar_faceta_new($query_aggregate,$escaped_url,indexado,100,"Indexado em");
+        gerar_faceta_new($query_aggregate,$escaped_url,issn_part,100,"ISSN");
+        gerar_faceta_new($query_aggregate,$escaped_url,areaconcentracao,100,"Área de concentração");
+        gerar_faceta_new($query_aggregate,$escaped_url,fatorimpacto,1000,"Fator de impacto","desc");
+        gerar_faceta_new($query_aggregate,$escaped_url,grupopesquisa,100,"Grupo de pesquisa");
+        gerar_faceta_new($query_aggregate,$escaped_url,colab,120,"País dos autores externos à USP");
+        gerar_faceta_new($query_aggregate,$escaped_url,colab_int_trab,100,"Colaboração - Internacionalização"); gerar_faceta_new($query_aggregate,$escaped_url,colab_instituicao_trab,100,"Colaboração - Instituição"); gerar_faceta_new($query_aggregate,$escaped_url,colab_instituicao_corrigido,100,"Colaboração - Instituição - Corrigido"); corrigir_faceta_new($query_aggregate,$escaped_url,colab_instituicao_naocorrigido,100,"Colaboração - Instituição - Não corrigido");
+        gerar_faceta_new($query_aggregate,$escaped_url,dataregistroinicial,100,"Data de registro","desc");
+        gerar_faceta_new($query_aggregate,$escaped_url,dataregistro,100,"Data de registro e alterações","desc");
+    ?>
+    </ul>
+    
+    <hr>
+    <form class="uk-form">
+    <fieldset>
+        <legend>Limitar datas</legend>
+        <div class="uk-form-row">
+            <label>Ano inicial</label>
+            <input type="text" placeholder="Ano inicial" name="date_init">
+        </div>
+        <div class="uk-form-row">
+            <label>Ano final</label>
+            <input type="text" placeholder="Ano final" name="date_end">
+            <?php foreach ($_GET as $key => $value) {
+                echo '<input type="hidden" name="'.$key.'[]" value="'.$value[0].'">';
+            };?>
+            <?php if (!empty($q)) {
+                echo '<input type="hidden" name="category" value="buscaindice">';
+                echo '<input type="hidden" name="q" value="'.$q.'">';
+            }; ?>
+        </div>
+        <div class="uk-form-row"><button class="uk-button">Limitar datas</button></div>
+    </fieldset>        
+    </form>
+    
+</div>
+                    
+
+                    
+                </div>
+                <div class="uk-width-small-1-2 uk-width-medium-4-6">
+                    
+                <div class="uk-alert" data-uk-alert>
+                    <a href="" class="uk-alert-close uk-close"></a>
+  
+                    
+                    
+                <?php $ano_bar = generateDataGraphBar($url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
+
+                <div id="ano_chart" class="uk-visible-large"></div>
+                <script type="application/javascript">
+                    var graphdef = {
+                        categories : ['Ano'],
+                        dataset : {
+                            'Ano' : [<?= $ano_bar; ?>]
+                        }
+                    }
+                    var chart = uv.chart ('Bar', graphdef, {
+                        meta : {
+                            position: '#ano_chart',
+                            caption : 'Ano de publicação',
+                            hlabel : 'Ano',
+                            vlabel : 'Registros'
+                        },
+                        graph : {
+                            orientation : "Vertical"
+                        },
+                        dimension : {
+                            width: 600,
+                            height: 140
+                        }
+                    })
+                </script>                        
+</div>  
+                    
+                    <div class="uk-grid uk-margin-top">
+                        <div class="uk-width-1-3">                        
+                        <ul class="uk-subnav uk-nav-parent-icon uk-subnav-pill">
+                            <li>Ordenar por:</li>
+
+                            <!-- This is the container enabling the JavaScript -->
+                            <li data-uk-dropdown="{mode:'click'}">
+
+                                <!-- This is the nav item toggling the dropdown -->
+                                <a href="">Data (Novos)</a>
+
+                                <!-- This is the dropdown -->
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li><a href="">Data (Antigos)</a></li>
+                                        <li><a href="">Título</a></li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                        </ul>                        
+                            
+                        </div>
+                        <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
+                        <div class="uk-width-1-3">
+                            <ul class="uk-pagination" data-uk-pagination="{items:<?php print_r($total);?>,itemsOnPage:<?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:<?php print_r($page-1);?>}"></ul>                         
+                        </div>
+                    </div>
+                    
+                    <hr class="uk-grid-divider">
+                    <div class="uk-width-1-1 uk-margin-top uk-description-list-line">
+                    <ul class="uk-list uk-list-line">   
+                    <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
+                        <li>                        
+                            <div class="uk-grid uk-flex-middle" data-uk-grid-   margin="">
+                                <div class="uk-width-medium-2-10 uk-row-first">
+                                    <div class="uk-panel uk-h6 uk-text-break">
+                                        <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a>
+                                    </div>
+                                </div>
+                                <div class="uk-width-medium-8-10 uk-flex-middle">
+                                    
+                                    <ul class="uk-list">
+                                        <li class="uk-margin-top uk-h4">
+                                            <strong><a href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)</a></strong>
+                                        </li>
+                                        <li class="uk-h6">
+                                            Autores:
+                                            <?php if (!empty($r["_source"]['authors'])) : ?>
+                                            <?php foreach ($r["_source"]['authors'] as $autores) {
+                                                $authors_array[]='<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>';
+                                            } 
+                                           $array_aut = implode(", ",$authors_array);
+                                            unset($authors_array);
+                                            print_r($array_aut);
+                                            ?>
+                                            
+                                           
+                                            <?php endif; ?>                           
+                                        </li>
+                                        
+                                        <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?ispartof[]=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>                                        
+                                        <li class="uk-h6">
+                                            Unidades USP:
+                                            <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
+                                            <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
+                                            <?php foreach ($unique as $unidadeUSP) : ?>
+                                                <a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
+                                            <?php endforeach;?>
+                                            <?php endif; ?>
+                                        </li>
+                                        
+                                        <li class="uk-h6">
+                                            Assuntos:
+                                            <?php if (!empty($r["_source"]['subject'])) : ?>
+                                            <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
+                                                <a href="result.php?subject[]=<?php echo $assunto;?>"><?php echo $assunto;?></a>
+                                            <?php endforeach;?>
+                                            <?php endif; ?>
+                                        </li>
+                                        <?php if (!empty($r["_source"]['fatorimpacto'])) : ?>
+                                        <li class="uk-h6">
+                                            <p>Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
+                                        </li>
+                                        <?php endif; ?>
+                                        <li>                              
+                                            <div class="uk-button-group">
+                                                <?php if (!empty($r["_source"]['url'])) : ?>
+                                                <?php foreach ($r["_source"]['url'] as $url) : ?>
+                                                <?php if ($url != '') : ?>
+                                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online</a>
+                                                <?php endif; ?>
+                                                <?php endforeach;?>
+                                                <?php endif; ?>
+                                                <?php if (!empty($r['doi'])) : ?>
+                                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Acesso online</a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </li>
+                                        <li class="uk-h6">
+                                           <?php load_itens_new($r['_id']); ?>
+                                        </li>    
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach;?>
+                    </ul>
+                    </div>
+                    <hr class="uk-grid-divider">
+                    <div class="uk-grid uk-margin-top">
+                        <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
+                        <div class="uk-width-1-2">
+                            <ul class="uk-pagination" data-uk-pagination="{items:<?php print_r($total);?>,itemsOnPage:<?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:<?php print_r($page-1);?>}"></ul>                         
+                        </div>
+                    </div>                   
+                    
+
+                    
+                </div>
+            </div>
+            <hr class="uk-grid-divider">
+            <div id="footer" class="uk-grid" data-uk-grid-margin>
+                <p>Sistema Integrado de Bibliotecas da Universidade de São Paulo</p>
+            </div>            
+        </div>
+                
+        <div id="offcanvas" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas">
+                    <li class="uk-active">
+                        <a href="index.php">Início</a>
+                    </li>
+                    <li>
+                        <a href="#">Busca avançada</a>
+                    </li>
+                    <li>
+                        <a href="contact.php">Contato</a>
+                    </li>
+                    <li>
+                        <a href="login.php">Login</a>
+                    </li>
+                    <li>
+                        <a href="about.php">Sobre</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+        $('[data-uk-pagination]').on('select.uk.pagination', function(e, pageIndex){
+            var url = window.location.href.split('&page')[0];
+            window.location=url +'&page='+ (pageIndex+1);
+        });
+        </script>    
+        
     </body>
 </html>

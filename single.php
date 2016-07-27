@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 
 include('inc/functions.php');
@@ -10,9 +9,7 @@ if (empty($_SESSION["citation_style"])) {
 }
 if (isset($_POST["citation_style"])) {
     $_SESSION["citation_style"] = $_POST['citation_style'];
-}  
-
-
+} 
 
 /* Pegar a URL atual */
 if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
@@ -109,11 +106,20 @@ $record_blob = implode("\\n", $record);
 
 ?>
 
-
-<html>
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
     <head>
-        <title>Detalhes do Registro</title>
-        <?php include('inc/meta-header.php'); ?>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BDPI USP - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
+        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
+        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
+        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
+        <link rel="stylesheet" href="inc/css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
+        <script src="inc/uikit/js/uikit.min.js"></script>
+        <script src="inc/uikit/js/components/grid.js"></script>
+        <script src="inc/uikit/js/components/slideset.js"></script>
         
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
@@ -150,170 +156,257 @@ $record_blob = implode("\\n", $record);
         <meta name="citation_lastpage" content="11766">
         <meta name="citation_pdf_url" content="http://www.example.com/content/271/20/11761.full.pdf">
         -->
-        <!-- Generate metadata to Google Scholar - END -->        
-        
+        <!-- Generate metadata to Google Scholar - END -->         
     </head>
-    <body>
-        <?php include('inc/barrausp.php'); ?>
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
-            <?php include('inc/navbar.php'); ?>
-            <div id="main">
+<body>        
+        <div class="barrausp">
+            <div class="uk-container uk-container-center">
+
+            <nav class="uk-margin-top">
+                <a class="uk-navbar-brand uk-hidden-small" href="index.php" style="color:white">BDPI USP</a>
+                <ul class="uk-navbar-nav uk-hidden-small">
+                    <li>
+                        <a href="index.php" style="color:white">Início</a>
+                    </li>
+                    <li>
+                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
+                    </li>
+                </ul>
+                    <div class="uk-navbar-flip">
+                        <ul class="uk-navbar-nav">
+                            <li data-uk-dropdown="{mode:'click'}">
+                                <a href="" style="color:white">
+                                    Idioma
+                                    <i class="uk-icon-caret-down"></i>
+                                </a>
+                                <div class="uk-dropdown uk-dropdown-small">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li style="color:black"><a href="">Português</a></li>
+                                        <li><a href="">Inglês</a></li>
+                                    </ul>
+                                </div> 
+                            </li>
+                            <li>
+                                <a href="contato.php" style="color:white">Contato</a>
+                            </li>
+                            <li>
+                                <a href="about.php" style="color:white">Sobre</a>
+                            </li>
+                            <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
+                                <a href="" style="color:white"><i class="uk-icon-home"></i> Admin</a>
+
+                                <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
+                                    <ul class="uk-nav uk-nav-navbar">
+                                        <li class="uk-nav-header">Ferramentas</li>
+                                        <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
+                                        <li><a href="comparar_wos.php">Comparador WoS</a></li>
+                                        <li><a href="comparar_registros.php">Comparador weRUSP</a></li>
+                                        <li class="uk-nav-divider"></li>
+                                        <li class="uk-nav-header">Acesso</li>
+                                        <li><a href="login.php">Login</a></li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                            <a class="uk-navbar-brand uk-hidden-small" href="http://sibi.usp.br" style="color:white">SIBiUSP</a>
+                        </ul>
+                    </div>                
+                <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
+                <div class="uk-navbar-brand uk-navbar-center uk-visible-small" style="color:white">BDPI USP</div>
+            </nav>
                 
-                <div class="ui main two column stackable grid">
-                    <div class="four wide column">
-                        <br/><br/><br/><h3>Ver registro no DEDALUS</h3>
-                        <a class="ui blue label" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>">Ver no Dedalus</a>
+            </div>
+            
+            <div id="busca_avancada" class="uk-container uk-container-center uk-grid uk-hidden" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <div class="uk-alert uk-alert-large">
+                        
+                        
+<form class="uk-form" role="form" action="result.php" method="get">
 
-                        <h3>Exportar</h3>
+    <fieldset data-uk-margin>
+        <legend>Número USP</legend>
+        <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
+        <button class="uk-button" type="submit">Buscar</button>
+    </fieldset>
 
-                        <button  class="ui blue label" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
+</form>
+                        
+<form class="uk-form" role="form" action="result.php" method="get" name="assunto">
 
-                        <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
-                        <h4>Visitas ao registro: <?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
-                        <?php endif; ?>
+    <fieldset data-uk-margin>
+        <legend>Assunto do Vocabulário Controlado</legend>
+        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+        <input type="text" name="assunto">
+        <button class="uk-button" type="submit">Buscar</button>
+    </fieldset>
+
+</form>                          
+                        
+                       
                     </div>
-                    <div class="ten wide column">
-                        <h2 class="ui center aligned icon header">
-                            <i class="circular file icon"></i>
-                            Detalhes do registro / <?php echo ''.$cursor["_source"]["type"].''; ?>
-                        </h2>
-                        <div class="ui top attached tabular menu">
-                            <a class="item active" data-tab="first">Visualização</a>
-                            <a class="item" data-tab="second">Registro Completo</a>
-                        </div>
-                        <div class="ui bottom attached tab segment active" data-tab="first">
-                            <h2><?php echo $cursor["_source"]['title'];?> (<?php echo $cursor["_source"]['year']; ?>)</h2>
+                </div>
+            </div>
+        </div>    
+
+            
+    
+    <div class="uk-container uk-container-center uk-margin-large-bottom">
+
+        <div class="uk-grid uk-margin-top" data-uk-grid-margin>
+            <div class="uk-width-medium-1-3">
+                <div class="uk-panel uk-panel-box">
+                    <h3 class="uk-panel-title">Ver registro no DEDALUS</h3>
+                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+                        <hr>
+                        <li>                    
+                            <a href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>">Ver no Dedalus</a>
+                        </li>
+                    </ul>
+                    <h3 class="uk-panel-title">Exportar</h3>
+                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+                        <hr>                   
+                        <li>
+                            <button onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
+                        </li>
+                        <li>
+                    <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
+                    <h4>Visitas ao registro: <?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
+                    <?php endif; ?>                
+                        </li>
+                    </ul>
+                    <?php if (!empty($cursor["_source"]['doi'])): ?>
+                        <h3 class="uk-panel-title">Métricas alternativas</h3>
+                        <hr>
+                        <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="uk-width-medium-2-3">
+                <ul class="uk-tab" data-uk-tab="{connect:'#single'}">
+                    <li class="uk-active"><a href="">Visualização</a></li>
+                    <li><a href="">Registro completo</a></li>
+                </ul>
+                <ul id="single" class="uk-switcher uk-margin">
+                    <li>
+                    
+                        <h2><?php echo $cursor["_source"]['title'];?> (<?php echo $cursor["_source"]['year']; ?>)</h2>
+                        <ul class="uk-list">
+                            
                             <!--List authors -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['authors'])): ?>
+                        <?php if (!empty($cursor["_source"]['authors'])): ?>
+                            <li>
                                 <h4>Autor(es):</h4>
-                                <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        <a href="result.php?autor=<?php echo $autores;?>"><?php echo $autores;?></a>
-                                    </div>
-                                </div>
-                                <?php endforeach;?>
-                                <?php endif; ?>
-                            </div>
+                                <ul class="uk-list uk-list-line">
+                                    <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
+                                    <li>
+                                        <a href="result.php?authors[]=<?php echo $autores;?>"><?php echo $autores;?></a>
+                                    </li>
+                                    <?php endforeach;?>                                
+                                </ul>
+                            </li>
+                        <?php endif; ?>                            
 
-                            <!--Authors USP -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
-                                <h4>Autor(es) USP:</h4>
+
+                        <!--Authors USP -->
+                        <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Autor(es) USP:</h4>
+                                <ul class="uk-list uk-list-line">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        <a href="result.php?authorUSP=<?php echo $autoresUSP;?>"><?php echo $autoresUSP;?></a>
-                                    </div>
-                                </div>
+                                <li>
+                                    <a href="result.php?authorUSP[]=<?php echo $autoresUSP;?>"><?php echo $autoresUSP;?></a>
+                                </li>
                                 <?php endforeach;?>
-                                <?php endif; ?>
-                            </div>
+                                </ul>
+                            </li>
+                        <?php endif; ?>                           
 
-                            <!--Unidades USP -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
-                                <h4>Unidades USP:</h4>
-                                <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        <a href="result.php?unidadeUSP=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
-                                    </div>
-                                </div>
-                                <?php endforeach;?>
-                                <?php endif; ?>
-                            </div>
-                            <!--Assuntos -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['subject'])): ?>
-                                <h4>Assuntos:</h4>
-                                <?php foreach ($cursor["_source"]['subject'] as $subject): ?>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        <a href="result.php?subject=<?php echo $subject;?>"><?php echo $subject;?></a>
-                                    </div>
-                                </div>
-                                <?php endforeach;?>
-                                <?php endif; ?>
-                            </div>
-                            <!-- Idioma -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['language'])): ?>
-                                <h4>Idioma:</h4>
-                                <?php foreach ($cursor["_source"]['language'] as $language): ?>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        <a href="result.php?language=<?php echo $language;?>"><?php echo $language;?></a>
-                                    </div>
-                                </div>
-                                <?php endforeach;?>
-                                <?php endif; ?>
-                            </div>
-                            <!-- Imprenta -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
-                                <h4>Imprenta:</h4>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        Local: <a href="result.php?publisher-place=<?php echo $cursor["_source"]['publisher-place'];?>"><?php echo $cursor["_source"]['publisher-   place'];?></a>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        Data de publicação: <a href="result.php?year=<?php echo $cursor["_source"]['year'];?>"><?php echo $cursor["_source"]['year'];?></a>
-                                    </div>
-                                </div>
-                                <?php endif; ?>
-                            </div>
 
-                            <!-- Fonte -->
-                            <div class="ui middle aligned selection list">
-                                <?php if (!empty($cursor["_source"]['ispartof'])): ?>
-                                <h4>Fonte:</h4>
-                                <div class="item">
-                                    <i class="user icon"></i>
-                                    <div class="content">
-                                        Título: <a href="result.php?ispartof=<?php echo $cursor["_source"]['ispartof'];?>"><?php echo $cursor["_source"]['ispartof'];?></a><br/>
-                                        <?php if (!empty($cursor["_source"]['issn_part'])): ?>
-                                        ISSN: <a href="result.php?issn_part=<?php echo $cursor["_source"]['issn_part'][0];?>"><?php echo $cursor["_source"]['issn_part'][0];?></a>  <br/>
-                                        <?php endif; ?>
-                                        <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
-                                        Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/>
-                                        <?php endif; ?>
-                                        <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
-                                        Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/>
-                                        <?php endif; ?>
-                                        <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
-                                        Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/>
-                                        <?php endif; ?>
-                                        <?php if (!empty($cursor["_source"]['doi'])): ?>
-                                        DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a><br/>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                <?php endif; ?>
-                            </div>
+                        <!--Unidades USP -->
+                        <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Unidades USP:</h4>
+                                <ul class="uk-list uk-list-line">
+                                    <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
+                                    <li><a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a></li>
+                                    <?php endforeach;?>
+                                </ul>
+                            </li>
+                         <?php endif; ?>   
 
+                        <!--Assuntos -->
+                        <?php if (!empty($cursor["_source"]['subject'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Assuntos:</h4>
+                                <ul class="uk-list uk-list-line">
+                                    <?php foreach ($cursor["_source"]['subject'] as $subject): ?>
+                                    <li><a href="result.php?subject[]=<?php echo $subject;?>"><?php echo $subject;?></a></li>
+                                    <?php endforeach;?>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+                            
+                        <!-- Idioma -->
+                        <?php if (!empty($cursor["_source"]['language'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Idioma:</h4>
+                                <ul class="uk-list uk-list-line">
+                                   <?php foreach ($cursor["_source"]['language'] as $language): ?>
+                                        <li><a href="result.php?language[]=<?php echo $language;?>"><?php echo $language;?></a></li>
+                                   <?php endforeach;?>
+                                </ul>                            
+                            </li>
+                        <?php endif; ?>
+                            
+                        <!-- Imprenta -->
+                        <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Imprenta:</h4>
+                                <ul class="uk-list uk-list-line">
+                                    <li>Local: <a href="result.php?publisher-place=<?php echo $cursor["_source"]['publisher-place'];?>"><?php echo $cursor["_source"]['publisher-   place'];?></a></li>
+                                    <li>Data de publicação: <a href="result.php?year=<?php echo $cursor["_source"]['year'];?>"><?php echo $cursor["_source"]['year'];?></a></li>
+                                </ul>
+                            </li>
+                            
+                        <?php endif; ?>    
+                            
+                        <!-- Fonte -->
+                        <?php if (!empty($cursor["_source"]['ispartof'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Fonte:</h4>
+                                <ul class="uk-list uk-list-line">
+                                    <li>Título: <a href="result.php?ispartof=<?php echo $cursor["_source"]['ispartof'];?>"><?php echo $cursor["_source"]['ispartof'];?></a></li>
+                                    <?php if (!empty($cursor["_source"]['issn_part'])): ?>
+                                    <li>ISSN: <a href="result.php?issn_part=<?php echo $cursor["_source"]['issn_part'][0];?>"><?php echo $cursor["_source"]['issn_part'][0];?></a></li>
+                                    <?php endif; ?>
+                                    <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
+                                    <li>Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></li>
+                                    <?php endif; ?>
+                                    <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
+                                    <li>Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/></li>
+                                    <?php endif; ?>
+                                    <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
+                                    <li>Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></li>
+                                    <?php endif; ?>
+                                    <?php if (!empty($cursor["_source"]['doi'])): ?>
+                                    <li>DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a></li>
+                                    <?php endif; ?>
+                                </ul>                            
+                            </li>
+                        <?php endif; ?>
+                        </ul>
+                            
+                    
+                            
+
+                            <hr>
                             <?php if (!empty($cursor["_source"]['doi'])): ?>
-                            <br/><br/>
-                            <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">
-                                <div class="ui right floated primary button">
-                                    Acesso online
-                                    <i class="right chevron icon"></i>
-                                </div></a>
-                            <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                            <a class="uk-button uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Acesso online</a>
                             <?php endif; ?>
-
-                            <?php load_itens($cursor["_id"]); ?>
+                            <hr>
+                            <?php load_itens_new($cursor["_id"]); ?>
+                            <hr>
 
                             <h3>Escolha o estilo da Citação:</h3>
                             <div class="ui compact menu">
@@ -436,143 +529,56 @@ $record_blob = implode("\\n", $record);
                                 $output = $citeproc->render($data, $mode);
                                 print_r($output);
                                 ?>
-                            </div>
-                            
-                        </div>  
-                        <div class="ui bottom attached tab segment" data-tab="second">
-                            <table class="ui celled table">
-                                <thead>
-                                    <tr>
-                                        <th>Campo</th>
-                                        <th>Ind. 1</th>
-                                        <th>Ind. 2</th>
-                                        <th>Subcampo</th>
-                                        <th>Conteúdo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($cursor["_source"]["record"] as $fields){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[3]).'';
-                                            echo '<td>'.htmlentities($fields[4]).'';
-                                        echo '</tr>';
-                                    if (!empty($fields[5])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[5]).'';
-                                            echo '<td>'.htmlentities($fields[6]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[7])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[7]).'';
-                                            echo '<td>'.htmlentities($fields[8]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[9])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[9]).'';
-                                            echo '<td>'.htmlentities($fields[10]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[11])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[11]).'';
-                                            echo '<td>'.htmlentities($fields[12]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[13])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[13]).'';
-                                            echo '<td>'.htmlentities($fields[14]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[15])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[15]).'';
-                                            echo '<td>'.htmlentities($fields[16]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[17])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[17]).'';
-                                            echo '<td>'.htmlentities($fields[18]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[19])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[19]).'';
-                                            echo '<td>'.htmlentities($fields[20]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[21])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[21]).'';
-                                            echo '<td>'.htmlentities($fields[22]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[23])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[23]).'';
-                                            echo '<td>'.htmlentities($fields[24]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[25])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[25]).'';
-                                            echo '<td>'.htmlentities($fields[26]).'';
-                                        echo '</tr>';
-                                    }
-                                    };
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>          
-        </div>            
+                            </div>                           
+                         
+                        
+                    </li>
+                    <li>teste2</li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <hr class="uk-grid-divider">    
+        <div id="footer" class="uk-grid" data-uk-grid-margin>
+            <p>Sistema Integrado de Bibliotecas da Universidade de São Paulo</p>
+        </div>       
+        
 
-        <?php include('inc/footer.php'); ?>
+        <div id="offcanvas" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas">
+                    <li class="uk-active">
+                        <a href="index.php">Início</a>
+                    </li>
+                    <li>
+                        <a href="#">Busca avançada</a>
+                    </li>
+                    <li>
+                        <a href="contact.php">Contato</a>
+                    </li>
+                    <li>
+                        <a href="login.php">Login</a>
+                    </li>
+                    <li>
+                        <a href="about.php">Sobre</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- ###### Script para criar o pop-up do popterms ###### -->
 <script>
-$('.menu .item')
-  .tab()
-;
-</script>
+    function creaPopup(url)
+    {
+      tesauro=window.open(url,
+      "Tesauro",
+      "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
+      )
+    }
+ </script>             
+        
     </body>
 </html>

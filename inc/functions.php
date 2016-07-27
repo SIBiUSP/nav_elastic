@@ -5,7 +5,7 @@ function monta_consulta($get_content,$skip,$limit,$date_range){
     if (!empty($date_range)){
         $get_query2[] = $date_range;
     }
-        
+                   
     foreach ($get_content as $key => $value) {
         
         $conta_value = count($value);
@@ -103,7 +103,7 @@ function monta_aggregate($get_content,$date_range){
 function query_elastic ($query) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.75/sibi/producao/_search";
+    $url = "http://localhost/sibi/producao/_search";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -120,7 +120,7 @@ function query_elastic ($query) {
 function query_one_elastic ($_id) {
     $ch = curl_init();
     $method = "GET";
-    $url = "http://172.31.0.75/sibi/producao/$_id";
+    $url = "http://localhost/sibi/producao/$_id";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -137,7 +137,7 @@ function query_one_elastic ($_id) {
 function update_elastic ($_id,$query) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.75/sibi/producao/$_id/_update";
+    $url = "http://localhost/sibi/producao/$_id/_update";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -156,7 +156,7 @@ function update_elastic ($_id,$query) {
 function counter ($_id) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.75/sibi/producao_metrics/$_id/_update";
+    $url = "http://localhost/sibi/producao_metrics/$_id/_update";
     $query = 
              '{
                 "script" : {
@@ -187,7 +187,7 @@ function counter ($_id) {
 function contar_registros () {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.75/sibi/producao/_count";
+    $url = "http://localhost/sibi/producao/_count";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -201,6 +201,36 @@ function contar_registros () {
     print_r($data["count"]);
 
 
+}
+
+function contar_unicos ($field) {
+    $ch = curl_init();
+    $method = "POST";
+    $url = "http://localhost/sibi/producao/_search";
+    
+    $query = '
+    {
+        "size" : 0,
+        "aggs" : {
+            "distinct_authors" : {
+                "cardinality" : {
+                  "field" : "'.$field.'"
+                }
+            }
+        }
+    }
+    ';
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    print_r($data["aggregations"]["distinct_authors"]["value"]);
 }
 
 function ultimos_registros() {
@@ -245,6 +275,50 @@ echo '</div></div>';
 echo '</div>';
 }
 echo '</div>';
+     
+}
+
+function ultimos_registros_new() {
+    
+     $query = '{
+                "query": {
+                    "match_all": {}
+                 },
+                "size": 5,
+                "sort" : [
+                    {"_uid" : {"order" : "desc"}}
+                    ]
+                }';
+    $data = query_elastic($query);
+
+foreach ($data["hits"]["hits"] as $r){
+#print_r($r);
+    
+echo '<article class="uk-comment">
+<header class="uk-comment-header">';    
+if (!empty($r["_source"]['unidadeUSP'])) {
+$file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+}
+if (file_exists($file)) {
+echo '<img class="uk-comment-avatar" src="'.$file.'">';
+} else {
+#echo ''.$r['unidadeUSP'].'</a>';
+};
+if (!empty($r["_source"]['title'])){
+echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
+};
+echo '<div class="extra">';
+if (!empty($r["_source"]['authors'])) {
+echo '<div class="uk-comment-meta";">';    
+foreach ($r["_source"]['authors'] as $autores) {
+echo '<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>, ';
+}
+echo '</div>';     
+};
+echo '</header>';
+echo '</article>';
+}
+
      
 }
 
@@ -307,6 +381,60 @@ function criar_unidadeUSP_inicio () {
 
 }
 
+function unidadeUSP_inicio () {
+
+    $query = '{
+        "size": 0,
+        "aggs": {
+            "group_by_state": {
+                "terms": {
+                    "field": "unidadeUSPtrabalhos",                    
+                    "size" : 100
+                }
+            }
+        }
+    }';
+    
+    $data = query_elastic($query);
+    $count = 1;
+    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
+        echo '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+       
+        
+       if ($count == 6)
+            {  
+                 echo '<div id="unidades" class="uk-hidden uk-list uk-list-striped">';
+            }
+        $count++;
+    }
+    if ($count > 7) {
+        echo '</div>';
+        echo '<button class="uk-button" data-uk-toggle="{target:\'#unidades\'}">Ver todas as unidades</button>';
+    }
+}
+
+function base_inicio () {
+
+    $query = '{
+        "size": 0,
+        "aggs": {
+            "group_by_state": {
+                "terms": {
+                    "field": "base",                    
+                    "size" : 5
+                }
+            }
+        }
+    }';
+    
+    $data = query_elastic($query);
+    
+    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
+        echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a></li>';
+    }   
+}
+
+
 function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
@@ -344,6 +472,93 @@ function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
     echo   '</div>
       </div>
   </div>';
+
+}
+
+function gerar_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+
+    if (!empty($sort)){
+         
+         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+        }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+       
+    $data = query_elastic($query);
+        
+    echo '<li class="uk-parent">';
+    echo '<a href="#">'.$nome_do_campo.'</a>';
+    echo ' <ul class="uk-nav-sub">';
+    $count = 1;
+    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<li class="uk-h6">';
+        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a>';
+        echo '</li>';
+        
+        if ($count == 11)
+            {  
+                 echo '<div id="'.$campo.'" class="uk-hidden">';
+            }
+        $count++;
+    };
+    if ($count > 12) {
+        echo '</div>';
+        echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
+    }
+        
+    echo   '</ul>
+      </li>';
+
+}
+
+function corrigir_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+
+    if (!empty($sort)){
+         
+         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+        }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'",
+              "missing": "N/D",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+       
+    $data = query_elastic($query);
+    
+    echo '<li class="uk-parent">';
+    echo '<a href="#">'.$nome_do_campo.'</a>';
+    echo ' <ul class="uk-nav-sub">';
+    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<div class="item">';
+        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a>';
+        echo '</div>';
+    };
+    echo   '</ul>
+      </li>';
 
 }
 
@@ -386,6 +601,7 @@ function corrigir_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
   </div>';
 
 }
+
 
 function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
@@ -500,6 +716,48 @@ function get_type($material_type){
   }
 }
 
+/* Recupera os exemplares do DEDALUS */
+function load_itens_new ($sysno) {
+    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
+    if ($xml->error == "No associated items"){
+
+    } else {
+        echo "<a href=\"#\" data-uk-toggle=\"{target:'#exemplares$sysno'}\">Ver exemplares físicos disponíveis nas Bibliotecas</a>";
+        echo '<div id="exemplares'.$sysno.'" class="uk-hidden">';
+        echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
+                    <thead>
+                      <tr>
+                        <th>Biblioteca</th>
+                        <th>Código de barras</th>
+                        <th>Status</th>
+                        <th>Número de chamada</th>";
+                        if ($xml->item->{'loan-status'} == "A"){
+                        echo "<th>Status</th>
+                        <th>Data provável de devolução</th>";
+                      } else {
+                        echo "<th>Status</th>";
+                      }
+                      echo "</tr>
+                    </thead>
+                  <tbody>";
+          foreach ($xml->item as $item) {
+            echo '<tr>';
+            echo '<td>'.$item->{'sub-library'}.'</td>';
+            echo '<td>'.$item->{'barcode'}.'</td>';
+            echo '<td>'.$item->{'item-status'}.'</td>';
+            echo '<td>'.$item->{'call-no-1'}.'</td>';
+            if ($item->{'loan-status'} == "A"){
+            echo '<td>Emprestado</td>';
+            echo '<td>'.$item->{'loan-due-date'}.'</td>';
+          } else {
+            echo '<td>Disponível</td>';
+          }
+            echo '</tr>';
+          }
+          echo "</tbody></table></div>";
+          }
+  }
+
 /* Function to generate Graph Bar */
 function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
@@ -515,7 +773,6 @@ function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation,
           "counts": {
             "terms": {
               "field": "'.$campo.'",
-              "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
