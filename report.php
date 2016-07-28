@@ -321,7 +321,7 @@
 
 
 <?php $internacionalizacao_bar = generateDataGraphBar($url, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
-<div id="internacionalização_chart"></div>         
+<div id="internacionalizacao_chart"></div>         
 <script type="application/javascript">
 var graphdef = {
 categories : ['internacionalização'],
@@ -331,7 +331,7 @@ dataset : {
 }
 var chart = uv.chart ('Pie', graphdef, {
 meta : {
-position: '#internacionalização_chart',
+position: '#internacionalizacao_chart',
 caption : 'Internacionalização',
 subcaption : 'Trabalhos publicados em publicações internacionais',
 hlabel : 'Registros',
@@ -340,7 +340,7 @@ isDownloadable: true,
 downloadLabel: 'Baixar'
 },
 dimension : {
-width: document.getElementById("body").offsetWidth,
+width: 800,
 height: 600
 }
 })
