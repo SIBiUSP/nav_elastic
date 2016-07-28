@@ -557,7 +557,7 @@ function generateDataTable($url, $consulta, $campo, $sort, $sort_orientation, $f
 
 
 
-echo "<table class=\"ui celled table\">
+echo "<table class=\"uk-table\">
   <thead>
     <tr>
       <th>".$facet_display_name."</th>
