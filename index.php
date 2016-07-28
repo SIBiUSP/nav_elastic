@@ -12,7 +12,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
         <script src="inc/uikit/js/uikit.min.js"></script>
         <script src="inc/uikit/js/components/grid.js"></script>
-        <script src="inc/uikit/js/components/slideset.js"></script>
     </head>
 
     <body>        
@@ -106,9 +105,6 @@
             </div>
         </div>
         
-
-
-
             
             <div class="uk-grid uk-margin-large-bottom" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">

@@ -3,7 +3,7 @@
 function query_elastic ($query) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://localhost/sibi/producao/_search";
+    $url = "http://172.31.0.90/sibi/producao/_search";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -20,7 +20,7 @@ function query_elastic ($query) {
 function query_one_elastic ($_id) {
     $ch = curl_init();
     $method = "GET";
-    $url = "http://localhost/sibi/producao/$_id";
+    $url = "http://172.31.0.90/sibi/producao/$_id";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -37,7 +37,7 @@ function query_one_elastic ($_id) {
 function update_elastic ($_id,$query) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://localhost/sibi/producao/$_id/_update";
+    $url = "http://172.31.0.90/sibi/producao/$_id/_update";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -56,7 +56,7 @@ function update_elastic ($_id,$query) {
 function counter ($_id) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://localhost/sibi/producao_metrics/$_id/_update";
+    $url = "http://172.31.0.90/sibi/producao_metrics/$_id/_update";
     $query = 
              '{
                 "script" : {
@@ -87,7 +87,7 @@ function counter ($_id) {
 function contar_registros () {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://localhost/sibi/producao/_count";
+    $url = "http://172.31.0.90/sibi/producao/_count";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -106,7 +106,7 @@ function contar_registros () {
 function contar_unicos ($field) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://localhost/sibi/producao/_search";
+    $url = "http://172.31.0.90/sibi/producao/_search";
     
     $query = '
     {
