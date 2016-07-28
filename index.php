@@ -120,7 +120,7 @@
                                 <fieldset data-uk-margin>
                                     <legend>Pesquisa</legend>
                                     <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-medium" name="search_index">                                        
-                                    <select name="base">
+                                    <select name="base[]">
                                         <option value="all">Todas as bases</option>
                                         <option value="Produção científica">Produção científica</option>
                                         <option value="Teses e dissertações">Teses e dissertações</option>
@@ -728,8 +728,9 @@
             
             <hr class="uk-grid-divider">
             
-            <div id="footer" class="uk-grid" data-uk-grid-margin>
-                <p>Sistema Integrado de Bibliotecas da Universidade de São Paulo</p>
+            <div id="footer" data-uk-grid-margin>
+                <p>Sistema Integrado de Bibliotecas</p>
+                <p><img src="inc/images/logo-footer.png"></p>
             </div>
 
         </div>

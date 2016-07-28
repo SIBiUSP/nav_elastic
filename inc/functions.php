@@ -1,105 +1,5 @@
 <?php
 
-function monta_consulta($get_content,$skip,$limit,$date_range){
-    
-    if (!empty($date_range)){
-        $get_query2[] = $date_range;
-    }
-                   
-    foreach ($get_content as $key => $value) {
-        
-        $conta_value = count($value);
-    
-        if ($conta_value > 1) {
-            foreach ($value as $valor){
-                $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
-            }                        
-        } else {
-             foreach ($value as $valor){
-                 $get_query2[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
-             }
-        }       
-    }
-    
-    $query_part = '"must" : ['.implode(",",$get_query1).']';
-    $query_part2 = implode(",",$get_query2);
-    
-    $query = '
-                {
-                   "sort" : [
-                       { "year" : "desc" }
-                   ],    
-                   "query" : {
-                      "constant_score" : {
-                         "filter" : {
-                            "bool" : {
-                              "should" : [
-                                { "bool" : {
-                                '.$query_part.'
-                               }} 
-                              ],
-                              "filter": [
-                                '.$query_part2.'
-                              ]
-                           }
-                         }
-                      }
-                   },
-                  "from": '.$skip.',
-                  "size": '.$limit.'
-                }    
-    ';
-    
-    return $query;
-}
-
-function monta_aggregate($get_content,$date_range){
-
-    if (!empty($date_range)){
-        $get_query2[] = $date_range;
-    }
-        
-    foreach ($get_content as $key => $value) {
-        
-        $conta_value = count($value);
-    
-        if ($conta_value > 1) {
-            foreach ($value as $valor){
-                $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
-            }                        
-        } else {
-             foreach ($value as $valor){
-                 $get_query2[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
-             }
-        }       
-    }
-    
-    $query_part = '"must" : ['.implode(",",$get_query1).']';
-    $query_part2 = implode(",",$get_query2);
-    
-    $query = '
-                    "query" : {
-                      "constant_score" : {
-                         "filter" : {
-                            "bool" : {
-                              "should" : [
-                                { "bool" : {
-                                '.$query_part.'
-                               }} 
-                              ],
-                              "filter": [
-                                '.$query_part2.'
-                              ]
-                           }
-                         }
-                      }
-                   },
-    ';
-    
-    return $query;
-}
-
-
 function query_elastic ($query) {
     $ch = curl_init();
     $method = "POST";
@@ -231,51 +131,6 @@ function contar_unicos ($field) {
     curl_close($ch);
     $data = json_decode($result, TRUE);
     print_r($data["aggregations"]["distinct_authors"]["value"]);
-}
-
-function ultimos_registros() {
-    
-     $query = '{
-                "query": {
-                    "match_all": {}
-                 },
-                "size": 10,
-                "sort" : [
-                    {"_uid" : {"order" : "desc"}}
-                    ]
-                }';
-    $data = query_elastic($query);
-
-echo '<h3>Últimos registros</h3>';
-echo '<div class="ui divided items">';
-foreach ($data["hits"]["hits"] as $r){
-#print_r($r);
-echo '<div class="item">
-<div class="ui tiny image">';
-if (!empty($r["_source"]['unidadeUSP'])) {
-$file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
-}
-if (file_exists($file)) {
-echo '<img src="'.$file.'"></a>';
-} else {
-#echo ''.$r['unidadeUSP'].'</a>';
-};
-echo '</div>';
-echo '<div class="content">';
-if (!empty($r["_source"]['title'])){
-echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</a>';
-};
-echo '<div class="extra">';
-if (!empty($r["_source"]['authors'])) {
-foreach ($r["_source"]['authors'] as $autores) {
-echo '<div class="ui label" style="color:black;"><i class="user icon"></i><a href="result.php?authors[]='.$autores.'">'.$autores.'</a></div>';
-}
-};
-echo '</div></div>';
-echo '</div>';
-}
-echo '</div>';
-     
 }
 
 function ultimos_registros_new() {
@@ -435,46 +290,6 @@ function base_inicio () {
 }
 
 
-function gerar_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
-
-    if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-       
-    $data = query_elastic($query);
-    
-    echo '<div class="item">';
-    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
-    echo '<div class="content">';
-    echo '<div class="ui list">';
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<div class="item">';
-        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
-        echo '</div>';
-    };
-    echo   '</div>
-      </div>
-  </div>';
-
-}
-
 function gerar_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
@@ -562,47 +377,6 @@ function corrigir_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort
 
 }
 
-function corrigir_faceta($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
-
-    if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-       
-    $data = query_elastic($query);
-    
-    echo '<div class="item">';
-    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
-    echo '<div class="content">';
-    echo '<div class="ui list">';
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<div class="item">';
-        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
-        echo '</div>';
-    };
-    echo   '</div>
-      </div>
-  </div>';
-
-}
-
-
 function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
@@ -647,47 +421,6 @@ function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort)
 
 }
 
-
-/* Recupera os exemplares do DEDALUS */
-function load_itens ($sysno) {
-    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
-    if ($xml->error == "No associated items"){
-
-    } else {
-            echo "<h4 class=\"ui sub header\">Exemplares físicos disponíveis nas Bibliotecas</h4>
-            <table class=\"ui celled table\">
-                    <thead>
-                      <tr>
-                        <th>Biblioteca</th>
-                        <th>Código de barras</th>
-                        <th>Status</th>
-                        <th>Número de chamada</th>";
-                        if ($xml->item->{'loan-status'} == "A"){
-                        echo "<th>Status</th>
-                        <th>Data provável de devolução</th>";
-                      } else {
-                        echo "<th>Status</th>";
-                      }
-                      echo "</tr>
-                    </thead>
-                  <tbody>";
-          foreach ($xml->item as $item) {
-            echo '<tr>';
-            echo '<td>'.$item->{'sub-library'}.'</td>';
-            echo '<td>'.$item->{'barcode'}.'</td>';
-            echo '<td>'.$item->{'item-status'}.'</td>';
-            echo '<td>'.$item->{'call-no-1'}.'</td>';
-            if ($item->{'loan-status'} == "A"){
-            echo '<td>Emprestado</td>';
-            echo '<td>'.$item->{'loan-due-date'}.'</td>';
-          } else {
-            echo '<td>Disponível</td>';
-          }
-            echo '</tr>';
-          }
-          echo "</tbody></table>";
-          }
-  }
 
 /* Pegar o tipo de material */
 function get_type($material_type){
@@ -762,9 +495,8 @@ function load_itens_new ($sysno) {
 function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
-         
-         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
-        }
+        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    }
     $query = '
     {
         "size": 0,
@@ -787,7 +519,14 @@ function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation,
     foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
         array_push($data_array,'{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
     };
-    $comma_separated = implode(",", $data_array);
+    
+    if ($campo == "year" ) {
+        $data_array_inverse = array_reverse($data_array);
+        $comma_separated = implode(",", $data_array_inverse);
+    } else {
+        $comma_separated = implode(",", $data_array);
+    }
+
     return $comma_separated;
 
 };
@@ -1207,5 +946,257 @@ function limpar($text) {
     
     return preg_replace(array_keys($utf8), array_values($utf8), $text);
 }
+
+function analisa_get($get) {
+    
+    $new_get = $get;  
+    
+    /* Missing query */
+    foreach ($get as $k => $v){
+        if($v == 'N/D'){
+            $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
+            unset($get[$k]);
+        }    
+    }    
+    
+    /* limpar base all */
+    if (isset($get['base']) && $get['base'][0] == 'all'){
+        unset($get['base']);
+        unset($new_get['base']);
+    }    
+
+    /* Subject */
+    if (isset($get['assunto'])){   
+        $get['subject'][] = $get['assunto'];
+        $new_get['subject'][] = $get['assunto'];
+        unset($get['assunto']);
+        unset($new_get['assunto']);
+    }    
+    
+    /* Pagination */
+    if (isset($get['page'])) {
+        $page = $get['page'];
+        unset($get['page']);
+        unset($new_get['page']);
+    } else {
+        $page = 1;
+    }
+    
+    /* Pagination variables */
+
+    $limit = 20;
+    $skip = ($page - 1) * $limit;
+    $next = ($page + 1);
+    $prev = ($page - 1);
+    $sort = array('year' => -1);    
+    
+     if (!empty($get["date_init"])||(!empty($get["date_end"]))) {
+        $filter[] = '
+        {
+            "range" : {
+                "year" : {
+                    "gte" : '.$get["date_init"].',
+                    "lte" : '.$get["date_end"].'
+                }
+            }
+        }
+        ';
+        $novo_get[] = 'date_init='.$new_get['date_init'].'';
+        $novo_get[] = 'date_end='.$new_get['date_end'].''; 
+        $data_inicio = $get["date_init"];
+        $data_fim = $get["date_end"];
+        unset($new_get["date_init"]);
+        unset($new_get["date_end"]);         
+        unset($get["date_init"]);
+        unset($get["date_end"]);
+    }
+    
+    if (count($get) == 0) {
+        $search_term = '"match_all": {}';
+        $filter_query = '';
+        
+        $query_complete = '{
+        "sort" : [
+                { "year" : "desc" }
+            ],    
+        "query": {    
+        "bool": {
+          "must": {
+            '.$search_term.'
+          },
+          "filter":[
+            '.$filter_query.'        
+            ]
+          }
+        },
+        "from": '.$skip.',
+        "size": '.$limit.'
+        }';
+
+        $query_aggregate = '
+            "query": {
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'
+                    ]
+                  }
+                },
+        ';
+        
+    } elseif (!empty($get['search_index'])) {
+        $search_term ='"query": {
+        "match" : {
+            "_all" : {
+            "query": "'.$get['search_index'].'",
+            "operator" : "and"
+            }
+        }}'; 
+        unset($get['search_index']);
+
+       foreach ($get as $key => $value) {
+           if (count($value) > 1){
+               foreach ($value as $valor){
+                    $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                }               
+           } else {
+               $filter[] = '{"term":{"'.$key.'":"'.$value[0].'"}}';
+           }
+            
+        }
+
+        if (count($filter) > 0) {
+            $filter_query = ''.implode(",", $filter).''; 
+        } else {
+            $filter_query = '';
+        }
+
+
+        $query_complete = '{
+        "sort" : [
+                { "year" : "desc" }
+            ],    
+        "query": {    
+        "bool": {
+          "must": {
+            '.$search_term.'
+          },
+          "filter":[
+            '.$filter_query.'        
+            ]
+          }
+        },
+        "from": '.$skip.',
+        "size": '.$limit.'
+        }';
+        
+        $query_aggregate = '
+            "query": {
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'
+                    ]
+                  }
+                },
+        ';
+
+
+    } else {
+                   
+        foreach ($get as $key => $value) {
+
+            $conta_value = count($value);
+
+            if ($conta_value > 1) {
+                foreach ($value as $valor){
+                    $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                }                        
+            } else {
+                 foreach ($value as $valor){
+                     $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                 }
+            }       
+        }
+    
+        $query_part = '"must" : ['.implode(",",$get_query1).']';
+        $query_part2 = implode(",",$filter);
+
+        $query_complete = '
+                    {
+                       "sort" : [
+                           { "year" : "desc" }
+                       ],    
+                       "query" : {
+                          "constant_score" : {
+                             "filter" : {
+                                "bool" : {
+                                  "should" : [
+                                    { "bool" : {
+                                    '.$query_part.'
+                                   }} 
+                                  ],
+                                  "filter": [
+                                    '.$query_part2.'
+                                  ]
+                               }
+                             }
+                          }
+                       },
+                      "from": '.$skip.',
+                      "size": '.$limit.'
+                    }    
+        ';
+        
+        $query_aggregate = '
+                    "query" : {
+                      "constant_score" : {
+                         "filter" : {
+                            "bool" : {
+                              "should" : [
+                                { "bool" : {
+                                '.$query_part.'
+                               }} 
+                              ],
+                              "filter": [
+                                '.$query_part2.'
+                              ]
+                           }
+                         }
+                      }
+                   },
+    ';
+    }
+        
+/* Pegar a URL atual */
+    
+    
+if (isset($new_get)){
+    
+   
+    if (!empty($new_get['search_index'])){
+        $novo_get[] = 'search_index='.$new_get['search_index'].'';
+        $termo_consulta = $new_get['search_index'];
+        unset($new_get['search_index']);
+    }  
+    
+    foreach ($new_get as $key => $value){
+        $novo_get[] = ''.$key.'[]='.$value[0].'';        
+    }    
+    $pega_get = implode("&",$novo_get);
+    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$pega_get.'';
+} else {
+    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
+}
+    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
+    
+    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim');
+}
+ 
+
 
 ?>

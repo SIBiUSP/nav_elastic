@@ -533,7 +533,130 @@ $record_blob = implode("\\n", $record);
                          
                         
                     </li>
-                    <li>teste2</li>
+                    <li>
+                    <table class="uk-table">
+                                <thead>
+                                    <tr>
+                                        <th>Campo</th>
+                                        <th>Ind. 1</th>
+                                        <th>Ind. 2</th>
+                                        <th>Subcampo</th>
+                                        <th>Conteúdo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($cursor["_source"]["record"] as $fields){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[3]).'';
+                                            echo '<td>'.htmlentities($fields[4]).'';
+                                        echo '</tr>';
+                                    if (!empty($fields[5])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[5]).'';
+                                            echo '<td>'.htmlentities($fields[6]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[7])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[7]).'';
+                                            echo '<td>'.htmlentities($fields[8]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[9])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[9]).'';
+                                            echo '<td>'.htmlentities($fields[10]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[11])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[11]).'';
+                                            echo '<td>'.htmlentities($fields[12]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[13])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[13]).'';
+                                            echo '<td>'.htmlentities($fields[14]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[15])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[15]).'';
+                                            echo '<td>'.htmlentities($fields[16]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[17])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[17]).'';
+                                            echo '<td>'.htmlentities($fields[18]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[19])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[19]).'';
+                                            echo '<td>'.htmlentities($fields[20]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[21])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[21]).'';
+                                            echo '<td>'.htmlentities($fields[22]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[23])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[23]).'';
+                                            echo '<td>'.htmlentities($fields[24]).'';
+                                        echo '</tr>';
+                                    }
+                                    if (!empty($fields[25])){
+                                        echo '<tr>';
+                                            echo '<td>'.htmlentities($fields[0]).'';
+                                            echo '<td>'.htmlentities($fields[1]).'';
+                                            echo '<td>'.htmlentities($fields[2]).'';
+                                            echo '<td>'.htmlentities($fields[25]).'';
+                                            echo '<td>'.htmlentities($fields[26]).'';
+                                        echo '</tr>';
+                                    }
+                                    };
+                                    ?>
+                                </tbody>
+                            </table>
+                    </li>
                 </ul>
             </div>
         </div>

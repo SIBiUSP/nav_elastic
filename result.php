@@ -2,150 +2,14 @@
 <?php 
     include('inc/functions.php');
 
-/* Missing query */
-    foreach( $_GET as $k => $v ){
-        if($v == 'N/D'){
-            $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
-            unset($_GET[$k]); 
-        }    
-    }
+    $result_get = analisa_get($_GET);
+    $query_complete = $result_get['query_complete'];
+    $query_aggregate = $result_get['query_aggregate'];
+    $escaped_url = $result_get['escaped_url'];
+    $limit = $result_get['limit'];
+    $page = $result_get['page'];
+    $new_get = $result_get['new_get'];
 
-/* limpar base all */
-if (isset($_GET['base']) && $_GET['base'] == 'all'){
-    unset($_GET['base']);
-}
-
-/* Subject */
-if (isset($_GET['assunto'])){   
-    $_GET['subject'][] = $_GET['assunto'];
-    unset($_GET['assunto']);
-}
-
-/* Pagination variables */
-    if (isset($_GET['page'])) {
-        $page = $_GET['page'];
-        unset($_GET['page']); 
-    } else {
-        $page = 1;
-    }
-
-    $limit = 20;
-    $skip = ($page - 1) * $limit;
-
-    $next = ($page + 1);
-    $prev = ($page - 1);
-    $sort = array('year' => -1);
-
-/* Pegar a URL atual */
-if (isset($_GET)){
-    foreach ($_GET as $key => $value){
-        $new_get[] = ''.$key.'[]='.$value[0].'';
-        $query_get = implode("&",$new_get);
-}
-    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$query_get.'';
-} else {
-    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
-}
-    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
-
-/*
-    if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
-        $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'';          
-    } else {
-        $url = 'http://'.$_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'].'?';        
-    }
-        $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
-*/
-
-
-/* Montar a consulta */
-    if (!empty($_GET["date_init"])||(!empty($_GET["date_end"]))) {
-        $date_range = '
-        {
-            "range" : {
-                "year" : {
-                    "gte" : '.$_GET["date_init"].',
-                    "lte" : '.$_GET["date_end"].'
-                }
-            }
-        }
-        ';
-        unset($_GET["date_init"]);
-        unset($_GET["date_end"]); 
-    }
-
-
-
-    if (empty($_GET)) {
-        $search_term = '"match_all": {}';
-        $filter_query = '';
-
-    } elseif (!empty($_GET['search_index'])) {
-        $search_term ='"query": {
-        "match" : {
-            "_all" : {
-            "query": "'.$_GET['search_index'].'",
-            "operator" : "and"
-            }
-        }}'; 
-        $termo = $_GET['search_index']; 
-        unset($_GET['search_index']);
-
-       foreach ($_GET as $key => $value) {
-            $filter[] = '{"term":{"'.$key.'":"'.$value.'"}}';
-        }
-
-        if (!empty($date_range)) {
-            $filter[] = $date_range;
-        }
-
-        if (count($filter) > 0) {
-            $filter_query = ''.implode(",", $filter).''; 
-        } else {
-            $filter_query = '';
-        }
-        $_GET['search_index'] = $termo;
-
-
-        $query_complete = '{
-        "sort" : [
-                { "year" : "desc" }
-            ],    
-        "query": {    
-        "bool": {
-          "must": {
-            '.$search_term.'
-          },
-          "filter":[
-            '.$filter_query.'        
-            ]
-          }
-        },
-        "from": '.$skip.',
-        "size": '.$limit.'
-        }';
-
-        $query_aggregate = '
-            "query": {
-                "bool": {
-                  "must": {
-                    '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'
-                    ]
-                  }
-                },
-            ';
-
-
-    } else {
-
-        $query_complete = monta_consulta($_GET,$skip,$limit,$date_range);   
-        $query_aggregate = monta_aggregate($_GET,$date_range);
-
-
-    }
 
     $cursor = query_elastic($query_complete);
     $total = $cursor["hits"]["total"];
@@ -170,13 +34,17 @@ if (isset($_GET)){
         <!-- UV Charts -->
         <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
         
+        <!-- Altmetric Script -->
+        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+        
     </head>
     <body>        
+
         <div class="barrausp">
             <div class="uk-container uk-container-center">
 
             <nav class="uk-margin-top">
-                <a class="uk-navbar-brand uk-hidden-small" href="http://sibi.usp.br" style="color:white">SIBiUSP</a>
+                <a class="uk-navbar-brand uk-hidden-small" href="index.php" style="color:white">BDPI USP</a>
                 <ul class="uk-navbar-nav uk-hidden-small">
                     <li>
                         <a href="index.php" style="color:white">Início</a>
@@ -184,6 +52,7 @@ if (isset($_GET)){
                     <li>
                         <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
                     </li>
+                </ul>
                     <div class="uk-navbar-flip">
                         <ul class="uk-navbar-nav">
                             <li data-uk-dropdown="{mode:'click'}">
@@ -202,31 +71,102 @@ if (isset($_GET)){
                                 <a href="contato.php" style="color:white">Contato</a>
                             </li>
                             <li>
-                                <a href="login.php" style="color:white">Login</a>
-                            </li>
-                            <li>
                                 <a href="about.php" style="color:white">Sobre</a>
                             </li>
+                            <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
+                                <a href="" style="color:white"><i class="uk-icon-home"></i> Admin</a>
+
+                                <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
+                                    <ul class="uk-nav uk-nav-navbar">
+                                        <li class="uk-nav-header">Ferramentas</li>
+                                        <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
+                                        <li><a href="comparar_wos.php">Comparador WoS</a></li>
+                                        <li><a href="comparar_registros.php">Comparador weRUSP</a></li>
+                                        <li class="uk-nav-divider"></li>
+                                        <li class="uk-nav-header">Acesso</li>
+                                        <li><a href="login.php">Login</a></li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                            <a class="uk-navbar-brand uk-hidden-small" href="http://sibi.usp.br" style="color:white">SIBiUSP</a>
                         </ul>
-                    </div>    
-                </ul>
+                    </div>                
                 <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
                 <div class="uk-navbar-brand uk-navbar-center uk-visible-small" style="color:white">BDPI USP</div>
             </nav>
-            
+                
             </div>
+            
             <div id="busca_avancada" class="uk-container uk-container-center uk-grid uk-hidden" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
-                    <div class="uk-alert uk-alert-large"><p>Teste</p></div>
+                    <div class="uk-alert uk-alert-large">
+                        
+                        
+<form class="uk-form" role="form" action="result.php" method="get">
+
+    <fieldset data-uk-margin>
+        <legend>Número USP</legend>
+        <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
+        <button class="uk-button" type="submit">Buscar</button>
+    </fieldset>
+
+</form>
+                        
+<form class="uk-form" role="form" action="result.php" method="get" name="assunto">
+
+    <fieldset data-uk-margin>
+        <legend>Assunto do Vocabulário Controlado</legend>
+        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+        <input type="text" name="assunto">
+        <button class="uk-button" type="submit">Buscar</button>
+    </fieldset>
+
+</form>                          
+                        
+                       
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>        
+        
         <div class="uk-container uk-container-center">
             <div class="uk-grid" data-uk-grid>                        
                 <div class="uk-width-small-1-2 uk-width-medium-2-6">                    
                     
 
 <div class="uk-panel uk-panel-box">
+    <form class="uk-form" method="get" action="result.php">
+    <fieldset>
+        <legend>Filtros ativos</legend>
+        <?php foreach ($new_get as $key => $value) : ?>
+            <div class="uk-form-row">
+                <label><?php echo $key; ?>: <?php echo implode(",",$value); ?></label>
+                <input type="checkbox" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
+            </div>
+        <?php endforeach;?>
+        <?php if (!empty($result_get['termo_consulta'])): ?>
+            <div class="uk-form-row">
+                <label>Consulta: <?php echo $result_get['termo_consulta']; ?></label>
+                <input type="checkbox" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($result_get['data_inicio'])): ?>
+            <div class="uk-form-row">
+                <label>Data inicial: <?php echo $result_get['data_inicio']; ?></label>
+                <input type="checkbox" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($result_get['data_fim'])): ?>
+            <div class="uk-form-row">
+                <label>Data final: <?php echo $result_get['data_fim']; ?></label>
+                <input type="checkbox" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
+            </div>
+        <?php endif; ?>         
+        <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
+    </fieldset>        
+    </form>    
+    <hr>
     <h3 class="uk-panel-title">Refinar meus resultados</h3>    
     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
         <hr>
@@ -274,14 +214,10 @@ if (isset($_GET)){
             <label>Ano final</label>
             <input type="text" placeholder="Ano final" name="date_end">
             <?php foreach ($_GET as $key => $value) {
-                echo '<input type="hidden" name="'.$key.'[]" value="'.$value[0].'">';
+                echo '<input type="hidden" name="'.$key.'[]" value="'.implode(",",$value).'">';
             };?>
-            <?php if (!empty($q)) {
-                echo '<input type="hidden" name="category" value="buscaindice">';
-                echo '<input type="hidden" name="q" value="'.$q.'">';
-            }; ?>
         </div>
-        <div class="uk-form-row"><button class="uk-button">Limitar datas</button></div>
+        <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
     </fieldset>        
     </form>
     
@@ -410,9 +346,9 @@ if (isset($_GET)){
                                             <p>Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
                                         </li>
                                         <?php endif; ?>
-                                        <li>                              
-                                            <div class="uk-button-group">
-                                                <?php if (!empty($r["_source"]['url'])) : ?>
+                                        <li>
+                                            <?php if (!empty($r["_source"]['url'])) : ?>
+                                            <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
                                                 <?php foreach ($r["_source"]['url'] as $url) : ?>
                                                 <?php if ($url != '') : ?>
                                                 <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online</a>
@@ -421,12 +357,19 @@ if (isset($_GET)){
                                                 <?php endif; ?>
                                                 <?php if (!empty($r['doi'])) : ?>
                                                 <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Acesso online</a>
-                                                <?php endif; ?>
                                             </div>
+                                            <?php endif; ?>
                                         </li>
-                                        <li class="uk-h6">
+                                        <li class="uk-h6 uk-margin-top">
                                            <?php load_itens_new($r['_id']); ?>
-                                        </li>    
+                                        </li>
+                                        <li class="uk-h6 uk-margin-top">
+                                            <p>Métricas alternativas:</p>
+                                            <ul>
+                                                <li><div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div></li>
+                                                <li><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></li>
+                                            </ul>  
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -447,9 +390,10 @@ if (isset($_GET)){
                 </div>
             </div>
             <hr class="uk-grid-divider">
-            <div id="footer" class="uk-grid" data-uk-grid-margin>
-                <p>Sistema Integrado de Bibliotecas da Universidade de São Paulo</p>
-            </div>            
+            <div id="footer" data-uk-grid-margin>
+                <p>Sistema Integrado de Bibliotecas</p>
+                <p><img src="inc/images/logo-footer.png"></p>
+            </div>          
         </div>
                 
         <div id="offcanvas" class="uk-offcanvas">
@@ -480,6 +424,15 @@ if (isset($_GET)){
             window.location=url +'&page='+ (pageIndex+1);
         });
         </script>    
-        
+        <!-- ###### Script para criar o pop-up do popterms ###### -->
+<script>
+    function creaPopup(url)
+    {
+      tesauro=window.open(url,
+      "Tesauro",
+      "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
+      )
+    }
+ </script>
     </body>
 </html>
