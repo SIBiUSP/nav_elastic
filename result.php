@@ -264,8 +264,7 @@
                     
                 <div class="uk-alert" data-uk-alert>
                     <a href="" class="uk-alert-close uk-close"></a>
-  
-                    
+                
                     
                 <?php $ano_bar = generateDataGraphBar($url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
 
@@ -293,7 +292,14 @@
                         }
                     })
                 </script>                        
-</div>  
+                    </div>
+                    
+                <?php if (isset($_REQUEST["assunto"])) : ?>    
+                   <div class="uk-alert" data-uk-alert>
+                       <a href="" class="uk-alert-close uk-close"></a>
+                       <?php consultar_vcusp($_REQUEST["assunto"]); ?>
+                   </div>
+                <?php endif; ?>
                     
                     <div class="uk-grid uk-margin-top">
                         <div class="uk-width-1-3">                        

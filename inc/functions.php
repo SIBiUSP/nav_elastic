@@ -34,6 +34,23 @@ function query_one_elastic ($_id) {
     return $data;
 }
 
+function query_graph ($query) {
+    $ch = curl_init();
+    $method = "GET";
+    $url = "http://172.31.0.90/sibi/_graph/explore";
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $data = json_decode($result, TRUE);
+    return $data;
+}
+
 function update_elastic ($_id,$query) {
     $ch = curl_init();
     $method = "POST";
@@ -1195,6 +1212,31 @@ if (isset($new_get)){
     $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
     
     return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim');
+}
+
+function consultar_vcusp($termo) {
+    echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
+    $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
+    
+    if ($xml->{'resume'}->{'cant_result'} != 0) {
+
+        $termo_xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchUp&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
+        foreach (($termo_xml->{'result'}->{'term'}) as $string_up) {
+            $string_up_array[] = '<a href="result.php?assunto='.$string_up->{'string'}.'">'.$string_up->{'string'}.'</a>';    
+        };
+        echo 'Você também pode pesquisar pelos termos mais genéricos: ';
+        print_r(implode(" - ",$string_up_array));
+        echo '<br/>';
+        $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
+        foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
+            $string_down_array[] = '<a href="result.php?assunto='.$string_down->{'string'}.'">'.$string_down->{'string'}.'</a>';     
+        };
+        echo 'Ou pesquisar pelo assuntos mais específicos: ';
+        print_r(implode(" - ",$string_down_array));
+
+    } else {
+        $termo_naocorrigido[] = $termo_limpo;
+    }
 }
  
 
