@@ -1225,7 +1225,7 @@ function consultar_vcusp($termo) {
             $string_up_array[] = '<a href="result.php?assunto='.$string_up->{'string'}.'">'.$string_up->{'string'}.'</a>';    
         };
         echo 'Você também pode pesquisar pelos termos mais genéricos: ';
-        print_r(implode(" - ",$string_up_array));
+        print_r(implode(" -> ",$string_up_array));
         echo '<br/>';
         $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
         foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
