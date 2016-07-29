@@ -213,10 +213,17 @@
         <div class="uk-form-row">
             <label>Ano final</label>
             <input type="text" placeholder="Ano final" name="date_end">
-            <?php foreach ($_GET as $key => $value) {
-                echo '<input type="hidden" name="'.$key.'[]" value="'.implode(",",$value).'">';
-            };?>
         </div>
+        <?php foreach ($new_get as $key => $value) : ?>
+            <div class="uk-form-row">
+                <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
+            </div>
+        <?php endforeach;?>
+        <?php if (!empty($result_get['termo_consulta'])): ?>
+            <div class="uk-form-row">
+                <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
+            </div>
+        <?php endif; ?>
         <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
     </fieldset>        
     </form>

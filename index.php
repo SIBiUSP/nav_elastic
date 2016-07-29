@@ -498,7 +498,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IAU">
                                         <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -508,7 +508,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IAG">
                                         <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
