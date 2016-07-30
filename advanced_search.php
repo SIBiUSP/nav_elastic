@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br" dir="ltr">
     <head>
-        <title>BDPI USP - Busca avançada</title>
-        <?php include('inc/meta-header.php'); ?>
+        <?php include('inc/functions.php'); ?> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BDPI USP - Busca Avançada</title>
+        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
+        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
+        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
+        <link rel="stylesheet" href="inc/css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
+        <script src="inc/uikit/js/uikit.min.js"></script>
+        <script src="inc/uikit/js/components/grid.js"></script>
     </head>
     <body>
-        <?php include('inc/barrausp.php'); ?>
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
-            <?php include('inc/navbar.php'); ?>
-            <div id="main">
 
+        <?php include('inc/navbar.php'); ?>
+        <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom"> 
+            <h1>Em breve...</h1>
 <div class="ui vertical stripe segment" id="search">
 <h3 class="ui header" >Buscar</h3>
 <form class="ui form" role="form" action="result.php" method="get">
@@ -42,31 +49,12 @@ Consultar o VCUSP
 </div>
 </form>
 </div>
-
-               
+<hr>
+        <?php include('inc/footer.php'); ?>               
             </div>            
-        </div>
-        <?php include('inc/footer.php'); ?>
-<script>
-$('.activating.element')
-  .popup()
-;
-</script>
-<script>
-$(document).ready(function()
-{
-  $('div#logosusp').attr("style", "z-index:0;");
-});
-</script>
-<!-- ###### Script para criar o pop-up do popterms ###### -->
-<script>
-    function creaPopup(url)
-    {
-      tesauro=window.open(url,
-      "Tesauro",
-      "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
-      )
-    }
- </script>        
+        <?php include('inc/offcanvas.php'); ?>
+
+
+ 
     </body>
 </html>
