@@ -54,92 +54,8 @@
     </head>
     <body>
 
-        <div class="barrausp">
-            <div class="uk-container uk-container-center">
-
-            <nav class="uk-margin-top">
-                <a class="uk-navbar-brand uk-hidden-small" href="index.php" style="color:white">BDPI USP</a>
-                <ul class="uk-navbar-nav uk-hidden-small">
-                    <li>
-                        <a href="index.php" style="color:white">Início</a>
-                    </li>
-                    <li>
-                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
-                    </li>
-                </ul>
-                    <div class="uk-navbar-flip">
-                        <ul class="uk-navbar-nav">
-                            <li data-uk-dropdown="{mode:'click'}">
-                                <a href="" style="color:white">
-                                    Idioma
-                                    <i class="uk-icon-caret-down"></i>
-                                </a>
-                                <div class="uk-dropdown uk-dropdown-small">
-                                    <ul class="uk-nav uk-nav-dropdown">
-                                        <li style="color:black"><a href="">Português</a></li>
-                                        <li><a href="">Inglês</a></li>
-                                    </ul>
-                                </div> 
-                            </li>
-                            <li>
-                                <a href="contato.php" style="color:white">Contato</a>
-                            </li>
-                            <li>
-                                <a href="about.php" style="color:white">Sobre</a>
-                            </li>
-                            <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                                <a href="" style="color:white"><i class="uk-icon-home"></i> Admin</a>
-
-                                <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
-                                    <ul class="uk-nav uk-nav-navbar">
-                                        <li class="uk-nav-header">Ferramentas</li>
-                                        <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
-                                        <li><a href="comparar_wos.php">Comparador WoS</a></li>
-                                        <li><a href="comparar_registros.php">Comparador weRUSP</a></li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-nav-header">Acesso</li>
-                                        <li><a href="login.php">Login</a></li>
-                                    </ul>
-                                </div>
-
-                            </li>
-                            <a class="uk-navbar-brand uk-hidden-small" href="http://sibi.usp.br" style="color:white">SIBiUSP</a>
-                        </ul>
-                    </div>                
-                <a href="#offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
-                <div class="uk-navbar-brand uk-navbar-center uk-visible-small" style="color:white">BDPI USP</div>
-            </nav>
-                
-            </div>
-            
-            <div id="busca_avancada" class="uk-container uk-container-center uk-grid uk-hidden" data-uk-grid-margin>
-                <div class="uk-width-medium-1-1">
-                    <div class="uk-alert uk-alert-large">
-                        
-                        
-                        <form class="uk-form" role="form" action="result.php" method="get">
-
-                            <fieldset data-uk-margin>
-                                <legend>Número USP</legend>
-                                <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
-                                <button class="uk-button" type="submit">Buscar</button>
-                            </fieldset>
-
-                        </form>                 
-                        <form class="uk-form" role="form" action="result.php" method="get" name="assunto">
-
-                            <fieldset data-uk-margin>
-                                <legend>Assunto do Vocabulário Controlado</legend>
-                                <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
-                                <input type="text" name="assunto">
-                                <button class="uk-button" type="submit">Buscar</button>
-                            </fieldset>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php include('inc/navbar.php'); ?>
+ 
      <div class="uk-container uk-container-center">   
         
          <h3 class="uk-margin-top">Relatório com os seguintes parâmetros:
@@ -360,44 +276,10 @@ height: 600
          
 
             <hr class="uk-grid-divider">
-            <div id="footer" data-uk-grid-margin>
-                <p>Sistema Integrado de Bibliotecas</p>
-                <p><img src="inc/images/logo-footer.png"></p>
-            </div>          
+<?php include('inc/footer.php'); ?>         
     </div>
                 
-        <div id="offcanvas" class="uk-offcanvas">
-            <div class="uk-offcanvas-bar">
-                <ul class="uk-nav uk-nav-offcanvas">
-                    <li class="uk-active">
-                        <a href="index.php">Início</a>
-                    </li>
-                    <li>
-                        <a href="#">Busca avançada</a>
-                    </li>
-                    <li>
-                        <a href="contact.php">Contato</a>
-                    </li>
-                    <li>
-                        <a href="login.php">Login</a>
-                    </li>
-                    <li>
-                        <a href="about.php">Sobre</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- ###### Script para criar o pop-up do popterms ###### -->
-<script>
-    function creaPopup(url)
-    {
-      tesauro=window.open(url,
-      "Tesauro",
-      "directories=no, menubar =no,status=no,toolbar=no,location=no,scrollbars=yes,fullscreen=no,height=600,width=450,left=500,top=0"
-      )
-    }
- </script>        
+<?php include('inc/offcanvas.php'); ?>        
         
     </body>
 </html>
