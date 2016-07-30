@@ -1,16 +1,22 @@
 <!DOCTYPE html>
-<?php include('inc/functions.php'); ?>        
-<html>
+<html lang="pt-br" dir="ltr">
     <head>
-        <title>Comparar registros do Lattes</title>
-        <?php include('inc/meta-header.php'); ?>
+        <?php include('inc/functions.php'); ?> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BDPI USP - Comparar registros do Lattes</title>
+        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
+        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
+        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
+        <link rel="stylesheet" href="inc/css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
+        <script src="inc/uikit/js/uikit.min.js"></script>
+        <script src="inc/uikit/js/components/grid.js"></script>
     </head>
     <body>
-        <!-- < ?php include('inc/barrausp.php'); ?> -->
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
-            <?php include('inc/navbar.php'); ?>
-            <div id="main">
+
+        <?php include('inc/navbar.php'); ?>
+        <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">       
                 
                 <h1>XML do Lattes</h1>
                 
@@ -22,6 +28,7 @@
 </div>  
 <input type="file" name="file">
 <input type="submit" name="btn_submit" value="Subir arquivo" />
+            </form>
 
 <?php
 if (isset($_FILES['file'])) {    
@@ -105,10 +112,9 @@ if (isset($_FILES['file'])) {
 }
 ?>
                 
-
-                
-            </div>            
+<hr>
+          <?php include('inc/footer.php'); ?>                        
         </div>
-        <?php include('inc/footer.php'); ?>
+        <?php include('inc/offcanvas.php'); ?>
     </body>
 </html>

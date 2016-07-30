@@ -42,7 +42,7 @@
                                         <li class="uk-nav-header">Ferramentas</li>
                                         <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
                                         <li><a href="comparar_wos.php">Comparador WoS</a></li>
-                                        <li><a href="comparar_registros.php">Comparador weRUSP</a></li>
+                                        <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
                                         <li class="uk-nav-divider"></li>
                                         <li class="uk-nav-header">Acesso</li>
                                         <li><a href="login.php">Login</a></li>
@@ -59,7 +59,7 @@
                 
             </div>
             
-            <div id="busca_avancada" class="uk-container uk-container-center uk-grid uk-hidden" data-uk-grid-margin>
+            <div id="busca_avancada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
                     <div class="uk-alert uk-alert-large">
                         

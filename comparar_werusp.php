@@ -4,7 +4,7 @@
         <?php include('inc/functions.php'); ?> 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>BDPI USP - Comparar registros da Web of Science</title>
+        <title>BDPI USP - Comparar registros da WeRUSP</title>
         <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
         <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
         <link rel="stylesheet" href="inc/uikit/css/uikit.css">
@@ -27,44 +27,51 @@
     </head>
     <body>
     <?php include('inc/navbar.php'); ?>
-    <div class="uk-container uk-container-center uk-margin-top">   
+    <div class="uk-container uk-container-center uk-margin-top">  
                 
-                <h1>CSV da Web of Science</h1>
+                <h1>CSV do weRUSP</h1>
                 
 <form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 <input type="file" name="file">
 <input type="submit" name="btn_submit" value="Upload File" />
-
         </form>
-
-    
-    
-    
 <?php
 if (isset($_FILES['file'])) {    
     $fh = fopen($_FILES['file']['tmp_name'], 'r+');
 
-    $record_scopus = [];
-    $record_scopus[] = 'Ano do material pesquisado\\tTipo de material pesquisado\\tTítulo pesquisado\\tDOI pesquisado\\tAutores\\tTipo de material recuperado\\tTítulo recuperado\\tDOI recuperado\\tAutores\\tAno recuperado\\tPontuação\\tID\\tUnidade';
+    
+    echo '<table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>
+                <th>Título pesquisado</th>
+                <th>DOI</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
+                <th>Título recuperado</th>
+                <th>DOI recuperado</th>
+                <th>Autores</th>
+                <th>Ano recuperado</th>
+                <th>Pontuação</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+     ';
     
     
-    while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
-         $record_scopus[] = compararRegistrosWos("Artigo",$row[44],$row[8],$row[1],$row[54]);
+    while( ($row = fgetcsv($fh, 8192,";")) !== FALSE ) {    
+        compararRegistros($row[1],$row[0],$row[8],$row[9]);
     }
     
-    $record_blob = implode("\\n", $record_scopus);
-     
-    echo '<br/><br/><br/>
-    <button class="ui blue label" onclick="SaveAsFile(\''.$record_blob.'\',\'comparativo_wos.csv\',\'text/plain;charset=utf-8\')">
-        Exportar resultado em CSV
-    </button>
-    ';
-    
+    echo '</tbody></table>';
 }
 ?>
-        <hr>
-     <?php include('inc/footer.php'); ?>           
-           
+                
+
+        <hr>        
+            <?php include('inc/footer.php'); ?>       
         </div>
         <?php include('inc/offcanvas.php'); ?>
     </body>
