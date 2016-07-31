@@ -299,16 +299,18 @@
                                         </li>
                                         <?php endif; ?>
                                         <li>
-                                            <?php if (!empty($r["_source"]['url'])) : ?>
+                                            <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
                                             <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
+                                                <?php if (!empty($r["_source"]['url'])) : ?>
                                                 <?php foreach ($r["_source"]['url'] as $url) : ?>
                                                 <?php if ($url != '') : ?>
-                                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online</a>
+                                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
                                                 <?php endif; ?>
                                                 <?php endforeach;?>
                                                 <?php endif; ?>
-                                                <?php if (!empty($r['doi'])) : ?>
-                                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Acesso online</a>
+                                                <?php if (!empty($r["_source"]['doi'])) : ?>
+                                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                                <?php endif; ?>
                                             </div>
                                             <?php endif; ?>
                                         </li>
