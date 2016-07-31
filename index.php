@@ -21,7 +21,7 @@
             
             <div class="uk-grid uk-margin-large-bottom" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
-                    <div class="uk-vertical-align uk-text-center uk-responsive-width" style="background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjQsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTEzMHB4IiBoZWlnaHQ9IjQ1MHB4IiB2aWV3Qm94PSIwIDAgMTEzMCA0NTAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDExMzAgNDUwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxyZWN0IGZpbGw9IiNGNUY1RjUiIHdpZHRoPSIxMTMwIiBoZWlnaHQ9IjQ1MCIvPg0KPC9zdmc+DQo=') 50% 0 no-repeat; height: 400px;">
+                    <div class="uk-vertical-align uk-text-center uk-responsive-width" style="background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjQsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTEzMHB4IiBoZWlnaHQ9IjQ1MHB4IiB2aWV3Qm94PSIwIDAgMTEzMCA0NTAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDExMzAgNDUwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxyZWN0IGZpbGw9IiNGNUY1RjUiIHdpZHRoPSIxMTMwIiBoZWlnaHQ9IjQ1MCIvPg0KPC9zdmc+DQo=') 50% 0 no-repeat; height: 350px;">
                         <div class="uk-vertical-align-middle uk-width-1-2">
                             <h1>Base de Produção Intelectual da USP</h1>
                             <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
@@ -105,7 +105,7 @@
                             <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -10px; height: 394px;">
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
                                     <a href="result.php?unidadeUSP[]=CEBIMAR">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CEBIMAR.jpg" alt="CEBIMAR">
                                             </div>
@@ -115,7 +115,7 @@
                                 </div>
                                 <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
                                     <a href="result.php?unidadeUSP[]=CDCC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CDCC.jpg" alt="CDCC">
                                             </div>
@@ -125,7 +125,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
                                     <a href="result.php?unidadeUSP[]=CENA">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CENA.jpg" alt="CENA">
                                             </div>
@@ -135,7 +135,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EACH">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EACH.jpg" alt="EACH">
                                             </div>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 632.049px; opacity: 1; display: block;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=ECA">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ECA.jpg" alt="ECA">
                                             </div>
@@ -155,7 +155,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 132px; left: 0px; opacity: 1; display: block;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EE">
-                                        <div class="uk-panel uk-panel-box uk-text-center" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover uk-text-center" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EE.jpg" alt="EE">
                                             </div>
@@ -164,7 +164,7 @@
                                     </a>                                    
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false">
-                                    <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EERP.jpg" alt="EERP">
                                         </div>
@@ -173,7 +173,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EEFE">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEFE.jpg" alt="EEFE">
                                             </div>
@@ -183,7 +183,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EEFERP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEFERP.jpg" alt="EEFERP">
                                             </div>
@@ -193,7 +193,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EEL">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEL.jpg" alt="EEL">
                                             </div>
@@ -203,7 +203,7 @@
                                 </div>
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EESC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EESC.jpg" alt="EESC">
                                             </div>
@@ -213,7 +213,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=EP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EP.jpg" alt="EP">
                                             </div>
@@ -223,7 +223,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b,filter-e,filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=ESALQ">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ESALQ.jpg" alt="ESALQ">
                                             </div>
@@ -233,7 +233,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FAU">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FAU.jpg" alt="FAU">
                                             </div>
@@ -243,7 +243,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FCF">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FCF.jpg" alt="FCF">
                                             </div>
@@ -253,7 +253,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FCFRP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FCFRP.jpg" alt="FCFRP">
                                             </div>
@@ -263,7 +263,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FD">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FD.jpg" alt="FD">
                                             </div>
@@ -273,7 +273,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FDRP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FDRP.jpg" alt="FDRP">
                                             </div>
@@ -283,7 +283,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FEA">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FEA.jpg" alt="FEA">
                                             </div>
@@ -293,7 +293,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FEARP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FEARP.jpg" alt="FEARP">
                                             </div>
@@ -303,7 +303,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FE">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FE.jpg" alt="FE">
                                             </div>
@@ -313,7 +313,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FFCLRP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FFCLRP.jpg" alt="FFCLRP">
                                             </div>
@@ -323,7 +323,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FFLCH">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FFLCH.jpg" alt="FFLCH">
                                             </div>
@@ -333,7 +333,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FM">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FM.jpg" alt="FM">
                                             </div>
@@ -343,7 +343,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FMRP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FMRP.jpg" alt="FMRP">
                                             </div>
@@ -353,7 +353,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FMVZ">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FMVZ.jpg" alt="FMVZ">
                                             </div>
@@ -363,7 +363,7 @@
                                 </div>                                 
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FO" style="padding:15px 0 0 0">
-                                        <div class="uk-panel uk-panel-box">
+                                        <div class="uk-panel uk-panel-hover">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FO.jpg" alt="FO">
                                             </div>
@@ -373,7 +373,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FOB" style="padding:15px 0 0 0">
-                                        <div class="uk-panel uk-panel-box" style="padding:0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FOB.jpg" alt="FOB">
                                             </div>
@@ -383,7 +383,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FORP" style="padding:15px 0 0 0">
-                                        <div class="uk-panel uk-panel-box" style="padding:0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FORP.jpg" alt="FORP">
                                             </div>
@@ -393,7 +393,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FSP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FSP.jpg" alt="FSP">
                                             </div>
@@ -403,7 +403,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=FZEA">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FZEA.jpg" alt="FZEA">
                                             </div>
@@ -413,7 +413,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IAU">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IAU.jpg" alt="IAU">
                                             </div>
@@ -423,7 +423,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IAG">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IAG.jpg" alt="IAG">
                                             </div>
@@ -433,7 +433,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IB">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IB.jpg" alt="IB">
                                             </div>
@@ -443,7 +443,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=ICB">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ICB.jpg" alt="ICB">
                                             </div>
@@ -453,7 +453,7 @@
                                 </div>
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=ICMC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ICMC.jpg" alt="ICMC">
                                             </div>
@@ -463,7 +463,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IEE">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IEE.jpg" alt="IEE">
                                             </div>
@@ -473,7 +473,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IEB">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IEB.jpg" alt="IEB">
                                             </div>
@@ -483,7 +483,7 @@
                                 </div>
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IF">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IF.jpg" alt="IF">
                                             </div>
@@ -493,7 +493,7 @@
                                 </div>
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IFSC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IFSC.jpg" alt="IFSC">
                                             </div>
@@ -503,7 +503,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IGC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IGC.jpg" alt="IGC">
                                             </div>
@@ -513,7 +513,7 @@
                                 </div>
                                 <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IME">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IME.jpg" alt="IME">
                                             </div>
@@ -523,7 +523,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IMT">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IMT.jpg" alt="IMT">
                                             </div>
@@ -533,7 +533,7 @@
                                 </div>
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IP.jpg" alt="IP">
                                             </div>
@@ -543,7 +543,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IQ">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IQ.jpg" alt="IQ">
                                             </div>
@@ -553,7 +553,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IQSC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IQSC.jpg" alt="IQSC">
                                             </div>
@@ -563,7 +563,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IRI">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IRI.jpg" alt="IRI">
                                             </div>
@@ -573,7 +573,7 @@
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=IO">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IO.jpg" alt="IO">
                                             </div>
@@ -583,7 +583,7 @@
                                 </div>
                                 <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=MAE">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MAE.jpg" alt="MAE">
                                             </div>
@@ -593,7 +593,7 @@
                                 </div>                                
                                 <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=MAC">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MAC.jpg" alt="MAC">
                                             </div>
@@ -603,7 +603,7 @@
                                 </div>
                                 <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=MZ">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MZ.jpg" alt="MZ">
                                             </div>
@@ -613,7 +613,7 @@
                                 </div>                                  
                                 <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
                                     <a href="result.php?unidadeUSP[]=MP">
-                                        <div class="uk-panel uk-panel-box" style="padding:15px 0 0 0">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
                                                 <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MP.jpg" alt="MP">
                                             </div>
