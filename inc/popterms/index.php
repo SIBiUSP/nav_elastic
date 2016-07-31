@@ -150,10 +150,10 @@ if($vocabularyMetadata)
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:#1094AB;border-color:white">
      <div class="container">
     <div class="col-sm-4 col-md-4">
-        <form name="searchForm" method="get" id="searchform" action="<?php echo WEBTHES_PATH;?>" class="navbar-form" role="search">
+        <form name="searchForm" method="get" id="searchform" action="<?php echo WEBTHES_PATH;?>" class="navbar-form" role="search" style="background-color:#1094AB;border-color:white">
         <div class="input-group">
                 <input type="hidden" name="search_param" value="all" id="search_param">         
                 <input type="text" class="form-control" id="query" name="arg" class="search-query" placeholder="<?php echo LABEL_Buscar;?>">

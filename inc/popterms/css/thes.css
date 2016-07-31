@@ -127,3 +127,7 @@ a:visited {
                 color: #009BDD;
                 text-decoration: none;
 }
+
+.navbar-inverse {
+    background-color: teal;
+}
