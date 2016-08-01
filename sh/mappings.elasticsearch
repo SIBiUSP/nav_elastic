@@ -2,11 +2,20 @@ DELETE /sibi
 
 PUT /sibi
 {
-    "settings": {
-        "number_of_shards" :   4,
-        "number_of_replicas" : 3
+  "settings": {
+    "number_of_shards" :   4,
+    "number_of_replicas" : 3,
+    "analysis": {
+      "analyzer": {
+        "ascii": {
+          "tokenizer": "standard",
+          "filter":  [ "lowercase", "asciifolding" ]
+        }
+      }
     }
+  }
 }
+
 
 PUT /sibi/producao/_mapping
 {
@@ -166,7 +175,8 @@ PUT /sibi/producao/_mapping
                 "index": "not_analyzed"
             },
             "record": {
-                "type": "string"
+                "type": "string",
+                "analyzer": "ascii"
             },
             "subject": {
                 "type": "string",
@@ -181,7 +191,8 @@ PUT /sibi/producao/_mapping
                 "index": "not_analyzed"
             },
             "title": {
-                "type": "string"
+                "type": "string",
+                "analyzer": "ascii"
             },
             "type": {
                 "type": "string",

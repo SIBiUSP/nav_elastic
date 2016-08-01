@@ -2,15 +2,6 @@
 
 include('inc/functions.php');
 
-/* Citation Style - Session - Default: ABNT */
-
-if (empty($_SESSION["citation_style"])) {
-    $_SESSION["citation_style"]="abnt";
-}
-if (isset($_POST["citation_style"])) {
-    $_SESSION["citation_style"] = $_POST['citation_style'];
-} 
-
 /* Pegar a URL atual */
 if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
   $url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
@@ -20,15 +11,19 @@ if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
 
 /* Citeproc-PHP*/
 include 'inc/citeproc-php/CiteProc.php';
-$csl = file_get_contents('inc/citeproc-php/style/'.$_SESSION["citation_style"].'.csl');
+$csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
+$csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
+$csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
+$csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
 $lang = "br";
-$citeproc = new citeproc($csl,$lang);
+$citeproc_abnt = new citeproc($csl_abnt,$lang);
+$citeproc_apa = new citeproc($csl_apa,$lang);
+$citeproc_nlm = new citeproc($csl_nlm,$lang);
+$citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
-
 $cursor = query_one_elastic($_GET['_id']);
-
 
 /* Contador */
 counter($_GET['_id']);
@@ -36,7 +31,6 @@ counter($_GET['_id']);
 ?>
 
 <?php
-
 
 $record = [];
 
@@ -320,128 +314,39 @@ $record_blob = implode("\\n", $record);
                             <hr>
                             <?php load_itens_new($cursor["_id"]); ?>
                             <hr>
-
-                            <h3>Escolha o estilo da Citação:</h3>
-                            <div class="ui compact menu">
-                                <form method="post" action="http://<?php echo $url; ?>">
-                                    <button  type="submit" name="citation_style" class="ui icon button" value="apa">APA</button>
-                                </form>
-                                <form method="post" action="http://<?php echo $url; ?>">
-                                    <button type="submit" name="citation_style" class="ui icon button" value="abnt">ABNT</button>
-                                </form>
-                                <form method="post" action="http://<?php echo $url; ?>">
-                                    <button type="submit" name="citation_style" class="ui icon button" value="nlm">NLM</button>
-                                </form>
-                                <form method="post" action="http://<?php echo $url; ?>">
-                                    <button type="submit" name="citation_style" class="ui icon button" value="vancouver">Vancouver</button>
-                                </form>
-                            </div>
-                            <br/><br/>
+  
                             <div class="extra" style="color:black;">
-                                <h4>Como citar (<?php echo strtoupper($_SESSION["citation_style"]); ?>)</h4>
-                                <?php
-                                $type = get_type($cursor["_source"]["type"]);
-                                
-                                $author_array = array();
-                                
-                                if ($type == "thesis") {
-                                    $array_authors = explode(',', $cursor["_source"]["authors"][0]);
-                                    $authors = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';                                    
-                                } else {
-                                    foreach ($cursor["_source"]["authors"] as $autor_citation){
-                                        $array_authors = explode(',', $autor_citation);
-                                        $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
-                                    };
-                                    $authors = implode(",",$author_array);                                    
-                                }
-                                
-                                
-
-                                if (!empty($cursor["_source"]["ispartof"])) {
-                                    $container = '"container-title": "'.$cursor["_source"]["ispartof"].'",';
-                                } else {
-                                    $container = "";
-                                };
-                                if (!empty($cursor["_source"]["doi"])) {
-                                    $doi = '"DOI": "'.$cursor["_source"]["doi"][0].'",';
-                                } else {
-                                    $doi = "";
-                                };
-
-                                if (!empty($cursor["_source"]["url"])) {
-                                    $url = '"URL": "'.$cursor["_source"]["url"][0].'",';
-                                } else {
-                                    $url = "";
-                                };
-
-                                if (!empty($cursor["_source"]["publisher"])) {
-                                    $publisher = '"publisher": "'.$cursor["_source"]["publisher"].'",';
-                                } elseif ($type == "thesis") {
-                                    $publisher = '"publisher":"Universidade de São Paulo",';
-                                } else {
-                                    $publisher = "";
-                                };
-                                if (!empty($cursor["_source"]["tipotese"])) {
-                                    $tese = '"tipotese":"'.$cursor["_source"]["tipotese"].'",';                                    
-                                }
-                                
-
-                                if (!empty($cursor["_source"]["publisher-place"])) {
-                                    $publisher_place = '"publisher-place": "'.$cursor["_source"]["publisher-place"].'",';
-                                } else {
-                                    $publisher_place = "";
-                                };
-
-                                $volume = "";
-                                $issue = "";
-                                $page_ispartof = "";
-
-                                if (!empty($cursor["_source"]["ispartof_data"])) {
-                                    foreach ($cursor["_source"]["ispartof_data"] as $ispartof_data) {
-                                        if (strpos($ispartof_data, 'v.') !== false) {
-                                            $volume = '"volume": "'.str_replace("v.","",$ispartof_data).'",';
-                                        } elseif (strpos($ispartof_data, 'n.') !== false) {
-                                            $issue = '"issue": "'.str_replace("n.","",$ispartof_data).'",';
-                                        } elseif (strpos($ispartof_data, 'p.') !== false) {
-                                            $page_ispartof = '"page": "'.str_replace("p.","",$ispartof_data).'",';
-                                        }
-                                    }
-                                } 
-                                
-                                $accessed = '"accessed": {
-                                                "date-parts": [
-                                                ["'.date("Y").'","'.date("m").'","'.date("d").'"]
-                                                ]
-                                                },';
-
-                                $data = json_decode('{
-                                "title": "'.$cursor["_source"]["title"].'",
-                                "type": "'.$type.'",
-                                '.$container.'
-                                '.$doi.'
-                                '.$url.'
-                                '.$accessed.'
-                                '.$tese.'
-                                '.$publisher.'
-                                '.$publisher_place.'
-                                '.$volume.'
-                                '.$issue.'
-                                '.$page_ispartof.'
-                                "issued": {
-                                    "date-parts": [
-                                        [
-                                            "'.$cursor["_source"]["year"].'"
-                                        ]
-                                    ]
-                                },
-                                "author": [
-                                    '.$authors.'
-                                ]
-                                }');
-                                
-                                $output = $citeproc->render($data, $mode);
-                                print_r($output);
-                                ?>
+                                <h4>Como citar</h4>
+                                <ul>
+                                    <li class="uk-margin-top">
+                                        <p><strong>ABNT</strong></p>
+                                        <?php
+                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            print_r($citeproc_abnt->render($data, $mode));
+                                        ?>                                    
+                                    </li>
+                                    <li class="uk-margin-top">
+                                        <p><strong>APA</strong></p>
+                                        <?php
+                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            print_r($citeproc_apa->render($data, $mode));
+                                        ?>                                    
+                                    </li>
+                                    <li class="uk-margin-top">
+                                        <p><strong>NLM</strong></p>
+                                        <?php
+                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            print_r($citeproc_nlm->render($data, $mode));
+                                        ?>                                    
+                                    </li>
+                                    <li class="uk-margin-top">
+                                        <p><strong>Vancouver</strong></p>
+                                        <?php
+                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            print_r($citeproc_vancouver->render($data, $mode));
+                                        ?>                                    
+                                    </li>                                      
+                                </ul>
                             </div>                           
                          
                         
