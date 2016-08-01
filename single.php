@@ -1,6 +1,8 @@
 <?php
 
+include('inc/config.php'); 
 include('inc/functions.php');
+
 
 /* Pegar a URL atual */
 if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
@@ -103,16 +105,8 @@ $record_blob = implode("\\n", $record);
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php include('inc/meta-header.php'); ?>
         <title>BDPI USP - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
-        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
-        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
-        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
-        <link rel="stylesheet" href="inc/css/style.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
-        <script src="inc/uikit/js/uikit.min.js"></script>
-        <script src="inc/uikit/js/components/grid.js"></script>
         <script src="inc/uikit/js/components/slideset.js"></script>
         
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
@@ -156,8 +150,6 @@ $record_blob = implode("\\n", $record);
 
     <?php include('inc/navbar.php'); ?>
 
-            
-    
     <div class="uk-container uk-container-center uk-margin-large-bottom">
 
         <div class="uk-grid uk-margin-top" data-uk-grid-margin>

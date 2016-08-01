@@ -45,7 +45,7 @@
                                         <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
                                         <li class="uk-nav-divider"></li>
                                         <li class="uk-nav-header">Acesso</li>
-                                        <li><a href="login.php">Login</a></li>
+                                        <li><a href="#">Login</a></li>
                                     </ul>
                                 </div>
 

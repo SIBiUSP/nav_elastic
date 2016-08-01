@@ -1,9 +1,9 @@
 <?php
 
-function query_elastic ($query) {
+function query_elastic ($query,$server) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.90/sibi/producao/_search";
+    $url = "http://$server/sibi/producao/_search";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -20,7 +20,7 @@ function query_elastic ($query) {
 function query_one_elastic ($_id) {
     $ch = curl_init();
     $method = "GET";
-    $url = "http://172.31.0.90/sibi/producao/$_id";
+    $url = "http://$server/sibi/producao/$_id";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -37,7 +37,7 @@ function query_one_elastic ($_id) {
 function query_graph ($query) {
     $ch = curl_init();
     $method = "GET";
-    $url = "http://172.31.0.90/sibi/_graph/explore";
+    $url = "http://$server/sibi/_graph/explore";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -54,7 +54,7 @@ function query_graph ($query) {
 function update_elastic ($_id,$query) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.90/sibi/producao/$_id/_update";
+    $url = "http://$server/sibi/producao/$_id/_update";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -73,7 +73,7 @@ function update_elastic ($_id,$query) {
 function counter ($_id) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.90/sibi/producao_metrics/$_id/_update";
+    $url = "http://$server/sibi/producao_metrics/$_id/_update";
     $query = 
              '{
                 "script" : {
@@ -101,10 +101,10 @@ function counter ($_id) {
 }
 
 
-function contar_registros () {
+function contar_registros ($server) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.90/sibi/producao/_count";
+    $url = "http://$server/sibi/producao/_count";
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_PORT, 9200);
@@ -120,10 +120,10 @@ function contar_registros () {
 
 }
 
-function contar_unicos ($field) {
+function contar_unicos ($field,$server) {
     $ch = curl_init();
     $method = "POST";
-    $url = "http://172.31.0.90/sibi/producao/_search";
+    $url = "http://$server/sibi/producao/_search";
     
     $query = '
     {
@@ -150,7 +150,7 @@ function contar_unicos ($field) {
     print_r($data["aggregations"]["distinct_authors"]["value"]);
 }
 
-function ultimos_registros_new() {
+function ultimos_registros($server) {
     
      $query = '{
                 "query": {
@@ -161,7 +161,7 @@ function ultimos_registros_new() {
                     {"_uid" : {"order" : "desc"}}
                     ]
                 }';
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
 
 foreach ($data["hits"]["hits"] as $r){
 #print_r($r);
@@ -195,7 +195,7 @@ echo '</article>';
 }
 
 
-function criar_unidadeUSP_inicio () {
+function criar_unidadeUSP_inicio($server) {
 
     $query = '{
         "size": 0,
@@ -211,7 +211,7 @@ function criar_unidadeUSP_inicio () {
         }
     }';
     
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
     
     echo '<h3>Unidades USP</h3>';
     echo '<div class="ui five stackable doubling cards">';
@@ -253,7 +253,7 @@ function criar_unidadeUSP_inicio () {
 
 }
 
-function unidadeUSP_inicio () {
+function unidadeUSP_inicio($server) {
 
     $query = '{
         "size": 0,
@@ -267,7 +267,7 @@ function unidadeUSP_inicio () {
         }
     }';
     
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
     $count = 1;
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
         echo '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
@@ -285,7 +285,7 @@ function unidadeUSP_inicio () {
     }
 }
 
-function base_inicio () {
+function base_inicio($server) {
 
     $query = '{
         "size": 0,
@@ -299,7 +299,7 @@ function base_inicio () {
         }
     }';
     
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
     
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
         echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a></li>';
@@ -307,7 +307,7 @@ function base_inicio () {
 }
 
 
-function gerar_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+function gerar_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
          
@@ -329,7 +329,7 @@ function gerar_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
      }
      ';
        
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
         
     echo '<li class="uk-parent">';
     echo '<a href="#">'.$nome_do_campo.'</a>';
@@ -356,7 +356,7 @@ function gerar_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
 
 }
 
-function corrigir_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
          
@@ -379,7 +379,7 @@ function corrigir_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort
      }
      ';
        
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
     
     echo '<li class="uk-parent">';
     echo '<a href="#">'.$nome_do_campo.'</a>';
@@ -394,7 +394,7 @@ function corrigir_faceta_new($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort
 
 }
 
-function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort) {
+function gerar_faceta_range($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
 
     if (!empty($sort)){
          
@@ -420,7 +420,7 @@ function gerar_faceta_range($consulta,$url,$campo,$tamanho,$nome_do_campo,$sort)
      ';
     
             
-    $data = query_elastic($query);
+    $data = query_elastic($query,$server);
     
    
     echo '<div class="item">';
@@ -509,7 +509,7 @@ function load_itens_new ($sysno) {
   }
 
 /* Function to generate Graph Bar */
-function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateDataGraphBar($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho,$server) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -530,7 +530,7 @@ function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation,
      }
      ';
     
-    $facet = query_elastic($query);    
+    $facet = query_elastic($query,$server);    
     
     $data_array= array();
     foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
@@ -549,7 +549,7 @@ function generateDataGraphBar($url, $consulta, $campo, $sort, $sort_orientation,
 };
 
 /* Function to generate Tables */
-function generateDataTable($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateDataTable($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     }
@@ -570,7 +570,7 @@ function generateDataTable($url, $consulta, $campo, $sort, $sort_orientation, $f
      }
      ';
     
-    $facet = query_elastic($query);    
+    $facet = query_elastic($query,$server);    
 
 
 
@@ -598,7 +598,7 @@ echo "<table class=\"uk-table\">
 
 
 /* Function to generate CSV */
-function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -620,7 +620,7 @@ function generateCSV($url, $consulta, $campo, $sort, $sort_orientation, $facet_d
      }
      ';
     
-    $facet = query_elastic($query);   
+    $facet = query_elastic($query,$server);   
 
     $data_array= array();
     foreach ($facet['aggregations']['counts']['buckets'] as $facets) {

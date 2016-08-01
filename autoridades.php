@@ -1,5 +1,6 @@
 <?php
 
+include('inc/config.php'); 
 include('inc/functions.php');
 
 /* Consulta n registros ainda não corrigidos */
@@ -65,7 +66,7 @@ $cursor = query_elastic($query);
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Correção de autoridades</title>
+        <title>BDPI USP - Correção de autoridades</title>
         <?php include('inc/meta-header.php'); ?>
     </head>
     <body>

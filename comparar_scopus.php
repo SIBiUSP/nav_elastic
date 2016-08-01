@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<?php include('inc/functions.php'); ?>        
 <html>
     <head>
+        <?php 
+            include('inc/config.php'); 
+            include('inc/functions.php');
+            include('inc/meta-header.php'); 
+        ?>         
         <title>Comparar registros</title>
-        <?php include('inc/meta-header.php'); ?>
         
         <!-- Save as javascript -->
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>

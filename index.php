@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php include('inc/functions.php'); ?> 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php 
+            include('inc/config.php'); 
+            include('inc/functions.php');
+            include('inc/meta-header.php'); 
+        ?> 
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
-        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
-        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.docs.min.css"> -->
-        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
-        <link rel="stylesheet" href="inc/css/style.css">
-        <link rel="stylesheet" href="inc/uikit/css/docs.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
-        <script src="inc/uikit/js/uikit.min.js"></script>
-        <script src="inc/uikit/js/components/grid.js"></script>
     </head>
 
     <body>        
@@ -56,7 +50,7 @@
                         <div class="uk-width-5-6">
                             <h2 class="uk-h3">Unidades USP e Programas de Pós-Graduação Interunidades</h2>
                             <ul class="uk-list uk-list-striped">
-                                <?php unidadeUSP_inicio(); ?>
+                                <?php unidadeUSP_inicio($server); ?>
                             </ul>                            
                         </div>
                     </div>
@@ -69,7 +63,7 @@
                         <div class="uk-width-5-6">
                             <h2 class="uk-h3">Base</h2>
                             <ul class="uk-list uk-list-striped">
-                                <?php base_inicio(); ?>
+                                <?php base_inicio($server); ?>
                             </ul>
                         </div>
                     </div>
@@ -82,8 +76,8 @@
                         <div class="uk-width-5-6">
                             <h2 class="uk-h3">Nossos números</h2>
                             <ul class="uk-list uk-list-striped">
-                                <li><?php contar_registros(); ?> registros</li>
-                                <li><?php contar_unicos(authorUSP); ?> autores vinculados à USP</li>                                
+                                <li><?php contar_registros($server); ?> registros</li>
+                                <li><?php contar_unicos(authorUSP,$server); ?> autores vinculados à USP</li>                                
                             </ul>
                         </div>
                     </div>
@@ -631,7 +625,7 @@
             <div class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
                     <h2 class="uk-h3">Últimos registros</h2>
-                    <?php ultimos_registros_new();?>       
+                    <?php ultimos_registros($server);?>       
                      
                 </div>
             </div>               

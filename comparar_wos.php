@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php include('inc/functions.php'); ?> 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php 
+            include('inc/config.php'); 
+            include('inc/functions.php');
+            include('inc/meta-header.php'); 
+        ?>
         <title>BDPI USP - Comparar registros da Web of Science</title>
-        <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
-        <!-- <link rel="stylesheet" href="inc/uikit/css/uikit.min.css"> -->
-        <link rel="stylesheet" href="inc/uikit/css/uikit.css">
-        <link rel="stylesheet" href="inc/css/style.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
-        <script src="inc/uikit/js/uikit.min.js"></script>
-        <script src="inc/uikit/js/components/grid.js"></script>
         <!-- Save as javascript -->
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
