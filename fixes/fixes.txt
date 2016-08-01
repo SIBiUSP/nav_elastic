@@ -24,7 +24,7 @@ lookup('country','../fixes/country.csv',-sep_char=>',')
 marc_map('245ab','title', join:': ')
 
 #- 260a - Imprenta - Local
-marc_map('260a','publisher-place')
+marc_map('260a','publisher_place')
 #- 260b - Imprenta - Editora
 marc_map('260b','publisher')
 
