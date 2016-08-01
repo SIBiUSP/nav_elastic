@@ -17,7 +17,7 @@ function query_elastic ($query,$server) {
     return $data;
 }
 
-function query_one_elastic ($_id) {
+function query_one_elastic ($_id,$server) {
     $ch = curl_init();
     $method = "GET";
     $url = "http://$server/sibi/producao/$_id";
@@ -70,7 +70,7 @@ function update_elastic ($_id,$query) {
 
 
 
-function counter ($_id) {
+function counter ($_id,$server) {
     $ch = curl_init();
     $method = "POST";
     $url = "http://$server/sibi/producao_metrics/$_id/_update";

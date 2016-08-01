@@ -3,14 +3,6 @@
 include('inc/config.php'); 
 include('inc/functions.php');
 
-
-/* Pegar a URL atual */
-if (strpos($_SERVER['REQUEST_URI'], '?') !== false) {
-  $url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-} else {
-  $url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}?";
-}
-
 /* Citeproc-PHP*/
 include 'inc/citeproc-php/CiteProc.php';
 $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
@@ -25,10 +17,10 @@ $citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
-$cursor = query_one_elastic($_GET['_id']);
+$cursor = query_one_elastic($_GET['_id'],$server);
 
 /* Contador */
-counter($_GET['_id']);
+counter($_GET['_id'],$server);
 
 ?>
 
