@@ -338,7 +338,7 @@
                                         <a href="#" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Citar</a>
                                         <div id="citacao<?php echo  $r['_id'];?>" class="uk-hidden">
                                         <li class="uk-h6 uk-margin-top">
-                                            <div class="uk-alert uk-alert-danger">Citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
+                                            <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
                                             <ul>
                                                 <li class="uk-margin-top">
                                                     <p><strong>ABNT</strong></p>

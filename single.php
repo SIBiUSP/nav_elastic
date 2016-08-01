@@ -301,6 +301,7 @@ $record_blob = implode("\\n", $record);
   
                             <div class="extra" style="color:black;">
                                 <h4>Como citar</h4>
+                                <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
                                 <ul>
                                     <li class="uk-margin-top">
                                         <p><strong>ABNT</strong></p>
