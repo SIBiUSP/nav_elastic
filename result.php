@@ -13,6 +13,20 @@
 
     $cursor = query_elastic($query_complete);
     $total = $cursor["hits"]["total"];
+
+    /* Citeproc-PHP*/
+    include 'inc/citeproc-php/CiteProc.php';
+    $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
+    $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
+    $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
+    $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
+    $lang = "br";
+    $citeproc_abnt = new citeproc($csl_abnt,$lang);
+    $citeproc_apa = new citeproc($csl_apa,$lang);
+    $citeproc_nlm = new citeproc($csl_nlm,$lang);
+    $citeproc_vancouver = new citeproc($csl_nlm,$lang);
+    $mode = "reference";
+
 ?>
 <html>
     <head>
@@ -22,6 +36,7 @@
         <link rel="shortcut icon" href="inc/images/faviconUSP.ico" type="image/x-icon">
         <link rel="stylesheet" href="inc/uikit/css/uikit.css">
         <link rel="stylesheet" href="inc/css/style.css">
+        <link rel="stylesheet" href="inc/uikit/css/docs.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>        
         <script src="inc/uikit/js/uikit.min.js"></script>
         <script src="inc/uikit/js/components/accordion.min.js"></script>
@@ -324,6 +339,42 @@
                                                 <li><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></li>
                                             </ul>  
                                         </li>
+                                        <a href="#" data-uk-toggle="{target:'#exemplares<?php echo  $r['_id'];?>'}">Citar</a>
+                                        <div id="exemplares<?php echo  $r['_id'];?>" class="uk-hidden">
+                                        <li class="uk-h6 uk-margin-top">
+                                            <div class="uk-alert uk-alert-danger">Citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
+                                            <ul>
+                                                <li class="uk-margin-top">
+                                                    <p><strong>ABNT</strong></p>
+                                                    <?php
+                                                        $data = gera_consulta_citacao($r["_source"]);
+                                                        print_r($citeproc_abnt->render($data, $mode));
+                                                    ?>
+                                                </li>
+                                                <li class="uk-margin-top">
+                                                    <p><strong>APA</strong></p>
+                                                    <?php
+                                                        $data = gera_consulta_citacao($r["_source"]);
+                                                        print_r($citeproc_apa->render($data, $mode));
+                                                    ?>
+                                                </li>
+                                                <li class="uk-margin-top">
+                                                    <p><strong>NLM</strong></p>
+                                                    <?php
+                                                        $data = gera_consulta_citacao($r["_source"]);
+                                                        print_r($citeproc_nlm->render($data, $mode));
+                                                    ?>
+                                                </li>
+                                                <li class="uk-margin-top">
+                                                    <p><strong>Vancouver</strong></p>
+                                                    <?php
+                                                        $data = gera_consulta_citacao($r["_source"]);
+                                                        print_r($citeproc_vancouver->render($data, $mode));
+                                                    ?>
+                                                </li>                                                 
+                                            </ul>                                              
+                                        </li>
+                                        </div>
                                     </ul>
                                 </div>
                             </div>
