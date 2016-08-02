@@ -190,7 +190,7 @@ PUT /sibi/producao/_mapping
             },
             "record": {
                 "type": "string",
-                "analyzer": "ascii"
+                "analyzer": "portugues"
             },
             "subject": {
                 "type": "string",
