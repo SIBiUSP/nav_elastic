@@ -87,7 +87,7 @@
                 
             <div id="unidades" class="uk-grid" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
-                    <h2 class="uk-h3">Todas as Unidades USP</h2>           
+                    <h2 class="uk-h3">Navegar pelas Unidades USP</h2>           
 
                     <ul id="filter" class="uk-subnav uk-subnav-pill">
                         <li class="uk-active" data-uk-filter=""><a href="">Todas</a></li>
@@ -95,8 +95,8 @@
                         <li data-uk-filter="filter-e" class=""><a href="">Exatas</a></li>
                         <li data-uk-filter="filter-b" class=""><a href="">Biológicas</a></li>
                         <li data-uk-filter="filter-i" class=""><a href="">Centros, Institutos Especializados e Museus</a></li>
-                        <li data-uk-sort="filter"><a href="">A -> Z</a></li>
-                        <li data-uk-sort="filter:desc"><a href="">Z -> A</a></li>
+                        <li data-uk-sort="filter"><a href="">Siglas (A -> Z)</a></li>
+                        <li data-uk-sort="filter:desc"><a href="">Siglas (Z -> A)</a></li>
                     </ul>
 
                             <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -10px; height: 394px;">
@@ -120,7 +120,7 @@
                                         </div>
                                     </a>
                                 </div>                                
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="c">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cena">
                                     <a href="result.php?unidadeUSP[]=CENA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">

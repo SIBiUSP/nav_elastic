@@ -102,6 +102,7 @@ marc_map('856[41]u','url',join:' - ')
 split_field('url',' - ')
 replace_all('url.*','.*?buscatextual.*','')
 replace_all('url.*','.*?lattes.*','')
+replace_all('url.*','.*?tycho.*','')
 
 # 945b - Tipo
 marc_map('945b','type')

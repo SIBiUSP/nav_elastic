@@ -260,8 +260,9 @@ function unidadeUSP_inicio($server) {
         "aggs": {
             "group_by_state": {
                 "terms": {
-                    "field": "unidadeUSPtrabalhos",                    
-                    "size" : 100
+                    "field": "unidadeUSPtrabalhos",
+                    "order" : { "_term" : "asc" },
+                    "size" : 150
                 }
             }
         }
@@ -269,20 +270,29 @@ function unidadeUSP_inicio($server) {
     
     $data = query_elastic($query,$server);
     $count = 1;
+    $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        echo '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+        if (in_array($facets['key'],$programas_pos))
+        {
+          $programas[] =  '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+        } else { 
+            echo '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+        }
        
         
-       if ($count == 6)
+       if ($count == 12)
             {  
                  echo '<div id="unidades" class="uk-hidden uk-list uk-list-striped">';
             }
         $count++;
     }
+    echo '<li><b>Programas de Pós-Graduação</b></li>';
+    echo implode("",$programas);
     if ($count > 7) {
         echo '</div>';
         echo '<button class="uk-button" data-uk-toggle="{target:\'#unidades\'}">Ver todas as unidades</button>';
     }
+     
 }
 
 function base_inicio($server) {
@@ -1272,8 +1282,8 @@ function gera_consulta_citacao($citacao) {
         $publisher = "";
     };
 
-    if (!empty($citacao["publisher-place"])) {
-        $publisher_place = '"publisher-place": "'.$citacao["publisher-place"].'",';
+    if (!empty($citacao["publisher_place"])) {
+        $publisher_place = '"publisher-place": "'.$citacao["publisher_place"].'",';
     } else {
         $publisher_place = "";
     };
