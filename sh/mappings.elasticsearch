@@ -37,6 +37,10 @@ PUT /sibi/producao/_mapping
                 "type": "string",
                 "index": "not_analyzed"
             },
+            "authors_index": {
+                "type": "string",
+                "analyzer": "ascii"
+            },            
             "base": {
                 "type": "string",
                 "index": "not_analyzed"

@@ -46,6 +46,7 @@ marc_map('700a','authors.$append')
 marc_map('7007','colab_int.$append')
 marc_map('7008','colab_instituicao.$append')
 marc_map('7009','colab.$append')
+copy_field("authors","authors_index")
 
 
 # 510 - Indexado em
