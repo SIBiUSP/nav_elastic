@@ -6,10 +6,20 @@ PUT /sibi
     "number_of_shards" :   4,
     "number_of_replicas" : 3,
     "analysis": {
+        "filter": {
+            "portuguese_stop": {
+              "type":       "stop",
+              "stopwords":  "_portuguese_" 
+            },
+            "my_ascii_folding" : {
+                "type" : "asciifolding",
+                "preserve_original" : true
+            }
+      }, 
       "analyzer": {
-        "ascii": {
+        "portugues": {
           "tokenizer": "standard",
-          "filter":  [ "lowercase", "asciifolding" ]
+          "filter":  [ "standard", "lowercase", "my_ascii_folding","portuguese_stop"]
         }
       }
     }
@@ -39,7 +49,7 @@ PUT /sibi/producao/_mapping
             },
             "authors_index": {
                 "type": "string",
-                "analyzer": "ascii"
+                "analyzer": "portugues"
             },            
             "base": {
                 "type": "string",
@@ -186,6 +196,10 @@ PUT /sibi/producao/_mapping
                 "type": "string",
                 "index": "not_analyzed"
             },
+            "subject_index": {
+                "type": "string",
+                "analyzer": "portugues"
+            },            
             "sysno": {
                 "type": "string",
                 "index": "not_analyzed"
@@ -196,7 +210,7 @@ PUT /sibi/producao/_mapping
             },
             "title": {
                 "type": "string",
-                "analyzer": "ascii"
+                "analyzer": "portugues"
             },
             "type": {
                 "type": "string",

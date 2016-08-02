@@ -73,6 +73,7 @@ split_field('grupopesquisa',';')
 marc_map('650[ 7]a','subject.$append')
 # 651 - Assunto
 marc_map('651[ 7]a','subject.$append')
+copy_field('subject','subject_index')
 
 
 # Colaboração - Instituição - Trabalhos
@@ -161,4 +162,4 @@ move_field(_id, sibi_id)
 # Delete all the empty fields
 vacuum()
 # Remover record
-remove_field("record")
+remove_field('record')

@@ -1074,13 +1074,19 @@ function analisa_get($get) {
         ';
         
     } elseif (!empty($get['search_index'])) {
-        $search_term ='"query": {
-        "match" : {
-            "_all" : {
-            "query": "'.$get['search_index'].'",
-            "operator" : "and"
-            }
-        }}'; 
+        $search_term = '
+"query":
+{
+    "multi_match" : {
+        "query":      "'.urlencode($get['search_index']).'",
+        "type":       "cross_fields",
+        "fields":     [ "title", "authors_index", "subject" ],
+        "operator":   "and"
+    }    
+}       
+        ';
+        
+
         unset($get['search_index']);
 
        foreach ($get as $key => $value) {
