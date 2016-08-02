@@ -36,7 +36,7 @@ if (isset($_FILES['file'])) {
     echo '<br/><br/><br/>';
     
     
-    echo '<table class="ui celled table">
+    echo '<table class="uk-table uk-h6">
         <thead>
             <tr>
                 <th>Tipo de material pesquisado</th>
@@ -60,13 +60,13 @@ if (isset($_FILES['file'])) {
         $title = $trab_evento->{'DADOS-BASICOS-DO-TRABALHO'}->attributes()->{'TITULO-DO-TRABALHO'};
         $year = $trab_evento->{'DADOS-BASICOS-DO-TRABALHO'}->attributes()->{'ANO-DO-TRABALHO'};
         $author = $xml->{'DADOS-GERAIS'}[0]->attributes()->{'NOME-COMPLETO'};
-        compararRegistrosLattes("TRABALHO EM EVENTOS",$year,$title,$doi,$author,$codpes);        
+        compararRegistrosLattes($server,"TRABALHO EM EVENTOS",$year,$title,$doi,$author,$codpes);        
     } 
     
     echo '</tbody></table>';
 
   
-    echo '<table class="ui celled table">
+    echo '<table class="uk-table uk-h6">
         <thead>
             <tr>
                 <th>Tipo de material pesquisado</th>
@@ -91,7 +91,7 @@ if (isset($_FILES['file'])) {
         $year = $artigo->{'DADOS-BASICOS-DO-ARTIGO'}->attributes()->{'ANO-DO-ARTIGO'};
         $author = $xml->{'DADOS-GERAIS'}[0]->attributes()->{'NOME-COMPLETO'};
         $doi = $artigo->{'DADOS-BASICOS-DO-ARTIGO'}->attributes()->{'DOI'};        
-        compararRegistrosLattes("ARTIGO PUBLICADO",$year,$title,$doi,$author,$codpes);        
+        compararRegistrosLattes($server,"ARTIGO PUBLICADO",$year,$title,$doi,$author,$codpes);        
     }     
     
      echo '</tbody></table>';

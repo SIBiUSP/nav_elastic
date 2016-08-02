@@ -643,7 +643,7 @@ function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, 
 
 /* Comparar registros */
 
-function compararRegistros ($query_type,$query_year,$query_title,$query_doi,$query_authors) {
+function compararRegistros ($server,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
 
     $query = '
     {
@@ -681,7 +681,7 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_doi,$que
     }
     ';
     
-    $result = query_elastic($query);
+    $result = query_elastic($query,$server);
         
     if ($result["hits"]["total"] > 0) {
     
@@ -722,7 +722,7 @@ function compararRegistros ($query_type,$query_year,$query_title,$query_doi,$que
     }
 }
 
-function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
+function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
 
     $query = '
     {
@@ -767,7 +767,7 @@ function compararRegistrosLattes ($query_type,$query_year,$query_title,$query_do
     }
     ';
     
-    $result = query_elastic($query);
+    $result = query_elastic($query,$server);
         
     if ($result["hits"]["total"] > 0) {
     
@@ -883,7 +883,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
     }
 }
 
-function compararRegistrosWos ($query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosWos ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
@@ -912,7 +912,7 @@ function compararRegistrosWos ($query_type,$query_year,$query_title,$query_autho
     }
     ';
     
-    $result = query_elastic($query);
+    $result = query_elastic($query,$server);
         
     if ($result["hits"]["total"] > 0) {
     

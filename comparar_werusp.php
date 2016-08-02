@@ -35,7 +35,7 @@
                 $fh = fopen($_FILES['file']['tmp_name'], 'r+');
 
 
-                echo '<table class="ui celled table">
+                echo '<table class="uk-table uk-h6">
                     <thead>
                         <tr>
                             <th>Tipo de material pesquisado</th>
@@ -57,7 +57,7 @@
 
 
                 while( ($row = fgetcsv($fh, 8192,";")) !== FALSE ) {    
-                    compararRegistros($row[1],$row[0],$row[8],$row[9]);
+                    compararRegistros($server,$row[1],$row[0],$row[8],$row[9]);
                 }
 
                 echo '</tbody></table>';

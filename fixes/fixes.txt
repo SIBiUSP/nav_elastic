@@ -160,4 +160,4 @@ move_field(_id, sibi_id)
 # Delete all the empty fields
 vacuum()
 # Remover record
-#remove_field("record")
+remove_field("record")

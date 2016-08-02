@@ -44,7 +44,7 @@ if (isset($_FILES['file'])) {
     
     
     while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
-         $record_scopus[] = compararRegistrosWos("Artigo",$row[44],$row[8],$row[1],$row[54]);
+         $record_scopus[] = compararRegistrosWos($server,"Artigo",$row[44],$row[8],$row[1],$row[54]);
     }
     
     $record_blob = implode("\\n", $record_scopus);
