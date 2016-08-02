@@ -1078,7 +1078,7 @@ function analisa_get($get) {
 "query":
 {
     "multi_match" : {
-        "query":      "'.urlencode($get['search_index']).'",
+        "query":      "'.$get['search_index'].'",
         "type":       "cross_fields",
         "fields":     [ "title", "authors_index", "subject" ],
         "operator":   "and"
