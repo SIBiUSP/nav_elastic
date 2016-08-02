@@ -95,10 +95,12 @@
                         <li data-uk-filter="filter-e" class=""><a href="">Exatas</a></li>
                         <li data-uk-filter="filter-b" class=""><a href="">Biológicas</a></li>
                         <li data-uk-filter="filter-i" class=""><a href="">Centros, Institutos Especializados e Museus</a></li>
+                        <li data-uk-sort="filter"><a href="">A -> Z</a></li>
+                        <li data-uk-sort="filter:desc"><a href="">Z -> A</a></li>
                     </ul>
 
                             <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -10px; height: 394px;">
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cebimar">
                                     <a href="result.php?unidadeUSP[]=CEBIMAR">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -108,7 +110,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cdcc">
                                     <a href="result.php?unidadeUSP[]=CDCC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -118,7 +120,7 @@
                                         </div>
                                     </a>
                                 </div>                                
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="c">
                                     <a href="result.php?unidadeUSP[]=CENA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -128,7 +130,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
+                                <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="each">
                                     <a href="result.php?unidadeUSP[]=EACH">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -138,7 +140,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 632.049px; opacity: 1; display: block;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 632.049px; opacity: 1; display: block;" aria-hidden="false" data-filter="eca">
                                     <a href="result.php?unidadeUSP[]=ECA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -148,7 +150,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 132px; left: 0px; opacity: 1; display: block;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 132px; left: 0px; opacity: 1; display: block;" aria-hidden="false" data-filter="ee">
                                     <a href="result.php?unidadeUSP[]=EE">
                                         <div class="uk-panel uk-panel-hover uk-text-center" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser">
@@ -158,7 +160,7 @@
                                         </div>
                                     </a>                                    
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" data-filter="eerp">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EERP.jpg" alt="EERP">
@@ -166,7 +168,7 @@
                                         <small><p class="uk-text-center">Escola de Enfermagem de Ribeirão Preto (EERP)</p></small>
                                     </div> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eefe">
                                     <a href="result.php?unidadeUSP[]=EEFE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -176,7 +178,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eeferp">
                                     <a href="result.php?unidadeUSP[]=EEFERP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -186,7 +188,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="eel">
                                     <a href="result.php?unidadeUSP[]=EEL">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -196,7 +198,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="eesc">
                                     <a href="result.php?unidadeUSP[]=EESC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -206,7 +208,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ep">
                                     <a href="result.php?unidadeUSP[]=EP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -216,7 +218,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b,filter-e,filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b,filter-e,filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="esalq">
                                     <a href="result.php?unidadeUSP[]=ESALQ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -226,7 +228,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fau">
                                     <a href="result.php?unidadeUSP[]=FAU">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -236,7 +238,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fcf">
                                     <a href="result.php?unidadeUSP[]=FCF">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -246,7 +248,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fcfrp">
                                     <a href="result.php?unidadeUSP[]=FCFRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -256,7 +258,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fd">
                                     <a href="result.php?unidadeUSP[]=FD">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -266,7 +268,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fdrp">
                                     <a href="result.php?unidadeUSP[]=FDRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -276,7 +278,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fea">
                                     <a href="result.php?unidadeUSP[]=FEA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -286,7 +288,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fearp">
                                     <a href="result.php?unidadeUSP[]=FEARP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -296,7 +298,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fe">
                                     <a href="result.php?unidadeUSP[]=FE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -306,7 +308,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ffclrp">
                                     <a href="result.php?unidadeUSP[]=FFCLRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -316,7 +318,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fflch">
                                     <a href="result.php?unidadeUSP[]=FFLCH">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -326,7 +328,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fm">
                                     <a href="result.php?unidadeUSP[]=FM">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -336,7 +338,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fmrp">
                                     <a href="result.php?unidadeUSP[]=FMRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -346,7 +348,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fmvz">
                                     <a href="result.php?unidadeUSP[]=FMVZ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -356,7 +358,7 @@
                                         </div>
                                     </a> 
                                 </div>                                 
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fo">
                                     <a href="result.php?unidadeUSP[]=FO" style="padding:15px 0 0 0">
                                         <div class="uk-panel uk-panel-hover">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -366,7 +368,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fob">
                                     <a href="result.php?unidadeUSP[]=FOB" style="padding:15px 0 0 0">
                                         <div class="uk-panel uk-panel-hover" style="padding:0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -376,7 +378,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="forp">
                                     <a href="result.php?unidadeUSP[]=FORP" style="padding:15px 0 0 0">
                                         <div class="uk-panel uk-panel-hover" style="padding:0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -386,7 +388,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fsp">
                                     <a href="result.php?unidadeUSP[]=FSP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -396,7 +398,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fzea">
                                     <a href="result.php?unidadeUSP[]=FZEA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -406,7 +408,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iau">
                                     <a href="result.php?unidadeUSP[]=IAU">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -416,7 +418,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iag">
                                     <a href="result.php?unidadeUSP[]=IAG">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -426,7 +428,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ib">
                                     <a href="result.php?unidadeUSP[]=IB">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -436,7 +438,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="icb">
                                     <a href="result.php?unidadeUSP[]=ICB">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -446,7 +448,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="icmc">
                                     <a href="result.php?unidadeUSP[]=ICMC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -456,7 +458,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iee">
                                     <a href="result.php?unidadeUSP[]=IEE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -466,7 +468,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ieb">
                                     <a href="result.php?unidadeUSP[]=IEB">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -476,7 +478,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="if">
                                     <a href="result.php?unidadeUSP[]=IF">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -486,7 +488,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ifsc">
                                     <a href="result.php?unidadeUSP[]=IFSC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -496,7 +498,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="igc">
                                     <a href="result.php?unidadeUSP[]=IGC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -506,7 +508,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ime">
                                     <a href="result.php?unidadeUSP[]=IME">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -516,7 +518,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="imt">
                                     <a href="result.php?unidadeUSP[]=IMT">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -526,7 +528,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ip">
                                     <a href="result.php?unidadeUSP[]=IP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -536,7 +538,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iq">
                                     <a href="result.php?unidadeUSP[]=IQ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -546,7 +548,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iqsc">
                                     <a href="result.php?unidadeUSP[]=IQSC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -556,7 +558,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iri">
                                     <a href="result.php?unidadeUSP[]=IRI">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -566,7 +568,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="io">
                                     <a href="result.php?unidadeUSP[]=IO">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -576,7 +578,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mae">
                                     <a href="result.php?unidadeUSP[]=MAE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -586,7 +588,7 @@
                                         </div>
                                     </a> 
                                 </div>                                
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mac">
                                     <a href="result.php?unidadeUSP[]=MAC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -596,7 +598,7 @@
                                         </div>
                                     </a> 
                                 </div>
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mz">
                                     <a href="result.php?unidadeUSP[]=MZ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
@@ -606,7 +608,7 @@
                                         </div>
                                     </a> 
                                 </div>                                  
-                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false">
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mp">
                                     <a href="result.php?unidadeUSP[]=MP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
