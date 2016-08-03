@@ -222,11 +222,11 @@ function criar_unidadeUSP_inicio($server) {
 
         if (in_array($facets['key'],$programas_pos))
         {
-          $programas[] =  '<a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
+          $programas[] =  '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
         
         } else { 
         
-        echo '<a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
+        echo '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
                 $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
                 if (file_exists($file)) {
                 echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
@@ -274,9 +274,9 @@ function unidadeUSP_inicio($server) {
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
         if (in_array($facets['key'],$programas_pos))
         {
-          $programas[] =  '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+          $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
         } else { 
-            echo '<li><a href="result.php?unidadeUSP[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+            echo '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
         }
        
         
