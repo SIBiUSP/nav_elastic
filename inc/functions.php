@@ -274,9 +274,9 @@ function unidadeUSP_inicio($server) {
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
         if (in_array($facets['key'],$programas_pos))
         {
-          $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+          $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         } else { 
-            echo '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.$facets['doc_count'].')</a></li>';
+            echo '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }
        
         
@@ -312,7 +312,7 @@ function base_inicio($server) {
     $data = query_elastic($query,$server);
     
     foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a></li>';
+        echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
     }   
 }
 
