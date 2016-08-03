@@ -76,8 +76,8 @@
                         <div class="uk-width-5-6">
                             <h2 class="uk-h3">Nossos números</h2>
                             <ul class="uk-list uk-list-striped">
-                                <li><?php contar_registros($server); ?> registros</li>
-                                <li><?php contar_unicos(authorUSP,$server); ?> autores vinculados à USP</li>                                
+                                <li><?php echo number_format(contar_registros($server),0,',','.'); ?> registros</li>
+                                <li><?php echo number_format(contar_unicos(authorUSP,$server),0,',','.'); ?> autores vinculados à USP</li>                                
                             </ul>
                         </div>
                     </div>

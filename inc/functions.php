@@ -115,7 +115,7 @@ function contar_registros ($server) {
     $result = curl_exec($ch);
     curl_close($ch);
     $data = json_decode($result, TRUE);
-    print_r($data["count"]);
+    return $data["count"];
 
 
 }
@@ -147,7 +147,7 @@ function contar_unicos ($field,$server) {
     $result = curl_exec($ch);
     curl_close($ch);
     $data = json_decode($result, TRUE);
-    print_r($data["aggregations"]["distinct_authors"]["value"]);
+    return $data["aggregations"]["distinct_authors"]["value"];
 }
 
 function ultimos_registros($server) {
