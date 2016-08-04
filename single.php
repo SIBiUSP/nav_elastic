@@ -148,17 +148,17 @@ $record_blob = implode("\\n", $record);
             <div class="uk-width-medium-1-3">
                 <div class="uk-panel uk-panel-box">
                     <h3 class="uk-panel-title">Ver registro no DEDALUS</h3>
-                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
                         <hr>
                         <li>                    
-                            <a href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>">Ver no Dedalus</a>
+                            <button class="uk-button-small uk-button-primary" onclick="window.location.href='http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>'">Ver no Dedalus</button>
                         </li>
                     </ul>
                     <h3 class="uk-panel-title">Exportar</h3>
-                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
                         <hr>                   
                         <li>
-                            <button onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
+                            <button class="uk-button-small uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
                         </li>
                         <li>
                     <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
@@ -176,7 +176,7 @@ $record_blob = implode("\\n", $record);
             <div class="uk-width-medium-2-3">
                 <ul class="uk-tab" data-uk-tab="{connect:'#single'}">
                     <li class="uk-active"><a href="">Visualização</a></li>
-                    <li><a href="">Registro completo</a></li>
+                    <!-- <li><a href="">Registro completo</a></li> -->
                 </ul>
                 <ul id="single" class="uk-switcher uk-margin">
                     <li>
@@ -292,11 +292,24 @@ $record_blob = implode("\\n", $record);
                             
 
                             <hr>
-                            <?php if (!empty($cursor["_source"]['doi'])): ?>
-                            <a class="uk-button uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Acesso online</a>
+                        
+                            <?php if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) : ?>
+                            <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
+                                <?php if (!empty($cursor["_source"]['url'])) : ?>
+                                <?php foreach ($cursor["_source"]['url'] as $url) : ?>
+                                <?php if ($url != '') : ?>
+                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
+                                <?php endif; ?>
+                                <?php endforeach;?>
+                                <?php endif; ?>
+                                <?php if (!empty($cursor["_source"]['doi'])) : ?>
+                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                <?php endif; ?>
+                            </div>
                             <?php endif; ?>
-                            <hr>
-                            <?php load_itens_new($cursor["_id"]); ?>
+           
+                            <hr>                            
+                            <?php load_itens_single($cursor["_id"]); ?>
                             <hr>
   
                             <div class="extra" style="color:black;">
@@ -336,7 +349,7 @@ $record_blob = implode("\\n", $record);
                          
                         
                     </li>
-                    <li>
+                    <!-- <li>
                         <div class="uk-overflow-container">
                     <table class="uk-table">
                                 <thead>
@@ -349,7 +362,7 @@ $record_blob = implode("\\n", $record);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($cursor["_source"]["record"] as $fields){
+                                    < ?php foreach ($cursor["_source"]["record"] as $fields){
                                         echo '<tr>';
                                             echo '<td>'.htmlentities($fields[0]).'';
                                             echo '<td>'.htmlentities($fields[1]).'';
@@ -461,7 +474,7 @@ $record_blob = implode("\\n", $record);
                                 </tbody>
                             </table>
                             </div>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>

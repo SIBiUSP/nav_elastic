@@ -34,7 +34,7 @@ function query_one_elastic ($_id,$server) {
     return $data;
 }
 
-function query_graph ($query) {
+function query_graph ($query,$server) {
     $ch = curl_init();
     $method = "GET";
     $url = "http://$server/sibi/_graph/explore";
@@ -516,6 +516,49 @@ function load_itens_new ($sysno) {
           }
           echo "</tbody></table></div>";
           }
+          flush();
+  }
+
+/* Recupera os exemplares do DEDALUS */
+function load_itens_single ($sysno) {
+    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
+    if ($xml->error == "No associated items"){
+
+    } else {
+        echo "<h4>Exemplares físicos disponíveis nas Bibliotecas</h4>";
+        echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
+                    <thead>
+                      <tr>
+                        <th>Biblioteca</th>
+                        <th>Código de barras</th>
+                        <th>Status</th>
+                        <th>Número de chamada</th>";
+                        if ($xml->item->{'loan-status'} == "A"){
+                        echo "<th>Status</th>
+                        <th>Data provável de devolução</th>";
+                      } else {
+                        echo "<th>Status</th>";
+                      }
+                      echo "</tr>
+                    </thead>
+                  <tbody>";
+          foreach ($xml->item as $item) {
+            echo '<tr>';
+            echo '<td>'.$item->{'sub-library'}.'</td>';
+            echo '<td>'.$item->{'barcode'}.'</td>';
+            echo '<td>'.$item->{'item-status'}.'</td>';
+            echo '<td>'.$item->{'call-no-1'}.'</td>';
+            if ($item->{'loan-status'} == "A"){
+            echo '<td>Emprestado</td>';
+            echo '<td>'.$item->{'loan-due-date'}.'</td>';
+          } else {
+            echo '<td>Disponível</td>';
+          }
+            echo '</tr>';
+          }
+          echo "</tbody></table>";
+          }
+          flush();
   }
 
 /* Function to generate Graph Bar */
