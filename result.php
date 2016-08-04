@@ -247,7 +247,7 @@
                         </ul>                        
                             
                         </div>
-                        <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
+                        <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
                         <div class="uk-width-1-3">
                             <ul class="uk-pagination" data-uk-pagination="{items:<?php print_r($total);?>,itemsOnPage:<?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:<?php print_r($page-1);?>}"></ul>                         
                         </div>

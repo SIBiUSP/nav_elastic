@@ -347,7 +347,7 @@ function gerar_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sor
     $count = 1;
     foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<li class="uk-h6">';
-        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a>';
+        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
         echo '</li>';
         
         if ($count == 11)
@@ -396,7 +396,7 @@ function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$
     echo ' <ul class="uk-nav-sub">';
     foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<div class="item">';
-        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.$facets['doc_count'].')</a>';
+        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
         echo '</div>';
     };
     echo   '</ul>
