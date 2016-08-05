@@ -557,6 +557,7 @@ function load_itens_single ($sysno) {
             echo '</tr>';
           }
           echo "</tbody></table>";
+          echo '<hr>';
           }
           flush();
   }
@@ -769,6 +770,7 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
 
     $query = '
     {
+        "min_score": 0.7,
         "query":{
             "bool": {
                 "should": [
@@ -784,7 +786,7 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
                         "multi_match" : {
                             "query":      "'.$query_doi.'",
                             "type":       "cross_fields",
-                            "fields":     [ "doi" ]
+                            "fields":     [ "doi","isbn" ]
                          }
                     },
                     {

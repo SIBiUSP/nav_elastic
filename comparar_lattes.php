@@ -94,13 +94,97 @@ if (isset($_FILES['file'])) {
         compararRegistrosLattes($server,"ARTIGO PUBLICADO",$year,$title,$doi,$author,$codpes);        
     }     
     
-     echo '</tbody></table>';
+    echo '</tbody></table>';
     
-//    print_r($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'}[0]);
+    echo '<table class="uk-table uk-h6">
+        <thead>
+            <tr>
+                <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>                
+                <th>Título pesquisado</th>
+                <th>ISBN</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
+                <th>Título recuperado</th>
+                <th>DOI recuperado</th>
+                <th>Autores</th>
+                <th>Ano recuperado</th>
+                <th>Pontuação</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+     ';    
     
-//    echo '<br/><br/><br/>';
-//    print_r($xml);
+    foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'LIVROS-E-CAPITULOS'}->{'LIVROS-PUBLICADOS-OU-ORGANIZADOS'}->{'LIVRO-PUBLICADO-OU-ORGANIZADO'} as $livro) {
+        $title = $livro->{'DADOS-BASICOS-DO-LIVRO'}->attributes()->{'TITULO-DO-LIVRO'};
+        $year = $livro->{'DADOS-BASICOS-DO-LIVRO'}->attributes()->{'ANO'};
+        $author = $livro->{'AUTORES'}->attributes()->{'NOME-COMPLETO-DO-AUTOR'};
+        $isbn = $livro->{'DETALHAMENTO-DO-LIVRO'}->attributes()->{'ISBN'};        
+        compararRegistrosLattes($server,"MONOGRAFIA/LIVRO",$year,$title,$isbn,$author,$codpes);        
+    }     
     
+     echo '</tbody></table>';    
+    
+    echo '<table class="uk-table uk-h6">
+        <thead>
+            <tr>
+                <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>                
+                <th>Título pesquisado</th>
+                <th>ISBN</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
+                <th>Título recuperado</th>
+                <th>DOI recuperado</th>
+                <th>Autores</th>
+                <th>Ano recuperado</th>
+                <th>Pontuação</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+     ';    
+    
+    foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'LIVROS-E-CAPITULOS'}->{'CAPITULOS-DE-LIVROS-PUBLICADOS'}->{'CAPITULO-DE-LIVRO-PUBLICADO'} as $capitulo) {
+        $title = $capitulo->{'DADOS-BASICOS-DO-CAPITULO'}->attributes()->{'TITULO-DO-CAPITULO-DO-LIVRO'};
+        $year = $capitulo->{'DADOS-BASICOS-DO-CAPITULO'}->attributes()->{'ANO'};
+        $author = $capitulo->{'AUTORES'}->attributes()->{'NOME-COMPLETO-DO-AUTOR'};
+        $isbn = $capitulo->{'DETALHAMENTO-DO-CAPITULO'}->attributes()->{'ISBN'};        
+        compararRegistrosLattes($server,"PARTE DE MONOGRAFIA/LIVRO",$year,$title,$isbn,$author,$codpes);        
+    }     
+    
+     echo '</tbody></table>';      
+
+    echo '<table class="uk-table uk-h6">
+        <thead>
+            <tr>
+                <th>Tipo de material pesquisado</th>
+                <th>Ano do material pesquisado</th>                
+                <th>Título pesquisado</th>
+                <th>ISBN</th>
+                <th>Autores</th>
+                <th>Tipo de material recuperado</th>
+                <th>Título recuperado</th>
+                <th>DOI recuperado</th>
+                <th>Autores</th>
+                <th>Ano recuperado</th>
+                <th>Pontuação</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+     ';    
+    
+    foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TEXTOS-EM-JORNAIS-OU-REVISTAS'}->{'TEXTO-EM-JORNAL-OU-REVISTA'} as $jornal) {
+        $title = $jornal->{'DADOS-BASICOS-DO-TEXTO'}->attributes()->{'TITULO-DO-TEXTO'};
+        $year = $jornal->{'DADOS-BASICOS-DO-TEXTO'}->attributes()->{'ANO-DO-TEXTO'};
+        $author = $jornal->{'AUTORES'}->attributes()->{'NOME-COMPLETO-DO-AUTOR'};
+        $isbn = "";        
+        compararRegistrosLattes($server,"ARTIGO DE JORNAL",$year,$title,$isbn,$author,$codpes);        
+    }     
+    
+     echo '</tbody></table>';      
     
     
     
