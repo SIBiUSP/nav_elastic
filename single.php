@@ -167,7 +167,7 @@ $record_blob = implode("\\n", $record);
                         </li>
                     </ul>
                     <?php if (!empty($cursor["_source"]['doi'])): ?>
-                        <h3 class="uk-panel-title">Métricas alternativas</h3>
+                        <h3 class="uk-panel-title">Métricas</h3>
                         <hr>
                         <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
                     <?php endif; ?>
@@ -288,12 +288,9 @@ $record_blob = implode("\\n", $record);
                         <?php endif; ?>
                         </ul>
                             
-                    
-                            
-
-                            <hr>
                         
                             <?php if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) : ?>
+                            <hr>
                             <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
                                 <?php if (!empty($cursor["_source"]['url'])) : ?>
                                 <?php foreach ($cursor["_source"]['url'] as $url) : ?>
@@ -309,8 +306,7 @@ $record_blob = implode("\\n", $record);
                             <?php endif; ?>
            
                             <hr>                            
-                            <?php load_itens_single($cursor["_id"]); ?>
-                            <hr>
+                            <?php load_itens_single($cursor["_id"]); ?>                            
   
                             <div class="extra" style="color:black;">
                                 <h4>Como citar</h4>
