@@ -353,8 +353,15 @@
                                 </div>
                             </div>
                         </li>
-                        <?php flush(); ?>
-                    <?php endforeach;?>
+                        <?php
+                            ob_flush();
+                            flush(); 
+                        ?>
+                    <?php 
+                        endforeach;
+                        ob_end_flush();
+                    ?>
+                        
                     </ul>
                     </div>
                     <hr class="uk-grid-divider">

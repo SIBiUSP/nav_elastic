@@ -225,7 +225,7 @@
     
     <macro name="publisher">
         <choose>
-            <if type="article-journal" match="any" variable="publisher-place publisher">
+            <if type="article-journal article-newspaper" match="any" variable="publisher-place publisher">
                 <group delimiter=", ">
                     <choose>
                         <if variable="publisher-place">

@@ -452,6 +452,9 @@ function gerar_faceta_range($consulta,$url,$server,$campo,$tamanho,$nome_do_camp
 /* Pegar o tipo de material */
 function get_type($material_type){
   switch ($material_type) {
+  case "ARTIGO DE JORNAL":
+      return "article-newspaper";
+      break;
   case "ARTIGO DE PERIODICO":
       return "article-journal";
       break;
