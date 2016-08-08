@@ -1185,7 +1185,7 @@ function analisa_get($get) {
 
 
     } else {
-                   
+        
         foreach ($get as $key => $value) {
 
             $conta_value = count($value);
