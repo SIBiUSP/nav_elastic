@@ -113,8 +113,6 @@
                         </fieldset>        
                         </form>    
                         <hr>
-                        <?php print_r($ref_abnt); ?>
-                        <hr>
                         <h3 class="uk-panel-title">Resumo</h3>    
                         <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                             <hr>
