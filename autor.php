@@ -466,6 +466,8 @@ $record[] = "ER  - ";
                     <div class="uk-grid uk-margin-top">
                         <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
                         <div class="uk-width-1-2">
+                            <?php $record = str_replace("'","",$record); ?>
+                            <?php $record = str_replace('"','',$record); ?>
                             <?php $record_blob = implode("\\n", $record); ?>                        
                             <button class="uk-button-small uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">Exportar registros em formato RIS (EndNote)</button>
                             
