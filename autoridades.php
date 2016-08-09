@@ -3,6 +3,8 @@
 include('inc/config.php'); 
 include('inc/functions.php');
 
+$contador = '0';
+
 /* Consulta n registros ainda não corrigidos */
 
 if (empty($_GET)) {
@@ -18,8 +20,10 @@ $query='
             "filter": {
                 "bool": {
                     "must": [{
-                        "term": {
-                            "colab_instituicao_tematres": false
+                        "range": {
+                            "colab_instituicao_tematres": {
+                                "lte": 0
+                            } 
                         }
                     },
                     {
@@ -31,7 +35,7 @@ $query='
             }
         }
   },
-  "size":10000
+  "size":10
 }
 ';
 } else {
@@ -55,7 +59,7 @@ $query='
             }
         }
   },
-  "size":10000
+  "size":10
 }
 ';
 }
@@ -70,14 +74,9 @@ $cursor = query_elastic($query);
         <?php include('inc/meta-header.php'); ?>
     </head>
     <body>
-        <?php include('inc/barrausp.php'); ?>
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
-            <?php include('inc/navbar.php'); ?>
-            <div id="main">
-                
-
-                
+        <?php include('inc/navbar.php'); ?>
+        <div class="uk-container uk-container-center uk-margin-large-bottom">
+            <h1>Controle de autoridades</h1>
                 <?php 
                     $i = 1;
                     foreach ($cursor["hits"]["hits"] as $colab) {
@@ -136,7 +135,7 @@ $cursor = query_elastic($query);
                                       "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
                                       "colab_instituicao_geocode" : [ "'.$geocode_edit.'" ],
                                       "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                      "colab_instituicao_tematres" : true
+                                      "colab_instituicao_tematres" : '.$contador.'
 
                                    }
                                 }
@@ -159,7 +158,7 @@ $cursor = query_elastic($query);
                                        "doc" : {
                                           "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
                                           "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                          "colab_instituicao_tematres" : true
+                                          "colab_instituicao_tematres" : '.$contador.'
                                        }
                                     }
                                     ';
@@ -176,7 +175,7 @@ $cursor = query_elastic($query);
                                 {
                                    "doc" : {
                                       "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                      "colab_instituicao_tematres" : true
+                                      "colab_instituicao_tematres" : '.$contador.'
 
                                    }
                                 }
@@ -193,7 +192,6 @@ $cursor = query_elastic($query);
                     } 
                 ?>
             </div>            
-        </div>
         <?php include('inc/footer.php'); ?>
     </body>
 </html>

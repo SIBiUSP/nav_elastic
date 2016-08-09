@@ -1,7 +1,9 @@
 <?php 
+include 'inc/config.php';
 include 'inc/functions.php';
 
 $campo = "unidadeUSP";
+$consulta = 'FM';
 
 
 $query_unidade = '
@@ -9,7 +11,7 @@ $query_unidade = '
 	"query": {
 		"query_string": {
 			"default_field": "'.$campo.'",
-			"query": "FM"
+			"query": "'.$consulta.'"
 		}
 	},
 	"controls": {
@@ -36,7 +38,10 @@ $query_unidade = '
 }
 ';
 
-$cursor = query_graph($query_unidade);
+
+$cursor = query_graph($query_unidade,$server);
+
+print_r($cursor);
 
 $node_counter = 0;
 foreach ($cursor["vertices"] as $nodes) {    

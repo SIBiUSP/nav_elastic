@@ -39,7 +39,8 @@
             $citeproc_vancouver = new citeproc($csl_nlm,$lang);
             $mode = "reference"; 
         
-            $ref_abnt[] = ""; 
+            $ref_abnt[] = "";
+            $record = [];
         
         ?>
         <title>BDPI USP - Autor USP</title>
@@ -378,11 +379,76 @@
                                 </div>
                             </div>
                         </li>
+<?php
+
+switch ($r["_source"]["type"]) {
+case "ARTIGO DE PERIODICO":
+    $record[] = "TY  - JOUR";
+    break;
+case "PARTE DE MONOGRAFIA/LIVRO":
+    $record[] = "TY  - CHAP";
+    break;
+case "TRABALHO DE EVENTO-RESUMO":
+    $record[] = "TY  - CPAPER";
+    break;
+case "TEXTO NA WEB":
+    $record[] = "TY  - ICOMM";
+    break;
+}
+
+$record[] = "TI  - ".$r["_source"]['title']."";
+
+if (!empty($r["_source"]['year'])) {
+$record[] = "PY  - ".$r["_source"]['year']."";
+}
+
+foreach ($r["_source"]['authors'] as $autores) {
+  $record[] = "AU  - ".$autores."";
+}
+
+if (!empty($r["_source"]['ispartof'])) {
+$record[] = "T2  - ".$r["_source"]['ispartof']."";
+}
+
+if (!empty($r["_source"]['issn_part'][0])) {
+$record[] = "SN  - ".$r["_source"]['issn_part'][0]."";
+}
+
+if (!empty($r["_source"]["doi"])) {
+$record[] = "DO  - ".$r["_source"]["doi"][0]."";
+}
+
+if (!empty($r["_source"]["url"])) {
+  $record[] = "UR  - ".$r["_source"]["url"][0]."";
+}
+
+if (!empty($r["_source"]["publisher-place"])) {
+  $record[] = "PP  - ".$r["_source"]["publisher-place"]."";
+}
+
+if (!empty($r["_source"]["publisher"])) {
+  $record[] = "PB  - ".$r["_source"]["publisher"]."";
+}
+
+if (!empty($r["_source"]["ispartof_data"])) {
+  foreach ($r["_source"]["ispartof_data"] as $ispartof_data) {
+    if (strpos($ispartof_data, 'v.') !== false) {
+      $record[] = "VL  - ".str_replace("v.","",$ispartof_data)."";
+    } elseif (strpos($ispartof_data, 'n.') !== false) {
+      $record[] = "IS  - ".str_replace("n.","",$ispartof_data)."";
+    } elseif (strpos($ispartof_data, 'p.') !== false) {
+      $record[] = "SP  - ".str_replace("p.","",$ispartof_data)."";
+    }
+  }
+}
+$record[] = "ER  - ";
+
+?>
                         <?php
                             ob_flush();
                             flush(); 
                         ?>
-                    <?php 
+                        <?php 
                         endforeach;
                         ob_end_flush();
                     ?>
@@ -399,7 +465,11 @@
                     <hr class="uk-grid-divider">
                     <div class="uk-grid uk-margin-top">
                         <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
-                        <div class="uk-width-1-2"></div>
+                        <div class="uk-width-1-2">
+                            <?php $record_blob = implode("\\n", $record); ?>                        
+                            <button class="uk-button-small uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">Exportar registros em formato RIS (EndNote)</button>
+                            
+                        </div>
                     </div>                   
                                         
                 </div>

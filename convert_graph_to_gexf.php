@@ -29,7 +29,7 @@
   });
 
   sigma.parsers.json(
-    'gera_json.php',
+    'gera_json.php?unidadeUSP=IF',
     {
       container: 'container',
       settings: {
