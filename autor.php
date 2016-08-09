@@ -6,24 +6,26 @@
             include('inc/functions.php');
             include('inc/meta-header.php');
         
-            $result_get = analisa_get($_GET);
-            //$query_complete = $result_get['query_complete'];
-            $query_aggregate = $result_get['query_aggregate'];
-            $query_complete = '
-            {
-            '.$result_get['query_aggregate'].'
-            "size" : 10000
-            }            
-            ';
-        
-            $escaped_url = $result_get['escaped_url'];
-            $limit = $result_get['limit'];
-            $page = $result_get['page'];
-            $new_get = $result_get['new_get'];
+                if (array_key_exists("codpesbusca", $_GET)) { 
+                    $result_get = analisa_get($_GET);
+                    //$query_complete = $result_get['query_complete'];
+                    $query_aggregate = $result_get['query_aggregate'];
+                    $query_complete = '
+                    {
+                    '.$result_get['query_aggregate'].'
+                    "size" : 10000
+                    }            
+                    ';
+                    $escaped_url = $result_get['escaped_url'];
+                    $limit = $result_get['limit'];
+                    $page = $result_get['page'];
+                    $new_get = $result_get['new_get'];
 
-            $cursor = query_elastic($query_complete,$server);
-            $total = $cursor["hits"]["total"];
+                    $cursor = query_elastic($query_complete,$server);
+                    $total = $cursor["hits"]["total"];
         
+                } 
+                    
             /* Citeproc-PHP*/
             include 'inc/citeproc-php/CiteProc.php';
             $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
