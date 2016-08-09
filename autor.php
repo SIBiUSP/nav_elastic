@@ -35,10 +35,13 @@
             $citeproc_apa = new citeproc($csl_apa,$lang);
             $citeproc_nlm = new citeproc($csl_nlm,$lang);
             $citeproc_vancouver = new citeproc($csl_nlm,$lang);
-            $mode = "reference";        
+            $mode = "reference"; 
+        
+            $ref_abnt[] = ""; 
         
         ?>
         <title>BDPI USP - Autor USP</title>
+        <script src="inc/uikit/js/components/slideset.js"></script>
         <script src="inc/uikit/js/components/accordion.min.js"></script>
         <script src="inc/uikit/js/components/pagination.min.js"></script>
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
@@ -48,9 +51,27 @@
 
         <!-- UV Charts -->
         <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
+        <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
+        <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+        <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
+        <script type="text/javascript" src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.js"></script>        
         
         <!-- Altmetric Script -->
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+
+        <!-- Save as javascript -->
+        <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+        <script>
+              function SaveAsFile(t,f,m) {
+                    try {
+                        var b = new Blob([t],{type:m});
+                        saveAs(b, f);
+                    } catch (e) {
+                        window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
+                    }
+                }
+        </script>         
+        
     </head>
 
     <body>        
@@ -91,6 +112,8 @@
                             <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
                         </fieldset>        
                         </form>    
+                        <hr>
+                        <?php print_r($ref_abnt); ?>
                         <hr>
                         <h3 class="uk-panel-title">Resumo</h3>    
                         <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
@@ -218,12 +241,6 @@
                 </script>                        
                     </div>
                     
-                <?php if (isset($_REQUEST["assunto"])) : ?>    
-                   <div class="uk-alert" data-uk-alert>
-                       <a href="" class="uk-alert-close uk-close"></a>
-                       <?php consultar_vcusp($_REQUEST["assunto"]); ?>
-                   </div>
-                <?php endif; ?>
                     
                     <div class="uk-grid uk-margin-top">
                         <div class="uk-width-1-3"></div>
@@ -231,7 +248,14 @@
                         <div class="uk-width-1-3"></div>
                     </div>
                     
-                    <hr class="uk-grid-divider">
+                                    <ul class="uk-tab" data-uk-tab="{connect:'#tab-content'}">
+                                        <li class="uk-active" aria-expanded="true"><a href="#">Obras</a></li>
+                                        <li aria-expanded="false" class=""><a href="#">Ver em formato referência</a></li>
+                                    </ul>
+
+                                    <ul id="tab-content" class="uk-switcher uk-margin">
+                                        <li class="uk-active" aria-hidden="false">
+
                     <div class="uk-width-1-1 uk-margin-top uk-description-list-line">
                     <ul class="uk-list uk-list-line">   
                     <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
@@ -323,6 +347,7 @@
                                                     <?php
                                                         $data = gera_consulta_citacao($r["_source"]);
                                                         print_r($citeproc_abnt->render($data, $mode));
+                                                        $ref_abnt[] = $citeproc_abnt->render($data, $mode);
                                                     ?>
                                                 </li>
                                                 <li class="uk-margin-top">
@@ -363,18 +388,23 @@
                     ?>
                         
                     </ul>
-                    </div>
+                    </div>                                            
+                                        
+                                        </li>
+                                        <li aria-hidden="true" class=""><?php echo implode("<br/>",$ref_abnt); ?></li>
+                                    </ul>
+                    
+                    <hr class="uk-grid-divider">
+
                     <hr class="uk-grid-divider">
                     <div class="uk-grid uk-margin-top">
                         <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
                         <div class="uk-width-1-2"></div>
                     </div>                   
-                    
-
-                    
+                                        
                 </div>
             </div>           
-            
+    
 
         
             <hr class="uk-grid-divider">
