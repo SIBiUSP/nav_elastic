@@ -481,8 +481,7 @@ $record[] = "ER  - ";
         
             <hr class="uk-grid-divider">
             
-     
-                        
+                    
             <?php include('inc/footer.php'); ?>
 
         </div>
