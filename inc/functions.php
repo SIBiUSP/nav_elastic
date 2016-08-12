@@ -51,7 +51,7 @@ function query_graph ($query,$server) {
     return $data;
 }
 
-function update_elastic ($_id,$query) {
+function update_elastic ($_id,$query,$server) {
     $ch = curl_init();
     $method = "POST";
     $url = "http://$server/sibi/producao/$_id/_update";
@@ -395,9 +395,9 @@ function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$
     echo '<a href="#">'.$nome_do_campo.'</a>';
     echo ' <ul class="uk-nav-sub">';
     foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<div class="item">';
+        echo '<li class="uk-h6">';        
         echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-        echo '</div>';
+        echo '</li>';
     };
     echo   '</ul>
       </li>';
