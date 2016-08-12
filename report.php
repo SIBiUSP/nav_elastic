@@ -268,6 +268,11 @@ height: 600
 <?php $csv_country = generateCSV($server,$url, $query_aggregate, 'country', "_count", 'desc', 'País de publicação', 10000); ?>
 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','pais.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>
          
+<h3>Instituição de colaboração</h3>
+<?php generateDataTable($server,$url, $query_aggregate, 'colab_instituicao_trab', "_count", 'desc', 'Colaboração por instituição', 10); ?>
+<?php $csv_country = generateCSV($server,$url, $query_aggregate, 'colab_instituicao_trab', "_count", 'desc', 'Colaboração por instituição', 10000); ?>
+<button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','colaboracao.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>         
+         
          
          
          
