@@ -1,9 +1,11 @@
-<?php
-
-include('inc/config.php'); 
-include('inc/functions.php');
-
-$contador = '0';
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+    <head>
+        <?php 
+            include('inc/config.php'); 
+            include('inc/functions.php');
+            include('inc/meta-header.php'); 
+        
 
 /* Consulta n registros ainda não corrigidos */
 
@@ -19,12 +21,9 @@ $query='
             },
             "filter": {
                 "bool": {
-                    "must": [{
-                        "range": {
-                            "colab_instituicao_tematres": {
-                                "lte": 0
-                            } 
-                        }
+                    "must": [
+                    {
+                        "missing" : { "field" : "colab_instituicao_tematres" }
                     },
                     {
                         "exists":{
@@ -35,9 +34,20 @@ $query='
             }
         }
   },
-  "size":10
+  "size":1000
 }
 ';
+    
+/*
+{
+    "term": {
+        "colab_instituicao_tematres": false
+    }
+},
+
+
+*/    
+    
 } else {
 
 $query='
@@ -64,19 +74,19 @@ $query='
 ';
 }
 
-$cursor = query_elastic($query);
-
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>BDPI USP - Correção de autoridades</title>
-        <?php include('inc/meta-header.php'); ?>
+$cursor = query_elastic($query,$server);     
+        
+        
+        
+        ?> 
+        <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
     </head>
-    <body>
+    <body> 
         <?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-container-center uk-margin-large-bottom">
-            <h1>Controle de autoridades</h1>
+            
+
+                
                 <?php 
                     $i = 1;
                     foreach ($cursor["hits"]["hits"] as $colab) {
@@ -135,7 +145,7 @@ $cursor = query_elastic($query);
                                       "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
                                       "colab_instituicao_geocode" : [ "'.$geocode_edit.'" ],
                                       "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                      "colab_instituicao_tematres" : '.$contador.'
+                                      "colab_instituicao_tematres" : true
 
                                    }
                                 }
@@ -144,7 +154,7 @@ $cursor = query_elastic($query);
                             
                             
                             //print_r($query);
-                            $result = update_elastic($colab["_id"],$query);
+                            $result = update_elastic($colab["_id"],$query,$server);
                             //print_r($result);  
                         
 
@@ -158,14 +168,14 @@ $cursor = query_elastic($query);
                                        "doc" : {
                                           "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
                                           "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                          "colab_instituicao_tematres" : '.$contador.'
+                                          "colab_instituicao_tematres" : true
                                        }
                                     }
                                     ';
                             
                                 
                             //print_r($query);
-                            $result = update_elastic($colab["_id"],$query);
+                            $result = update_elastic($colab["_id"],$query,$server);
                             //print_r($result);                        
                         
                         } else {
@@ -175,13 +185,13 @@ $cursor = query_elastic($query);
                                 {
                                    "doc" : {
                                       "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                      "colab_instituicao_tematres" : '.$contador.'
+                                      "colab_instituicao_tematres" : true
 
                                    }
                                 }
                                 ';                        
                             //print_r($query);
-                            $result = update_elastic($colab["_id"],$query);
+                            $result = update_elastic($colab["_id"],$query,$server);
                             //print_r($result);
                         
                         }
@@ -191,7 +201,8 @@ $cursor = query_elastic($query);
                         $termo_geolocalizacao = array();
                     } 
                 ?>
-            </div>            
+   
+        </div>
         <?php include('inc/footer.php'); ?>
     </body>
 </html>
