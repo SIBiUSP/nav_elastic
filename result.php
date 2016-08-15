@@ -409,8 +409,12 @@
                                         <li class="uk-h6 uk-margin-top">
                                             <p>Métricas:</p>
                                             <ul>
-                                                <li><div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div></li>
-                                                <li><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></li>
+                                                <li>
+                                                    <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                                </li>
+                                                <li>
+                                                    <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                                                </li>
                                             </ul>  
                                         </li>
                                         <a href="#" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Citar</a>
