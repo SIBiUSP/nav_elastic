@@ -257,12 +257,47 @@
                     <div class="uk-width-1-1 uk-margin-top uk-description-list-line">
                     <ul class="uk-list uk-list-line">   
                     <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
+                        
+                    <?php if (!empty($r["_source"]['issn_part'][0])) : ?>
+                            <?php $issn_info = get_title_elsevier(str_replace("-","",$r["_source"]['issn_part'][0]),$api_elsevier); ?>
+                    <?php endif; ?> 
+                        
                         <li>                        
                             <div class="uk-grid uk-flex-middle" data-uk-grid-   margin="">
                                 <div class="uk-width-medium-2-10 uk-row-first">
                                     <div class="uk-panel uk-h6 uk-text-break">
                                         <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a>
                                     </div>
+                                    <div class="uk-panel uk-h6 uk-text-break">
+
+                                        <?php
+
+                                        if (isset($issn_info["serial-metadata-response"])) {                                     
+
+                                            $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";   
+
+                                            if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
+                                                echo '<img src="'.$image_url.'">';
+                                            }
+
+                                        }                                    
+
+                                        ?>
+                                      
+                                    </div>
+                                    
+                                    <div class="uk-panel uk-h6 uk-text-break">
+
+                                        <?php
+                                            if (isset($issn_info["serial-metadata-response"])) {
+                                                if ($issn_info["serial-metadata-response"]["entry"][0]["openaccess"] == '1') {                                     
+                                                        echo '<img src="inc/images/openaccess-t.png">';
+                                                }
+                                            }
+                                        ?>
+                                      
+                                    </div>                                     
+                                    
                                 </div>
                                 <div class="uk-width-medium-8-10 uk-flex-middle">
                                     
@@ -285,7 +320,8 @@
                                             <?php endif; ?>                           
                                         </li>
                                         
-                                        <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?ispartof[]=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>                                        
+                                        <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?ispartof[]=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>
+                                        
                                         <li class="uk-h6">
                                             Unidades USP:
                                             <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
@@ -325,6 +361,48 @@
                                             </div>
                                             <?php endif; ?>
                                         </li>
+                                        
+
+                                        
+                                    
+                                        
+                                        
+                                        <?php if (isset($issn_info["serial-metadata-response"])): ?>
+                                        <div class="uk-alert">
+                                            <li class="uk-h6">
+                                                Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API):
+                                                <ul>
+                                                    <li>
+                                                        Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
+                                                    </li>
+                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
+                                                    <li> 
+                                                        Área: <?php print_r($subj_area["$"]); ?>
+                                                    </li>
+                                                <?php endforeach; ?>                                                    
+                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
+                                                    <li>                                                    
+                                                        SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
+                                                    </li>
+                                                <?php endforeach; ?>
+
+                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
+                                                    <li>                                                    
+                                                        SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                        
+                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
+                                                    <li>                                                    
+                                                        IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                                </ul>
+                                            </li>
+                                        </div>    
+                                        
+                                        <?php flush(); unset($issn_info); endif; ?>                                        
+                                        
                                         <li class="uk-h6 uk-margin-top">
                                            <?php load_itens_new($r['_id']); ?>
                                         </li>
