@@ -145,8 +145,26 @@ $record_blob = implode("\\n", $record);
     <div class="uk-container uk-container-center uk-margin-large-bottom">
 
         <div class="uk-grid uk-margin-top" data-uk-grid-margin>
+            
+            <?php if (!empty($cursor["_source"]['issn_part'][0])) : ?>
+                <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn_part'][0]),$api_elsevier); ?>
+            <?php endif; ?>             
+            
+            
             <div class="uk-width-medium-1-3">
                 <div class="uk-panel uk-panel-box">
+                    
+                   <?php
+                        if (isset($issn_info["serial-metadata-response"])) {
+                            $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";
+                            if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
+                                echo '<div class="uk-margin-top uk-margin-bottom">';    
+                                echo '<img src="'.$image_url.'">';
+                                echo '</div>';
+                            }
+                        } 
+                    ?>
+                    
                     <h3 class="uk-panel-title">Ver registro no DEDALUS</h3>
                     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
                         <hr>
@@ -154,7 +172,7 @@ $record_blob = implode("\\n", $record);
                             <button class="uk-button-small uk-button-primary" onclick="window.location.href='http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>'">Ver no Dedalus</button>
                         </li>
                     </ul>
-                    <h3 class="uk-panel-title">Exportar</h3>
+                    <h3 class="uk-panel-title">Exportar registro bibliográfico</h3>
                     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
                         <hr>                   
                         <li>
@@ -286,9 +304,45 @@ $record_blob = implode("\\n", $record);
                                 </ul>                            
                             </li>
                         <?php endif; ?>
-                        </ul>
-                            
                         
+
+                        <?php if (isset($issn_info["serial-metadata-response"])): ?>
+                            <div class="uk-alert">
+                                <li class="uk-h6">
+                                    Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API):
+                                    <ul>
+                                        <li>
+                                            Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
+                                        </li>
+                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
+                                        <li> 
+                                            Área: <?php print_r($subj_area["$"]); ?>
+                                        </li>
+                                    <?php endforeach; ?>                                                    
+                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
+                                        <li>                                                    
+                                            SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+
+                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
+                                        <li>                                                    
+                                            SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+
+                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
+                                        <li>                                                    
+                                            IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                          </div>    
+                                        
+                          <?php flush(); unset($issn_info); endif; ?>       
+                        
+                        </ul>
                             <?php if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) : ?>
                             <hr>
                             <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
