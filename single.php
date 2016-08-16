@@ -188,13 +188,41 @@ $record_blob = implode("\\n", $record);
                         <h3 class="uk-panel-title">Métricas</h3>
                         <hr>
                         <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                    
+                    <?php
+                        $full_citations = get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                        echo '<br/><br/>';
+                    
+                        echo '
+                        <table class="uk-table">
+                            <caption>Citações na Scopus</caption>
+                            <thead>
+                                <tr>';
+                        foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnHeading"] as $header){
+                            echo '<th>'.$header["$"].'</th>';
+                        }
+                        echo '
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>';
+                        foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnTotal"] as $total){
+                            echo '<td>'.$total["$"].'</td>';
+                        }
+                        echo ' 
+                                </tr>
+                            </tbody>
+                        </table>                        
+                        
+                        ';
+                    ?>
                     <?php endif; ?>
                 </div>
             </div>
             <div class="uk-width-medium-2-3">
                 <ul class="uk-tab" data-uk-tab="{connect:'#single'}">
                     <li class="uk-active"><a href="">Visualização</a></li>
-                    <!-- <li><a href="">Registro completo</a></li> -->
+                    <li><a href="">Texto completo</a></li>
                 </ul>
                 <ul id="single" class="uk-switcher uk-margin">
                     <li>
@@ -399,9 +427,17 @@ $record_blob = implode("\\n", $record);
                          
                         
                     </li>
-                    <!-- <li>
+                     <li>
                         <div class="uk-overflow-container">
-                    <table class="uk-table">
+                            
+                            <?php
+                                $full_html = get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                                print_r($full_html);
+                            ?>
+                            
+                            
+                            
+                    <!-- <table class="uk-table">
                                 <thead>
                                     <tr>
                                         <th>Campo</th>
@@ -522,9 +558,9 @@ $record_blob = implode("\\n", $record);
                                     };
                                     ?>
                                 </tbody>
-                            </table>
+                            </table> -->
                             </div>
-                    </li> -->
+                    </li> 
                 </ul>
             </div>
         </div>
