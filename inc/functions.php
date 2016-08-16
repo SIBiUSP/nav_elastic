@@ -1400,6 +1400,40 @@ function get_title_elsevier($issn,$api_elsevier) {
     return $data;
     // Close request to clear up some resources
     curl_close($curl);    
+}
+
+function get_articlefull_elsevier($doi,$api_elsevier) {
+    // Get cURL resource
+    $curl = curl_init();
+    // Set some options - we are passing in a useragent too here
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://api.elsevier.com/content/article/doi/'.$doi.'?apiKey='.$api_elsevier.'&httpAccept=text%2Fhtml',
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+    ));
+    // Send the request & save response to $resp
+    $resp = curl_exec($curl);    
+    return $resp;
+    // Close request to clear up some resources
+    curl_close($curl);    
 } 
+
+function get_citations_elsevier($doi,$api_elsevier) {
+    // Get cURL resource
+    $curl = curl_init();
+    // Set some options - we are passing in a useragent too here
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://api.elsevier.com/content/abstract/citations?doi='.$doi.'&apiKey='.$api_elsevier.'&httpAccept=application%2Fjson',
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+    ));
+    // Send the request & save response to $resp
+    $resp = curl_exec($curl);
+    $data = json_decode($resp, TRUE);
+    return $data;
+    // Close request to clear up some resources
+    curl_close($curl);    
+} 
+
 
 ?>

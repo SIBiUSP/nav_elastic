@@ -101,6 +101,7 @@
         gerar_faceta($query_aggregate,$escaped_url,$server,subject,100,"Assuntos");
         gerar_faceta($query_aggregate,$escaped_url,$server,language,40,"Idioma");
         gerar_faceta($query_aggregate,$escaped_url,$server,ispartof,100,"É parte de ...");
+        gerar_faceta($query_aggregate,$escaped_url,$server,publisher,100,"Editora");
         gerar_faceta($query_aggregate,$escaped_url,$server,evento,100,"Nome do evento");
         gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");    
     ?>
