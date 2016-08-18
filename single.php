@@ -195,7 +195,7 @@ $record_blob = implode("\\n", $record);
                     
                         echo '
                         <table class="uk-table">
-                            <caption>Citações na Scopus</caption>
+                            <caption>Citações na Scopus nos últimos 3 anos</caption>
                             <thead>
                                 <tr>';
                         foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnHeading"] as $header){
@@ -301,8 +301,8 @@ $record_blob = implode("\\n", $record);
                             <li>
                                 <h4 class="uk-margin-top">Imprenta:</h4>
                                 <ul class="uk-list uk-list-line">
-                                    <li>Local: <a href="result.php?publisher-place=<?php echo $cursor["_source"]['publisher-place'];?>"><?php echo $cursor["_source"]['publisher-   place'];?></a></li>
-                                    <li>Data de publicação: <a href="result.php?year=<?php echo $cursor["_source"]['year'];?>"><?php echo $cursor["_source"]['year'];?></a></li>
+                                    <li>Local: <a href="result.php?publisher-place[]=<?php echo $cursor["_source"]['publisher-place'];?>"><?php echo $cursor["_source"]['publisher-   place'];?></a></li>
+                                    <li>Data de publicação: <a href="result.php?year[]=<?php echo $cursor["_source"]['year'];?>"><?php echo $cursor["_source"]['year'];?></a></li>
                                 </ul>
                             </li>
                             
@@ -313,7 +313,7 @@ $record_blob = implode("\\n", $record);
                             <li>
                                 <h4 class="uk-margin-top">Fonte:</h4>
                                 <ul class="uk-list uk-list-line">
-                                    <li>Título: <a href="result.php?ispartof=<?php echo $cursor["_source"]['ispartof'];?>"><?php echo $cursor["_source"]['ispartof'];?></a></li>
+                                    <li>Título: <a href="result.php?ispartof[]=<?php echo $cursor["_source"]['ispartof'];?>"><?php echo $cursor["_source"]['ispartof'];?></a></li>
                                     <?php if (!empty($cursor["_source"]['issn_part'])): ?>
                                     <li>ISSN: <a href="result.php?issn_part=<?php echo $cursor["_source"]['issn_part'][0];?>"><?php echo $cursor["_source"]['issn_part'][0];?></a></li>
                                     <?php endif; ?>
