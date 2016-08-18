@@ -106,11 +106,10 @@
         gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");    
     ?>
     </ul>
-    <!--
     <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
         <hr>
-    < ?php 
+    <?php 
         gerar_faceta($query_aggregate,$escaped_url,$server,authorUSP,100,"Autores USP");
         gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
         gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade"); gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");                           gerar_faceta($query_aggregate,$escaped_url,$server,tipotese,30,"Tipo de tese");
@@ -126,7 +125,7 @@
         gerar_faceta($query_aggregate,$escaped_url,$server,dataregistro,100,"Data de registro e alterações","desc");
     ?>
     </ul>
-    -->
+    
     <hr>
     <form class="uk-form">
     <fieldset>
@@ -153,36 +152,34 @@
     </fieldset>        
     </form>
     <hr>
-    <!--
 <form class="uk-form" method="get" action="report.php">
     <fieldset>
         <legend>Gerar relatório</legend>
-        < ?php foreach ($new_get as $key => $value) : ?>
+        <?php foreach ($new_get as $key => $value) : ?>
             <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="< ?php echo $key; ?>[]" value="< ?php echo implode(",",$value); ?>">
+                <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
             </div>
-        < ?php endforeach;?>
-        < ?php if (!empty($result_get['termo_consulta'])): ?>
+        <?php endforeach;?>
+        <?php if (!empty($result_get['termo_consulta'])): ?>
             <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="search_index" value="< ?php echo $result_get['termo_consulta']; ?>">
+                <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
             </div>
-        < ?php endif; ?>
-        < ?php if (!empty($result_get['data_inicio'])): ?>
+        <?php endif; ?>
+        <?php if (!empty($result_get['data_inicio'])): ?>
             <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="date_init" value="< ?php echo $result_get['data_inicio']; ?>">
+                <input type="hidden" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
             </div>
-        < ?php endif; ?>
-        < ?php if (!empty($result_get['data_fim'])): ?>
+        <?php endif; ?>
+        <?php if (!empty($result_get['data_fim'])): ?>
             <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="date_end" value="< ?php echo $result_get['data_fim']; ?>">
+                <input type="hidden" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
             </div>
-        < ?php endif; ?>         
+        <?php endif; ?>         
         <div class="uk-form-row"><button type="submit" class="uk-button-primary">Gerar relatório</button>
         </div>
     </fieldset>        
-    </form>  -->  
+    </form>    
 </div>
-    
                     
 
                     
