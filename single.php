@@ -138,9 +138,9 @@ $record_blob = implode("\\n", $record);
         -->
         <!-- Generate metadata to Google Scholar - END -->         
     </head>
-<body>        
-
-    <?php include('inc/navbar.php'); ?>
+    <body>
+        <?php include_once("inc/analyticstracking.php") ?>
+        <?php include('inc/navbar.php'); ?>
 
     <div class="uk-container uk-container-center uk-margin-large-bottom">
 

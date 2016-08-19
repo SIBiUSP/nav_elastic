@@ -23,6 +23,7 @@
         
     </head>
     <body>
+        <?php include_once("inc/analyticstracking.php") ?>
         <!-- < ?php include('inc/barrausp.php'); ?> -->
         <div class="ui main container">
             <?php include('inc/header.php'); ?>

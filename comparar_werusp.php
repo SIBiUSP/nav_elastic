@@ -21,7 +21,8 @@
         </script> 
     </head>
     <body>
-    <?php include('inc/navbar.php'); ?>
+        <?php include_once("inc/analyticstracking.php") ?>
+        <?php include('inc/navbar.php'); ?>
     <div class="uk-container uk-container-center uk-margin-top">  
                 
         <h1>CSV do weRUSP</h1>
