@@ -9,6 +9,7 @@
         <title>BDPI USP - Busca Avançada</title>
     </head>
     <body>
+        <?php include_once("inc/analyticstracking.php") ?>
 
         <?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom"> 

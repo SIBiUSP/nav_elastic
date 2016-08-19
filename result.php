@@ -49,9 +49,9 @@
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
         
     </head>
-    <body>        
-
-<?php include('inc/navbar.php'); ?>        
+    <body>
+        <?php include_once("inc/analyticstracking.php") ?>  
+        <?php include('inc/navbar.php'); ?>        
         
         <div class="uk-container uk-container-center">
             <div class="uk-grid" data-uk-grid>                        

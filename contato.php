@@ -9,10 +9,10 @@
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
     </head>
 
-    <body>        
-
+    <body>
+        <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
-<div class="uk-container uk-container-center uk-margin-large-top">
+        <div class="uk-container uk-container-center uk-margin-large-top">
     
             <div class="uk-grid" data-uk-grid-margin>
 
