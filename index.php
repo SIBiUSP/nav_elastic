@@ -161,12 +161,14 @@
                                     </a>                                    
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" data-filter="eerp">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EERP.jpg" alt="EERP">
+                                    <a href="result.php?unidadeUSP[]=EERP">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EERP.jpg" alt="EERP">
+                                            </div>
+                                            <small><p class="uk-text-center">Escola de Enfermagem de Ribeirão Preto (EERP)</p></small>
                                         </div>
-                                        <small><p class="uk-text-center">Escola de Enfermagem de Ribeirão Preto (EERP)</p></small>
-                                    </div> 
+                                    </a>
                                 </div>
                                 <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eefe">
                                     <a href="result.php?unidadeUSP[]=EEFE">
