@@ -94,7 +94,7 @@
                         <li data-uk-filter="filter-h" class=""><a href="">Humanas</a></li>
                         <li data-uk-filter="filter-e" class=""><a href="">Exatas</a></li>
                         <li data-uk-filter="filter-b" class=""><a href="">Biológicas</a></li>
-                        <li data-uk-filter="filter-i" class=""><a href="">Centros, Institutos Especializados e Museus</a></li>
+                        <li data-uk-filter="filter-i" class=""><a href="">Centros, Hospitais, Institutos Especializados e Museus</a></li>
                         <li data-uk-sort="filter"><a href="">Siglas (A -> Z)</a></li>
                         <li data-uk-sort="filter:desc"><a href="">Siglas (Z -> A)</a></li>
                     </ul>
@@ -409,7 +409,27 @@
                                             <small><p class="uk-text-center">Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)</p></small>
                                         </div>
                                     </a> 
-                                </div>                                
+                                </div>
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="hrac">
+                                    <a href="result.php?unidadeUSP[]=HRAC">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="inc/images/logosusp/HRAC.jpg" alt="HRAC">
+                                            </div>
+                                            <small><p class="uk-text-center">Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                  
+                                <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="hu">
+                                    <a href="result.php?unidadeUSP[]=HU">
+                                        <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
+                                            <div class="uk-panel-teaser uk-text-center">
+                                                <img src="inc/images/logosusp/HU.jpg" alt="HU">
+                                            </div>
+                                            <small><p class="uk-text-center">Hospital Universitário (HU)</p></small>
+                                        </div>
+                                    </a> 
+                                </div>                                 
                                 <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iau">
                                     <a href="result.php?unidadeUSP[]=IAU">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
