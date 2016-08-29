@@ -261,10 +261,14 @@
                     <div class="uk-width-1-1 uk-margin-top uk-description-list-line">
                     <ul class="uk-list uk-list-line">   
                     <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
+                    
+                    <!--    
                         
-                    <?php if (!empty($r["_source"]['issn_part'][0])) : ?>
-                            <?php $issn_info = get_title_elsevier(str_replace("-","",$r["_source"]['issn_part'][0]),$api_elsevier); ?>
-                    <?php endif; ?> 
+                    < ?php if (!empty($r["_source"]['issn_part'][0])) : ?>
+                            < ?php $issn_info = get_title_elsevier(str_replace("-","",$r["_source"]['issn_part'][0]),$api_elsevier); ?>
+                    < ?php endif; ?>
+
+                    -->
                         
                         <li>                        
                             <div class="uk-grid uk-flex-middle" data-uk-grid-   margin="">
