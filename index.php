@@ -104,7 +104,7 @@
                                     <a href="result.php?unidadeUSP[]=CEBIMAR">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CEBIMAR.jpg" alt="CEBIMAR">
+                                                <img src="inc/images/logosusp/CEBIMAR.jpg" alt="CEBIMAR">
                                             </div>
                                             <small><p class="uk-text-center">Centro de Biologia Marinha (CEBIMAR)</p></small>
                                         </div>
@@ -114,7 +114,7 @@
                                     <a href="result.php?unidadeUSP[]=CDCC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CDCC.jpg" alt="CDCC">
+                                                <img src="inc/images/logosusp/CDCC.jpg" alt="CDCC">
                                             </div>
                                             <small><p class="uk-text-center">Centro de Divulgação Científica e Cultural (CDCC)</p></small>
                                         </div>
@@ -124,7 +124,7 @@
                                     <a href="result.php?unidadeUSP[]=CENA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/CENA.jpg" alt="CENA">
+                                                <img src="inc/images/logosusp/CENA.jpg" alt="CENA">
                                             </div>
                                             <small><p class="uk-text-center">Centro de Energia Nuclear na Agricultura (CENA)</p></small>
                                         </div>
@@ -134,7 +134,7 @@
                                     <a href="result.php?unidadeUSP[]=EACH">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EACH.jpg" alt="EACH">
+                                                <img src="inc/images/logosusp/EACH.jpg" alt="EACH">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Artes, Ciências e Humanidades (EACH)</p></small>
                                         </div>
@@ -144,7 +144,7 @@
                                     <a href="result.php?unidadeUSP[]=ECA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ECA.jpg" alt="ECA">
+                                                <img src="inc/images/logosusp/ECA.jpg" alt="ECA">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Comunicações e Artes (ECA)</p></small>
                                         </div>
@@ -154,7 +154,7 @@
                                     <a href="result.php?unidadeUSP[]=EE">
                                         <div class="uk-panel uk-panel-hover uk-text-center" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EE.jpg" alt="EE">
+                                                <img src="inc/images/logosusp/EE.jpg" alt="EE">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Enfermagem (EE)</p></small>
                                         </div>
@@ -164,7 +164,7 @@
                                     <a href="result.php?unidadeUSP[]=EERP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EERP.jpg" alt="EERP">
+                                                <img src="inc/images/logosusp/EERP.jpg" alt="EERP">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Enfermagem de Ribeirão Preto (EERP)</p></small>
                                         </div>
@@ -174,7 +174,7 @@
                                     <a href="result.php?unidadeUSP[]=EEFE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEFE.jpg" alt="EEFE">
+                                                <img src="inc/images/logosusp/EEFE.jpg" alt="EEFE">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Educação Física e Esporte (EEFE)</p></small>
                                         </div>
@@ -184,7 +184,7 @@
                                     <a href="result.php?unidadeUSP[]=EEFERP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEFERP.jpg" alt="EEFERP">
+                                                <img src="inc/images/logosusp/EEFERP.jpg" alt="EEFERP">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)</p></small>
                                         </div>
@@ -194,7 +194,7 @@
                                     <a href="result.php?unidadeUSP[]=EEL">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EEL.jpg" alt="EEL">
+                                                <img src="inc/images/logosusp/EEL.jpg" alt="EEL">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Engenharia de Lorena (EEL)</p></small>
                                         </div>
@@ -204,7 +204,7 @@
                                     <a href="result.php?unidadeUSP[]=EESC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EESC.jpg" alt="EESC">
+                                                <img src="inc/images/logosusp/EESC.jpg" alt="EESC">
                                             </div>
                                             <small><p class="uk-text-center">Escola de Engenharia de São Carlos (EESC)</p></small>
                                         </div>
@@ -214,7 +214,7 @@
                                     <a href="result.php?unidadeUSP[]=EP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/EP.jpg" alt="EP">
+                                                <img src="inc/images/logosusp/EP.jpg" alt="EP">
                                             </div>
                                             <small><p class="uk-text-center">Escola Politécnica (EP)</p></small>
                                         </div>
@@ -224,7 +224,7 @@
                                     <a href="result.php?unidadeUSP[]=ESALQ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ESALQ.jpg" alt="ESALQ">
+                                                <img src="inc/images/logosusp/ESALQ.jpg" alt="ESALQ">
                                             </div>
                                             <small><p class="uk-text-center">Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)</p></small>
                                         </div>
@@ -234,7 +234,7 @@
                                     <a href="result.php?unidadeUSP[]=FAU">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FAU.jpg" alt="FAU">
+                                                <img src="inc/images/logosusp/FAU.jpg" alt="FAU">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Arquitetura e Urbanismo (FAU)</p></small>
                                         </div>
@@ -244,7 +244,7 @@
                                     <a href="result.php?unidadeUSP[]=FCF">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FCF.jpg" alt="FCF">
+                                                <img src="inc/images/logosusp/FCF.jpg" alt="FCF">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Ciências Farmacêuticas (FCF)</p></small>
                                         </div>
@@ -254,7 +254,7 @@
                                     <a href="result.php?unidadeUSP[]=FCFRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FCFRP.jpg" alt="FCFRP">
+                                                <img src="inc/images/logosusp/FCFRP.jpg" alt="FCFRP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)</p></small>
                                         </div>
@@ -264,7 +264,7 @@
                                     <a href="result.php?unidadeUSP[]=FD">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FD.jpg" alt="FD">
+                                                <img src="inc/images/logosusp/FD.jpg" alt="FD">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Direito (FD)</p></small>
                                         </div>
@@ -274,7 +274,7 @@
                                     <a href="result.php?unidadeUSP[]=FDRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FDRP.jpg" alt="FDRP">
+                                                <img src="inc/images/logosusp/FDRP.jpg" alt="FDRP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Direito de Ribeirão Preto (FDRP)</p></small>
                                         </div>
@@ -284,7 +284,7 @@
                                     <a href="result.php?unidadeUSP[]=FEA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FEA.jpg" alt="FEA">
+                                                <img src="inc/images/logosusp/FEA.jpg" alt="FEA">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Economia, Administração e Contabilidade (FEA)</p></small>
                                         </div>
@@ -294,7 +294,7 @@
                                     <a href="result.php?unidadeUSP[]=FEARP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FEARP.jpg" alt="FEARP">
+                                                <img src="inc/images/logosusp/FEARP.jpg" alt="FEARP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)</p></small>
                                         </div>
@@ -304,7 +304,7 @@
                                     <a href="result.php?unidadeUSP[]=FE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FE.jpg" alt="FE">
+                                                <img src="inc/images/logosusp/FE.jpg" alt="FE">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Educação (FE)</p></small>
                                         </div>
@@ -314,7 +314,7 @@
                                     <a href="result.php?unidadeUSP[]=FFCLRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FFCLRP.jpg" alt="FFCLRP">
+                                                <img src="inc/images/logosusp/FFCLRP.jpg" alt="FFCLRP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)</p></small>
                                         </div>
@@ -324,7 +324,7 @@
                                     <a href="result.php?unidadeUSP[]=FFLCH">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FFLCH.jpg" alt="FFLCH">
+                                                <img src="inc/images/logosusp/FFLCH.jpg" alt="FFLCH">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)</p></small>
                                         </div>
@@ -334,7 +334,7 @@
                                     <a href="result.php?unidadeUSP[]=FM">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FM.jpg" alt="FM">
+                                                <img src="inc/images/logosusp/FM.jpg" alt="FM">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Medicina (FM)</p></small>
                                         </div>
@@ -344,7 +344,7 @@
                                     <a href="result.php?unidadeUSP[]=FMRP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FMRP.jpg" alt="FMRP">
+                                                <img src="inc/images/logosusp/FMRP.jpg" alt="FMRP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Medicina de Ribeirão Preto (FMRP)</p></small>
                                         </div>
@@ -354,7 +354,7 @@
                                     <a href="result.php?unidadeUSP[]=FMVZ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FMVZ.jpg" alt="FMVZ">
+                                                <img src="inc/images/logosusp/FMVZ.jpg" alt="FMVZ">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Medicina Veterinária e Zootecnia (FMVZ)</p></small>
                                         </div>
@@ -364,7 +364,7 @@
                                     <a href="result.php?unidadeUSP[]=FO" style="padding:15px 0 0 0">
                                         <div class="uk-panel uk-panel-hover">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FO.jpg" alt="FO">
+                                                <img src="inc/images/logosusp/FO.jpg" alt="FO">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Odontologia (FO)</p></small>
                                         </div>
@@ -374,7 +374,7 @@
                                     <a href="result.php?unidadeUSP[]=FOB" style="padding:15px 0 0 0">
                                         <div class="uk-panel uk-panel-hover" style="padding:0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FOB.jpg" alt="FOB">
+                                                <img src="inc/images/logosusp/FOB.jpg" alt="FOB">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Odontologia de Bauru (FOB)</p></small>
                                         </div>
@@ -384,7 +384,7 @@
                                     <a href="result.php?unidadeUSP[]=FORP" style="padding:15px 0 0 0">
                                         <div class="uk-panel uk-panel-hover" style="padding:0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FORP.jpg" alt="FORP">
+                                                <img src="inc/images/logosusp/FORP.jpg" alt="FORP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Odontologia de Ribeirão Preto (FORP)</p></small>
                                         </div>
@@ -394,7 +394,7 @@
                                     <a href="result.php?unidadeUSP[]=FSP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FSP.jpg" alt="FSP">
+                                                <img src="inc/images/logosusp/FSP.jpg" alt="FSP">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Saúde Pública (FSP)</p></small>
                                         </div>
@@ -404,7 +404,7 @@
                                     <a href="result.php?unidadeUSP[]=FZEA">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/FZEA.jpg" alt="FZEA">
+                                                <img src="inc/images/logosusp/FZEA.jpg" alt="FZEA">
                                             </div>
                                             <small><p class="uk-text-center">Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)</p></small>
                                         </div>
@@ -414,7 +414,7 @@
                                     <a href="result.php?unidadeUSP[]=IAU">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IAU.jpg" alt="IAU">
+                                                <img src="inc/images/logosusp/IAU.jpg" alt="IAU">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Arquitetura e Urbanismo (IAU)</p></small>
                                         </div>
@@ -424,7 +424,7 @@
                                     <a href="result.php?unidadeUSP[]=IAG">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IAG.jpg" alt="IAG">
+                                                <img src="inc/images/logosusp/IAG.jpg" alt="IAG">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)</p></small>
                                         </div>
@@ -434,7 +434,7 @@
                                     <a href="result.php?unidadeUSP[]=IB">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IB.jpg" alt="IB">
+                                                <img src="inc/images/logosusp/IB.jpg" alt="IB">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Biociências (IB)</p></small>
                                         </div>
@@ -444,7 +444,7 @@
                                     <a href="result.php?unidadeUSP[]=ICB">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ICB.jpg" alt="ICB">
+                                                <img src="inc/images/logosusp/ICB.jpg" alt="ICB">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Ciências Biomédicas (ICB)</p></small>
                                         </div>
@@ -454,7 +454,7 @@
                                     <a href="result.php?unidadeUSP[]=ICMC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/ICMC.jpg" alt="ICMC">
+                                                <img src="inc/images/logosusp/ICMC.jpg" alt="ICMC">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Ciências Matemáticas e de Computação (ICMC)</p></small>
                                         </div>
@@ -464,7 +464,7 @@
                                     <a href="result.php?unidadeUSP[]=IEE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IEE.jpg" alt="IEE">
+                                                <img src="inc/images/logosusp/IEE.jpg" alt="IEE">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Energia e Ambiente (IEE)</p></small>
                                         </div>
@@ -474,7 +474,7 @@
                                     <a href="result.php?unidadeUSP[]=IEB">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IEB.jpg" alt="IEB">
+                                                <img src="inc/images/logosusp/IEB.jpg" alt="IEB">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Estudos Brasileiros (IEB)</p></small>
                                         </div>
@@ -484,7 +484,7 @@
                                     <a href="result.php?unidadeUSP[]=IF">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IF.jpg" alt="IF">
+                                                <img src="inc/images/logosusp/IF.jpg" alt="IF">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Física (IF)</p></small>
                                         </div>
@@ -494,7 +494,7 @@
                                     <a href="result.php?unidadeUSP[]=IFSC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IFSC.jpg" alt="IFSC">
+                                                <img src="inc/images/logosusp/IFSC.jpg" alt="IFSC">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Física de São Carlos (IFSC)</p></small>
                                         </div>
@@ -504,7 +504,7 @@
                                     <a href="result.php?unidadeUSP[]=IGC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IGC.jpg" alt="IGC">
+                                                <img src="inc/images/logosusp/IGC.jpg" alt="IGC">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Geociências (IGc)</p></small>
                                         </div>
@@ -514,7 +514,7 @@
                                     <a href="result.php?unidadeUSP[]=IME">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IME.jpg" alt="IME">
+                                                <img src="inc/images/logosusp/IME.jpg" alt="IME">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Matemática e Estatística (IME)</p></small>
                                         </div>
@@ -524,7 +524,7 @@
                                     <a href="result.php?unidadeUSP[]=IMT">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IMT.jpg" alt="IMT">
+                                                <img src="inc/images/logosusp/IMT.jpg" alt="IMT">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Medicina Tropical de São Paulo (IMT)</p></small>
                                         </div>
@@ -534,7 +534,7 @@
                                     <a href="result.php?unidadeUSP[]=IP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IP.jpg" alt="IP">
+                                                <img src="inc/images/logosusp/IP.jpg" alt="IP">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Psicologia (IP)</p></small>
                                         </div>
@@ -544,7 +544,7 @@
                                     <a href="result.php?unidadeUSP[]=IQ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IQ.jpg" alt="IQ">
+                                                <img src="inc/images/logosusp/IQ.jpg" alt="IQ">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Química (IQ)</p></small>
                                         </div>
@@ -554,7 +554,7 @@
                                     <a href="result.php?unidadeUSP[]=IQSC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IQSC.jpg" alt="IQSC">
+                                                <img src="inc/images/logosusp/IQSC.jpg" alt="IQSC">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Química de São Carlos (IQSC)</p></small>
                                         </div>
@@ -564,7 +564,7 @@
                                     <a href="result.php?unidadeUSP[]=IRI">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IRI.jpg" alt="IRI">
+                                                <img src="inc/images/logosusp/IRI.jpg" alt="IRI">
                                             </div>
                                             <small><p class="uk-text-center">Instituto de Relações Internacionais (IRI)</p></small>
                                         </div>
@@ -574,7 +574,7 @@
                                     <a href="result.php?unidadeUSP[]=IO">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/IO.jpg" alt="IO">
+                                                <img src="inc/images/logosusp/IO.jpg" alt="IO">
                                             </div>
                                             <small><p class="uk-text-center">Instituto Oceanográfico (IO)</p></small>
                                         </div>
@@ -584,7 +584,7 @@
                                     <a href="result.php?unidadeUSP[]=MAE">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MAE.jpg" alt="MAE">
+                                                <img src="inc/images/logosusp/MAE.jpg" alt="MAE">
                                             </div>
                                             <small><p class="uk-text-center">Museu de Arqueologia e Etnologia (MAE)</p></small>
                                         </div>
@@ -594,7 +594,7 @@
                                     <a href="result.php?unidadeUSP[]=MAC">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MAC.jpg" alt="MAC">
+                                                <img src="inc/images/logosusp/MAC.jpg" alt="MAC">
                                             </div>
                                             <small><p class="uk-text-center">Museu de Arte Contemporânea (MAC)</p></small>
                                         </div>
@@ -604,7 +604,7 @@
                                     <a href="result.php?unidadeUSP[]=MZ">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MZ.jpg" alt="MZ">
+                                                <img src="inc/images/logosusp/MZ.jpg" alt="MZ">
                                             </div>
                                             <small><p class="uk-text-center">Museu de Zoologia (MZ)</p></small>
                                         </div>
@@ -614,7 +614,7 @@
                                     <a href="result.php?unidadeUSP[]=MP">
                                         <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                             <div class="uk-panel-teaser uk-text-center">
-                                                <img src="http://bdpife3.sibi.usp.br/inc/images/logosusp/MP.jpg" alt="MP">
+                                                <img src="inc/images/logosusp/MP.jpg" alt="MP">
                                             </div>
                                             <small><p class="uk-text-center">Museu Paulista (MP)</p></small>
                                         </div>
