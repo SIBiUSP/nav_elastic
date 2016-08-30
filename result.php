@@ -48,6 +48,10 @@
         <!-- Altmetric Script -->
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
         
+        <!-- PlumX Script -->
+        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
+
+        
     </head>
     <body>
         <?php include_once("inc/analyticstracking.php") ?>  
@@ -419,6 +423,9 @@
                                             <ul>
                                                 <li>
                                                     <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                                </li>
+                                                <li>
+                                                    <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
                                                 </li>
                                                 <li>
                                                     <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
