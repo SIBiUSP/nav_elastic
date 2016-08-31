@@ -101,23 +101,24 @@
         gerar_faceta($query_aggregate,$escaped_url,$server,base,10,"Base");
         gerar_faceta($query_aggregate,$escaped_url,$server,type,10,"Tipo de material");
         gerar_faceta($query_aggregate,$escaped_url,$server,unidadeUSPtrabalhos,100,"Unidade USP");              gerar_faceta($query_aggregate,$escaped_url,$server,departamentotrabalhos,100,"Departamento");             gerar_faceta($query_aggregate,$escaped_url,$server,authors,120,"Autores");
+        gerar_faceta($query_aggregate,$escaped_url,$server,authorUSP,100,"Autores USP");
         gerar_faceta($query_aggregate,$escaped_url,$server,year,120,"Ano de publicação","desc");
         gerar_faceta($query_aggregate,$escaped_url,$server,subject,100,"Assuntos");
         gerar_faceta($query_aggregate,$escaped_url,$server,language,40,"Idioma");
         gerar_faceta($query_aggregate,$escaped_url,$server,ispartof,100,"É parte de ...");
         gerar_faceta($query_aggregate,$escaped_url,$server,publisher,100,"Editora");
         gerar_faceta($query_aggregate,$escaped_url,$server,evento,100,"Nome do evento");
-        gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");    
+        gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");
+        gerar_faceta($query_aggregate,$escaped_url,$server,tipotese,30,"Tipo de tese");
     ?>
     </ul>
     <!--
     <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
         <hr>
-    < ?php 
-        gerar_faceta($query_aggregate,$escaped_url,$server,authorUSP,100,"Autores USP");
+    < ?php         
         gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
-        gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade"); gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");                           gerar_faceta($query_aggregate,$escaped_url,$server,tipotese,30,"Tipo de tese");
+        gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade"); gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");                           
         gerar_faceta($query_aggregate,$escaped_url,$server,fomento,100,"Agência de fomento");
         gerar_faceta($query_aggregate,$escaped_url,$server,indexado,100,"Indexado em");
         gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
