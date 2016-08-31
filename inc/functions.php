@@ -1024,14 +1024,14 @@ function limpar($text) {
 
 function analisa_get($get) {
     
-    $new_get = $get;  
+    $new_get = $get;
     
     /* Missing query */
     foreach ($get as $k => $v){
         if($v == 'N/D'){
             $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
             unset($get[$k]);
-        }    
+        }
     }    
     
     /* limpar base all */
@@ -1123,21 +1123,21 @@ function analisa_get($get) {
         
     } elseif (!empty($get['search_index'])) {
         $search_term = '
-"query":
-{
-    "multi_match" : {
-        "query":      "'.$get['search_index'].'",
-        "type":       "cross_fields",
-        "fields":     [ "title", "authors_index", "subject" ],
-        "operator":   "and"
-    }    
-}       
+            "query":
+            {
+                "multi_match" : {
+                    "query":      "'.$get['search_index'].'",
+                    "type":       "cross_fields",
+                    "fields":     [ "title", "authors_index", "subject" ],
+                    "operator":   "and"
+                }    
+            }       
         ';
         
 
         unset($get['search_index']);
 
-       foreach ($get as $key => $value) {
+        foreach ($get as $key => $value) {
            if (count($value) > 1){
                foreach ($value as $valor){
                     $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
@@ -1187,6 +1187,46 @@ function analisa_get($get) {
         ';
 
 
+    } elseif (!empty($get['operator'])) {
+        
+        unset($get['operator']);
+        
+        foreach ($get as $key => $value){
+                $key = $key;
+                $value_array[] = $value;                
+        } 
+            $query_part = '{"'.$key.'":["'.implode('","',$value_array[0]).'"]}';
+
+            $query_complete = '
+                {
+                "sort" : [
+                    { "year" : "desc" }
+                ],    
+                "query" : {
+                    "bool" : {
+                        "filter" : {
+                            "terms":
+                                 '.$query_part.'
+                        }
+                    }
+                },
+                "from": '.$skip.',
+                "size": '.$limit.'
+                }    
+                ';
+
+            $query_aggregate = '
+                "query" : {
+                    "bool" : {
+                        "filter" : {
+                            "terms":
+                                 '.$query_part.'
+                        }
+                    }
+                },
+            ';          
+        
+        
     } else {
         
         foreach ($get as $key => $value) {
@@ -1278,6 +1318,7 @@ if (isset($new_get)){
     return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim');
 }
 
+  
 function consultar_vcusp($termo) {
     echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
     $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
