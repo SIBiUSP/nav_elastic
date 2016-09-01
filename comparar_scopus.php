@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br" dir="ltr">
     <head>
         <?php 
             include('inc/config.php'); 
@@ -24,11 +24,11 @@
     </head>
     <body>
         <?php include_once("inc/analyticstracking.php") ?>
-        <!-- < ?php include('inc/barrausp.php'); ?> -->
-        <div class="ui main container">
-            <?php include('inc/header.php'); ?>
+
+        
+
             <?php include('inc/navbar.php'); ?>
-            <div id="main">
+            <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">  
                 
                 <h1>CSV do Scopus</h1>
                 
@@ -66,7 +66,7 @@ if (isset($_FILES['file'])) {
                 
 
                 
-            </div>            
+        
         </div>
         <?php include('inc/footer.php'); ?>
     </body>
