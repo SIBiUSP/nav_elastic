@@ -382,7 +382,7 @@ $record_blob = implode("\\n", $record);
                                 <?php endforeach;?>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
                                 <?php endif; ?>
                             </div>
                             <?php endif; ?>
