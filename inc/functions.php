@@ -868,7 +868,7 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
 
 
 
-function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
@@ -897,7 +897,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
     }
     ';
     
-    $result = query_elastic($query);
+    $result = query_elastic($query,$server);
         
     if ($result["hits"]["total"] > 0) {
     
