@@ -48,12 +48,16 @@ marc_map('7008','colab_instituicao.$append')
 marc_map('7009','colab.$append')
 copy_field("authors","authors_index")
 
-
 # 510 - Indexado em
 marc_map('510a','indexado.$append')
 
 # 502 - Tipo de tese
 marc_map('502a','tipotese')
+
+#520/920 - Resumo e Nota de conteúdo
+marc_map('520a','resumo.$append')
+marc_map('940a','resumo.$append')
+marc_map('505a','resumo.$append')
 
 
 # 536a - Agência de fomento

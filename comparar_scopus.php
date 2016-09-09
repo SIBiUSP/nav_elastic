@@ -31,11 +31,13 @@
             <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">  
                 
                 <h1>CSV do Scopus</h1>
+                <p>Separado por tabulações</p>
                 
                 <form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                     <input type="file" name="file">
                     <input type="submit" name="btn_submit" value="Upload File" />
                 </form>
+                <br/><br/>
 
 
     
@@ -50,7 +52,7 @@ if (isset($_FILES['file'])) {
     
     
     while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
-         $record_scopus[] = compararRegistrosScopus("Artigo",$row[3],$row[0],$row[1],$row[13]);
+         $record_scopus[] = compararRegistrosScopus($server,"Artigo",$row[3],$row[0],$row[1],$row[13]);
     }
     
     $record_blob = implode("\\n", $record_scopus);

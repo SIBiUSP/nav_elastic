@@ -868,7 +868,7 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
 
 
 
-function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
@@ -897,7 +897,7 @@ function compararRegistrosScopus ($query_type,$query_year,$query_title,$query_au
     }
     ';
     
-    $result = query_elastic($query);
+    $result = query_elastic($query,$server);
         
     if ($result["hits"]["total"] > 0) {
     
@@ -1128,7 +1128,7 @@ function analisa_get($get) {
                 "multi_match" : {
                     "query":      "'.$get['search_index'].'",
                     "type":       "cross_fields",
-                    "fields":     [ "title", "authors_index", "subject" ],
+                    "fields":     [ "title", "authors_index", "subject", "resumo" ],
                     "operator":   "and"
                 }    
             }       
