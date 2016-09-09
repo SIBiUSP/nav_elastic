@@ -192,6 +192,10 @@ PUT /sibi/producao/_mapping
                 "type": "string",
                 "analyzer": "portugues"
             },
+            "resumo": {
+                "type": "string",
+                "analyzer": "portugues"
+            },            
             "subject": {
                 "type": "string",
                 "index": "not_analyzed"
