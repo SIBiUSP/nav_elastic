@@ -17,28 +17,12 @@ function query_elastic ($query,$server) {
     return $data;
 }
 
-//function query_one_elastic ($_id,$server) {
-//    $ch = curl_init();
-//    
-//    curl_setopt($ch, CURLOPT_URL, "http://$server:9200/sibi/producao/$_id");
-//    curl_setopt($ch, CURLOPT_HEADER, 0);
-//
-//    $result = curl_exec($ch);
-//    curl_close($ch);
-//    $data = json_decode($result, TRUE);
-//    return $data;
-//}
-
 function query_one_elastic ($_id,$server) {
     $ch = curl_init();
-    $method = "GET";
-    $url = "http://$server/sibi/producao/$_id";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
+    
+    curl_setopt($ch, CURLOPT_URL, "http://$server:9200/sibi/producao/$_id");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS,"");
+    curl_setopt($ch, CURLOPT_HEADER, 0);
 
     $result = curl_exec($ch);
     curl_close($ch);
