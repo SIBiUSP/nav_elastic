@@ -296,6 +296,18 @@ $record_blob = implode("\\n", $record);
                             </li>
                         <?php endif; ?>
                             
+                        <!-- Resumo -->
+                        <?php if (!empty($cursor["_source"]['resumo'])): ?>
+                            <li>
+                                <h4 class="uk-margin-top">Resumo:</h4>
+                                <ul class="uk-list uk-list-line">
+                                   <?php foreach ($cursor["_source"]['resumo'] as $resumo): ?>
+                                        <li><?php echo $resumo;?></li>
+                                   <?php endforeach;?>
+                                </ul>                            
+                            </li>
+                        <?php endif; ?>                            
+                            
                         <!-- Imprenta -->
                         <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
                             <li>
