@@ -69,8 +69,7 @@
                         </p>
                         <p>
                             <a>atendimento@dt.sibi.usp.br</a>
-                            <br><a>@SIBiUSP</a><br>
-                            Tel: (0xx11) 2648-0948 e 3091-1539
+                            <br>Tel: (0xx11) 2648-0948 e 3091-4439
                         </p>
                         <h3 class="uk-h4">Redes sociais</h3>
                         <p>
