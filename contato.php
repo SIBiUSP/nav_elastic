@@ -6,7 +6,7 @@
             include('inc/functions.php');
             include('inc/meta-header.php'); 
         ?>
-        <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
+        <title>BDPI USP - Contato</title>
     </head>
 
     <body>
