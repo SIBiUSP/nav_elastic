@@ -26,27 +26,27 @@
                             <div class="uk-form-row">
                                 <label class="uk-form-label">Seu nome</label>
                                 <div class="uk-form-controls">
-                                    <input type="text" placeholder="" class="uk-width-1-1">
+                                    <input type="text" placeholder="" class="uk-width-1-1" disabled>
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
                                 <label class="uk-form-label">Seu e-mail</label>
                                 <div class="uk-form-controls">
-                                    <input type="text" placeholder="" class="uk-width-1-1">
+                                    <input type="text" placeholder="" class="uk-width-1-1" disabled>
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
                                 <label class="uk-form-label">Sua mensagem</label>
                                 <div class="uk-form-controls">
-                                    <textarea class="uk-width-1-1" id="form-h-t" cols="100" rows="9"></textarea>
+                                    <textarea class="uk-width-1-1" id="form-h-t" cols="100" rows="9" disabled></textarea>
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
-                                    <button class="uk-button uk-button-primary">Enviar</button>
+                                    <button class="uk-button uk-button-primary" disabled>Enviar</button>
                                 </div>
                             </div>
 
@@ -70,14 +70,13 @@
                         <p>
                             <a>atendimento@dt.sibi.usp.br</a>
                             <br><a>@SIBiUSP</a><br>
-                            Tel: (0xx11) 3091-1539 e 3091-1566
+                            Tel: (0xx11) 2648-0948 e 3091-1539
                         </p>
                         <h3 class="uk-h4">Redes sociais</h3>
                         <p>
-                            <a href="#" class="uk-icon-button uk-icon-github"></a>
-                            <a href="#" class="uk-icon-button uk-icon-twitter"></a>
-                            <a href="#" class="uk-icon-button uk-icon-dribbble"></a>
-                            <a href="#" class="uk-icon-button uk-icon-html5"></a>
+                            <a href="https://www.facebook.com/sibiusp/?fref=ts" class="uk-icon-button uk-icon-facebook"></a>
+                            <a href="https://twitter.com/sibiusp" class="uk-icon-button uk-icon-twitter"></a>                           
+                            <a href="https://github.com/sibiusp" class="uk-icon-button uk-icon-github"></a>
                         </p>
                     </div>
                 </div>
