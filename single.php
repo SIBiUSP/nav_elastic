@@ -136,7 +136,100 @@ $record_blob = implode("\\n", $record);
         <meta name="citation_lastpage" content="11766">
         <meta name="citation_pdf_url" content="http://www.example.com/content/271/20/11761.full.pdf">
         -->
-        <!-- Generate metadata to Google Scholar - END -->         
+        <!-- Generate metadata to Google Scholar - END -->
+        
+        <!-- Generate JSON-LD - START -->
+        <?php 
+        
+        foreach ($cursor["_source"]['authors'] as $autores) {
+            $autor_json[] = '"'.$autores.'"';
+        }
+        
+        
+        echo '<script type="application/ld+json">';
+        echo '
+            {
+            "@context":"http://schema.org",
+            "@graph": [
+              {
+                "@id": "http://bdpi.usp.br",
+                "@type": "Library",
+                "name": "Base de Produção Intelectual da USP"
+              },
+              ';
+            
+        
+            switch ($cursor["_source"]["type"]) {
+                case "ARTIGO DE PERIODICO":
+                    
+                    echo '
+
+    {
+        "@id": "#periodical", 
+        "@type": [
+            "Periodical"
+        ], 
+        "name": "'.$cursor["_source"]['ispartof'].'", 
+        "issn": [
+            "'.$cursor["_source"]['issn_part'][0].'"
+        ],  
+        "publisher": "'.$cursor["_source"]['publisher'].'"
+    },
+    {
+        "@id": "#volume", 
+        "@type": "PublicationVolume", 
+        "volumeNumber": "'.str_replace("v. ","",$cursor["_source"]['ispartof_data'][0]).'", 
+        "isPartOf": "#periodical"
+    },     
+    {
+        "@id": "#issue", 
+        "@type": "PublicationIssue", 
+        "issueNumber": "'.str_replace(" n. ","",$cursor["_source"]['ispartof_data'][1]).'", 
+        "datePublished": "'.$cursor["_source"]['year'].'", 
+        "isPartOf": "#volume"
+    }, 
+    {
+        "@type": "ScholarlyArticle", 
+        "isPartOf": "#issue", 
+        "description": "'.$cursor["_source"]['resumo'][0].'",
+        ';
+        if (!empty($cursor["_source"]['doi'])) {            
+            echo '"sameAs": "http://dx.doi.org/'.$cursor["_source"]['doi'][0].'",';
+        }
+        echo '
+        "about": [
+            "Works", 
+            "Catalog"
+        ], 
+        "pageEnd": "'.str_replace(" p. ","",$cursor["_source"]['ispartof_data'][2]).'", 
+        "pageStart": "'.str_replace(" p. ","",$cursor["_source"]['ispartof_data'][2]).'", 
+        "name": "'.$cursor["_source"]['title'].'", 
+        "author": ['.implode(",",$autor_json).']
+    }
+                    
+                    ';                   
+                    
+                    break;
+                case "PARTE DE MONOGRAFIA/LIVRO":
+                    
+                    break;
+                case "TRABALHO DE EVENTO-RESUMO":
+                    
+                    break;
+                case "TEXTO NA WEB":
+                    
+                    break;
+                }
+        
+            echo '
+
+            ]
+            }
+    </script>';
+        
+        ?>
+        <!-- Generate JSON-LD - END -->
+        
     </head>
     <body>
         <?php include_once("inc/analyticstracking.php") ?>
