@@ -28,8 +28,9 @@ if (!empty($_GET['unidade'])) {
     </head>
     <body>
         <?php include_once("inc/analyticstracking.php") ?>
-        <div class="ui main container">
-            <?php include('inc/navbar.php'); ?>
+        <?php include('inc/navbar.php'); ?>
+        <div class="uk-container uk-container-center uk-margin-top"> 
+            
             <div id="main">
                 <h1>Relatório de registros com a participação da Unidade USP: <?php echo $_GET['unidade']; ?></h1>
                 <div class="ui vertical segment">
