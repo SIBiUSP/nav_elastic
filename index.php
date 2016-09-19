@@ -7,6 +7,18 @@
             include('inc/meta-header.php'); 
         ?> 
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
+        <!-- Facebook Tags - START -->
+        <meta property="og:locale" content="pt_BR">
+        <meta property="og:url" content="http://bdpi.usp.br"> 
+        <meta property="og:site_name" content="Base de Produção Intelectual da USP">
+        <meta property="og:description" content="Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.">
+        <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
+        <meta property="og:image:type" content="image/jpeg">
+        <meta property="og:image:width" content="800"> 
+        <meta property="og:image:height" content="600"> 
+        <meta property="og:type" content="website">
+        <!-- Facebook Tags - END -->
+        
     </head>
 
     <body>        
