@@ -9,7 +9,8 @@
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
-        <meta property="og:url" content="http://bdpi.usp.br"> 
+        <meta property="og:url" content="http://bdpi.usp.br">
+        <meta property="og:title" content="Base de Produção Intelectual da USP - Página Principal">
         <meta property="og:site_name" content="Base de Produção Intelectual da USP">
         <meta property="og:description" content="Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
