@@ -110,6 +110,15 @@
         gerar_faceta($query_aggregate,$escaped_url,$server,evento,100,"Nome do evento");
         gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");
         gerar_faceta($query_aggregate,$escaped_url,$server,tipotese,30,"Tipo de tese");
+        gerar_faceta($query_aggregate,$escaped_url,$server,indexado,100,"Indexado em");
+        gerar_faceta($query_aggregate,$escaped_url,$server,fatorimpacto,1000,"Fator de impacto","desc"); 
+        gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
+        gerar_faceta($query_aggregate,$escaped_url,$server,areaconcentracao,100,"Área de concentração");
+        gerar_faceta($query_aggregate,$escaped_url,$server,grupopesquisa,100,"Grupo de pesquisa");
+        gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");  
+        gerar_faceta($query_aggregate,$escaped_url,$server,colab,120,"País dos autores externos à USP");
+        gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração institucional");
+        gerar_faceta($query_aggregate,$escaped_url,$server,fomento,100,"Agência de fomento");
     ?>
     </ul>
     <!--
@@ -118,14 +127,7 @@
         <hr>
     < ?php         
         gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
-        gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade"); gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");                           
-        gerar_faceta($query_aggregate,$escaped_url,$server,fomento,100,"Agência de fomento");
-        gerar_faceta($query_aggregate,$escaped_url,$server,indexado,100,"Indexado em");
-        gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
-        gerar_faceta($query_aggregate,$escaped_url,$server,areaconcentracao,100,"Área de concentração");
-        gerar_faceta($query_aggregate,$escaped_url,$server,fatorimpacto,1000,"Fator de impacto","desc");
-        gerar_faceta($query_aggregate,$escaped_url,$server,grupopesquisa,100,"Grupo de pesquisa");
-        gerar_faceta($query_aggregate,$escaped_url,$server,colab,120,"País dos autores externos à USP");
+        gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade");                           
         gerar_faceta($query_aggregate,$escaped_url,$server,colab_int_trab,100,"Colaboração - Internacionalização"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_trab,100,"Colaboração - Instituição"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração - Instituição - Corrigido"); corrigir_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_naocorrigido,100,"Colaboração - Instituição - Não corrigido");
         gerar_faceta($query_aggregate,$escaped_url,$server,dataregistroinicial,100,"Data de registro","desc");
         gerar_faceta($query_aggregate,$escaped_url,$server,dataregistro,100,"Data de registro e alterações","desc");
