@@ -45,7 +45,11 @@
                                         <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
                                         <li class="uk-nav-divider"></li>
                                         <li class="uk-nav-header">Acesso</li>
-                                        <li><a href="#">Login</a></li>
+					<?php if(empty($_SESSION['oauthuserdata'])){ ?>
+                                        <li><a href="aut/oauth.php">Login</a></li>
+					<?php } else { ?>
+					<li><a href="aut/logout.php">Logout</a></li>
+					<?php } ?>
                                     </ul>
                                 </div>
 
