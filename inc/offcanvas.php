@@ -8,10 +8,10 @@
                 <a href="advanced_search.php">Busca avançada</a>
             </li>
             <li>
-                <a href="contact.php">Contato</a>
+                <a href="contato.php">Contato</a>
             </li>
             <li>
-                <a href="login.php">Login</a>
+                <a href="#">Login</a>
             </li>
             <li>
                 <a href="about.php">Sobre</a>
