@@ -4,7 +4,7 @@
         <?php 
             include('inc/config.php'); 
             include('inc/functions.php');
-            include('inc/meta-header.php'); 
+            include('inc/meta-header.php');
         ?> 
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
         <!-- Facebook Tags - START -->
