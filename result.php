@@ -120,20 +120,20 @@
         gerar_faceta($query_aggregate,$escaped_url,$server,fomento,100,"Agência de fomento");
     ?>
     </ul>
-    <!--
-    <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
-    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
-        <hr>
-    < ?php         
-        gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
-        gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade");
-        gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
-        gerar_faceta($query_aggregate,$escaped_url,$server,colab_int_trab,100,"Colaboração - Internacionalização"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_trab,100,"Colaboração - Instituição"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração - Instituição - Corrigido"); corrigir_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_naocorrigido,100,"Colaboração - Instituição - Não corrigido");
-        gerar_faceta($query_aggregate,$escaped_url,$server,dataregistroinicial,100,"Data de registro","desc");
-        gerar_faceta($query_aggregate,$escaped_url,$server,dataregistro,100,"Data de registro e alterações","desc");
-    ?>
-    </ul>
-    -->
+        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+            <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
+            <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+            <hr>
+            <?php         
+                gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
+                gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade");
+                gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
+                gerar_faceta($query_aggregate,$escaped_url,$server,colab_int_trab,100,"Colaboração - Internacionalização"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_trab,100,"Colaboração - Instituição"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração - Instituição - Corrigido"); corrigir_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_naocorrigido,100,"Colaboração - Instituição - Não corrigido");
+                gerar_faceta($query_aggregate,$escaped_url,$server,dataregistroinicial,100,"Data de registro","desc");
+                gerar_faceta($query_aggregate,$escaped_url,$server,dataregistro,100,"Data de registro e alterações","desc");
+            ?>
+            </ul>
+        <?php endif; ?>
     <hr>
     <form class="uk-form">
     <fieldset>
@@ -160,34 +160,36 @@
     </fieldset>        
     </form>
     <hr>
-    <!--
-<form class="uk-form" method="get" action="report.php">
-    <fieldset>
-        <legend>Gerar relatório</legend>
-        < ?php foreach ($new_get as $key => $value) : ?>
-            <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="< ?php echo $key; ?>[]" value="< ?php echo implode(",",$value); ?>">
-            </div>
-        < ?php endforeach;?>
-        < ?php if (!empty($result_get['termo_consulta'])): ?>
-            <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="search_index" value="< ?php echo $result_get['termo_consulta']; ?>">
-            </div>
-        < ?php endif; ?>
-        < ?php if (!empty($result_get['data_inicio'])): ?>
-            <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="date_init" value="< ?php echo $result_get['data_inicio']; ?>">
-            </div>
-        < ?php endif; ?>
-        < ?php if (!empty($result_get['data_fim'])): ?>
-            <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="date_end" value="< ?php echo $result_get['data_fim']; ?>">
-            </div>
-        < ?php endif; ?>         
-        <div class="uk-form-row"><button type="submit" class="uk-button-primary">Gerar relatório</button>
-        </div>
-    </fieldset>        
-    </form>  -->  
+    <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+        <form class="uk-form" method="get" action="report.php">
+            <fieldset>
+                <legend>Gerar relatório</legend>
+                <?php foreach ($new_get as $key => $value) : ?>
+                    <div class="uk-form-row">
+                        <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
+                    </div>
+                <?php endforeach;?>
+                <?php if (!empty($result_get['termo_consulta'])): ?>
+                    <div class="uk-form-row">
+                        <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($result_get['data_inicio'])): ?>
+                    <div class="uk-form-row">
+                        <input type="hidden" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($result_get['data_fim'])): ?>
+                    <div class="uk-form-row">
+                        <input type="hidden" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
+                    </div>
+                <?php endif; ?>         
+                <div class="uk-form-row"><button type="submit" class="uk-button-primary">Gerar relatório</button>
+                </div>
+            </fieldset>        
+        </form>
+    <?php endif; ?>                
+            
 </div>
     
                     
