@@ -10,9 +10,11 @@
             <li>
                 <a href="contato.php">Contato</a>
             </li>
-            <li>
-                <a href="#">Login</a>
-            </li>
+            <?php if(empty($_SESSION['oauthuserdata'])){ ?>
+                <li><a href="aut/oauth.php">Login</a></li>
+            <?php } else { ?>
+                <li><a href="aut/logout.php">Logout</a></li>
+            <?php } ?>
             <li>
                 <a href="about.php">Sobre</a>
             </li>

@@ -35,7 +35,7 @@
                                 <a href="about.php" style="color:white">Sobre</a>
                             </li>
                             <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                                <a href="" style="color:white"><i class="uk-icon-home"></i> Admin</a>
+                                <a href="" style="color:white"><i class="uk-icon-home"></i> Usuário</a>
 
                                 <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
                                     <ul class="uk-nav uk-nav-navbar">
@@ -45,11 +45,12 @@
                                         <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
                                         <li class="uk-nav-divider"></li>
                                         <li class="uk-nav-header">Acesso</li>
-					<?php if(empty($_SESSION['oauthuserdata'])){ ?>
-                                        <li><a href="aut/oauth.php">Login</a></li>
-					<?php } else { ?>
-					<li><a href="aut/logout.php">Logout</a></li>
-					<?php } ?>
+                                        <?php if(empty($_SESSION['oauthuserdata'])): ?>
+                                            <li><a href="aut/oauth.php">Login</a></li>
+                                        <?php else: ?>
+                                            <li><a href="#"><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></a></li>
+                                            <li><a href="aut/logout.php">Logout</a></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
 

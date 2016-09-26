@@ -242,32 +242,100 @@ PUT /sibi/producao/_mapping
 
 PUT /sibi/producao_metrics/_mapping
 {
-         "producao_metrics": {
-            "properties": {
-               "counter": {
-                  "type": "long"
-               },
-               "script": {
-                  "properties": {
-                     "inline": {
-                        "type": "string"
-                     },
-                     "params": {
-                        "properties": {
-                           "count": {
-                              "type": "long"
-                           }
-                        }
-                     }
-                  }
-               },
-               "upsert": {
-                  "properties": {
-                     "counter": {
-                        "type": "long"
-                     }
-                  }
-               }
-            }
-         }
+    "producao_metrics": {
+        "properties": {
+           "counter": {
+              "type": "long"
+           },
+           "script": {
+              "properties": {
+                 "inline": {
+                    "type": "string"
+                 },
+                 "params": {
+                    "properties": {
+                       "count": {
+                          "type": "long"
+                       }
+                    }
+                 }
+              }
+           },
+           "upsert": {
+              "properties": {
+                 "counter": {
+                    "type": "long"
+                 }
+              }
+           }
+        }
+    }
+}
+
+PUT /sibi/users/_mapping
+{
+    "users": {
+        "properties": {
+            "loginUsuario": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "nomeUsuario": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "tipoUsuario": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "emailPrincipalUsuario": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "emailAlternativoUsuario": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "emailUspUsuario": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "numeroTelefoneFormatado": {
+                "type": "string",
+                "index": "not_analyzed"
+            },   
+            "vínculo": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "tipoVinculo": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "codigoSetor": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "nomeAbreviadoSetor": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "nomeSetor": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "codigoUnidade": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "siglaUnidade": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+            "nomeUnidade": {
+                "type": "string",
+                "index": "not_analyzed"
+            }             
+        }
+    }
 }

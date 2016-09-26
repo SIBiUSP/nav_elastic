@@ -146,6 +146,53 @@ function contar_unicos ($field,$server) {
     return $data["aggregations"]["distinct_authors"]["value"];
 }
 
+function store_user ($userdata,$server){
+    $ch = curl_init();
+    $method = "POST";
+    $url = "http://$server/sibi/users/".$userdata->{'loginUsuario'}."/_update";
+    
+    $query_array[] = '"nomeUsuario" : "'.$userdata->{'nomeUsuario'}.'"';
+    $query_array[] = '"tipoUsuario" : "'.$userdata->{'tipoUsuario'}.'"';
+    $query_array[] = '"emailPrincipalUsuario" : "'.$userdata->{'emailPrincipalUsuario'}.'"';
+    $query_array[] = '"emailAlternativoUsuario" : "'.$userdata->{'emailAlternativoUsuario'}.'"';
+    $query_array[] = '"emailUspUsuario" : "'.$userdata->{'emailUspUsuario'}.'"';
+    $query_array[] = '"numeroTelefoneFormatado" : "'.$userdata->{'numeroTelefoneFormatado'}.'"';
+    
+    foreach ($userdata->{'vinculo'} as $vinculo) {
+        $query_vinculo[] = '{
+                "tipoVinculo" : "'.$vinculo->{'tipoVinculo'}.'",
+                "codigoSetor" : "'.$vinculo->{'codigoSetor'}.'",
+                "nomeAbreviadoSetor" : "'.$vinculo->{'nomeAbreviadoSetor'}.'",
+                "nomeSetor" : "'.$vinculo->{'nomeSetor'}.'",
+                "codigoUnidade" : "'.$vinculo->{'codigoUnidade'}.'",
+                "siglaUnidade" : "'.$vinculo->{'siglaUnidade'}.'",
+                "nomeUnidade" : "'.$vinculo->{'nomeUnidade'}.'"
+            }';         
+    }
+    
+    $query = 
+             '{
+                "doc":{
+                    "vinculo" : [
+                        '.implode(",",$query_vinculo).'
+                    ],
+                    '.implode(",",$query_array).'
+                },
+                "doc_as_upsert" : true
+            }';
+    
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    //$data = json_decode($result, TRUE);
+    //print_r($data);    
+}
+
 function ultimos_registros($server) {
     
      $query = '{
