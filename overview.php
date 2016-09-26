@@ -51,6 +51,10 @@ if (!empty($_GET['unidade'])) {
                     <h3>Por ano</h3>
                     <iframe id="graph" src="http://143.107.154.254:5601/app/kibana#/visualize/create?embed=true&type=histogram&indexPattern=sibi*&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-100y,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'<?php echo $key; ?>:%22<?php echo $value; ?>%22')),uiState:(),vis:(aggs:!((id:'1',params:(),schema:metric,type:count),(id:'2',params:(field:year,order:asc,orderBy:_term,size:100),schema:segment,type:terms)),listeners:(),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,defaultYExtents:!f,mode:stacked,scale:linear,setYExtents:!f,shareYAxis:!t,times:!(),yAxis:()),title:'New%20Visualization',type:histogram))" height="400" scrolling="no" frameborder="0" seamless="seamless"></iframe>
                 </div>
+                <div class="ui vertical segment">
+                    <h3>Por país (exceto Brasil)</h3>
+                    <iframe id="graph" src="http://143.107.154.254:5601/app/kibana#/visualize/create?embed=true&type=histogram&indexPattern=sibi*&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-15m,mode:quick,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'sibi*',key:country,negate:!t,value:Brasil),query:(match:(country:(query:Brasil,type:phrase))))),linked:!f,query:(query:(match:(<?php echo $key; ?>:(query:<?php echo $value; ?>,type:phrase)))),uiState:(),vis:(aggs:!((id:'1',params:(),schema:metric,type:count),(id:'2',params:(field:country,order:desc,orderBy:'1',size:100),schema:segment,type:terms)),listeners:(),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,defaultYExtents:!f,mode:stacked,scale:linear,setYExtents:!f,shareYAxis:!t,times:!(),yAxis:()),title:'New%20Visualization',type:histogram))" height="400" scrolling="no" frameborder="0" seamless="seamless"></iframe>
+                </div>                
                 
             </div>            
         </div>
