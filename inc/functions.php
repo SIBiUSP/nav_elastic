@@ -383,29 +383,36 @@ function gerar_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sor
      ';
        
     $data = query_elastic($query,$server);
-        
-    echo '<li class="uk-parent">';
+    
+    
+    echo '<li class="uk-parent">';    
     echo '<a href="#">'.$nome_do_campo.'</a>';
     echo ' <ul class="uk-nav-sub">';
-    $count = 1;
+    echo '<form>';
+    //$count = 1;
     foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<li class="uk-h6">';
-        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
+        echo '<p class="uk-form-controls-condensed">';
+        echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '</p>';
         echo '</li>';
         
-        if ($count == 11)
-            {  
-                 echo '<div id="'.$campo.'" class="uk-hidden">';
-            }
-        $count++;
+        //if ($count == 11)
+        //    {  
+        //         echo '<div id="'.$campo.'" class="uk-hidden">';
+        //    }
+        //$count++;
     };
-    if ($count > 12) {
-        echo '</div>';
-        echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-    }
-        
-    echo   '</ul>
-      </li>';
+    //if ($count > 12) {
+        //echo '</div>';
+        //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
+    //}
+
+    echo '<input type="hidden" checked="checked" name="operator" value="AND">';
+    echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
+    echo '</form>';
+    echo   '</ul></li>';
+
 
 }
 
