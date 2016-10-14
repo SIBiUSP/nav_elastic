@@ -1207,8 +1207,9 @@ function analisa_get($get) {
         
         $query_complete = '{
         "sort" : [
-                { "year" : "desc" }
-            ],    
+                { "year" : {"order" : "desc"}},
+                { "_uid" : {"order" : "desc"}}
+        ],    
         "query": {    
         "bool": {
           "must": {

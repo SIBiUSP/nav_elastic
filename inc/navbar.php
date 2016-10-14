@@ -10,12 +10,15 @@
                     <li>
                         <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca contextualizada</a>
                     </li>
+                    <!--
                     <li>
                         <a href="advanced_search.php" style="color:white">Busca avançada</a>
                     </li>
+                    -->
                 </ul>
                     <div class="uk-navbar-flip">
                         <ul class="uk-navbar-nav uk-hidden-small">
+                            <!--
                             <li data-uk-dropdown="{mode:'click'}">
                                 <a href="" style="color:white">
                                     Idioma
@@ -28,12 +31,15 @@
                                     </ul>
                                 </div> 
                             </li>
+                            -->
                             <li>
                                 <a href="contato.php" style="color:white">Contato</a>
                             </li>
+                            <!--
                             <li>
                                 <a href="about.php" style="color:white">Sobre</a>
                             </li>
+                            -->
                             <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
                                 <a href="" style="color:white"><i class="uk-icon-home"></i> Usuário</a>
 
