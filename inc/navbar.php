@@ -43,6 +43,7 @@
                                         <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
                                         <li><a href="comparar_wos.php">Comparador WoS</a></li>
                                         <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
+                                        <li><a href="comparar_csv_scopus.php">Comparador Scopus</a></li>
                                         <li class="uk-nav-divider"></li>
                                         <li class="uk-nav-header">Acesso</li>
                                         <?php if(empty($_SESSION['oauthuserdata'])): ?>
