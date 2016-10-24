@@ -280,12 +280,21 @@ $record_blob = implode("\\n", $record);
                     <?php if (!empty($cursor["_source"]['doi'])): ?>
                         <h3 class="uk-panel-title">Métricas</h3>
                         <hr>
-                        <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                        <!-- 
+                            <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                        -->
                     
                     <?php
                         $full_citations = get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
-                        echo '<br/><br/>';
-                    
+                        //print_r($full_citations["abstract-citations-response"]);
+                        echo '<h4>API SCOPUS</h4>';
+                        echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
+                        echo '<h5>Ver perfil dos autores na SCOPUS:</h5>';
+                        foreach ($full_citations["abstract-citations-response"]["citeInfoMatrix"]["citeInfoMatrixXML"]["citationMatrix"]["citeInfo"][0]["author"] as $authors_scopus) {
+                            //print_r($authors_scopus);
+                            echo '<a href="https://www.scopus.com/authid/detail.uri?partnerID=HzOxMe3b&authorId='.$authors_scopus['authid'].'&origin=inward">'.$authors_scopus['index-name'].'</a><br/>';
+                        }
+                             
                         echo '
                         <table class="uk-table">
                             <caption>Citações na Scopus nos últimos 3 anos</caption>
@@ -308,6 +317,9 @@ $record_blob = implode("\\n", $record);
                         </table>                        
                         
                         ';
+                        //print_r($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]);
+                        echo 'Total de citações nos últimos 3 anos: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'<br/>';
+                        echo 'Total de citações: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'<br/>';
                     ?>
                     <?php endif; ?>
                 </div>
