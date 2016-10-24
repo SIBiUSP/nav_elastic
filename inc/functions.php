@@ -535,8 +535,8 @@ function load_itens_new ($sysno) {
     if ($xml->error == "No associated items"){
 
     } else {
-        echo "<a href=\"#\" data-uk-toggle=\"{target:'#exemplares$sysno'}\">Ver exemplares físicos disponíveis nas Bibliotecas</a>";
-        echo '<div id="exemplares'.$sysno.'" class="uk-hidden">';
+        echo "<h5>Exemplares físicos disponíveis nas Bibliotecas da USP</h5>";
+        echo '<div id="exemplares'.$sysno.'">';
         echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
                     <thead>
                       <tr>
