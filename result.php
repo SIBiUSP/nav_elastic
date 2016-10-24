@@ -433,7 +433,13 @@
                                                     <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
                                                 </li>
                                                 <li>
-                                                    <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                                                    <?php 
+                                                        $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
+                                                        if (!empty($citations_scopus['abstract-citations-response'])) {
+                                                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
+                                                            echo '<br/><br/>';
+                                                        } 
+                                                    ?>
                                                 </li>
                                             </ul>  
                                         </li>
