@@ -1607,7 +1607,31 @@ function get_oadoi($doi) {
     return $data;
     // Close request to clear up some resources
     curl_close($curl);    
-} 
+}
+
+function metrics_update($server,$_id,$metrics_array){    
+    $ch = curl_init();
+    $method = "POST";    
+    $url = "http://$server/sibi/producao/$_id/_update";
+       $query = 
+             '{
+                "doc":{
+                    "metrics" : {
+                        '.implode(",",$metrics_array).'
+                    },
+                    "date":"'.date("Y-m-d").'"
+                },                    
+                "doc_as_upsert" : true
+            }';
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_PORT, 9200);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+    $result = curl_exec($ch);
+    //var_dump($result);
+    curl_close($ch); 
+}
 
 
 

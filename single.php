@@ -286,40 +286,46 @@ $record_blob = implode("\\n", $record);
                     
                     <?php
                         $full_citations = get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
-                        //print_r($full_citations["abstract-citations-response"]);
-                        echo '<h4>API SCOPUS</h4>';
-                        echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
-                        echo '<h5>Ver perfil dos autores na SCOPUS:</h5>';
-                        foreach ($full_citations["abstract-citations-response"]["citeInfoMatrix"]["citeInfoMatrixXML"]["citationMatrix"]["citeInfo"][0]["author"] as $authors_scopus) {
+                        if (!empty($full_citations["abstract-citations-response"])) {
+                            echo '<h4>API SCOPUS</h4>';
+                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
+                            echo '<h5>Ver perfil dos autores na SCOPUS:</h5>';
+                            foreach ($full_citations["abstract-citations-response"]["citeInfoMatrix"]["citeInfoMatrixXML"]["citationMatrix"]["citeInfo"][0]["author"] as $authors_scopus) {
                             //print_r($authors_scopus);
                             echo '<a href="https://www.scopus.com/authid/detail.uri?partnerID=HzOxMe3b&authorId='.$authors_scopus['authid'].'&origin=inward">'.$authors_scopus['index-name'].'</a><br/>';
-                        }
+                            }
                              
-                        echo '
-                        <table class="uk-table">
-                            <caption>Citações na Scopus nos últimos 3 anos</caption>
-                            <thead>
-                                <tr>';
-                        foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnHeading"] as $header){
-                            echo '<th>'.$header["$"].'</th>';
-                        }
-                        echo '
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>';
-                        foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnTotal"] as $total){
-                            echo '<td>'.$total["$"].'</td>';
-                        }
-                        echo ' 
-                                </tr>
-                            </tbody>
-                        </table>                        
+                            echo '
+                            <table class="uk-table">
+                                <caption>Citações na Scopus nos últimos 3 anos</caption>
+                                <thead>
+                                    <tr>';
+                            foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnHeading"] as $header){
+                                echo '<th>'.$header["$"].'</th>';
+                            }
+                            echo '
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>';
+                            foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnTotal"] as $total){
+                                echo '<td>'.$total["$"].'</td>';
+                            }
+                            echo ' 
+                                    </tr>
+                                </tbody>
+                            </table>                        
+
+                            ';
+                            //print_r($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]);
+                            echo 'Total de citações nos últimos 3 anos: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'<br/>';
+                            echo 'Total de citações: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'<br/>';
                         
-                        ';
-                        //print_r($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]);
-                        echo 'Total de citações nos últimos 3 anos: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'<br/>';
-                        echo 'Total de citações: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'<br/>';
+                    
+                            
+                            $metrics[] = 'three_years_citations_scopus: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
+                            $metrics[] = 'full_citations_scopus: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
+                        }
                     ?>
                     <?php endif; ?>
                 </div>
@@ -461,24 +467,31 @@ $record_blob = implode("\\n", $record);
                                         </li>
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
                                         <li> 
-                                            Área: <?php print_r($subj_area["$"]); ?>
+                                            Área: <?php 
+                                                      print_r($subj_area["$"]);
+                                                      $subject_area_array[] = '"'.$subj_area["$"].'"';
+                                                  ?>
                                         </li>
-                                    <?php endforeach; ?>                                                    
+                                    <?php endforeach; ?>
+                                    <?php $metrics[] = 'subject_area_scopus:['.implode(",",$subject_area_array).']'; ?>    
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
                                         <li>                                                    
                                             SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
+                                            <?php $metrics[] = 'scopus_sjr_'.$sjr["@year"].': '.$sjr["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
 
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
                                         <li>                                                    
                                             SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
+                                            <?php $metrics[] = 'scopus_snip_'.$snip["@year"].': '.$snip["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
 
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
                                         <li>                                                    
                                             IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
+                                            <?php $metrics[] = 'scopus_ipp_'.$ipp["@year"].': '.$ipp["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
                                     </ul>
@@ -515,21 +528,31 @@ $record_blob = implode("\\n", $record);
                                         echo '<li>Este artigo é de acesso aberto</li>';
                                     } else {
                                         echo '<li>Este artigo NÃO é de acesso aberto<br/>';
+                                    }
+                                    if (!empty($oadoi['results'][0]['is_free_to_read'])) {                                        
+                                        $metrics[] = 'oadoi_is_free_to_read: '.$oadoi['results'][0]['is_free_to_read'].'';
                                     }    
                                     if (!empty($oadoi['results'][0]['free_fulltext_url'])) {                                        
                                         echo '<li><a href="'.$oadoi['results'][0]['free_fulltext_url'].'">URL de acesso aberto</a></li>';
                                     }
                                     if (!empty($oadoi['results'][0]['oa_color'])) {  
                                         echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
+                                        $metrics[] = 'oadoi_oa_color: "'.$oadoi['results'][0]['oa_color'].'"';
                                     }
                                     if (!empty($oadoi['results'][0]['license'])) {                                        
                                         echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
                                     }
                                     echo '</ul></div>';
+                                    
+                                    $metrics[] = 'oadoi_is_subscription_journal: '.$oadoi['results'][0]['is_subscription_journal'].'';
+                                    
+                                    
                                     //print_r($oadoi);    
                                 }
                             ?>                            
                             <?php endif; ?>
+                        
+                            <?php metrics_update($server,$_GET['_id'],$metrics); ?>
            
                             <hr>                            
                             <?php load_itens_single($cursor["_id"]); ?>                            
