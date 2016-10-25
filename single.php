@@ -454,7 +454,7 @@ $record_blob = implode("\\n", $record);
                         <?php if (isset($issn_info["serial-metadata-response"])): ?>
                             <div class="uk-alert">
                                 <li class="uk-h6">
-                                    Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API):
+                                    Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API)
                                     <ul>
                                         <li>
                                             Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
@@ -492,16 +492,43 @@ $record_blob = implode("\\n", $record);
                             <hr>
                             <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
                                 <?php if (!empty($cursor["_source"]['url'])) : ?>
-                                <?php foreach ($cursor["_source"]['url'] as $url) : ?>
-                                <?php if ($url != '') : ?>
-                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
-                                <?php endif; ?>
-                                <?php endforeach;?>
+                                    <?php foreach ($cursor["_source"]['url'] as $url) : ?>
+                                        <?php if ($url != '') : ?>
+                                            <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
+                                        <?php endif; ?>
+                                    <?php endforeach;?>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
                                 <?php endif; ?>
                             </div>
+                           <?php if (!empty($cursor["_source"]['doi'])) {
+                                    $oadoi = get_oadoi($cursor["_source"]['doi'][0]);
+                                    echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'][0].' (Fonte: <a href="oadoi.org">oaDOI API</a>)';
+                                    echo '<ul>';
+                                    if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
+                                        echo '<li>Este periódico é de assinatura</li>';
+                                    } else {
+                                        echo '<li>Este periódico é de acesso aberto</li>';
+                                    }
+                                    if ($oadoi['results'][0]['is_free_to_read'] == 1) {
+                                        echo '<li>Este artigo é de acesso aberto</li>';
+                                    } else {
+                                        echo '<li>Este artigo NÃO é de acesso aberto<br/>';
+                                    }    
+                                    if (!empty($oadoi['results'][0]['free_fulltext_url'])) {                                        
+                                        echo '<li><a href="'.$oadoi['results'][0]['free_fulltext_url'].'">URL de acesso aberto</a></li>';
+                                    }
+                                    if (!empty($oadoi['results'][0]['oa_color'])) {  
+                                        echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
+                                    }
+                                    if (!empty($oadoi['results'][0]['license'])) {                                        
+                                        echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
+                                    }
+                                    echo '</ul></div>';
+                                    //print_r($oadoi);    
+                                }
+                            ?>                            
                             <?php endif; ?>
            
                             <hr>                            
