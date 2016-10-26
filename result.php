@@ -362,67 +362,79 @@
                                             <p>Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
                                         </li>
                                         <?php endif; ?>
-                                        <li>
-                                            <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
-                                            <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
-                                                <?php if (!empty($r["_source"]['url'])) : ?>
-                                                <?php foreach ($r["_source"]['url'] as $url) : ?>
-                                                <?php if ($url != '') : ?>
-                                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
-                                                <?php endif; ?>
-                                                <?php endforeach;?>
-                                                <?php endif; ?>
-                                                <?php if (!empty($r["_source"]['doi'])) : ?>
-                                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
-                                                <?php endif; ?>
-                                            </div>
-                                            <?php endif; ?>
-                                        </li>
-                                        
-
-                                        
-                                    
-                                        
-                                        
-                                        <?php if (isset($issn_info["serial-metadata-response"])): ?>
                                         <div class="uk-alert">
-                                            <li class="uk-h6">
-                                                Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API):
-                                                <ul>
-                                                    <li>
-                                                        Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
-                                                    </li>
-                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
-                                                    <li> 
-                                                        Área: <?php print_r($subj_area["$"]); ?>
-                                                    </li>
-                                                <?php endforeach; ?>                                                    
-                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
-                                                    <li>                                                    
-                                                        SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
-                                                    </li>
-                                                <?php endforeach; ?>
+                                            <h5>Acesso ao documento:</h5>
+                                            <li>
+                                                <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
+                                                <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
+                                                    <?php if (!empty($r["_source"]['url'])) : ?>
+                                                    <?php foreach ($r["_source"]['url'] as $url) : ?>
+                                                    <?php if ($url != '') : ?>
+                                                    <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
+                                                    <?php endif; ?>
+                                                    <?php endforeach;?>
+                                                    <?php endif; ?>
+                                                    <?php if (!empty($r["_source"]['doi'])) : ?>
+                                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php endif; ?>
+                                            </li>
+                                            <?php if (isset($issn_info["serial-metadata-response"])): ?>
+                                            <div class="uk-alert">
+                                                <li class="uk-h6">
+                                                    Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API):
+                                                    <ul>
+                                                        <li>
+                                                            Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
+                                                        </li>
+                                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
+                                                        <li> 
+                                                            Área: <?php print_r($subj_area["$"]); ?>
+                                                        </li>
+                                                    <?php endforeach; ?>                                                    
+                                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
+                                                        <li>                                                    
+                                                            SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
+                                                        </li>
+                                                    <?php endforeach; ?>
 
-                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
-                                                    <li>                                                    
-                                                        SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
-                                                    </li>
-                                                <?php endforeach; ?>
+                                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
+                                                        <li>                                                    
+                                                            SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
+                                                        </li>
+                                                    <?php endforeach; ?>
+
+                                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
+                                                        <li>                                                    
+                                                            IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                    </ul>
+                                                </li>
+                                            </div>    
                                         
-                                                <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
-                                                    <li>                                                    
-                                                        IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                                </ul>
+                                            <?php flush(); unset($issn_info); endif; ?>                                        
+                                        
+                                            <li>
+                                                <?php
+                                                    $sfx_array[] = 'rft.atitle='.$r["_source"]['title'].'';
+                                                    $sfx_array[] = 'rft.year='.$r["_source"]['year'].'';
+                                                    $sfx_array[] = 'rft.jtitle='.$r["_source"]['ispartof'].'';
+                                                    if (!empty($r["_source"]['doi'])) {
+                                                        $sfx_array[] = 'rft_id=info:doi/'.$r["_source"]['doi'][0].'';
+                                                    }
+                                                    if (!empty($r["_source"]['issn_part'][0])) {
+                                                        $sfx_array[] = 'rft.issn='.$r["_source"]['issn_part'][0].'';
+                                                    }
+                                                ?>
+                                                <a href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>">Buscar este registro por <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
+                                            </li>
+
+                                            <li class="uk-h6 uk-margin-top">
+                                               <?php load_itens_new($r['_id']); ?>
                                             </li>
                                         </div>    
-                                        
-                                        <?php flush(); unset($issn_info); endif; ?>                                        
-                                        
-                                        <li class="uk-h6 uk-margin-top">
-                                           <?php load_itens_new($r['_id']); ?>
-                                        </li>
                                         <li class="uk-h6 uk-margin-top">
                                             <p>Métricas:</p>
                                             <ul>
@@ -433,13 +445,16 @@
                                                     <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
                                                 </li>
                                                 <li>
-                                                    <?php 
+                                                     <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                                                    <!--
+                                                    < ?php 
                                                         $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
                                                         if (!empty($citations_scopus['abstract-citations-response'])) {
                                                             echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
                                                             echo '<br/><br/>';
                                                         } 
-                                                    ?>
+                                                    ? >
+                                                    -->
                                                 </li>
                                             </ul>  
                                         </li>
