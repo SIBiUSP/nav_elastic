@@ -427,8 +427,11 @@
                                                     if (!empty($r["_source"]['issn_part'][0])) {
                                                         $sfx_array[] = 'rft.issn='.$r["_source"]['issn_part'][0].'';
                                                     }
+                                                    if (!empty($r["_source"]['ispartof_data'][0])) {
+                                                        $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';
+                                                    }                                             
                                                 ?>
-                                                <a href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>">Buscar este registro por <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
+                                                <a href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>" target="_blank">Buscar este registro por <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
                                             </li>
 
                                             <li class="uk-h6 uk-margin-top">
