@@ -1612,6 +1612,31 @@ function metrics_update($client,$_id,$metrics_array){
     
 }
 
+function store_issn_info($client,$issn,$issn_info){    
+
+    $query = 
+    '
+    {
+        "doc":{
+            "issn_info" : 
+                '.$issn_info.'
+            ,
+            "date":"'.date("Y-m-d").'"
+        },                    
+        "doc_as_upsert" : true
+    }
+    ';
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'issn',
+        'id' => $issn,
+        'body' => $query
+    ];
+    $response = $client->update($params);
+    
+}
+
 
 
 ?>

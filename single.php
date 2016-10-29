@@ -241,6 +241,13 @@ $record_blob = implode("\\n", $record);
             
             <?php if (!empty($cursor["_source"]['issn_part'][0])) : ?>
                 <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn_part'][0]),$api_elsevier); ?>
+                <?php
+                    if (!empty($issn_info)) {
+                        //print_r($issn_info);
+                        store_issn_info($client,$cursor["_source"]['issn_part'][0],json_encode($issn_info));
+                    }
+                    
+                ?>
             <?php endif; ?>             
             
             
