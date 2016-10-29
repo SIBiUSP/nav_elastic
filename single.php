@@ -17,7 +17,7 @@ $citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
-$cursor = query_one_elastic($_GET['_id'],$server);
+$cursor = query_one_elastic($_GET['_id'],$client);
 
 /* Contador */
 counter($_GET['_id'],$server);

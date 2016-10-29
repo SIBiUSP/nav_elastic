@@ -1,33 +1,32 @@
 <?php
 
-function query_elastic ($query,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/_search";
+//function query_elastic ($query,$server) {
+//    $ch = curl_init();
+//    $method = "POST";
+//    $url = "http://$server/sibi/producao/_search";
+//
+//    curl_setopt($ch, CURLOPT_URL, $url);
+//    curl_setopt($ch, CURLOPT_PORT, 9200);
+//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+//    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+//
+//    $result = curl_exec($ch);
+//    curl_close($ch);
+//    $data = json_decode($result, TRUE);
+//    return $data;
+//}
 
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
-
-function query_one_elastic ($_id,$server) {
-    $ch = curl_init();
+function query_one_elastic ($_id,$client) {
     
-    curl_setopt($ch, CURLOPT_URL, "http://$server:9200/sibi/producao/$_id");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'id' => ''.$_id.''
+    ];
+    $response = $client->get($params);
+    return $response;    
 
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
 }
 
 function query_graph ($query,$server) {
@@ -97,33 +96,31 @@ function counter ($_id,$server) {
 }
 
 
-function contar_registros ($server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/_count";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data["count"];
+function contar_registros ($client) {
+    $query_all = '
+        {
+            "query": {
+                "match_all": {}
+            }
+        }        
+    ';
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        'body' => $query_all
+    ];
+    $response = $client->search($params);
+    return $response['hits']['total'];
+    print_r($response);
 
 
 }
 
-function contar_unicos ($field,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/_search";
-    
-    $query = '
+function contar_unicos ($field,$client) {
+
+    $count_distinct_query = '
     {
-        "size" : 0,
         "aggs" : {
             "distinct_authors" : {
                 "cardinality" : {
@@ -133,17 +130,16 @@ function contar_unicos ($field,$server) {
         }
     }
     ';
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data["aggregations"]["distinct_authors"]["value"];
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size' => 0,
+        'body' => $count_distinct_query
+    ];
+    $response = $client->search($params);
+    print_r($response);
+    return $response["aggregations"]["distinct_authors"]["value"];
+    
 }
 
 function store_user ($userdata,$server){
@@ -193,9 +189,9 @@ function store_user ($userdata,$server){
     //print_r($data);    
 }
 
-function ultimos_registros($server) {
+function ultimos_registros($client) {
     
-     $query = '{
+    $query = '{
                 "query": {
                     "match_all": {}
                  },
@@ -204,106 +200,109 @@ function ultimos_registros($server) {
                     {"_uid" : {"order" : "desc"}}
                     ]
                 }';
-    $data = query_elastic($query,$server);
-
-foreach ($data["hits"]["hits"] as $r){
-#print_r($r);
     
-echo '<article class="uk-comment">
-<header class="uk-comment-header">';    
-if (!empty($r["_source"]['unidadeUSP'])) {
-$file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
-}
-if (file_exists($file)) {
-echo '<img class="uk-comment-avatar" src="'.$file.'">';
-} else {
-#echo ''.$r['unidadeUSP'].'</a>';
-};
-if (!empty($r["_source"]['title'])){
-echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
-};
-echo '<div class="extra">';
-if (!empty($r["_source"]['authors'])) {
-echo '<div class="uk-comment-meta";">';    
-foreach ($r["_source"]['authors'] as $autores) {
-echo '<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>, ';
-}
-echo '</div>';     
-};
-echo '</header>';
-echo '</article>';
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size' => 5,
+        'body' => $query
+    ];
+    $response = $client->search($params);    
+
+    foreach ($response["hits"]["hits"] as $r){
+        echo '<article class="uk-comment">
+        <header class="uk-comment-header">';    
+        if (!empty($r["_source"]['unidadeUSP'])) {
+        $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+        }
+        if (file_exists($file)) {
+        echo '<img class="uk-comment-avatar" src="'.$file.'">';
+        } else {
+        #echo ''.$r['unidadeUSP'].'</a>';
+        };
+        if (!empty($r["_source"]['title'])){
+        echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
+        };
+        echo '<div class="extra">';
+        if (!empty($r["_source"]['authors'])) {
+        echo '<div class="uk-comment-meta";">';    
+        foreach ($r["_source"]['authors'] as $autores) {
+        echo '<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>, ';
+        }
+        echo '</div>';     
+        };
+        echo '</header>';
+        echo '</article>';
+    }
+    
 }
 
-     
-}
 
+//function criar_unidadeUSP_inicio($server) {
+//
+//    $query = '{
+//        "size": 0,
+//        "aggs": {
+//            "group_by_state": {
+//                "terms": {
+//                    "field": "unidadeUSPtrabalhos",
+//                    "order" : { "_term" : "asc" },
+//                    "size" : 150,
+//                    "missing": "Sem unidade cadastrada"
+//                }
+//            }
+//        }
+//    }';
+//    
+//    $data = query_elastic($query,$server);
+//    
+//    echo '<h3>Unidades USP</h3>';
+//    echo '<div class="ui five stackable doubling cards">';
+//    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
+//        
+//        
+//        $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
+//
+//        if (in_array($facets['key'],$programas_pos))
+//        {
+//          $programas[] =  '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
+//        
+//        } else { 
+//        
+//        echo '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
+//                $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
+//                if (file_exists($file)) {
+//                echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
+//                } else {
+//                  echo ''.strtoupper($facets['key']).'</a>';
+//              };
+//              echo'</div></a>';
+//        echo '<div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div>
+//                <div id="imagelogo" class="floating ui mini teal label" style="z-index:0">
+//                '.$facets['doc_count'].'
+//                </div>';
+//        echo '</div>';
+//
+//    };
+//   
+//        }
+//    echo '</div>';
+//    echo '<h3>Programas de Pós Graduação Interunidades</h3>';
+//    echo '<div class="ui five stackable doubling cards">';
+//    echo implode("",$programas);
+//    echo '</div>';
+//
+//     echo '</div>';
+//
+//}
 
-function criar_unidadeUSP_inicio($server) {
+function unidadeUSP_inicio($client) {
 
     $query = '{
-        "size": 0,
         "aggs": {
             "group_by_state": {
                 "terms": {
-                    "field": "unidadeUSPtrabalhos",
-                    "order" : { "_term" : "asc" },
-                    "size" : 150,
-                    "missing": "Sem unidade cadastrada"
-                }
-            }
-        }
-    }';
-    
-    $data = query_elastic($query,$server);
-    
-    echo '<h3>Unidades USP</h3>';
-    echo '<div class="ui five stackable doubling cards">';
-    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        
-        
-        $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
-
-        if (in_array($facets['key'],$programas_pos))
-        {
-          $programas[] =  '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
-        
-        } else { 
-        
-        echo '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
-                $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
-                if (file_exists($file)) {
-                echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
-                } else {
-                  echo ''.strtoupper($facets['key']).'</a>';
-              };
-              echo'</div></a>';
-        echo '<div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div>
-                <div id="imagelogo" class="floating ui mini teal label" style="z-index:0">
-                '.$facets['doc_count'].'
-                </div>';
-        echo '</div>';
-
-    };
-   
-        }
-    echo '</div>';
-    echo '<h3>Programas de Pós Graduação Interunidades</h3>';
-    echo '<div class="ui five stackable doubling cards">';
-    echo implode("",$programas);
-    echo '</div>';
-
-     echo '</div>';
-
-}
-
-function unidadeUSP_inicio($server) {
-
-    $query = '{
-        "size": 0,
-        "aggs": {
-            "group_by_state": {
-                "terms": {
-                    "field": "unidadeUSPtrabalhos",
+                    "field": "unidadeUSPtrabalhos.keyword",
                     "order" : { "_term" : "asc" },
                     "size" : 150
                 }
@@ -311,17 +310,24 @@ function unidadeUSP_inicio($server) {
         }
     }';
     
-    $data = query_elastic($query,$server);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        'body' => $query
+    ];    
+    
+    $response = $client->search($params); 
+    
+    $programas = [];
     $count = 1;
-    $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
-    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        if (in_array($facets['key'],$programas_pos))
-        {
+    $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
+    foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {        
+        if (in_array($facets['key'],$programas_pos)) {        
           $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         } else { 
             echo '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }
-       
         
        if ($count == 12)
             {  
@@ -329,8 +335,12 @@ function unidadeUSP_inicio($server) {
             }
         $count++;
     }
-    echo '<li><b>Programas de Pós-Graduação</b></li>';
-    echo implode("",$programas);
+    
+    if (!empty($programas)) {
+        echo '<li><b>Programas de Pós-Graduação</b></li>';
+        echo implode("",$programas);
+    }
+    
     if ($count > 7) {
         echo '</div>';
         echo '<button class="uk-button" data-uk-toggle="{target:\'#unidades\'}">Ver todas as unidades</button>';
@@ -338,62 +348,71 @@ function unidadeUSP_inicio($server) {
      
 }
 
-function base_inicio($server) {
+function base_inicio($client) {
 
     $query = '{
-        "size": 0,
         "aggs": {
             "group_by_state": {
                 "terms": {
-                    "field": "base",                    
+                    "field": "base.keyword",                    
                     "size" : 5
                 }
             }
         }
     }';
     
-    $data = query_elastic($query,$server);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        'body' => $query
+    ];    
     
-    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
+    $response = $client->search($params);
+    foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
         echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
     }   
+    
 }
 
 
-function gerar_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
+function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) {
 
     if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-       
-    $data = query_elastic($query,$server);
+         //$sort_query = "'order' => [ '_term' : '".$sort."' ],";  
+    }    
     
+    $query = '{
+        '.$consulta.'
+        "aggs": {
+            "counts": {
+                "terms": {
+                    "field": "'.$field.'.keyword",                    
+                    "size" : '.$tamanho.'
+                }
+            }
+        }
+    }';
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        //$sort_query
+        'body' => $query
+    ];    
+    
+    $response = $client->search($params);    
     
     echo '<li class="uk-parent">';    
-    echo '<a href="#">'.$nome_do_campo.'</a>';
+    echo '<a href="#">'.$field_name.'</a>';
     echo ' <ul class="uk-nav-sub">';
     echo '<form>';
     //$count = 1;
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+    foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
         echo '<p class="uk-form-controls-condensed">';
-        echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '<input type="checkbox" name="'.$field.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$field.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
         echo '</p>';
         echo '</li>';
         
@@ -616,19 +635,18 @@ function load_itens_single ($sysno) {
   }
 
 /* Function to generate Graph Bar */
-function generateDataGraphBar($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho,$server) {
+function generateDataGraphBar($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     }
     $query = '
     {
-        "size": 0,
         '.$consulta.'
         "aggregations": {
           "counts": {
             "terms": {
-              "field": "'.$campo.'",
+              "field": "'.$campo.'.keyword",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
@@ -637,7 +655,14 @@ function generateDataGraphBar($server,$url, $consulta, $campo, $sort, $sort_orie
      }
      ';
     
-    $facet = query_elastic($query,$server);    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0, 
+        'body' => $query
+    ]; 
+    
+    $facet = $client->search($params);    
     
     $data_array= array();
     foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
@@ -1172,6 +1197,12 @@ function analisa_get($get) {
         $page = 1;
     }
     
+    /* Empty search_index */
+    if (empty($get['search_index'])){
+        unset($get['search_index']);
+        unset($new_get['search_index']);
+    }
+    
     /* Pagination variables */
 
     $limit = 20;
@@ -1202,68 +1233,49 @@ function analisa_get($get) {
     }
     
     if (count($get) == 0) {
-        $search_term = '"match_all": {}';
-        $filter_query = '';
         
-        $query_complete = '{
-        "sort" : [
-                { "year" : {"order" : "desc"}},
-                { "_uid" : {"order" : "desc"}}
-        ],    
-        "query": {    
-        "bool": {
-          "must": {
-            '.$search_term.'
-          },
-          "filter":[
-            '.$filter_query.'        
+        $query_complete = '{   
+            "query": {    
+                 "match_all": {}
+             },
+            "sort":[
+                {"year.keyword":"desc"},
+                {"_uid":"desc"}
             ]
-          }
-        },
-        "from": '.$skip.',
-        "size": '.$limit.'
         }';
+        
 
         $query_aggregate = '
-            "query": {
-                "bool": {
-                  "must": {
-                    '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'
-                    ]
-                  }
-                },
-        ';
+           "query": {    
+                 "match_all": {}
+             },
+        ';        
+       
         
     } elseif (!empty($get['search_index'])) {
         $search_term = '
-            "query":
-            {
-                "multi_match" : {
-                    "query":      "'.$get['search_index'].'",
-                    "type":       "cross_fields",
-                    "fields":     [ "title", "authors_index", "subject", "resumo" ],
-                    "operator":   "and"
-                }    
-            }       
+            "multi_match" : {
+                "query":      "'.$get['search_index'].'",
+                "type":       "cross_fields",
+                "fields":     [ "title", "authors_index", "subject", "resumo" ],
+                "operator":   "and"
+            }   
         ';
         
-
         unset($get['search_index']);
 
+        $filter = []; 
         foreach ($get as $key => $value) {
            if (count($value) > 1){
                foreach ($value as $valor){
-                    $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
                 }               
            } else {
-               $filter[] = '{"term":{"'.$key.'":"'.$value[0].'"}}';
+               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
            }
             
         }
-
+        
         if (count($filter) > 0) {
             $filter_query = ''.implode(",", $filter).''; 
         } else {
@@ -1272,23 +1284,22 @@ function analisa_get($get) {
 
 
         $query_complete = '{
-        "sort" : [
-                { "year" : "desc" }
-            ],    
-        "query": {    
-        "bool": {
-          "must": {
-            '.$search_term.'
-          },
-          "filter":[
-            '.$filter_query.'        
-            ]
-          }
-        },
-        "from": '.$skip.',
-        "size": '.$limit.'
+            "sort" : [
+                    { "year.keyword" : "desc" }
+                ],    
+            "query": {    
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'        
+                    ]
+                  }
+            }
         }';
-        
+
+
         $query_aggregate = '
             "query": {
                 "bool": {
@@ -1306,17 +1317,18 @@ function analisa_get($get) {
     } elseif (!empty($get['operator'])) {
         
         unset($get['operator']);
+        unset($new_get['operator']);
         
         foreach ($get as $key => $value){
                 $key = $key;
                 $value_array[] = $value;                
         } 
-            $query_part = '{"'.$key.'":["'.implode('","',$value_array[0]).'"]}';
+            $query_part = '{"'.$key.'.keyword":["'.implode('","',$value_array[0]).'"]}';
 
             $query_complete = '
                 {
                 "sort" : [
-                    { "year" : "desc" }
+                    { "year.keyword" : "desc" }
                 ],    
                 "query" : {
                     "bool" : {
@@ -1348,14 +1360,15 @@ function analisa_get($get) {
         foreach ($get as $key => $value) {
 
             $conta_value = count($value);
-
+            $get_query1 = [];
+            
             if ($conta_value > 1) {
                 foreach ($value as $valor){
-                    $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                    $get_query1[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
                 }                        
             } else {
                  foreach ($value as $valor){
-                     $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                     $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
                  }
             }       
         }
@@ -1366,7 +1379,7 @@ function analisa_get($get) {
         $query_complete = '
                     {
                        "sort" : [
-                           { "year" : "desc" }
+                           { "year.keyword" : "desc" }
                        ],    
                        "query" : {
                           "constant_score" : {
@@ -1414,7 +1427,7 @@ function analisa_get($get) {
     
 if (isset($new_get)){
     
-   
+   $novo_get="";
     if (!empty($new_get['search_index'])){
         $novo_get[] = 'search_index='.$new_get['search_index'].'';
         $termo_consulta = $new_get['search_index'];
@@ -1423,15 +1436,21 @@ if (isset($new_get)){
     
     foreach ($new_get as $key => $value){
         $novo_get[] = ''.$key.'[]='.$value[0].'';        
-    }    
-    $pega_get = implode("&",$novo_get);
+    } 
+    if (!empty($novo_get)){
+        $pega_get = implode("&",$novo_get); 
+    } else {
+        $pega_get = "";
+    }
+       
     $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$pega_get.'';
+
 } else {
     $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
 }
     $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
     
-    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim');
+    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
 }
 
   
