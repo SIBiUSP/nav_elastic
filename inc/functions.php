@@ -65,34 +65,31 @@ function update_elastic ($_id,$query,$server) {
 
 
 
-function counter ($_id,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao_metrics/$_id/_update";
+function counter ($_id,$client) {
     $query = 
-             '{
-                "script" : {
-                    "inline": "ctx._source.counter += count",
-                    "params" : {
-                        "count" : 1
-                    }
-                },
-                "upsert" : {
-                    "counter" : 1
-                }
-            }';
+    '
+    {
+        "script" : {
+            "inline": "ctx._source.counter += params.count",
+            "lang": "painless",
+            "params" : {
+                "count" : 1
+            }
+        },
+        "upsert" : {
+            "counter" : 1
+        }
+    }
+    ';  
     
-    
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao_metrics',
+        'id' => $_id,
+        'body' => $query
+    ];
+    $response = $client->update($params);        
+    //print_r($response);
 }
 
 
@@ -124,7 +121,7 @@ function contar_unicos ($field,$client) {
         "aggs" : {
             "distinct_authors" : {
                 "cardinality" : {
-                  "field" : "'.$field.'"
+                  "field" : "'.$field.'.keyword"
                 }
             }
         }
@@ -137,7 +134,6 @@ function contar_unicos ($field,$client) {
         'body' => $count_distinct_query
     ];
     $response = $client->search($params);
-    print_r($response);
     return $response["aggregations"]["distinct_authors"]["value"];
     
 }
@@ -417,24 +413,20 @@ function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$
 
 }
 
-function gerar_faceta_range($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
+function gerar_faceta_range($consulta,$url,$client,$campo,$tamanho,$nome_do_campo) {
 
-    if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
     $query = '
     {
-        "size": 0,
         '.$consulta.'
         "aggs" : {
             "ranges" : {
                 "range" : {
                     "field" : "'.$campo.'",
                     "ranges" : [
-                        { "to" : 50 },
-                        { "from" : 50, "to" : 100 },
-                        { "from" : 100 }
+                        { "to" : 1 },
+                        { "from" : 1, "to" : 2 },
+                        { "from" : 2, "to" : 5 },
+                        { "from" : 5 }
                     ]
                 }
             }
@@ -442,22 +434,45 @@ function gerar_faceta_range($consulta,$url,$server,$campo,$tamanho,$nome_do_camp
      }
      ';
     
-            
-    $data = query_elastic($query,$server);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
     
-   
-    echo '<div class="item">';
-    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
-    echo '<div class="content">';
-    echo '<div class="ui list">';
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<div class="item">';
-        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
-        echo '</div>';
+    $response = $client->search($params); 
+    
+    //print_r($response);
+
+    echo '<li class="uk-parent">';    
+    echo '<a href="#">'.$nome_do_campo.'</a>';
+    echo ' <ul class="uk-nav-sub">';
+    echo '<form>';
+    //$count = 1;
+    foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
+        echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
+        echo '<p class="uk-form-controls-condensed">';
+        echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '</p>';
+        echo '</li>';
+        
+        //if ($count == 11)
+        //    {  
+        //         echo '<div id="'.$campo.'" class="uk-hidden">';
+        //    }
+        //$count++;
     };
-    echo   '</div>
-      </div>
-  </div>';
+    //if ($count > 12) {
+        //echo '</div>';
+        //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
+    //}
+
+    echo '<input type="hidden" checked="checked" name="operator" value="AND">';
+    echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
+    echo '</form>';
+    echo   '</ul></li>';    
+    
 
 }
 
@@ -1572,28 +1587,29 @@ function get_oadoi($doi) {
     curl_close($curl);    
 }
 
-function metrics_update($server,$_id,$metrics_array){    
-    $ch = curl_init();
-    $method = "POST";    
-    $url = "http://$server/sibi/producao/$_id/_update";
-       $query = 
-             '{
-                "doc":{
-                    "metrics" : {
-                        '.implode(",",$metrics_array).'
-                    },
-                    "date":"'.date("Y-m-d").'"
-                },                    
-                "doc_as_upsert" : true
-            }';
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-    $result = curl_exec($ch);
-    //var_dump($result);
-    curl_close($ch); 
+function metrics_update($client,$_id,$metrics_array){    
+
+    $query = 
+    '
+    {
+        "doc":{
+            "metrics" : {
+                '.implode(",",$metrics_array).'
+            },
+            "date":"'.date("Y-m-d").'"
+        },                    
+        "doc_as_upsert" : true
+    }
+    ';  
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'id' => $_id,
+        'body' => $query
+    ];
+    $response = $client->update($params);        
+    
 }
 
 

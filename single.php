@@ -20,7 +20,7 @@ $mode = "reference";
 $cursor = query_one_elastic($_GET['_id'],$client);
 
 /* Contador */
-counter($_GET['_id'],$server);
+counter($_GET['_id'],$client);
 
 ?>
 
@@ -328,8 +328,8 @@ $record_blob = implode("\\n", $record);
                         
                     
                             
-                            $metrics[] = 'three_years_citations_scopus: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
-                            $metrics[] = 'full_citations_scopus: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
+                            $metrics[] = '"three_years_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
+                            $metrics[] = '"full_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
                         }
                     ?>
                     <?php endif; ?>
@@ -478,25 +478,25 @@ $record_blob = implode("\\n", $record);
                                                   ?>
                                         </li>
                                     <?php endforeach; ?>
-                                    <?php $metrics[] = 'subject_area_scopus:['.implode(",",$subject_area_array).']'; ?>    
+                                    <?php $metrics[] = '"subject_area_scopus":['.implode(",",$subject_area_array).']'; ?>    
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
                                         <li>                                                    
                                             SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
-                                            <?php $metrics[] = 'scopus_sjr_'.$sjr["@year"].': '.$sjr["$"].'';?>
+                                            <?php $metrics[] = '"scopus_sjr_'.$sjr["@year"].'": '.$sjr["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
 
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
                                         <li>                                                    
                                             SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
-                                            <?php $metrics[] = 'scopus_snip_'.$snip["@year"].': '.$snip["$"].'';?>
+                                            <?php $metrics[] = '"scopus_snip_'.$snip["@year"].'": '.$snip["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
 
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
                                         <li>                                                    
                                             IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                            <?php $metrics[] = 'scopus_ipp_'.$ipp["@year"].': '.$ipp["$"].'';?>
+                                            <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
                                     </ul>
@@ -535,29 +535,28 @@ $record_blob = implode("\\n", $record);
                                         echo '<li>Este artigo NÃO é de acesso aberto<br/>';
                                     }
                                     if (!empty($oadoi['results'][0]['is_free_to_read'])) {                                        
-                                        $metrics[] = 'oadoi_is_free_to_read: '.$oadoi['results'][0]['is_free_to_read'].'';
+                                        $metrics[] = '"oadoi_is_free_to_read": '.$oadoi['results'][0]['is_free_to_read'].'';
                                     }    
                                     if (!empty($oadoi['results'][0]['free_fulltext_url'])) {                                        
                                         echo '<li><a href="'.$oadoi['results'][0]['free_fulltext_url'].'">URL de acesso aberto</a></li>';
                                     }
                                     if (!empty($oadoi['results'][0]['oa_color'])) {  
                                         echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
-                                        $metrics[] = 'oadoi_oa_color: "'.$oadoi['results'][0]['oa_color'].'"';
+                                        $metrics[] = '"oadoi_oa_color": "'.$oadoi['results'][0]['oa_color'].'"';
                                     }
                                     if (!empty($oadoi['results'][0]['license'])) {                                        
                                         echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
                                     }
                                     echo '</ul></div>';
                                     
-                                    $metrics[] = 'oadoi_is_subscription_journal: '.$oadoi['results'][0]['is_subscription_journal'].'';
-                                    
-                                    
-                                    //print_r($oadoi);    
+                                    if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
+                                        $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
+                                    }
+                                    metrics_update($client,$_GET['_id'],$metrics);      
                                 }
                             ?>                            
-                            <?php endif; ?>
-                        
-                            <?php metrics_update($server,$_GET['_id'],$metrics); ?>
+                            <?php endif; ?>                        
+
            
                             <hr>                            
                             <?php load_itens_single($cursor["_id"]); ?>                            
@@ -603,8 +602,10 @@ $record_blob = implode("\\n", $record);
                         <div class="uk-overflow-container">
                             
                             <?php
-                                $full_html = get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
-                                print_r($full_html);
+                                if (!empty($cursor["_source"]['doi'])) {
+                                    $full_html = get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                                    print_r($full_html);                                    
+                                } 
                             ?>
                             
                             

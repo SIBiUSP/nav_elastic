@@ -97,7 +97,7 @@
                         <h2 class="uk-h3">Nossos números</h2>
                         <ul class="uk-list uk-list-striped">
                             <li><?php echo number_format(contar_registros($client),0,',','.'); ?> registros</li>
-                            <!-- <li>< ?php echo number_format(contar_unicos(authorUSP.keyword,$client),0,',','.'); ?> autores vinculados à USP</li> -->                               
+                            <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>                                
                         </ul>
                     </div>
                 </div>
