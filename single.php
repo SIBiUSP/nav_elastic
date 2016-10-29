@@ -250,11 +250,16 @@ $record_blob = implode("\\n", $record);
                    <?php
                         if (isset($issn_info["serial-metadata-response"])) {
                             $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";
+                            
+                    $headers = get_headers($image_url, 1);
+                    if ($headers[0] == 'HTTP/1.1 200 OK') {
                             if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
                                 echo '<div class="uk-margin-top uk-margin-bottom">';    
                                 echo '<img src="'.$image_url.'">';
                                 echo '</div>';
                             }
+                    }                            
+
                         } 
                     ?>
                     

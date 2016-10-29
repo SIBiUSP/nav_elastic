@@ -29,22 +29,22 @@ function query_one_elastic ($_id,$client) {
 
 }
 
-function query_graph ($query,$server) {
-    $ch = curl_init();
-    $method = "GET";
-    $url = "http://$server/sibi/_graph/explore";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
+//function query_graph ($query,$server) {
+//    $ch = curl_init();
+//    $method = "GET";
+//    $url = "http://$server/sibi/_graph/explore";
+//
+//    curl_setopt($ch, CURLOPT_URL, $url);
+//    curl_setopt($ch, CURLOPT_PORT, 9200);
+//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+//    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+//
+//    $result = curl_exec($ch);
+//    curl_close($ch);
+//    $data = json_decode($result, TRUE);
+//    return $data;
+//}
 
 function update_elastic ($_id,$query,$server) {
     $ch = curl_init();
@@ -237,65 +237,6 @@ function ultimos_registros($client) {
     
 }
 
-
-//function criar_unidadeUSP_inicio($server) {
-//
-//    $query = '{
-//        "size": 0,
-//        "aggs": {
-//            "group_by_state": {
-//                "terms": {
-//                    "field": "unidadeUSPtrabalhos",
-//                    "order" : { "_term" : "asc" },
-//                    "size" : 150,
-//                    "missing": "Sem unidade cadastrada"
-//                }
-//            }
-//        }
-//    }';
-//    
-//    $data = query_elastic($query,$server);
-//    
-//    echo '<h3>Unidades USP</h3>';
-//    echo '<div class="ui five stackable doubling cards">';
-//    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-//        
-//        
-//        $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
-//
-//        if (in_array($facets['key'],$programas_pos))
-//        {
-//          $programas[] =  '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
-//        
-//        } else { 
-//        
-//        echo '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
-//                $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
-//                if (file_exists($file)) {
-//                echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
-//                } else {
-//                  echo ''.strtoupper($facets['key']).'</a>';
-//              };
-//              echo'</div></a>';
-//        echo '<div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div>
-//                <div id="imagelogo" class="floating ui mini teal label" style="z-index:0">
-//                '.$facets['doc_count'].'
-//                </div>';
-//        echo '</div>';
-//
-//    };
-//   
-//        }
-//    echo '</div>';
-//    echo '<h3>Programas de Pós Graduação Interunidades</h3>';
-//    echo '<div class="ui five stackable doubling cards">';
-//    echo implode("",$programas);
-//    echo '</div>';
-//
-//     echo '</div>';
-//
-//}
-
 function unidadeUSP_inicio($client) {
 
     $query = '{
@@ -377,17 +318,19 @@ function base_inicio($client) {
 
 
 function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) {
-
+    $sort_query="";
     if (!empty($sort)){
-         //$sort_query = "'order' => [ '_term' : '".$sort."' ],";  
-    }    
+         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+    }     
+
     
     $query = '{
         '.$consulta.'
         "aggs": {
             "counts": {
                 "terms": {
-                    "field": "'.$field.'.keyword",                    
+                    "field": "'.$field.'.keyword",
+                    '.$sort_query.'
                     "size" : '.$tamanho.'
                 }
             }
@@ -397,10 +340,11 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
     $params = [
         'index' => 'sibi',
         'type' => 'producao',
-        'size'=> 0,
-        //$sort_query
+        'size'=> 0,          
         'body' => $query
-    ];    
+    ];
+    
+    
     
     $response = $client->search($params);    
     
