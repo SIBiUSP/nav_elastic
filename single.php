@@ -506,6 +506,32 @@ $record_blob = implode("\\n", $record);
                                             <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
+                                    <?php 
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccess'])) {
+                                            echo '<li>Periódico de acesso aberto</li>';
+                                            $metrics[] = '"scopus_openaccess":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccess'].'"';
+                                        }
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'])) {
+                                            echo '<li>Artigo em Acesso aberto</li>';
+                                            $metrics[] = '"scopus_openaccessArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'].'"';
+                                        }
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'])) {
+                                            echo '<li>Artigo em arquivo de Acesso aberto</li>';
+                                            $metrics[] = '"scopus_openArchiveArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'].'"';
+                                        } 
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessType'])) {
+                                            echo '<li>Tipo de acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'</li>';
+                                            $metrics[] = '"scopus_openaccessType":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'"';
+                                        }  
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'])) {
+                                            echo '<li>Data de início do acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'</li>';
+                                            $metrics[] = '"scopus_openaccessStartDate":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'"';
+                                        }
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'])) {
+                                            echo '<li>Acesso aberto pago pelo autor: '.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'</li>';
+                                            $metrics[] = '"scopus_oaAllowsAuthorPaid":"'.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'"';
+                                        }                                        
+                                    ?>    
                                     </ul>
                                 </li>
                           </div>    
