@@ -1300,25 +1300,6 @@ function analisa_get($get) {
         
         unset($get['advanced_search']);
 
-        $filter = []; 
-        foreach ($get as $key => $value) {
-           if (count($value) > 1){
-               foreach ($value as $valor){
-                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-                }               
-           } else {
-               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
-           }
-            
-        }
-        
-        if (count($filter) > 0) {
-            $filter_query = ''.implode(",", $filter).''; 
-        } else {
-            $filter_query = '';
-        }
-
-
         $query_complete = '{
             "sort" : [
                     { "year.keyword" : "desc" }
@@ -1327,10 +1308,7 @@ function analisa_get($get) {
                 "bool": {
                   "must": {
                     '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'        
-                    ]
+                  }
                   }
             }
         }';
@@ -1341,10 +1319,7 @@ function analisa_get($get) {
                 "bool": {
                   "must": {
                     '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'
-                    ]
+                  }
                   }
                 },
         ';
