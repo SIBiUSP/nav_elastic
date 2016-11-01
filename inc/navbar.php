@@ -8,13 +8,11 @@
                         <a href="index.php" style="color:white">Início</a>
                     </li>
                     <li>
-                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca contextualizada</a>
+                        <a href="#" data-uk-toggle="{target:'#busca_contextualizada'}" style="color:white">Busca contextualizada</a>
                     </li>
-                    <!--
                     <li>
-                        <a href="advanced_search.php" style="color:white">Busca avançada</a>
-                    </li>
-                    -->
+                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
+                    </li>                    
                 </ul>
                     <div class="uk-navbar-flip">
                         <ul class="uk-navbar-nav uk-hidden-small">
@@ -71,34 +69,51 @@
                 
             </div>
             
-            <div id="busca_avancada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
+            <div id="busca_contextualizada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
                     <div class="uk-alert uk-alert-large">
                         
-                        
-<form class="uk-form" role="form" action="result.php" method="get">
+                        <form class="uk-form" role="form" action="result.php" method="get">
 
-    <fieldset data-uk-margin>
-        <legend>Número USP</legend>
-        <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
-        <button class="uk-button" type="submit">Buscar</button>
-    </fieldset>
+                            <fieldset data-uk-margin>
+                                <legend>Número USP</legend>
+                                <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
+                                <button class="uk-button" type="submit">Buscar</button>
+                            </fieldset>
 
-</form>
-                        
-<form class="uk-form" role="form" action="result.php" method="get" name="assunto">
+                        </form>
 
-    <fieldset data-uk-margin>
-        <legend>Assunto do Vocabulário Controlado</legend>
-        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
-        <input type="text" name="assunto">
-        <button class="uk-button" type="submit">Buscar</button>
-    </fieldset>
+                        <form class="uk-form" role="form" action="result.php" method="get" name="assunto">
 
-</form>                          
-                        
+                            <fieldset data-uk-margin>
+                                <legend>Assunto do Vocabulário Controlado</legend>
+                                <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+                                <input type="text" name="assunto">
+                                <button class="uk-button" type="submit">Buscar</button>
+                            </fieldset>
+
+                        </form>                          
                        
                     </div>
                 </div>
             </div>
+            
+            <div id="busca_avancada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <div class="uk-alert uk-alert-large">
+                        
+                        <form class="uk-form" role="form" action="result.php" method="get">
+
+                            <fieldset data-uk-margin>
+                                <legend>String de busca</legend>
+                                <input type="text" class="uk-form-width-large" placeholder="Insira uma string de busca avançada" name="advanced_search">
+                                <button class="uk-button" type="submit">Buscar</button>
+                                <br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
+                            </fieldset>
+
+                        </form>                       
+                       
+                    </div>
+                </div>
+            </div>            
         </div>

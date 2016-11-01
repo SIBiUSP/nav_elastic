@@ -1,22 +1,5 @@
 <?php
 
-//function query_elastic ($query,$server) {
-//    $ch = curl_init();
-//    $method = "POST";
-//    $url = "http://$server/sibi/producao/_search";
-//
-//    curl_setopt($ch, CURLOPT_URL, $url);
-//    curl_setopt($ch, CURLOPT_PORT, 9200);
-//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-//    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-//
-//    $result = curl_exec($ch);
-//    curl_close($ch);
-//    $data = json_decode($result, TRUE);
-//    return $data;
-//}
-
 function query_one_elastic ($_id,$client) {
     
     $params = [
@@ -28,42 +11,6 @@ function query_one_elastic ($_id,$client) {
     return $response;    
 
 }
-
-//function query_graph ($query,$server) {
-//    $ch = curl_init();
-//    $method = "GET";
-//    $url = "http://$server/sibi/_graph/explore";
-//
-//    curl_setopt($ch, CURLOPT_URL, $url);
-//    curl_setopt($ch, CURLOPT_PORT, 9200);
-//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-//    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-//
-//    $result = curl_exec($ch);
-//    curl_close($ch);
-//    $data = json_decode($result, TRUE);
-//    return $data;
-//}
-
-function update_elastic ($_id,$query,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/$_id/_update";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
-
-
 
 function counter ($_id,$client) {
     $query = 
@@ -94,6 +41,7 @@ function counter ($_id,$client) {
 
 
 function contar_registros ($client) {
+
     $query_all = '
         {
             "query": {
@@ -110,7 +58,6 @@ function contar_registros ($client) {
     $response = $client->search($params);
     return $response['hits']['total'];
     print_r($response);
-
 
 }
 
@@ -138,10 +85,7 @@ function contar_unicos ($field,$client) {
     
 }
 
-function store_user ($userdata,$server){
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/users/".$userdata->{'loginUsuario'}."/_update";
+function store_user ($userdata,$client){
     
     $query_array[] = '"nomeUsuario" : "'.$userdata->{'nomeUsuario'}.'"';
     $query_array[] = '"tipoUsuario" : "'.$userdata->{'tipoUsuario'}.'"';
@@ -173,16 +117,14 @@ function store_user ($userdata,$server){
                 "doc_as_upsert" : true
             }';
     
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    //$data = json_decode($result, TRUE);
-    //print_r($data);    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao_metrics',
+        'id' => $userdata->{'loginUsuario'},
+        'body' => $query
+    ];
+    $response = $client->update($params);   
+ 
 }
 
 function ultimos_registros($client) {
@@ -191,7 +133,6 @@ function ultimos_registros($client) {
                 "query": {
                     "match_all": {}
                  },
-                "size": 5,
                 "sort" : [
                     {"_uid" : {"order" : "desc"}}
                     ]
@@ -200,7 +141,7 @@ function ultimos_registros($client) {
     $params = [
         'index' => 'sibi',
         'type' => 'producao',
-        'size' => 5,
+        'size' => 11,
         'body' => $query
     ];
     $response = $client->search($params);    
@@ -209,7 +150,9 @@ function ultimos_registros($client) {
         echo '<article class="uk-comment">
         <header class="uk-comment-header">';    
         if (!empty($r["_source"]['unidadeUSP'])) {
-        $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+            $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+        } else {
+            $file = "";
         }
         if (file_exists($file)) {
         echo '<img class="uk-comment-avatar" src="'.$file.'">';
@@ -258,7 +201,7 @@ function unidadeUSP_inicio($client) {
     
     $programas = [];
     $count = 1;
-    $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
+    $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON','EP/IB/ICB/IQ/BUTANT /IPT','FO/EE/FSP');
     foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {        
         if (in_array($facets['key'],$programas_pos)) {        
           $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
@@ -274,7 +217,7 @@ function unidadeUSP_inicio($client) {
     }
     
     if (!empty($programas)) {
-        echo '<li><b>Programas de Pós-Graduação</b></li>';
+        echo '<li><b>Programas de Pós-Graduação Interunidades</b></li>';
         echo implode("",$programas);
     }
     
@@ -375,12 +318,8 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
 
 }
 
-function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
+function corrigir_faceta($consulta,$url,$client,$campo,$tamanho,$nome_do_campo) {
 
-    if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
     $query = '
     {
         "size": 0,
@@ -397,13 +336,19 @@ function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$
         }
      }
      ';
-       
-    $data = query_elastic($query,$server);
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'body' => $query
+    ];
+    
+    $response = $client->update($params); 
     
     echo '<li class="uk-parent">';
     echo '<a href="#">'.$nome_do_campo.'</a>';
     echo ' <ul class="uk-nav-sub">';
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+    foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<li class="uk-h6">';        
         echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
         echo '</li>';
@@ -640,7 +585,7 @@ function generateDataGraphBar($client, $consulta, $campo, $sort, $sort_orientati
 };
 
 /* Function to generate Tables */
-function generateDataTable($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateDataTable($client,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     }
@@ -660,10 +605,15 @@ function generateDataTable($server,$url, $consulta, $campo, $sort, $sort_orienta
         }
      }
      ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
     
-    $facet = query_elastic($query,$server);    
-
-
+    $response = $client->search($params);  
 
 echo "<table class=\"uk-table\">
   <thead>
@@ -674,7 +624,7 @@ echo "<table class=\"uk-table\">
   </thead>
   <tbody>";
 
-    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
         echo "<tr>
               <td>".$facets['key']."</td>
               <td>".$facets['doc_count']."</td>
@@ -689,7 +639,7 @@ echo "<table class=\"uk-table\">
 
 
 /* Function to generate CSV */
-function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateCSV($client,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -711,10 +661,16 @@ function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, 
      }
      ';
     
-    $facet = query_elastic($query,$server);   
-
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
+    
+    $response = $client->search($params); 
     $data_array= array();
-    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
         array_push($data_array,''.$facets["key"].'\\t'.$facets["doc_count"].'');
     };
     $comma_separated = implode("\\n", $data_array);
@@ -724,7 +680,7 @@ function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, 
 
 /* Comparar registros */
 
-function compararRegistros ($server,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
+function compararRegistros ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
 
     $query = '
     {
@@ -762,11 +718,17 @@ function compararRegistros ($server,$query_type,$query_year,$query_title,$query_
     }
     ';
     
-    $result = query_elastic($query,$server);
-        
-    if ($result["hits"]["total"] > 0) {
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    foreach ($result['hits']['hits'] as $results) {
+    $response = $client->search($params);   
+        
+    if ($response["hits"]["total"] > 0) {
+    
+        foreach ($response['hits']['hits'] as $results) {
             echo '
                 <tr>
                   <td>'.$query_type.'</td>
@@ -784,7 +746,9 @@ function compararRegistros ($server,$query_type,$query_year,$query_title,$query_
                 </tr>                
                 ';
         }
+    
     } else {
+        
             echo '
                 <tr>
                   <td>'.$query_type.'</td>
@@ -803,11 +767,11 @@ function compararRegistros ($server,$query_type,$query_year,$query_title,$query_
     }
 }
 
-function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
+function compararRegistrosLattes ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
 
     $query = '
     {
-        "min_score": 0.7,
+        "min_score": 20,
         "query":{
             "bool": {
                 "should": [
@@ -836,24 +800,30 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
                     },
                     {
                         "multi_match" : {
-                            "query":      "'.$query_authors.'",
+                            "query":      "'.$query_year.'",
                             "type":       "best_fields",
-                            "fields":     [ "authors" ],
-                            "minimum_should_match": "10%" 
+                            "fields":     [ "year" ],
+                            "minimum_should_match": "75%" 
                         }
                     }
                 ],
-                "minimum_should_match" : 1               
+                "minimum_should_match" : 2               
             }
         }
     }
     ';
     
-    $result = query_elastic($query,$server);
-        
-    if ($result["hits"]["total"] > 0) {
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    foreach ($result['hits']['hits'] as $results) {
+    $response = $client->search($params);     
+        
+    if ($response["hits"]["total"] > 0) {
+    
+    foreach ($response['hits']['hits'] as $results) {
             echo '
                 <tr>
                   <td>'.$query_type.'</td>
@@ -867,9 +837,14 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
                   
                   echo '<td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
-                  <td>'.$results["_source"]["title"].'</td>
-                  <td>'.$results["_source"]["doi"][0].'</td>
-                  <td>'. implode("|",$results["_source"]["authors"]).'</td>
+                  <td>'.$results["_source"]["title"].'</td>';
+                    if (!empty($results["_source"]["doi"])) {
+                        echo '<td>'.$results["_source"]["doi"][0].'</td>';
+                    } else {
+                        echo '<td></td>';
+                    }       
+        
+                  echo '<td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
                   <td>'.$results["_id"].'</td>
@@ -902,7 +877,7 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
 
 
 
-function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosScopus ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
@@ -930,12 +905,18 @@ function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$
         }
     }
     ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    $result = query_elastic($query,$server);
+    $response = $client->search($params);     
         
-    if ($result["hits"]["total"] > 0) {
+    if ($response["hits"]["total"] > 0) {
     
-    foreach ($result['hits']['hits'] as $results) {
+    foreach ($response['hits']['hits'] as $results) {
         $row = [];
         $row[]= $query_year;
         $row[]= $query_type;
@@ -966,10 +947,11 @@ function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$
 }
 
 
-function compararCSVScopus ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararCSVScopus ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
+        "min_score": 20,
         "query":{
             "bool": {
                 "should": [
@@ -987,53 +969,70 @@ function compararCSVScopus ($server,$query_type,$query_year,$query_title,$query_
                             "fields":     [ "title" ],
                             "minimum_should_match": "90%" 
                          }
-                    }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_year.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "year" ],
+                            "minimum_should_match": "75%" 
+                         }
+                    } 
                 ],
-                "minimum_should_match" : 1                
+                "minimum_should_match" : 2                
             }
         }
     }
     ';
     
-    $result = query_elastic($query,$server);
-        
-    if ($result["hits"]["total"] > 0) {
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    foreach ($result['hits']['hits'] as $results) {
-        $row = [];
-        $row[]= $query_year;
-        $row[]= $query_type;
-        $row[]= $query_title;
-        $row[]= $query_DOI;
-        $row[]= $query_authors;
-        $row[]= $results["_source"]["type"];
-        $row[]= $results["_source"]["title"];
-        if (!empty($results["_source"]["doi"])){
-            $row[]= implode("|",$results["_source"]["doi"]);
-        } else {
-            $row[] = "Sem DOI";
-        }        
-        $row[]= implode("|",$results["_source"]["authors"]);
-        $row[]= $results["_source"]["year"];
-        $row[]= $results["_score"];
-        $row[]= $results["_id"];
-        $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
-        $result_row = implode("\\t", $row);
-        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
-        return $result_row;
-        }
-    } else {
-            $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
-            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
+    $response = $client->search($params); 
+        
+    if ($response["hits"]["total"] > 0) {
+    
+        foreach ($response['hits']['hits'] as $results) {
+            $row = [];
+            $row[]= $query_year;
+            $row[]= $query_type;
+            $row[]= $query_title;
+            $row[]= $query_DOI;
+            $row[]= $query_authors;
+            $row[]= $results["_source"]["type"];
+            $row[]= $results["_source"]["title"];
+            if (!empty($results["_source"]["doi"])){
+                $row[]= implode("|",$results["_source"]["doi"]);
+            } else {
+                $row[] = "Sem DOI";
+            }        
+            $row[]= implode("|",$results["_source"]["authors"]);
+            $row[]= $results["_source"]["year"];
+            $row[]= $results["_score"];
+            $row[]= $results["_id"];
+            $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
+            $result_row = implode("\\t", $row);
+            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
             return $result_row;
+        }
+        
+    } else {
+        
+        $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
+        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
+        return $result_row;
     }
 }
 
 
-function compararRegistrosWos ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosWos ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
+        "min_score": 20,
         "query":{
             "bool": {
                 "should": [
@@ -1051,45 +1050,62 @@ function compararRegistrosWos ($server,$query_type,$query_year,$query_title,$que
                             "fields":     [ "title" ],
                             "minimum_should_match": "90%" 
                          }
-                    }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_year.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "year" ],
+                            "minimum_should_match": "75%" 
+                         }
+                    } 
                 ],
-                "minimum_should_match" : 1                
+                "minimum_should_match" : 2                
             }
         }
     }
     ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    $result = query_elastic($query,$server);
+    $response = $client->search($params); 
         
-    if ($result["hits"]["total"] > 0) {
+    if ($response["hits"]["total"] > 0) {
     
-    foreach ($result['hits']['hits'] as $results) {
-        $row = [];
-        $row[]= $query_year;
-        $row[]= $query_type;
-        $row[]= $query_title;
-        $row[]= $query_DOI;
-        $row[]= $query_authors;
-        $row[]= $results["_source"]["type"];
-        $row[]= $results["_source"]["title"];
-        if (!empty($results["_source"]["doi"])){
-            $row[]= implode("|",$results["_source"]["doi"]);
-        } else {
-            $row[] = "Sem DOI";
-        }        
-        $row[]= implode("|",$results["_source"]["authors"]);
-        $row[]= $results["_source"]["year"];
-        $row[]= $results["_score"];
-        $row[]= $results["_id"];
-        $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
-        $result_row = implode("\\t", $row);
-        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
-        return $result_row;
+        foreach ($response['hits']['hits'] as $results) {
+            $row = [];
+            $row[]= $query_year;
+            $row[]= $query_type;
+            $row[]= $query_title;
+            $row[]= $query_DOI;
+            $row[]= $query_authors;
+            $row[]= $results["_source"]["type"];
+            $row[]= $results["_source"]["title"];
+            if (!empty($results["_source"]["doi"])){
+                $row[]= implode("|",$results["_source"]["doi"]);
+            } else {
+                $row[] = "Sem DOI";
+            }        
+            $row[]= implode("|",$results["_source"]["authors"]);
+            $row[]= $results["_source"]["year"];
+            $row[]= $results["_score"];
+            $row[]= $results["_id"];
+            $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
+            $result_row = implode("\\t", $row);
+            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
+            return $result_row;
         }
+        
     } else {
+        
             $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
             $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
             return $result_row;
+        
     }
 }
 
@@ -1217,7 +1233,8 @@ function analisa_get($get) {
                 "query":      "'.$get['search_index'].'",
                 "type":       "cross_fields",
                 "fields":     [ "title", "authors_index", "subject", "resumo" ],
-                "operator":   "and"
+                "operator":   "and",
+                "minimum_should_match": "50%"
             }   
         ';
         
@@ -1271,7 +1288,66 @@ function analisa_get($get) {
                   }
                 },
         ';
+        
+    } elseif (!empty($get['advanced_search'])) {
+        $search_term = '       
+            "query_string" : {
+                "default_field" : "_all",
+                "query" : "'.$get['advanced_search'].'"
+            }        
+   
+        ';
+        
+        unset($get['advanced_search']);
 
+        $filter = []; 
+        foreach ($get as $key => $value) {
+           if (count($value) > 1){
+               foreach ($value as $valor){
+                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
+                }               
+           } else {
+               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
+           }
+            
+        }
+        
+        if (count($filter) > 0) {
+            $filter_query = ''.implode(",", $filter).''; 
+        } else {
+            $filter_query = '';
+        }
+
+
+        $query_complete = '{
+            "sort" : [
+                    { "year.keyword" : "desc" }
+                ],    
+            "query": {    
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'        
+                    ]
+                  }
+            }
+        }';
+
+
+        $query_aggregate = '
+            "query": {
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'
+                    ]
+                  }
+                },
+        ';
 
     } elseif (!empty($get['operator'])) {
         
