@@ -43,7 +43,7 @@
                         <form class="uk-form" action="result.php" method="get">
                             <fieldset data-uk-margin>
                                 <legend>Pesquisa</legend>
-                                <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-medium uk-form-width-large" name="search_index">                                        
+                                <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-large" name="search_index" data-validation="required">                                        
                                 <select name="base[]">
                                     <option value="all">Todas as bases</option>
                                     <option value="Produção científica">Produção científica</option>

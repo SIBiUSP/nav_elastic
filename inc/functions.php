@@ -123,7 +123,8 @@ function store_user ($userdata,$client){
         'id' => $userdata->{'loginUsuario'},
         'body' => $query
     ];
-    $response = $client->update($params);   
+    $response = $client->update($params);
+    
  
 }
 
@@ -1289,11 +1290,19 @@ function analisa_get($get) {
                 },
         ';
         
-    } elseif (!empty($get['advanced_search'])) {
+    } elseif (!empty($get['advanced_search'])) {        
+        $search_fields = "";
+        if (!empty($get['fields'])) {
+            $search_fields = implode('","',$get['fields']);
+            unset($get['fields']); 
+        } else {            
+            $search_fields = "_all";
+        }
+        
         $search_term = '       
             "query_string" : {
-                "default_field" : "_all",
-                "query" : "'.$get['advanced_search'].'"
+                "fields" : ["'.$search_fields.'"],
+                "query" : "'.implode(" AND ",$get['advanced_search']).'"
             }        
    
         ';
