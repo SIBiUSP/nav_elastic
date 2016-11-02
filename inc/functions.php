@@ -117,14 +117,14 @@ function store_user ($userdata,$client){
                 "doc_as_upsert" : true
             }';
     
+    $num_usp = $userdata->{'loginUsuario'};
     $params = [
         'index' => 'sibi',
-        'type' => 'producao_metrics',
-        'id' => $userdata->{'loginUsuario'},
+        'type' => 'users',
+        'id' => "$num_usp",
         'body' => $query
     ];
-    $response = $client->update($params);
-    
+    $response = $client->update($params);   
  
 }
 

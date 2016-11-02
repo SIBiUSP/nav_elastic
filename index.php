@@ -7,7 +7,7 @@
             include('inc/functions.php');
             
             if(!empty($_SESSION['oauthuserdata'])) { 
-                store_user($_SESSION['oauthuserdata'],$server);
+                store_user($_SESSION['oauthuserdata'],$client);
             }
         
             /* Define variables */
