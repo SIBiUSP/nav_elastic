@@ -4,6 +4,7 @@
 </div>
 <script>
   $.validate({
-      lang : 'pt'
+      lang : 'pt',
+      modules : 'sanitize'
   });  
 </script>

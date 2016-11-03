@@ -122,6 +122,8 @@
         gerar_faceta($query_aggregate,$escaped_url,$client,"country",200,"País de publicação",null);
         gerar_faceta($query_aggregate,$escaped_url,$client,"tipotese",30,"Tipo de tese",null);
         gerar_faceta($query_aggregate,$escaped_url,$client,"areaconcentracao",100,"Área de concentração",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"programapossigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"programaposnome",100,"Departamento/Programa de Pós Graduação",null);
         gerar_faceta($query_aggregate,$escaped_url,$client,"indexado",100,"Indexado em",null);
         gerar_faceta($query_aggregate,$escaped_url,$client,"fatorimpacto",1000,"Fator de impacto","desc");         
         gerar_faceta($query_aggregate,$escaped_url,$client,"grupopesquisa",100,"Grupo de pesquisa",null);

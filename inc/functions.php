@@ -1134,6 +1134,8 @@ function analisa_get($get) {
     
     $new_get = $get;
     
+    $get = str_replace('"','\"',$get);
+    
     /* Missing query */
     foreach ($get as $k => $v){
         if($v == 'N/D'){
@@ -1283,6 +1285,8 @@ function analisa_get($get) {
         ';
         
     } elseif (!empty($get['advanced_search'])) {        
+        
+        $get['advanced_search'] = str_replace('"','\"',$get['advanced_search']);
         $search_fields = "";
         if (!empty($get['fields'])) {
             $search_fields = implode('","',$get['fields']);
