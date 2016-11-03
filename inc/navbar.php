@@ -138,7 +138,7 @@
 
                                 <div id="slider-range"></div>                                
                                 <br/>
-                                <input type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="advanced_search[]" data-validation="required">
+                                <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="advanced_search[]" data-validation="required"></textarea>
                                 <button class="uk-button" type="submit">Buscar</button>
                                 <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
                             </fieldset>
