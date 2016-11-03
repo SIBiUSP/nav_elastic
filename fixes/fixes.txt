@@ -74,7 +74,7 @@ split_field('grupopesquisa',';')
 
 # 599 - Sigla de departamento para teses
 marc_map('599a','programapossigla')
-marc_map('599n','programaposnome')
+marc_map('599b','programaposnome')
 
 
 # 650 - Assunto
