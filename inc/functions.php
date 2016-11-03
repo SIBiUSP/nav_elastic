@@ -319,32 +319,29 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
 
 }
 
-function corrigir_faceta($consulta,$url,$client,$campo,$tamanho,$nome_do_campo) {
+function corrigir_faceta($consulta,$url,$client,$field,$tamanho,$nome_do_campo) {
 
-    $query = '
-    {
-        "size": 0,
+    $query = '{
         '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
+        "aggs": {
+            "counts": {
+                "terms": {
+                    "field": "'.$field.'.keyword",
+                    "order" : { "_count" : "desc" },
+                    "size" : '.$tamanho.'
+                }
             }
-          }
         }
-     }
-     ';
+    }';    
     
     $params = [
         'index' => 'sibi',
         'type' => 'producao',
+        'size'=> 0, 
         'body' => $query
     ];
     
-    $response = $client->update($params); 
+    $response = $client->search($params);
     
     echo '<li class="uk-parent">';
     echo '<a href="#">'.$nome_do_campo.'</a>';

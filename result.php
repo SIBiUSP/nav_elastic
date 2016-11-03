@@ -141,7 +141,7 @@
                 gerar_faceta($query_aggregate,$escaped_url,$client,"codpesbusca",100,"Número USP",null);
                 gerar_faceta($query_aggregate,$escaped_url,$client,"codpes",100,"Número USP / Unidade",null);
                 gerar_faceta($query_aggregate,$escaped_url,$client,"issn_part",100,"ISSN",null);
-                gerar_faceta($query_aggregate,$escaped_url,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_naocorrigido",100,"Colaboração - Instituição - Não corrigido",null);
+                gerar_faceta($query_aggregate,$escaped_url,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
                 gerar_faceta($query_aggregate,$escaped_url,$client,"dataregistroinicial",100,"Data de registro","desc");
                 gerar_faceta($query_aggregate,$escaped_url,$client,"dataregistro",100,"Data de registro e alterações","desc");
             ?>
