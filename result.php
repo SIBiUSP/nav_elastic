@@ -253,17 +253,18 @@
                 <?php endif; ?>
                     
                     <div class="uk-grid uk-margin-top">
-                        <div class="uk-width-1-3">                        
+                        <div class="uk-width-1-3"> 
+                        <!--    
                         <ul class="uk-subnav uk-nav-parent-icon uk-subnav-pill">
                             <li>Ordenar por:</li>
 
-                            <!-- This is the container enabling the JavaScript -->
+                            <!-- This is the container enabling the JavaScript - ->
                             <li data-uk-dropdown="{mode:'click'}">
 
-                                <!-- This is the nav item toggling the dropdown -->
+                                <!-- This is the nav item toggling the dropdown - ->
                                 <a href="">Data (Novos)</a>
 
-                                <!-- This is the dropdown -->
+                                <!-- This is the dropdown - ->
                                 <div class="uk-dropdown uk-dropdown-small">
                                     <ul class="uk-nav uk-nav-dropdown">
                                         <li><a href="">Data (Antigos)</a></li>
@@ -272,7 +273,8 @@
                                 </div>
 
                             </li>
-                        </ul>                        
+                        </ul>
+                        -->
                             
                         </div>
                         <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
