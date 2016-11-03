@@ -291,12 +291,11 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
     echo '<li class="uk-parent">';    
     echo '<a href="#">'.$field_name.'</a>';
     echo ' <ul class="uk-nav-sub">';
-    echo '<form>';
     //$count = 1;
     foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
         echo '<p class="uk-form-controls-condensed">';
-        echo '<input type="checkbox" name="'.$field.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$field.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '<a href="'.$url.'&'.$field.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
         echo '</p>';
         echo '</li>';
         
@@ -310,10 +309,6 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
         //echo '</div>';
         //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
     //}
-
-    echo '<input type="hidden" checked="checked" name="operator" value="AND">';
-    echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
-    echo '</form>';
     echo   '</ul></li>';
 
 
@@ -1329,48 +1324,7 @@ function analisa_get($get) {
                   }
                 },
         ';
-
-    } elseif (!empty($get['operator'])) {
-        
-        unset($get['operator']);
-        unset($new_get['operator']);
-        
-        foreach ($get as $key => $value){
-                $key = $key;
-                $value_array[] = $value;                
-        } 
-            $query_part = '{"'.$key.'.keyword":["'.implode('","',$value_array[0]).'"]}';
-
-            $query_complete = '
-                {
-                "sort" : [
-                    { "year.keyword" : "desc" }
-                ],    
-                "query" : {
-                    "bool" : {
-                        "filter" : {
-                            "terms":
-                                 '.$query_part.'
-                        }
-                    }
-                },
-                "from": '.$skip.',
-                "size": '.$limit.'
-                }    
-                ';
-
-            $query_aggregate = '
-                "query" : {
-                    "bool" : {
-                        "filter" : {
-                            "terms":
-                                 '.$query_part.'
-                        }
-                    }
-                },
-            ';          
-        
-        
+    
     } else {
         
         foreach ($get as $key => $value) {
@@ -1484,11 +1438,14 @@ function consultar_vcusp($termo) {
         print_r(implode(" -> ",$string_up_array));
         echo '<br/>';
         $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-        foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
-            $string_down_array[] = '<a href="result.php?assunto='.$string_down->{'string'}.'">'.$string_down->{'string'}.'</a>';     
-        };
-        echo 'Ou pesquisar pelo assuntos mais específicos: ';
-        print_r(implode(" - ",$string_down_array));
+        if (!empty($termo_xml_down->{'result'}->{'term'})){
+            foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
+                $string_down_array[] = '<a href="result.php?assunto='.$string_down->{'string'}.'">'.$string_down->{'string'}.'</a>';     
+            };
+            echo 'Ou pesquisar pelo assuntos mais específicos: ';
+            print_r(implode(" - ",$string_down_array));            
+        }
+
 
     } else {
         $termo_naocorrigido[] = $termo_limpo;
