@@ -48,7 +48,8 @@ if (!empty($_FILES)) {
                 "doc":{
                     "file_info" :[ 
                         {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
-                        {"name_file":"'.$_FILES['upload_file']['name'].'"}
+                        {"name_file":"'.$_FILES['upload_file']['name'].'"},
+                        {"file_type":"'.$_FILES['upload_file']['type'].'"}
                     ],
                     "date_file":"'.date("Y-m-d").'"
                 },                    
@@ -319,7 +320,7 @@ $record_blob = implode("\\n", $record);
         <?php endif; ?>
         <?php if(!empty($response_delete)) : ?>        
             <?php if ($response_delete['result'] == 'deleted'): ?>
-                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo excluído com sucesso", {status:'success'})</script>
+                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo excluído com sucesso", {status:'danger'})</script>
             <?php endif; ?> 
         <?php endif; ?>
         <?php include_once("inc/analyticstracking.php") ?>

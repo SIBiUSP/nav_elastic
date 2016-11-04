@@ -12,29 +12,14 @@
 if (empty($_GET)) {
 
 $query='
-{
-    "fields" : ["_id","colab_instituicao"],
+{    
     "query": {
-        "filtered": {
-            "query": {
-                "match_all": {}
-            },
-            "filter": {
-                "bool": {
-                    "must": [
-                    {
-                        "missing" : { "field" : "colab_instituicao_tematres" }
-                    },
-                    {
-                        "exists":{
-                            "field":"colab_instituicao"
-                        }
-                    }]
-                }
-            }
+        "query_string" : {
+            "fields" : ["colab_instituicao","colab_instituicao_tematres"],
+            "query" : "+_exists_:colab_instituicao -_exists_:colab_instituicao_tematres"
         }
-  },
-  "size":6000
+    },
+    "size":1000
 }
 ';
     
@@ -52,31 +37,29 @@ $query='
 
 $query='
 {
-    "fields" : ["_id","colab_instituicao","colab_instituicao_naocorrigido"],
     "query": {
-        "filtered": {
-            "query": {
-                "match_all": {}
-            },
-            "filter": {
-                "bool": {
-                    "must": [{
-                        "term": {
-                            "colab_instituicao_naocorrigido": "'.$_GET["term"].'"
-                        }
-                    }]
-                }
-            }
+        "query_string" : {
+            "fields" : ["colab_instituicao","colab_instituicao_naocorrigido"],
+            "query" : "colab_instituicao_naocorrigido:\"'.$_GET["term"].'\""
         }
-  },
-  "size":10000
+    },
+    "size":1000
 }
 ';
+    //print_r($query);
 }
 
-$cursor = query_elastic($query,$server);     
-        
-        
+$params = [
+    'index' => 'sibi',
+    'type' => 'producao',
+    '_source' => [
+      '_id','colab_instituicao','colab_instituicao_naocorrigido'  
+    ],    
+    'body' => $query
+];
+$response = $client->search($params);       
+echo 'Total de registros faltantes: '.$response['hits']['total'].'';
+//print_r($response);        
         
         ?> 
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
@@ -89,7 +72,7 @@ $cursor = query_elastic($query,$server);
                 
                 <?php 
                     $i = 1;
-                    foreach ($cursor["hits"]["hits"] as $colab) {
+                    foreach ($response["hits"]["hits"] as $colab) {
                         print_r($i);
                         $i++;                        
                         echo ' - ';
@@ -99,7 +82,7 @@ $cursor = query_elastic($query,$server);
                         //print_r($colab);
                         
                         
-                        foreach ($colab['fields']['colab_instituicao'] as $termo) {
+                        foreach ($colab['_source']['colab_instituicao'] as $termo) {
                             //echo 'Termo original: '.$termo.'<br/>';
                             $termo_limpo = limpar($termo);
                             //echo 'Termo limpo: '.$termo_limpo.'<br/>';
@@ -120,6 +103,19 @@ $cursor = query_elastic($query,$server);
                             flush();
                         }
                         
+                        if (empty($termo_corrigido)){
+                            $termo_corrigido = [];
+                        }
+                        
+                        if (empty($termo_naocorrigido)){
+                            $termo_naocorrigido = [];
+                        }
+                        
+                        if (empty($termo_geolocalizacao)){
+                            $termo_geolocalizacao = [];
+                        }
+                        
+                        
                         $termo_edit = implode("\",\"",$termo_corrigido);
                         $termo_nao_corrigido = implode("\",\"",$termo_naocorrigido);
                         $geocode_edit = implode("\",\"",$termo_geolocalizacao);
@@ -128,7 +124,7 @@ $cursor = query_elastic($query,$server);
                         //echo $geocode_edit;
                         $conta = count($termo_corrigido);
                         $conta_geo = count($termo_geolocalizacao);
-                        $conta_total = count($colab['fields']['colab_instituicao']);    
+                        $conta_total = count($colab['_source']['colab_instituicao']);    
                         //echo '<br/>Quantidade de termos corrigidos: '.$conta.'<br/>';
                         //echo 'Quantidade de termos consultados: '.$conta_total.'<br/>';
                         //echo 'Quantidade de termos geolocalizados: '.$conta_geo.'';                        
@@ -139,7 +135,7 @@ $cursor = query_elastic($query,$server);
                             //echo "<br/><br/>Termo e Geolocalização Incluídos<br/><br/>";
                         
                             
-                                $query = '
+                               $query = '
                                 {
                                    "doc" : {
                                       "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
@@ -147,15 +143,23 @@ $cursor = query_elastic($query,$server);
                                       "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
                                       "colab_instituicao_tematres" : true
 
-                                   }
+                                   },
+                                   "doc_as_upsert" : true
                                 }
                               ';
                                 
+                            $params = [
+                                'index' => 'sibi',
+                                'type' => 'producao',
+                                'id' => $colab["_id"],
+                                'body' => $query
+                            ];
+                            $response = $client->update($params);  
                             
-                            
-                            //print_r($query);
-                            $result = update_elastic($colab["_id"],$query,$server);
-                            //print_r($result);  
+                            print_r($query);
+                            echo '<br/>';
+                            print_r($response);
+                            echo '<br/>';
                         
 
                         
@@ -169,14 +173,23 @@ $cursor = query_elastic($query,$server);
                                           "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
                                           "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
                                           "colab_instituicao_tematres" : true
-                                       }
+                                       },
+                                       "doc_as_upsert" : true
                                     }
                                     ';
                             
-                                
-                            //print_r($query);
-                            $result = update_elastic($colab["_id"],$query,$server);
-                            //print_r($result);                        
+                            $params = [
+                                'index' => 'sibi',
+                                'type' => 'producao',
+                                'id' => $colab["_id"],
+                                'body' => $query
+                            ];
+                            $response = $client->update($params);  
+                            
+                            print_r($query);
+                            echo '<br/>';
+                            print_r($response);
+                            echo '<br/>';
                         
                         } else {
                             //echo "<br/><br/>Termo não corrigido incluído<br/><br/>";
@@ -187,12 +200,22 @@ $cursor = query_elastic($query,$server);
                                       "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
                                       "colab_instituicao_tematres" : true
 
-                                   }
+                                   },
+                                   "doc_as_upsert" : true
                                 }
-                                ';                        
-                            //print_r($query);
-                            $result = update_elastic($colab["_id"],$query,$server);
-                            //print_r($result);
+                                ';
+                            
+                            $params = [
+                                'index' => 'sibi',
+                                'type' => 'producao',
+                                'id' => $colab["_id"],
+                                'body' => $query
+                            ];
+                            $response = $client->update($params);                              
+                            print_r($query);
+                            echo '<br/>';
+                            print_r($response);
+                            echo '<br/>';
                         
                         }
                         flush();
@@ -200,7 +223,7 @@ $cursor = query_elastic($query,$server);
                         $termo_naocorrigido = array();
                         $termo_geolocalizacao = array();
                     } 
-                ?>
+                ?> 
    
         </div>
         <?php include('inc/footer.php'); ?>
