@@ -396,6 +396,20 @@
                                                     <?php endif; ?>
                                                 </div>
                                                 <?php endif; ?>
+                        <?php 
+                            if(empty($_SESSION['oauthuserdata'])){
+                                $_SESSION['oauthuserdata']="";
+                            } 
+                            $full_links = get_fulltext_file($r['_id'],$_SESSION['oauthuserdata']);
+                            if (!empty($full_links)){
+                                echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
+                                        foreach ($full_links as $links) {
+                                            print_r($links);
+                                        }                                  
+                                echo '</div><br/>';
+                            }
+
+                        ?>                                                    
                                             </li>
                                             <?php if (isset($issn_info["serial-metadata-response"])): ?>
                                             <div class="uk-alert">

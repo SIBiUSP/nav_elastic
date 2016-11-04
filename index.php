@@ -119,7 +119,7 @@
                     <li data-uk-sort="filter:desc"><a href="">Siglas (Z -> A)</a></li>
                 </ul>
 
-                        <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -10px; height: 394px;">
+                        <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -20px; height: 394px;">
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cebimar">
                                 <a href="result.php?unidadeUSPtrabalhos[]=CEBIMAR">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">

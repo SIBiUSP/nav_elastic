@@ -5,6 +5,7 @@
 <script>
   $.validate({
       lang : 'pt',
-      modules : 'sanitize'
+      modules : 'sanitize',
+      modules : 'file'
   });  
 </script>

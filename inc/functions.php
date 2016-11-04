@@ -1655,6 +1655,30 @@ function store_issn_info($client,$issn,$issn_info){
     
 }
 
+function get_fulltext_file($id,$session){
+    $files_upload = glob('upload/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
+    $links_upload = "";
+    if (!empty($files_upload)){       
+        foreach($files_upload as $file) {
+            $delete = "";    
+            if (!empty($session)){
+                $delete = '<form method="POST" action="single.php?_id='.$id.'">
+                               <input name="delete_file" value="'.$file.'"  type="hidden">
+                               <button class="uk-close uk-close-alt uk-alert-danger" alt="Deletar arquivo"></button>
+                           </form>';
+            }
+            
+            if( strpos( $file, '.pdf' ) !== false ) {
+                $links_upload[] = '<div class="uk-width-medium-1-4"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+            } else {
+                $links_upload[] = '<div class="uk-width-medium-1-4"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+            }
+        }
+    }
+    return $links_upload;
+}
+
+
 
 
 ?>

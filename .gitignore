@@ -5,3 +5,4 @@ inc/analyticstracking.php
 composer.lock
 composer.phar
 vendor/
+upload/

@@ -1,5 +1,8 @@
 <?php
-
+if (session_status() === PHP_SESSION_NONE){
+    session_start();
+}
+    
 include('inc/config.php'); 
 include('inc/functions.php');
 
@@ -21,6 +24,70 @@ $cursor = query_one_elastic($_GET['_id'],$client);
 
 /* Contador */
 counter($_GET['_id'],$client);
+
+/* Upload de PDF */
+if (!empty($_FILES)) {
+    if (!is_dir('upload/'.$_GET['_id'].'')){
+        mkdir('upload/'.$_GET['_id'].'', 0700);
+    }
+    
+    $uploaddir = 'upload/'.$_GET['_id'].'/';
+    $count_files = count(glob('upload/'.$_GET['_id'].'/*',GLOB_BRACE));
+    if ($_FILES['upload_file']['type'] == 'application/pdf'){
+        $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pdf");
+    } else {
+        $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pptx");
+    }    
+    
+    if ($_FILES['upload_file']['type'] == 'application/pdf'||$_FILES['upload_file']['type'] == 'application/vnd.openxmlformats-officedocument.presentationml.presentation'){
+        //echo '<pre>';
+        if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $uploadfile)) {
+            $query = 
+            '
+            {
+                "doc":{
+                    "file_info" :[ 
+                        {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
+                        {"name_file":"'.$_FILES['upload_file']['name'].'"}
+                    ],
+                    "date_file":"'.date("Y-m-d").'"
+                },                    
+                "doc_as_upsert" : true
+            }
+            ';
+                        
+            $params = [
+                'index' => 'sibi',
+                'type' => 'files',
+                'id' => $uploadfile,
+                'body' => $query
+            ];
+            $response_upload = $client->update($params);           
+        } else {
+            echo "Possível ataque de upload de arquivo!\n";
+        }
+    }
+    
+    //echo 'Aqui está mais informações de debug:';
+    //print_r($_FILES);
+   //print "</pre>";    
+    
+}
+
+if (!empty($_POST['delete_file'])) {
+    unlink($_POST['delete_file']);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'files',
+        'id' => $_POST['delete_file']
+    ];
+    $response_delete = $client->delete($params);
+    //print_r($response_delete);
+    
+}
+
+
+
 
 ?>
 
@@ -100,7 +167,7 @@ $record_blob = implode("\\n", $record);
         <?php include('inc/meta-header.php'); ?>
         <title>BDPI USP - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
         <script src="inc/uikit/js/components/slideset.js"></script>
-        
+        <script src="inc/uikit/js/components/notify.min.js"></script>
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
               function SaveAsFile(t,f,m) {
@@ -122,7 +189,9 @@ $record_blob = implode("\\n", $record);
         <?php endforeach;?>
         <?php endif; ?>
         <meta name="citation_publication_date" content="<?php echo $cursor["_source"]['year']; ?>">
+        <?php if (!empty($cursor["_source"]['ispartof'])): ?>
         <meta name="citation_journal_title" content="<?php echo $cursor["_source"]['ispartof'];?>">
+        <?php endif; ?>
         <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
         <meta name="citation_volume" content="<?php echo $cursor["_source"]['ispartof_data'][0];?>">
         <?php endif; ?>
@@ -130,7 +199,18 @@ $record_blob = implode("\\n", $record);
         <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
         <meta name="citation_issue" content="<?php echo $cursor["_source"]['ispartof_data'][1];?>">
         <?php endif; ?>
-
+        
+        <?php 
+        
+        $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);    
+        $links_upload = "";
+        if (!empty($files_upload)){       
+            foreach($files_upload as $file) {        
+                echo '<meta name="citation_pdf_url" content="http://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
+            ';
+            }
+        }
+        ?>
         <!--
         <meta name="citation_firstpage" content="11761">
         <meta name="citation_lastpage" content="11766">
@@ -232,6 +312,16 @@ $record_blob = implode("\\n", $record);
         
     </head>
     <body>
+        <?php if(!empty($response_upload)) : ?>
+            <?php if ($response_upload['result'] == 'created'): ?>
+                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo incluído com sucesso", {status:'success'})</script>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if(!empty($response_delete)) : ?>        
+            <?php if ($response_delete['result'] == 'deleted'): ?>
+                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo excluído com sucesso", {status:'success'})</script>
+            <?php endif; ?> 
+        <?php endif; ?>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
 
@@ -588,11 +678,42 @@ $record_blob = implode("\\n", $record);
                                     metrics_update($client,$_GET['_id'],$metrics);      
                                 }
                             ?>                            
-                            <?php endif; ?>                        
+                            <?php endif; ?>
+                        
+                        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                        <div class="uk-alert">
+                            <h4 class="uk-margin-top">Upload do texto completo:</h4>
+                            <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>">
+                                <div class="uk-form-file">
+                                    <button class="uk-button">Selecionar arquivo</button>
+                                    <input name="upload_file" data-validation="required" data-validation="mime size" data-validation-allowing="pdf, pptx" data-validation-max-size="100M" type="file">
+                                </div>
+                                <button class="uk-button">Enviar</button>
+                            </form> 
+                        </div>    
+                        <?php endif; ?>
+                        
+                        
+                        
+                        
+                        <?php 
+                            if(empty($_SESSION['oauthuserdata'])){
+                                $_SESSION['oauthuserdata']="";
+                            } 
+                            $full_links = get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
+                            if (!empty($full_links)){
+                                echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
+                                        foreach ($full_links as $links) {
+                                            print_r($links);
+                                        }                                  
+                                echo '</div>';
+                            }
 
-           
-                            <hr>                            
-                            <?php load_itens_single($cursor["_id"]); ?>                            
+                        ?>    
+                        
+                        
+                        <hr>                            
+                        <?php load_itens_single($cursor["_id"]); ?>                            
   
                             <div class="extra" style="color:black;">
                                 <h4>Como citar</h4>
