@@ -1656,7 +1656,7 @@ function store_issn_info($client,$issn,$issn_info){
 }
 
 function get_fulltext_file($id,$session){
-    $files_upload = glob('upload/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
+    $files_upload = glob('upload/'.$id[0].'/'.$id[1].'/'.$id[2].'/'.$id[3].'/'.$id[4].'/'.$id[5].'/'.$id[6].'/'.$id[7].'/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
     $links_upload = "";
     if (!empty($files_upload)){       
         foreach($files_upload as $file) {

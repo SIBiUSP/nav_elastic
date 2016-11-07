@@ -5,6 +5,12 @@
 
 Run: 
 
+mkdir upload
+
+chown -R www-data:www-data upload
+
+create inc/config.php
+
 curl -s http://getcomposer.org/installer | php
 
 php composer.phar install --no-dev
