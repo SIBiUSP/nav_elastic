@@ -8,13 +8,11 @@
                         <a href="index.php" style="color:white">Início</a>
                     </li>
                     <li>
-                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca contextualizada</a>
+                        <a href="#" data-uk-toggle="{target:'#busca_contextualizada'}" style="color:white">Busca contextualizada</a>
                     </li>
-                    <!--
                     <li>
-                        <a href="advanced_search.php" style="color:white">Busca avançada</a>
-                    </li>
-                    -->
+                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
+                    </li>                    
                 </ul>
                     <div class="uk-navbar-flip">
                         <ul class="uk-navbar-nav uk-hidden-small">
@@ -71,34 +69,83 @@
                 
             </div>
             
-            <div id="busca_avancada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
+            <div id="busca_contextualizada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
                 <div class="uk-width-medium-1-1">
                     <div class="uk-alert uk-alert-large">
                         
-                        
-<form class="uk-form" role="form" action="result.php" method="get">
+                        <form class="uk-form" role="form" action="result.php" method="get">
 
-    <fieldset data-uk-margin>
-        <legend>Número USP</legend>
-        <input type="text" placeholder="Insira um número USP" name="codpesbusca[]">
-        <button class="uk-button" type="submit">Buscar</button>
-    </fieldset>
+                            <fieldset data-uk-margin>
+                                <legend>Número USP</legend>
+                                <input type="text" placeholder="Insira um número USP" name="codpesbusca[]" data-validation="required">
+                                <button class="uk-button" type="submit">Buscar</button>
+                            </fieldset>
 
-</form>
-                        
-<form class="uk-form" role="form" action="result.php" method="get" name="assunto">
+                        </form>
 
-    <fieldset data-uk-margin>
-        <legend>Assunto do Vocabulário Controlado</legend>
-        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
-        <input type="text" name="assunto">
-        <button class="uk-button" type="submit">Buscar</button>
-    </fieldset>
+                        <form class="uk-form" role="form" action="result.php" method="get" name="assunto">
 
-</form>                          
-                        
+                            <fieldset data-uk-margin>
+                                <legend>Assunto do Vocabulário Controlado</legend>
+                                <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+                                <input type="text" name="assunto" data-validation="required">
+                                <button class="uk-button" type="submit">Buscar</button>
+                            </fieldset>
+
+                        </form>                          
                        
                     </div>
                 </div>
             </div>
+            
+            <div id="busca_avancada" class="uk-container uk-container-center uk-hidden" data-uk-grid-margin>
+                <div class="uk-width-medium-1-1">
+                    <div class="uk-alert uk-alert-large">
+                        
+                        <form class="uk-form" role="form" action="result.php" method="get">
+
+                            <fieldset data-uk-margin>
+                                <legend>String de busca avançada</legend>
+                                <p>Selecionar campos para realizar a busca: </p>
+                                <label><input type="checkbox" name="fields[]" value="title"> Título</label>
+                                <label><input type="checkbox" name="fields[]" value="authors_index"> Autores</label>
+                                <label><input type="checkbox" name="fields[]" value="unidadeUSPtrabalhos"> Unidade USP</label>
+                                <label><input type="checkbox" name="fields[]" value="departamentotrabalhos"> Departamento</label>
+                                <label><input type="checkbox" name="fields[]" value="subject"> Assuntos</label>
+                                <label><input type="checkbox" name="fields[]" value="colab_instituicao_corrigido"> Colaboração institucional</label>
+                                <label><input type="checkbox" name="fields[]" value="fomento"> Agência de Fomento</label>
+                                <label><input type="checkbox" name="fields[]" value="sysno"> Sysno</label>
+                                <br/>
+                                <script>
+                                    $( function() {
+                                    $( "#slider-range" ).slider({
+                                      range: true,
+                                      min: 1900,
+                                      max: 2030,
+                                      values: [ 1900, 2030 ],
+                                      slide: function( event, ui ) {
+                                        $( "#amount" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+                                      }
+                                    });
+                                    $( "#amount" ).val( "year:[" + $( "#slider-range" ).slider( "values", 0 ) +
+                                      " TO " + $( "#slider-range" ).slider( "values", 1 ) + "]");
+                                    } );
+                                </script>
+                                <p>
+                                  <label for="amount">Selecionar período de tempo:</label>
+                                  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="advanced_search[]">
+                                </p>
+
+                                <div id="slider-range"></div>                                
+                                <br/>
+                                <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="advanced_search[]" data-validation="required"></textarea>
+                                <button class="uk-button" type="submit">Buscar</button>
+                                <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
+                            </fieldset>
+
+                        </form>                       
+                       
+                    </div>
+                </div>
+            </div>            
         </div>

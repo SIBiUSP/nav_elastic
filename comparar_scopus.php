@@ -52,7 +52,7 @@ if (isset($_FILES['file'])) {
     
     
     while( ($row = fgetcsv($fh, 8192,"\t")) !== FALSE ) {    
-         $record_scopus[] = compararRegistrosScopus($server,"Artigo",$row[3],$row[0],$row[1],$row[13]);
+         $record_scopus[] = compararRegistrosScopus($client,"Artigo",$row[3],$row[0],$row[1],$row[13]);
     }
     
     $record_blob = implode("\\n", $record_scopus);

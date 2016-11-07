@@ -1,155 +1,91 @@
 <?php
 
-function query_elastic ($query,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/_search";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
-
-function query_one_elastic ($_id,$server) {
-    $ch = curl_init();
+function query_one_elastic ($_id,$client) {
     
-    curl_setopt($ch, CURLOPT_URL, "http://$server:9200/sibi/producao/$_id");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'id' => ''.$_id.''
+    ];
+    $response = $client->get($params);
+    return $response;    
 
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
 }
 
-function query_graph ($query,$server) {
-    $ch = curl_init();
-    $method = "GET";
-    $url = "http://$server/sibi/_graph/explore";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
-
-function update_elastic ($_id,$query,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/$_id/_update";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
-
-
-
-function counter ($_id,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao_metrics/$_id/_update";
+function counter ($_id,$client) {
     $query = 
-             '{
-                "script" : {
-                    "inline": "ctx._source.counter += count",
-                    "params" : {
-                        "count" : 1
-                    }
-                },
-                "upsert" : {
-                    "counter" : 1
-                }
-            }';
-    
-    
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data;
-}
-
-
-function contar_registros ($server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/_count";
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data["count"];
-
-
-}
-
-function contar_unicos ($field,$server) {
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/producao/_search";
-    
-    $query = '
+    '
     {
-        "size" : 0,
+        "script" : {
+            "inline": "ctx._source.counter += params.count",
+            "lang": "painless",
+            "params" : {
+                "count" : 1
+            }
+        },
+        "upsert" : {
+            "counter" : 1
+        }
+    }
+    ';  
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao_metrics',
+        'id' => $_id,
+        'body' => $query
+    ];
+    $response = $client->update($params);        
+    //print_r($response);
+}
+
+
+function contar_registros ($client) {
+
+    $query_all = '
+        {
+            "query": {
+                "match_all": {}
+            }
+        }        
+    ';
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        'body' => $query_all
+    ];
+    $response = $client->search($params);
+    return $response['hits']['total'];
+    print_r($response);
+
+}
+
+function contar_unicos ($field,$client) {
+
+    $count_distinct_query = '
+    {
         "aggs" : {
             "distinct_authors" : {
                 "cardinality" : {
-                  "field" : "'.$field.'"
+                  "field" : "'.$field.'.keyword"
                 }
             }
         }
     }
     ';
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    $data = json_decode($result, TRUE);
-    return $data["aggregations"]["distinct_authors"]["value"];
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size' => 0,
+        'body' => $count_distinct_query
+    ];
+    $response = $client->search($params);
+    return $response["aggregations"]["distinct_authors"]["value"];
+    
 }
 
-function store_user ($userdata,$server){
-    $ch = curl_init();
-    $method = "POST";
-    $url = "http://$server/sibi/users/".$userdata->{'loginUsuario'}."/_update";
+function store_user ($userdata,$client){
     
     $query_array[] = '"nomeUsuario" : "'.$userdata->{'nomeUsuario'}.'"';
     $query_array[] = '"tipoUsuario" : "'.$userdata->{'tipoUsuario'}.'"';
@@ -181,129 +117,73 @@ function store_user ($userdata,$server){
                 "doc_as_upsert" : true
             }';
     
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    //$data = json_decode($result, TRUE);
-    //print_r($data);    
+    $num_usp = $userdata->{'loginUsuario'};
+    $params = [
+        'index' => 'sibi',
+        'type' => 'users',
+        'id' => "$num_usp",
+        'body' => $query
+    ];
+    $response = $client->update($params);   
+ 
 }
 
-function ultimos_registros($server) {
+function ultimos_registros($client) {
     
-     $query = '{
+    $query = '{
                 "query": {
                     "match_all": {}
                  },
-                "size": 5,
                 "sort" : [
                     {"_uid" : {"order" : "desc"}}
                     ]
                 }';
-    $data = query_elastic($query,$server);
-
-foreach ($data["hits"]["hits"] as $r){
-#print_r($r);
     
-echo '<article class="uk-comment">
-<header class="uk-comment-header">';    
-if (!empty($r["_source"]['unidadeUSP'])) {
-$file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
-}
-if (file_exists($file)) {
-echo '<img class="uk-comment-avatar" src="'.$file.'">';
-} else {
-#echo ''.$r['unidadeUSP'].'</a>';
-};
-if (!empty($r["_source"]['title'])){
-echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
-};
-echo '<div class="extra">';
-if (!empty($r["_source"]['authors'])) {
-echo '<div class="uk-comment-meta";">';    
-foreach ($r["_source"]['authors'] as $autores) {
-echo '<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>, ';
-}
-echo '</div>';     
-};
-echo '</header>';
-echo '</article>';
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size' => 11,
+        'body' => $query
+    ];
+    $response = $client->search($params);    
+
+    foreach ($response["hits"]["hits"] as $r){
+        echo '<article class="uk-comment">
+        <header class="uk-comment-header">';    
+        if (!empty($r["_source"]['unidadeUSP'])) {
+            $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+        } else {
+            $file = "";
+        }
+        if (file_exists($file)) {
+        echo '<img class="uk-comment-avatar" src="'.$file.'">';
+        } else {
+        #echo ''.$r['unidadeUSP'].'</a>';
+        };
+        if (!empty($r["_source"]['title'])){
+        echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
+        };
+        echo '<div class="extra">';
+        if (!empty($r["_source"]['authors'])) {
+        echo '<div class="uk-comment-meta";">';    
+        foreach ($r["_source"]['authors'] as $autores) {
+        echo '<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>, ';
+        }
+        echo '</div>';     
+        };
+        echo '</header>';
+        echo '</article>';
+    }
+    
 }
 
-     
-}
-
-
-function criar_unidadeUSP_inicio($server) {
+function unidadeUSP_inicio($client) {
 
     $query = '{
-        "size": 0,
         "aggs": {
             "group_by_state": {
                 "terms": {
-                    "field": "unidadeUSPtrabalhos",
-                    "order" : { "_term" : "asc" },
-                    "size" : 150,
-                    "missing": "Sem unidade cadastrada"
-                }
-            }
-        }
-    }';
-    
-    $data = query_elastic($query,$server);
-    
-    echo '<h3>Unidades USP</h3>';
-    echo '<div class="ui five stackable doubling cards">';
-    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        
-        
-        $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
-
-        if (in_array($facets['key'],$programas_pos))
-        {
-          $programas[] =  '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">'.strtoupper($facets['key']).'</a></div></a><div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div><div id="imagelogo" class="floating ui mini teal label" style="z-index:0">'.$facets['doc_count'].'</div></div>';
-        
-        } else { 
-        
-        echo '<a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'"><div class="ui card" data-title="'.trim(strtoupper($facets['key'])).'" style="box-shadow:none;"><div class="image">';
-                $file = 'inc/images/logosusp/'.strtoupper($facets['key']).'.jpg';
-                if (file_exists($file)) {
-                echo '<img src="inc/images/logosusp/'.strtoupper($facets['key']).'.jpg" style="height: 65px;width:65px">';
-                } else {
-                  echo ''.strtoupper($facets['key']).'</a>';
-              };
-              echo'</div></a>';
-        echo '<div class="content" style="padding:0.3em;"><a class="ui center aligned tiny header" href="result.php?'.substr($facet_name, 1).'='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).'</a></div>
-                <div id="imagelogo" class="floating ui mini teal label" style="z-index:0">
-                '.$facets['doc_count'].'
-                </div>';
-        echo '</div>';
-
-    };
-   
-        }
-    echo '</div>';
-    echo '<h3>Programas de Pós Graduação Interunidades</h3>';
-    echo '<div class="ui five stackable doubling cards">';
-    echo implode("",$programas);
-    echo '</div>';
-
-     echo '</div>';
-
-}
-
-function unidadeUSP_inicio($server) {
-
-    $query = '{
-        "size": 0,
-        "aggs": {
-            "group_by_state": {
-                "terms": {
-                    "field": "unidadeUSPtrabalhos",
+                    "field": "unidadeUSPtrabalhos.keyword",
                     "order" : { "_term" : "asc" },
                     "size" : 150
                 }
@@ -311,17 +191,24 @@ function unidadeUSP_inicio($server) {
         }
     }';
     
-    $data = query_elastic($query,$server);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        'body' => $query
+    ];    
+    
+    $response = $client->search($params); 
+    
+    $programas = [];
     $count = 1;
-    $programas_pos=array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON');
-    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        if (in_array($facets['key'],$programas_pos))
-        {
+    $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON','EP/IB/ICB/IQ/BUTANT /IPT','FO/EE/FSP');
+    foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {        
+        if (in_array($facets['key'],$programas_pos)) {        
           $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         } else { 
             echo '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }
-       
         
        if ($count == 12)
             {  
@@ -329,8 +216,12 @@ function unidadeUSP_inicio($server) {
             }
         $count++;
     }
-    echo '<li><b>Programas de Pós-Graduação</b></li>';
-    echo implode("",$programas);
+    
+    if (!empty($programas)) {
+        echo '<li><b>Programas de Pós-Graduação Interunidades</b></li>';
+        echo implode("",$programas);
+    }
+    
     if ($count > 7) {
         echo '</div>';
         echo '<button class="uk-button" data-uk-toggle="{target:\'#unidades\'}">Ver todas as unidades</button>';
@@ -338,62 +229,169 @@ function unidadeUSP_inicio($server) {
      
 }
 
-function base_inicio($server) {
+function base_inicio($client) {
 
     $query = '{
-        "size": 0,
         "aggs": {
             "group_by_state": {
                 "terms": {
-                    "field": "base",                    
+                    "field": "base.keyword",                    
                     "size" : 5
                 }
             }
         }
     }';
     
-    $data = query_elastic($query,$server);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,
+        'body' => $query
+    ];    
     
-    foreach ($data["aggregations"]["group_by_state"]["buckets"] as $facets) {
+    $response = $client->search($params);
+    foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
         echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
     }   
+    
 }
 
 
-function gerar_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
-
+function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) {
+    $sort_query="";
     if (!empty($sort)){
-         
          $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+    }     
+
+    
+    $query = '{
+        '.$consulta.'
+        "aggs": {
+            "counts": {
+                "terms": {
+                    "field": "'.$field.'.keyword",
+                    '.$sort_query.'
+                    "size" : '.$tamanho.'
+                }
+            }
         }
+    }';
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
+    
+    
+    
+    $response = $client->search($params);    
+    
+    echo '<li class="uk-parent">';    
+    echo '<a href="#">'.$field_name.'</a>';
+    echo ' <ul class="uk-nav-sub">';
+    //$count = 1;
+    foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
+        echo '<p class="uk-form-controls-condensed">';
+        echo '<a href="'.$url.'&'.$field.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '</p>';
+        echo '</li>';
+        
+        //if ($count == 11)
+        //    {  
+        //         echo '<div id="'.$campo.'" class="uk-hidden">';
+        //    }
+        //$count++;
+    };
+    //if ($count > 12) {
+        //echo '</div>';
+        //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
+    //}
+    echo   '</ul></li>';
+
+
+}
+
+function corrigir_faceta($consulta,$url,$client,$field,$tamanho,$nome_do_campo) {
+
+    $query = '{
+        '.$consulta.'
+        "aggs": {
+            "counts": {
+                "terms": {
+                    "field": "'.$field.'.keyword",
+                    "order" : { "_count" : "desc" },
+                    "size" : '.$tamanho.'
+                }
+            }
+        }
+    }';    
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0, 
+        'body' => $query
+    ];
+    
+    $response = $client->search($params);
+    
+    echo '<li class="uk-parent">';
+    echo '<a href="#">'.$nome_do_campo.'</a>';
+    echo ' <ul class="uk-nav-sub">';
+    foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+        echo '<li class="uk-h6">';        
+        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '</li>';
+    };
+    echo   '</ul>
+      </li>';
+
+}
+
+function gerar_faceta_range($consulta,$url,$client,$campo,$tamanho,$nome_do_campo) {
+
     $query = '
     {
-        "size": 0,
         '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'",
-              '.$sort_query.'
-              "size":'.$tamanho.'
+        "aggs" : {
+            "ranges" : {
+                "range" : {
+                    "field" : "'.$campo.'",
+                    "ranges" : [
+                        { "to" : 1 },
+                        { "from" : 1, "to" : 2 },
+                        { "from" : 2, "to" : 5 },
+                        { "from" : 5 }
+                    ]
+                }
             }
-          }
         }
      }
      ';
-       
-    $data = query_elastic($query,$server);
     
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
     
+    $response = $client->search($params); 
+    
+    //print_r($response);
+
     echo '<li class="uk-parent">';    
     echo '<a href="#">'.$nome_do_campo.'</a>';
     echo ' <ul class="uk-nav-sub">';
     echo '<form>';
     //$count = 1;
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
+    foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
         echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
         echo '<p class="uk-form-controls-condensed">';
-        echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
         echo '</p>';
         echo '</li>';
         
@@ -411,90 +409,8 @@ function gerar_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sor
     echo '<input type="hidden" checked="checked" name="operator" value="AND">';
     echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
     echo '</form>';
-    echo   '</ul></li>';
-
-
-}
-
-function corrigir_faceta($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
-
-    if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-       
-    $data = query_elastic($query,$server);
+    echo   '</ul></li>';    
     
-    echo '<li class="uk-parent">';
-    echo '<a href="#">'.$nome_do_campo.'</a>';
-    echo ' <ul class="uk-nav-sub">';
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<li class="uk-h6">';        
-        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-        echo '</li>';
-    };
-    echo   '</ul>
-      </li>';
-
-}
-
-function gerar_faceta_range($consulta,$url,$server,$campo,$tamanho,$nome_do_campo,$sort) {
-
-    if (!empty($sort)){
-         
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggs" : {
-            "ranges" : {
-                "range" : {
-                    "field" : "'.$campo.'",
-                    "ranges" : [
-                        { "to" : 50 },
-                        { "from" : 50, "to" : 100 },
-                        { "from" : 100 }
-                    ]
-                }
-            }
-        }
-     }
-     ';
-    
-            
-    $data = query_elastic($query,$server);
-    
-   
-    echo '<div class="item">';
-    echo '<a class="active title"><i class="dropdown icon"></i>'.$nome_do_campo.'</a>';
-    echo '<div class="content">';
-    echo '<div class="ui list">';
-    foreach ($data["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<div class="item">';
-        echo '<a href="'.$url.'&'.$campo.'[]='.$facets['key'].'">'.$facets['key'].'</a><div class="ui label">'.$facets['doc_count'].'</div>';
-        echo '</div>';
-    };
-    echo   '</div>
-      </div>
-  </div>';
 
 }
 
@@ -616,19 +532,18 @@ function load_itens_single ($sysno) {
   }
 
 /* Function to generate Graph Bar */
-function generateDataGraphBar($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho,$server) {
+function generateDataGraphBar($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     }
     $query = '
     {
-        "size": 0,
         '.$consulta.'
         "aggregations": {
           "counts": {
             "terms": {
-              "field": "'.$campo.'",
+              "field": "'.$campo.'.keyword",
               '.$sort_query.'
               "size":'.$tamanho.'
             }
@@ -637,7 +552,14 @@ function generateDataGraphBar($server,$url, $consulta, $campo, $sort, $sort_orie
      }
      ';
     
-    $facet = query_elastic($query,$server);    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0, 
+        'body' => $query
+    ]; 
+    
+    $facet = $client->search($params);    
     
     $data_array= array();
     foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
@@ -656,7 +578,7 @@ function generateDataGraphBar($server,$url, $consulta, $campo, $sort, $sort_orie
 };
 
 /* Function to generate Tables */
-function generateDataTable($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateDataTable($client,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     }
@@ -676,10 +598,15 @@ function generateDataTable($server,$url, $consulta, $campo, $sort, $sort_orienta
         }
      }
      ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
     
-    $facet = query_elastic($query,$server);    
-
-
+    $response = $client->search($params);  
 
 echo "<table class=\"uk-table\">
   <thead>
@@ -690,7 +617,7 @@ echo "<table class=\"uk-table\">
   </thead>
   <tbody>";
 
-    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
         echo "<tr>
               <td>".$facets['key']."</td>
               <td>".$facets['doc_count']."</td>
@@ -705,7 +632,7 @@ echo "<table class=\"uk-table\">
 
 
 /* Function to generate CSV */
-function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateCSV($client,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -727,10 +654,16 @@ function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, 
      }
      ';
     
-    $facet = query_elastic($query,$server);   
-
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
+    
+    $response = $client->search($params); 
     $data_array= array();
-    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
         array_push($data_array,''.$facets["key"].'\\t'.$facets["doc_count"].'');
     };
     $comma_separated = implode("\\n", $data_array);
@@ -740,7 +673,7 @@ function generateCSV($server,$url, $consulta, $campo, $sort, $sort_orientation, 
 
 /* Comparar registros */
 
-function compararRegistros ($server,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
+function compararRegistros ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
 
     $query = '
     {
@@ -778,11 +711,17 @@ function compararRegistros ($server,$query_type,$query_year,$query_title,$query_
     }
     ';
     
-    $result = query_elastic($query,$server);
-        
-    if ($result["hits"]["total"] > 0) {
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    foreach ($result['hits']['hits'] as $results) {
+    $response = $client->search($params);   
+        
+    if ($response["hits"]["total"] > 0) {
+    
+        foreach ($response['hits']['hits'] as $results) {
             echo '
                 <tr>
                   <td>'.$query_type.'</td>
@@ -800,7 +739,9 @@ function compararRegistros ($server,$query_type,$query_year,$query_title,$query_
                 </tr>                
                 ';
         }
+    
     } else {
+        
             echo '
                 <tr>
                   <td>'.$query_type.'</td>
@@ -819,11 +760,11 @@ function compararRegistros ($server,$query_type,$query_year,$query_title,$query_
     }
 }
 
-function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
+function compararRegistrosLattes ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors,$codpes) {
 
     $query = '
     {
-        "min_score": 0.7,
+        "min_score": 20,
         "query":{
             "bool": {
                 "should": [
@@ -852,24 +793,30 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
                     },
                     {
                         "multi_match" : {
-                            "query":      "'.$query_authors.'",
+                            "query":      "'.$query_year.'",
                             "type":       "best_fields",
-                            "fields":     [ "authors" ],
-                            "minimum_should_match": "10%" 
+                            "fields":     [ "year" ],
+                            "minimum_should_match": "75%" 
                         }
                     }
                 ],
-                "minimum_should_match" : 1               
+                "minimum_should_match" : 2               
             }
         }
     }
     ';
     
-    $result = query_elastic($query,$server);
-        
-    if ($result["hits"]["total"] > 0) {
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    foreach ($result['hits']['hits'] as $results) {
+    $response = $client->search($params);     
+        
+    if ($response["hits"]["total"] > 0) {
+    
+    foreach ($response['hits']['hits'] as $results) {
             echo '
                 <tr>
                   <td>'.$query_type.'</td>
@@ -883,9 +830,14 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
                   
                   echo '<td>'.$query_authors.'</td>
                   <td>'.$results["_source"]["type"].'</td>
-                  <td>'.$results["_source"]["title"].'</td>
-                  <td>'.$results["_source"]["doi"][0].'</td>
-                  <td>'. implode("|",$results["_source"]["authors"]).'</td>
+                  <td>'.$results["_source"]["title"].'</td>';
+                    if (!empty($results["_source"]["doi"])) {
+                        echo '<td>'.$results["_source"]["doi"][0].'</td>';
+                    } else {
+                        echo '<td></td>';
+                    }       
+        
+                  echo '<td>'. implode("|",$results["_source"]["authors"]).'</td>
                   <td>'.$results["_source"]["year"].'</td>
                   <td>'.$results["_score"].'</td>
                   <td>'.$results["_id"].'</td>
@@ -918,7 +870,7 @@ function compararRegistrosLattes ($server,$query_type,$query_year,$query_title,$
 
 
 
-function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosScopus ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
@@ -946,12 +898,18 @@ function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$
         }
     }
     ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    $result = query_elastic($query,$server);
+    $response = $client->search($params);     
         
-    if ($result["hits"]["total"] > 0) {
+    if ($response["hits"]["total"] > 0) {
     
-    foreach ($result['hits']['hits'] as $results) {
+    foreach ($response['hits']['hits'] as $results) {
         $row = [];
         $row[]= $query_year;
         $row[]= $query_type;
@@ -982,10 +940,11 @@ function compararRegistrosScopus ($server,$query_type,$query_year,$query_title,$
 }
 
 
-function compararCSVScopus ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararCSVScopus ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
+        "min_score": 20,
         "query":{
             "bool": {
                 "should": [
@@ -1003,53 +962,70 @@ function compararCSVScopus ($server,$query_type,$query_year,$query_title,$query_
                             "fields":     [ "title" ],
                             "minimum_should_match": "90%" 
                          }
-                    }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_year.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "year" ],
+                            "minimum_should_match": "75%" 
+                         }
+                    } 
                 ],
-                "minimum_should_match" : 1                
+                "minimum_should_match" : 2                
             }
         }
     }
     ';
     
-    $result = query_elastic($query,$server);
-        
-    if ($result["hits"]["total"] > 0) {
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    foreach ($result['hits']['hits'] as $results) {
-        $row = [];
-        $row[]= $query_year;
-        $row[]= $query_type;
-        $row[]= $query_title;
-        $row[]= $query_DOI;
-        $row[]= $query_authors;
-        $row[]= $results["_source"]["type"];
-        $row[]= $results["_source"]["title"];
-        if (!empty($results["_source"]["doi"])){
-            $row[]= implode("|",$results["_source"]["doi"]);
-        } else {
-            $row[] = "Sem DOI";
-        }        
-        $row[]= implode("|",$results["_source"]["authors"]);
-        $row[]= $results["_source"]["year"];
-        $row[]= $results["_score"];
-        $row[]= $results["_id"];
-        $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
-        $result_row = implode("\\t", $row);
-        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
-        return $result_row;
-        }
-    } else {
-            $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
-            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
+    $response = $client->search($params); 
+        
+    if ($response["hits"]["total"] > 0) {
+    
+        foreach ($response['hits']['hits'] as $results) {
+            $row = [];
+            $row[]= $query_year;
+            $row[]= $query_type;
+            $row[]= $query_title;
+            $row[]= $query_DOI;
+            $row[]= $query_authors;
+            $row[]= $results["_source"]["type"];
+            $row[]= $results["_source"]["title"];
+            if (!empty($results["_source"]["doi"])){
+                $row[]= implode("|",$results["_source"]["doi"]);
+            } else {
+                $row[] = "Sem DOI";
+            }        
+            $row[]= implode("|",$results["_source"]["authors"]);
+            $row[]= $results["_source"]["year"];
+            $row[]= $results["_score"];
+            $row[]= $results["_id"];
+            $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
+            $result_row = implode("\\t", $row);
+            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
             return $result_row;
+        }
+        
+    } else {
+        
+        $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
+        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
+        return $result_row;
     }
 }
 
 
-function compararRegistrosWos ($server,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
+function compararRegistrosWos ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
     {
+        "min_score": 20,
         "query":{
             "bool": {
                 "should": [
@@ -1067,45 +1043,62 @@ function compararRegistrosWos ($server,$query_type,$query_year,$query_title,$que
                             "fields":     [ "title" ],
                             "minimum_should_match": "90%" 
                          }
-                    }
+                    },
+                    {
+                        "multi_match" : {
+                            "query":      "'.$query_year.'",
+                            "type":       "cross_fields",
+                            "fields":     [ "year" ],
+                            "minimum_should_match": "75%" 
+                         }
+                    } 
                 ],
-                "minimum_should_match" : 1                
+                "minimum_should_match" : 2                
             }
         }
     }
     ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',   
+        'body' => $query
+    ];
     
-    $result = query_elastic($query,$server);
+    $response = $client->search($params); 
         
-    if ($result["hits"]["total"] > 0) {
+    if ($response["hits"]["total"] > 0) {
     
-    foreach ($result['hits']['hits'] as $results) {
-        $row = [];
-        $row[]= $query_year;
-        $row[]= $query_type;
-        $row[]= $query_title;
-        $row[]= $query_DOI;
-        $row[]= $query_authors;
-        $row[]= $results["_source"]["type"];
-        $row[]= $results["_source"]["title"];
-        if (!empty($results["_source"]["doi"])){
-            $row[]= implode("|",$results["_source"]["doi"]);
-        } else {
-            $row[] = "Sem DOI";
-        }        
-        $row[]= implode("|",$results["_source"]["authors"]);
-        $row[]= $results["_source"]["year"];
-        $row[]= $results["_score"];
-        $row[]= $results["_id"];
-        $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
-        $result_row = implode("\\t", $row);
-        $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
-        return $result_row;
+        foreach ($response['hits']['hits'] as $results) {
+            $row = [];
+            $row[]= $query_year;
+            $row[]= $query_type;
+            $row[]= $query_title;
+            $row[]= $query_DOI;
+            $row[]= $query_authors;
+            $row[]= $results["_source"]["type"];
+            $row[]= $results["_source"]["title"];
+            if (!empty($results["_source"]["doi"])){
+                $row[]= implode("|",$results["_source"]["doi"]);
+            } else {
+                $row[] = "Sem DOI";
+            }        
+            $row[]= implode("|",$results["_source"]["authors"]);
+            $row[]= $results["_source"]["year"];
+            $row[]= $results["_score"];
+            $row[]= $results["_id"];
+            $row[]= implode("|",$results["_source"]["unidadeUSPtrabalhos"]);
+            $result_row = implode("\\t", $row);
+            $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $result_row ); 
+            return $result_row;
         }
+        
     } else {
+        
             $row = ''.$query_year.'\\t'.$query_type.'\\t'.$query_title.'\\t'.$query_DOI.'\\t'.$query_authors.'\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado\\tNão encontrado';
             $result_row = preg_replace( "/\r|\n|\'|\)|\(|\>|\"|\"\"/", "", $row );       
             return $result_row;
+        
     }
 }
 
@@ -1141,6 +1134,8 @@ function analisa_get($get) {
     
     $new_get = $get;
     
+    $get = str_replace('"','\"',$get);
+    
     /* Missing query */
     foreach ($get as $k => $v){
         if($v == 'N/D'){
@@ -1170,6 +1165,12 @@ function analisa_get($get) {
         unset($new_get['page']);
     } else {
         $page = 1;
+    }
+    
+    /* Empty search_index */
+    if (empty($get['search_index'])){
+        unset($get['search_index']);
+        unset($new_get['search_index']);
     }
     
     /* Pagination variables */
@@ -1202,68 +1203,50 @@ function analisa_get($get) {
     }
     
     if (count($get) == 0) {
-        $search_term = '"match_all": {}';
-        $filter_query = '';
         
-        $query_complete = '{
-        "sort" : [
-                { "year" : {"order" : "desc"}},
-                { "_uid" : {"order" : "desc"}}
-        ],    
-        "query": {    
-        "bool": {
-          "must": {
-            '.$search_term.'
-          },
-          "filter":[
-            '.$filter_query.'        
+        $query_complete = '{   
+            "query": {    
+                 "match_all": {}
+             },
+            "sort":[
+                {"year.keyword":"desc"},
+                {"_uid":"desc"}
             ]
-          }
-        },
-        "from": '.$skip.',
-        "size": '.$limit.'
         }';
+        
 
         $query_aggregate = '
-            "query": {
-                "bool": {
-                  "must": {
-                    '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'
-                    ]
-                  }
-                },
-        ';
+           "query": {    
+                 "match_all": {}
+             },
+        ';        
+       
         
     } elseif (!empty($get['search_index'])) {
         $search_term = '
-            "query":
-            {
-                "multi_match" : {
-                    "query":      "'.$get['search_index'].'",
-                    "type":       "cross_fields",
-                    "fields":     [ "title", "authors_index", "subject", "resumo" ],
-                    "operator":   "and"
-                }    
-            }       
+            "multi_match" : {
+                "query":      "'.$get['search_index'].'",
+                "type":       "cross_fields",
+                "fields":     [ "title", "authors_index", "subject", "resumo" ],
+                "operator":   "and",
+                "minimum_should_match": "50%"
+            }   
         ';
         
-
         unset($get['search_index']);
 
+        $filter = []; 
         foreach ($get as $key => $value) {
            if (count($value) > 1){
                foreach ($value as $valor){
-                    $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
                 }               
            } else {
-               $filter[] = '{"term":{"'.$key.'":"'.$value[0].'"}}';
+               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
            }
             
         }
-
+        
         if (count($filter) > 0) {
             $filter_query = ''.implode(",", $filter).''; 
         } else {
@@ -1272,23 +1255,22 @@ function analisa_get($get) {
 
 
         $query_complete = '{
-        "sort" : [
-                { "year" : "desc" }
-            ],    
-        "query": {    
-        "bool": {
-          "must": {
-            '.$search_term.'
-          },
-          "filter":[
-            '.$filter_query.'        
-            ]
-          }
-        },
-        "from": '.$skip.',
-        "size": '.$limit.'
+            "sort" : [
+                    { "year.keyword" : "desc" }
+                ],    
+            "query": {    
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  },
+                  "filter":[
+                    '.$filter_query.'        
+                    ]
+                  }
+            }
         }';
-        
+
+
         $query_aggregate = '
             "query": {
                 "bool": {
@@ -1301,61 +1283,66 @@ function analisa_get($get) {
                   }
                 },
         ';
-
-
-    } elseif (!empty($get['operator'])) {
         
-        unset($get['operator']);
+    } elseif (!empty($get['advanced_search'])) {        
         
-        foreach ($get as $key => $value){
-                $key = $key;
-                $value_array[] = $value;                
-        } 
-            $query_part = '{"'.$key.'":["'.implode('","',$value_array[0]).'"]}';
+        $get['advanced_search'] = str_replace('"','\"',$get['advanced_search']);
+        $search_fields = "";
+        if (!empty($get['fields'])) {
+            $search_fields = implode('","',$get['fields']);
+            unset($get['fields']); 
+        } else {            
+            $search_fields = "_all";
+        }
+        
+        $search_term = '       
+            "query_string" : {
+                "fields" : ["'.$search_fields.'"],
+                "query" : "'.implode(" AND ",$get['advanced_search']).'"
+            }        
+   
+        ';
+        
+        unset($get['advanced_search']);
 
-            $query_complete = '
-                {
-                "sort" : [
-                    { "year" : "desc" }
+        $query_complete = '{
+            "sort" : [
+                    { "year.keyword" : "desc" }
                 ],    
-                "query" : {
-                    "bool" : {
-                        "filter" : {
-                            "terms":
-                                 '.$query_part.'
-                        }
-                    }
-                },
-                "from": '.$skip.',
-                "size": '.$limit.'
-                }    
-                ';
+            "query": {    
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  }
+                  }
+            }
+        }';
 
-            $query_aggregate = '
-                "query" : {
-                    "bool" : {
-                        "filter" : {
-                            "terms":
-                                 '.$query_part.'
-                        }
-                    }
+
+        $query_aggregate = '
+            "query": {
+                "bool": {
+                  "must": {
+                    '.$search_term.'
+                  }
+                  }
                 },
-            ';          
-        
-        
+        ';
+    
     } else {
         
         foreach ($get as $key => $value) {
 
             $conta_value = count($value);
-
+            $get_query1 = [];
+            
             if ($conta_value > 1) {
                 foreach ($value as $valor){
-                    $get_query1[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                    $get_query1[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
                 }                        
             } else {
                  foreach ($value as $valor){
-                     $filter[] = '{"term":{"'.$key.'":"'.$valor.'"}}';
+                     $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
                  }
             }       
         }
@@ -1366,7 +1353,7 @@ function analisa_get($get) {
         $query_complete = '
                     {
                        "sort" : [
-                           { "year" : "desc" }
+                           { "year.keyword" : "desc" }
                        ],    
                        "query" : {
                           "constant_score" : {
@@ -1414,7 +1401,7 @@ function analisa_get($get) {
     
 if (isset($new_get)){
     
-   
+   $novo_get="";
     if (!empty($new_get['search_index'])){
         $novo_get[] = 'search_index='.$new_get['search_index'].'';
         $termo_consulta = $new_get['search_index'];
@@ -1423,15 +1410,21 @@ if (isset($new_get)){
     
     foreach ($new_get as $key => $value){
         $novo_get[] = ''.$key.'[]='.$value[0].'';        
-    }    
-    $pega_get = implode("&",$novo_get);
+    } 
+    if (!empty($novo_get)){
+        $pega_get = implode("&",$novo_get); 
+    } else {
+        $pega_get = "";
+    }
+       
     $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$pega_get.'';
+
 } else {
     $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
 }
     $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
     
-    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim');
+    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
 }
 
   
@@ -1449,11 +1442,14 @@ function consultar_vcusp($termo) {
         print_r(implode(" -> ",$string_up_array));
         echo '<br/>';
         $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-        foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
-            $string_down_array[] = '<a href="result.php?assunto='.$string_down->{'string'}.'">'.$string_down->{'string'}.'</a>';     
-        };
-        echo 'Ou pesquisar pelo assuntos mais específicos: ';
-        print_r(implode(" - ",$string_down_array));
+        if (!empty($termo_xml_down->{'result'}->{'term'})){
+            foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
+                $string_down_array[] = '<a href="result.php?assunto='.$string_down->{'string'}.'">'.$string_down->{'string'}.'</a>';     
+            };
+            echo 'Ou pesquisar pelo assuntos mais específicos: ';
+            print_r(implode(" - ",$string_down_array));            
+        }
+
 
     } else {
         $termo_naocorrigido[] = $termo_limpo;
@@ -1609,29 +1605,79 @@ function get_oadoi($doi) {
     curl_close($curl);    
 }
 
-function metrics_update($server,$_id,$metrics_array){    
-    $ch = curl_init();
-    $method = "POST";    
-    $url = "http://$server/sibi/producao/$_id/_update";
-       $query = 
-             '{
-                "doc":{
-                    "metrics" : {
-                        '.implode(",",$metrics_array).'
-                    },
-                    "date":"'.date("Y-m-d").'"
-                },                    
-                "doc_as_upsert" : true
-            }';
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_PORT, 9200);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-    $result = curl_exec($ch);
-    //var_dump($result);
-    curl_close($ch); 
+function metrics_update($client,$_id,$metrics_array){    
+
+    $query = 
+    '
+    {
+        "doc":{
+            "metrics" : {
+                '.implode(",",$metrics_array).'
+            },
+            "date":"'.date("Y-m-d").'"
+        },                    
+        "doc_as_upsert" : true
+    }
+    ';  
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'id' => $_id,
+        'body' => $query
+    ];
+    $response = $client->update($params);        
+    
 }
+
+function store_issn_info($client,$issn,$issn_info){    
+
+    $query = 
+    '
+    {
+        "doc":{
+            "issn_info" : 
+                '.$issn_info.'
+            ,
+            "date":"'.date("Y-m-d").'"
+        },                    
+        "doc_as_upsert" : true
+    }
+    ';
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'issn',
+        'id' => $issn,
+        'body' => $query
+    ];
+    $response = $client->update($params);
+    
+}
+
+function get_fulltext_file($id,$session){
+    $files_upload = glob('upload/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
+    $links_upload = "";
+    if (!empty($files_upload)){       
+        foreach($files_upload as $file) {
+            $delete = "";    
+            if (!empty($session)){
+                $delete = '<form method="POST" action="single.php?_id='.$id.'">
+                               <input name="delete_file" value="'.$file.'"  type="hidden">
+                               <button class="uk-close uk-close-alt uk-alert-danger" alt="Deletar arquivo"></button>
+                           </form>';
+            }
+            
+            if( strpos( $file, '.pdf' ) !== false ) {
+                $links_upload[] = '<div class="uk-width-medium-1-4"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+            } else {
+                $links_upload[] = '<div class="uk-width-medium-1-4"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+            }
+        }
+    }
+    return $links_upload;
+}
+
 
 
 

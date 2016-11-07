@@ -10,9 +10,18 @@
     $limit = $result_get['limit'];
     $page = $result_get['page'];
     $new_get = $result_get['new_get'];
+    $skip = $result_get['skip'];
 
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> $limit,
+        'from' => $skip,   
+        'body' => $query_complete
+    ];  
+    
+    $cursor = $client->search($params);    
 
-    $cursor = query_elastic($query_complete,$server);
     $total = $cursor["hits"]["total"];
 
     /* Citeproc-PHP*/
@@ -98,26 +107,32 @@
     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
         <hr>
     <?php 
-        gerar_faceta($query_aggregate,$escaped_url,$server,base,10,"Base");
-        gerar_faceta($query_aggregate,$escaped_url,$server,type,10,"Tipo de material");
-        gerar_faceta($query_aggregate,$escaped_url,$server,unidadeUSPtrabalhos,100,"Unidade USP");              gerar_faceta($query_aggregate,$escaped_url,$server,departamentotrabalhos,100,"Departamento");             gerar_faceta($query_aggregate,$escaped_url,$server,authors,120,"Autores");
-        gerar_faceta($query_aggregate,$escaped_url,$server,authorUSP,100,"Autores USP");
-        gerar_faceta($query_aggregate,$escaped_url,$server,year,120,"Ano de publicação","desc");
-        gerar_faceta($query_aggregate,$escaped_url,$server,subject,100,"Assuntos");
-        gerar_faceta($query_aggregate,$escaped_url,$server,language,40,"Idioma");
-        gerar_faceta($query_aggregate,$escaped_url,$server,ispartof,100,"É parte de ...");
-        gerar_faceta($query_aggregate,$escaped_url,$server,publisher,100,"Editora");
-        gerar_faceta($query_aggregate,$escaped_url,$server,evento,100,"Nome do evento");
-        gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");
-        gerar_faceta($query_aggregate,$escaped_url,$server,tipotese,30,"Tipo de tese");
-        gerar_faceta($query_aggregate,$escaped_url,$server,areaconcentracao,100,"Área de concentração");
-        gerar_faceta($query_aggregate,$escaped_url,$server,indexado,100,"Indexado em");
-        gerar_faceta($query_aggregate,$escaped_url,$server,fatorimpacto,1000,"Fator de impacto","desc");         
-        gerar_faceta($query_aggregate,$escaped_url,$server,grupopesquisa,100,"Grupo de pesquisa");
-        gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");  
-        gerar_faceta($query_aggregate,$escaped_url,$server,colab,120,"País dos autores externos à USP");
-        gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração institucional");
-        gerar_faceta($query_aggregate,$escaped_url,$server,fomento,100,"Agência de fomento");
+        gerar_faceta($query_aggregate,$escaped_url,$client,"base",10,"Base",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"type",10,"Tipo de material",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"unidadeUSPtrabalhos",100,"Unidade USP",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"departamentotrabalhos",100,"Departamento",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"authors",120,"Autores",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"authorUSP",100,"Autores USP",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"year",120,"Ano de publicação","desc");
+        gerar_faceta($query_aggregate,$escaped_url,$client,"subject",100,"Assuntos",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"language",40,"Idioma",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"ispartof",100,"É parte de ...",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"publisher",100,"Editora",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"evento",100,"Nome do evento",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"country",200,"País de publicação",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"tipotese",30,"Tipo de tese",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"areaconcentracao",100,"Área de concentração",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"programapossigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"programaposnome",100,"Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"indexado",100,"Indexado em",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"fatorimpacto",1000,"Fator de impacto","desc");         
+        gerar_faceta($query_aggregate,$escaped_url,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"internacionalizacao",30,"Internacionalização",null);  
+        gerar_faceta($query_aggregate,$escaped_url,$client,"colab",120,"País dos autores externos à USP",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_corrigido",100,"Colaboração institucional",null);
+        gerar_faceta($query_aggregate,$escaped_url,$client,"fomento",100,"Agência de fomento",null);
+        gerar_faceta_range($query_aggregate,$escaped_url,$client,"metrics.three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
+        gerar_faceta_range($query_aggregate,$escaped_url,$client,"metrics.full_citations_scopus",100,"Total de citações na Scopus");
     ?>
     </ul>
         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
@@ -125,12 +140,12 @@
             <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
             <hr>
             <?php         
-                gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
-                gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade");
-                gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
-                gerar_faceta($query_aggregate,$escaped_url,$server,colab_int_trab,100,"Colaboração - Internacionalização"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_trab,100,"Colaboração - Instituição"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração - Instituição - Corrigido"); corrigir_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_naocorrigido,100,"Colaboração - Instituição - Não corrigido");
-                gerar_faceta($query_aggregate,$escaped_url,$server,dataregistroinicial,100,"Data de registro","desc");
-                gerar_faceta($query_aggregate,$escaped_url,$server,dataregistro,100,"Data de registro e alterações","desc");
+                gerar_faceta($query_aggregate,$escaped_url,$client,"codpesbusca",100,"Número USP",null);
+                gerar_faceta($query_aggregate,$escaped_url,$client,"codpes",100,"Número USP / Unidade",null);
+                gerar_faceta($query_aggregate,$escaped_url,$client,"issn_part",100,"ISSN",null);
+                gerar_faceta($query_aggregate,$escaped_url,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
+                gerar_faceta($query_aggregate,$escaped_url,$client,"dataregistroinicial",100,"Data de registro","desc");
+                gerar_faceta($query_aggregate,$escaped_url,$client,"dataregistro",100,"Data de registro e alterações","desc");
             ?>
             </ul>
         <?php endif; ?>
@@ -202,7 +217,7 @@
                     <a href="" class="uk-alert-close uk-close"></a>
                 
                     
-                <?php $ano_bar = generateDataGraphBar($server, $url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
+                <?php $ano_bar = generateDataGraphBar($client, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
 
                 <div id="ano_chart" class="uk-visible-large"></div>
                 <script type="application/javascript">
@@ -238,17 +253,18 @@
                 <?php endif; ?>
                     
                     <div class="uk-grid uk-margin-top">
-                        <div class="uk-width-1-3">                        
+                        <div class="uk-width-1-3"> 
+                        <!--    
                         <ul class="uk-subnav uk-nav-parent-icon uk-subnav-pill">
                             <li>Ordenar por:</li>
 
-                            <!-- This is the container enabling the JavaScript -->
+                            <!-- This is the container enabling the JavaScript - ->
                             <li data-uk-dropdown="{mode:'click'}">
 
-                                <!-- This is the nav item toggling the dropdown -->
+                                <!-- This is the nav item toggling the dropdown - ->
                                 <a href="">Data (Novos)</a>
 
-                                <!-- This is the dropdown -->
+                                <!-- This is the dropdown - ->
                                 <div class="uk-dropdown uk-dropdown-small">
                                     <ul class="uk-nav uk-nav-dropdown">
                                         <li><a href="">Data (Antigos)</a></li>
@@ -257,7 +273,8 @@
                                 </div>
 
                             </li>
-                        </ul>                        
+                        </ul>
+                        -->
                             
                         </div>
                         <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
@@ -379,6 +396,20 @@
                                                     <?php endif; ?>
                                                 </div>
                                                 <?php endif; ?>
+                        <?php 
+                            if(empty($_SESSION['oauthuserdata'])){
+                                $_SESSION['oauthuserdata']="";
+                            } 
+                            $full_links = get_fulltext_file($r['_id'],$_SESSION['oauthuserdata']);
+                            if (!empty($full_links)){
+                                echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
+                                        foreach ($full_links as $links) {
+                                            print_r($links);
+                                        }                                  
+                                echo '</div><br/>';
+                            }
+
+                        ?>                                                    
                                             </li>
                                             <?php if (isset($issn_info["serial-metadata-response"])): ?>
                                             <div class="uk-alert">
@@ -420,7 +451,9 @@
                                                 <?php
                                                     $sfx_array[] = 'rft.atitle='.$r["_source"]['title'].'';
                                                     $sfx_array[] = 'rft.year='.$r["_source"]['year'].'';
-                                                    $sfx_array[] = 'rft.jtitle='.$r["_source"]['ispartof'].'';
+                                                    if (!empty($r["_source"]['ispartof'])) {
+                                                        $sfx_array[] = 'rft.jtitle='.$r["_source"]['ispartof'].'';
+                                                    }
                                                     if (!empty($r["_source"]['doi'])) {
                                                         $sfx_array[] = 'rft_id=info:doi/'.$r["_source"]['doi'][0].'';
                                                     }
@@ -437,7 +470,8 @@
                                             <li class="uk-h6 uk-margin-top">
                                                <?php load_itens_new($r['_id']); ?>
                                             </li>
-                                        </div>    
+                                        </div> 
+                                        <?php if (!empty($r["_source"]['doi'])) : ?>
                                         <li class="uk-h6 uk-margin-top">
                                             <p>Métricas:</p>
                                             <ul>
@@ -461,7 +495,8 @@
                                                 </li>
                                             </ul>  
                                         </li>
-                                        <a href="#" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Citar</a>
+                                        <?php endif; ?>
+                                        <a href="#" class="uk-margin-top" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Ver citação</a>
                                         <div id="citacao<?php echo  $r['_id'];?>" class="uk-hidden">
                                         <li class="uk-h6 uk-margin-top">
                                             <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>

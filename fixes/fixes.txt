@@ -72,6 +72,10 @@ marc_map('590m','fatorimpacto.$append')
 marc_map('590n','grupopesquisa')
 split_field('grupopesquisa',';')
 
+# 599 - Sigla de departamento para teses
+marc_map('599a','programapossigla')
+marc_map('599b','programaposnome')
+
 
 # 650 - Assunto
 marc_map('650[ 7]a','subject.$append')

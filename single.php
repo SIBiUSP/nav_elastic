@@ -1,5 +1,8 @@
 <?php
-
+if (session_status() === PHP_SESSION_NONE){
+    session_start();
+}
+    
 include('inc/config.php'); 
 include('inc/functions.php');
 
@@ -17,10 +20,86 @@ $citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
-$cursor = query_one_elastic($_GET['_id'],$server);
+$cursor = query_one_elastic($_GET['_id'],$client);
 
 /* Contador */
-counter($_GET['_id'],$server);
+counter($_GET['_id'],$client);
+
+/* Upload de PDF */
+
+if (!empty($_FILES)) {
+    if (!is_dir('upload/'.$_GET['_id'].'')){
+        mkdir('upload/'.$_GET['_id'].'', 0700);
+    }
+    
+    $uploaddir = 'upload/'.$_GET['_id'].'/';
+    $count_files = count(glob('upload/'.$_GET['_id'].'/*',GLOB_BRACE));
+    $rights = '{"rights":"'.$_POST["rights"].'"},';
+    
+    if (!empty($_POST["embargo_date"])){
+        $embargo_date = '{"embargo_date":"'.$_POST["embargo_date"].'"},';
+    } else {
+        $embargo_date = '{"embargo_date":""},';
+    }
+    
+    if ($_FILES['upload_file']['type'] == 'application/pdf'){
+        $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pdf");
+    } else {
+        $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pptx");
+    }    
+    
+    if ($_FILES['upload_file']['type'] == 'application/pdf'||$_FILES['upload_file']['type'] == 'application/vnd.openxmlformats-officedocument.presentationml.presentation'){
+        //echo '<pre>';
+        if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $uploadfile)) {
+            $query = 
+            '
+            {
+                "doc":{
+                    "file_info" :[ 
+                        {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
+                        {"name_file":"'.$_FILES['upload_file']['name'].'"},
+                        '.$rights.'
+                        '.$embargo_date.'
+                        {"file_type":"'.$_FILES['upload_file']['type'].'"}
+                    ],
+                    "date_file":"'.date("Y-m-d").'"
+                },                    
+                "doc_as_upsert" : true
+            }
+            ';
+                        
+            $params = [
+                'index' => 'sibi',
+                'type' => 'files',
+                'id' => $uploadfile,
+                'body' => $query
+            ];
+            $response_upload = $client->update($params);           
+        } else {
+            echo "Possível ataque de upload de arquivo!\n";
+        }
+    }
+    
+    //echo 'Aqui está mais informações de debug:';
+    //print_r($_FILES);
+   //print "</pre>";    
+    
+}
+
+if (!empty($_POST['delete_file'])) {
+    unlink($_POST['delete_file']);
+    $params = [
+        'index' => 'sibi',
+        'type' => 'files',
+        'id' => $_POST['delete_file']
+    ];
+    $response_delete = $client->delete($params);
+    //print_r($response_delete);
+    
+}
+
+
+
 
 ?>
 
@@ -100,7 +179,10 @@ $record_blob = implode("\\n", $record);
         <?php include('inc/meta-header.php'); ?>
         <title>BDPI USP - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
         <script src="inc/uikit/js/components/slideset.js"></script>
-        
+        <script src="inc/uikit/js/components/notify.min.js"></script>
+        <script src="inc/uikit/js/components/upload.min.js"></script>
+        <script src="inc/uikit/js/components/form-select.min.js"></script>
+        <script src="inc/uikit/js/components/datepicker.min.js"></script>
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
               function SaveAsFile(t,f,m) {
@@ -122,7 +204,9 @@ $record_blob = implode("\\n", $record);
         <?php endforeach;?>
         <?php endif; ?>
         <meta name="citation_publication_date" content="<?php echo $cursor["_source"]['year']; ?>">
+        <?php if (!empty($cursor["_source"]['ispartof'])): ?>
         <meta name="citation_journal_title" content="<?php echo $cursor["_source"]['ispartof'];?>">
+        <?php endif; ?>
         <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
         <meta name="citation_volume" content="<?php echo $cursor["_source"]['ispartof_data'][0];?>">
         <?php endif; ?>
@@ -130,7 +214,18 @@ $record_blob = implode("\\n", $record);
         <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
         <meta name="citation_issue" content="<?php echo $cursor["_source"]['ispartof_data'][1];?>">
         <?php endif; ?>
-
+        
+        <?php 
+        
+        $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);    
+        $links_upload = "";
+        if (!empty($files_upload)){       
+            foreach($files_upload as $file) {        
+                echo '<meta name="citation_pdf_url" content="http://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
+            ';
+            }
+        }
+        ?>
         <!--
         <meta name="citation_firstpage" content="11761">
         <meta name="citation_lastpage" content="11766">
@@ -232,6 +327,16 @@ $record_blob = implode("\\n", $record);
         
     </head>
     <body>
+        <?php if(!empty($response_upload)) : ?>
+            <?php if ($response_upload['result'] == 'created'): ?>
+                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo incluído com sucesso", {status:'success'})</script>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if(!empty($response_delete)) : ?>        
+            <?php if ($response_delete['result'] == 'deleted'): ?>
+                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo excluído com sucesso", {status:'danger'})</script>
+            <?php endif; ?> 
+        <?php endif; ?>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
 
@@ -241,6 +346,13 @@ $record_blob = implode("\\n", $record);
             
             <?php if (!empty($cursor["_source"]['issn_part'][0])) : ?>
                 <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn_part'][0]),$api_elsevier); ?>
+                <?php
+                    if (!empty($issn_info)) {
+                        //print_r($issn_info);
+                        store_issn_info($client,$cursor["_source"]['issn_part'][0],json_encode($issn_info));
+                    }
+                    
+                ?>
             <?php endif; ?>             
             
             
@@ -250,11 +362,16 @@ $record_blob = implode("\\n", $record);
                    <?php
                         if (isset($issn_info["serial-metadata-response"])) {
                             $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";
+                            
+                    $headers = get_headers($image_url, 1);
+                    if ($headers[0] == 'HTTP/1.1 200 OK') {
                             if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
                                 echo '<div class="uk-margin-top uk-margin-bottom">';    
                                 echo '<img src="'.$image_url.'">';
                                 echo '</div>';
                             }
+                    }                            
+
                         } 
                     ?>
                     
@@ -323,8 +440,8 @@ $record_blob = implode("\\n", $record);
                         
                     
                             
-                            $metrics[] = 'three_years_citations_scopus: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
-                            $metrics[] = 'full_citations_scopus: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
+                            $metrics[] = '"three_years_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
+                            $metrics[] = '"full_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
                         }
                     ?>
                     <?php endif; ?>
@@ -473,27 +590,53 @@ $record_blob = implode("\\n", $record);
                                                   ?>
                                         </li>
                                     <?php endforeach; ?>
-                                    <?php $metrics[] = 'subject_area_scopus:['.implode(",",$subject_area_array).']'; ?>    
+                                    <?php $metrics[] = '"subject_area_scopus":['.implode(",",$subject_area_array).']'; ?>    
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
                                         <li>                                                    
                                             SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
-                                            <?php $metrics[] = 'scopus_sjr_'.$sjr["@year"].': '.$sjr["$"].'';?>
+                                            <?php $metrics[] = '"scopus_sjr_'.$sjr["@year"].'": '.$sjr["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
 
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
                                         <li>                                                    
                                             SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
-                                            <?php $metrics[] = 'scopus_snip_'.$snip["@year"].': '.$snip["$"].'';?>
+                                            <?php $metrics[] = '"scopus_snip_'.$snip["@year"].'": '.$snip["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
 
                                     <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
                                         <li>                                                    
                                             IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                            <?php $metrics[] = 'scopus_ipp_'.$ipp["@year"].': '.$ipp["$"].'';?>
+                                            <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
+                                    <?php 
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccess'])) {
+                                            echo '<li>Periódico de acesso aberto</li>';
+                                            $metrics[] = '"scopus_openaccess":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccess'].'"';
+                                        }
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'])) {
+                                            echo '<li>Artigo em Acesso aberto</li>';
+                                            $metrics[] = '"scopus_openaccessArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'].'"';
+                                        }
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'])) {
+                                            echo '<li>Artigo em arquivo de Acesso aberto</li>';
+                                            $metrics[] = '"scopus_openArchiveArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'].'"';
+                                        } 
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessType'])) {
+                                            echo '<li>Tipo de acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'</li>';
+                                            $metrics[] = '"scopus_openaccessType":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'"';
+                                        }  
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'])) {
+                                            echo '<li>Data de início do acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'</li>';
+                                            $metrics[] = '"scopus_openaccessStartDate":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'"';
+                                        }
+                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'])) {
+                                            echo '<li>Acesso aberto pago pelo autor: '.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'</li>';
+                                            $metrics[] = '"scopus_oaAllowsAuthorPaid":"'.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'"';
+                                        }                                        
+                                    ?>    
                                     </ul>
                                 </li>
                           </div>    
@@ -530,32 +673,122 @@ $record_blob = implode("\\n", $record);
                                         echo '<li>Este artigo NÃO é de acesso aberto<br/>';
                                     }
                                     if (!empty($oadoi['results'][0]['is_free_to_read'])) {                                        
-                                        $metrics[] = 'oadoi_is_free_to_read: '.$oadoi['results'][0]['is_free_to_read'].'';
+                                        $metrics[] = '"oadoi_is_free_to_read": '.$oadoi['results'][0]['is_free_to_read'].'';
                                     }    
                                     if (!empty($oadoi['results'][0]['free_fulltext_url'])) {                                        
                                         echo '<li><a href="'.$oadoi['results'][0]['free_fulltext_url'].'">URL de acesso aberto</a></li>';
                                     }
                                     if (!empty($oadoi['results'][0]['oa_color'])) {  
                                         echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
-                                        $metrics[] = 'oadoi_oa_color: "'.$oadoi['results'][0]['oa_color'].'"';
+                                        $metrics[] = '"oadoi_oa_color": "'.$oadoi['results'][0]['oa_color'].'"';
                                     }
                                     if (!empty($oadoi['results'][0]['license'])) {                                        
                                         echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
                                     }
                                     echo '</ul></div>';
                                     
-                                    $metrics[] = 'oadoi_is_subscription_journal: '.$oadoi['results'][0]['is_subscription_journal'].'';
-                                    
-                                    
-                                    //print_r($oadoi);    
+                                    if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
+                                        $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
+                                    }
+                                    metrics_update($client,$_GET['_id'],$metrics);      
                                 }
                             ?>                            
                             <?php endif; ?>
                         
-                            <?php metrics_update($server,$_GET['_id'],$metrics); ?>
-           
-                            <hr>                            
-                            <?php load_itens_single($cursor["_id"]); ?>                            
+                        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                        <div class="uk-alert-warning">
+                            <h4 class="uk-margin-top">Upload do texto completo:</h4>
+                            <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>" name="upload"> 
+                                <div id="upload-drop" class="uk-placeholder uk-text-center">
+                                    <i class="uk-icon-cloud-upload uk-icon-medium uk-text-muted uk-margin-small-right"></i> Arrastar arquivos aqui ou <a class="uk-form-file">selecionar arquivo<input id="upload-select" name="upload_file" type="file"></a>.
+                                </div>
+
+                                <div id="progressbar" class="uk-progress uk-hidden">
+                                    <div class="uk-progress-bar" style="width: 0%;">0%</div>
+                                </div>
+                                
+                                <script>
+
+                                    $(function(){
+
+                                        var progressbar = $("#progressbar"),
+                                            bar         = progressbar.find('.uk-progress-bar'),
+                                            settings    = {
+
+                                            method: 'POST', // HTTP method, default is 'POST'    
+
+                                            action: 'single.php', // upload url
+
+                                            allow : '*.(pdf|pptx)', // allow only images
+
+                                            loadstart: function() {
+                                                bar.css("width", "0%").text("0%");
+                                                progressbar.removeClass("uk-hidden");
+                                            },
+
+                                            progress: function(percent) {
+                                                percent = Math.ceil(percent);
+                                                bar.css("width", percent+"%").text(percent+"%");
+                                            },
+
+                                            allcomplete: function(response) {
+
+                                                bar.css("width", "100%").text("100%");
+
+                                                setTimeout(function(){
+                                                    progressbar.addClass("uk-hidden");
+                                                }, 250);
+
+                                                alert("Upload Completo")
+                                            }
+                                        };
+
+                                        var select = UIkit.uploadSelect($("#upload-select"), settings),
+                                            drop   = UIkit.uploadDrop($("#upload-drop"), settings);
+                                    });
+
+                                </script>                                
+                                                                
+                                <!--<div class="uk-form-file">
+                                    <button class="uk-button">Selecionar arquivo</button>
+                                    <input name="upload_file" data-validation="required" data-validation="mime size" data-validation-allowing="pdf, pptx" data-validation-max-size="100M" type="file">
+                                </div> -->
+                                <div class="uk-form-select uk-button" data-uk-form-select>
+                                    <span>Informe o tipo de acesso <i class="uk-icon-caret-down"></i></span>
+                                    <select name="rights" data-validation="required">
+                                        <option value="">Informe o tipo de acesso <i class="uk-icon-caret-down"></i></option>
+                                        <option value="Acesso aberto">Acesso aberto</option>
+                                        <option value="Embargado">Embargado</option>
+                                    </select>
+                                </div><br/><br/>
+                                <span>Caso tenha embargo, informe a data de liberação</span><br/>
+                                <input type="date" name="embargo_date" data-uk-datepicker="{months:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'], weekdays:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], format:'YYYYMMDD'}" placeholder="Informe a data de embargo">                                
+                                <br/><br/><button class="uk-button">Enviar</button>
+                            </form> 
+                        </div>    
+                        <?php endif; ?>
+                        
+                        
+                        
+                        
+                        <?php 
+                            if(empty($_SESSION['oauthuserdata'])){
+                                $_SESSION['oauthuserdata']="";
+                            } 
+                            $full_links = get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
+                            if (!empty($full_links)){
+                                echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
+                                        foreach ($full_links as $links) {
+                                            print_r($links);
+                                        }                                  
+                                echo '</div>';
+                            }
+
+                        ?>    
+                        
+                        
+                        <hr>                            
+                        <?php load_itens_single($cursor["_id"]); ?>                            
   
                             <div class="extra" style="color:black;">
                                 <h4>Como citar</h4>
@@ -598,8 +831,10 @@ $record_blob = implode("\\n", $record);
                         <div class="uk-overflow-container">
                             
                             <?php
-                                $full_html = get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
-                                print_r($full_html);
+                                if (!empty($cursor["_source"]['doi'])) {
+                                    $full_html = get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                                    print_r($full_html);                                    
+                                } 
                             ?>
                             
                             

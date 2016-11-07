@@ -30,8 +30,8 @@
             <?php include('inc/navbar.php'); ?>
             <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">  
                 
-                <h1>CSV do Scopus</h1>
-                <p>Separado por tabulações</p>
+                <h1><a href="comparar_csv_scopus.php">CSV do Scopus</a></h1>
+                <p>Para obter o arquivo aceito, faça uma busca na Scopus e selecione os resultados que deseja comparar, clique em 'Export', escolha 'CSV' e 'Citation information only', e depois escolha 'CSV export with citation information only.' e clique em 'Export'. Será salvo um arquivo chamado scopus.csv, que é aceito pelo comparador.</p>
                 
                 <form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                     <input type="file" name="file">
@@ -52,7 +52,7 @@ if (isset($_FILES['file'])) {
     
     
     while( ($row = fgetcsv($fh, 8192,",")) !== FALSE ) {    
-         $record_scopus[] = compararCSVScopus($server,"Artigo",$row[2],$row[1],$row[0],$row[11]);
+         $record_scopus[] = compararCSVScopus($client,"Artigo",$row[2],$row[1],$row[0],$row[11]);
     }
     
     $record_blob = implode("\\n", $record_scopus);
