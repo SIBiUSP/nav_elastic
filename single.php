@@ -26,6 +26,7 @@ $cursor = query_one_elastic($_GET['_id'],$client);
 counter($_GET['_id'],$client);
 
 /* Upload de PDF */
+
 if (!empty($_FILES)) {
     if (!is_dir('upload/'.$_GET['_id'].'')){
         mkdir('upload/'.$_GET['_id'].'', 0700);
@@ -33,6 +34,14 @@ if (!empty($_FILES)) {
     
     $uploaddir = 'upload/'.$_GET['_id'].'/';
     $count_files = count(glob('upload/'.$_GET['_id'].'/*',GLOB_BRACE));
+    $rights = '{"rights":"'.$_POST["rights"].'"},';
+    
+    if (!empty($_POST["embargo_date"])){
+        $embargo_date = '{"embargo_date":"'.$_POST["embargo_date"].'"},';
+    } else {
+        $embargo_date = '{"embargo_date":""},';
+    }
+    
     if ($_FILES['upload_file']['type'] == 'application/pdf'){
         $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pdf");
     } else {
@@ -49,6 +58,8 @@ if (!empty($_FILES)) {
                     "file_info" :[ 
                         {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
                         {"name_file":"'.$_FILES['upload_file']['name'].'"},
+                        '.$rights.'
+                        '.$embargo_date.'
                         {"file_type":"'.$_FILES['upload_file']['type'].'"}
                     ],
                     "date_file":"'.date("Y-m-d").'"
@@ -169,6 +180,9 @@ $record_blob = implode("\\n", $record);
         <title>BDPI USP - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
         <script src="inc/uikit/js/components/slideset.js"></script>
         <script src="inc/uikit/js/components/notify.min.js"></script>
+        <script src="inc/uikit/js/components/upload.min.js"></script>
+        <script src="inc/uikit/js/components/form-select.min.js"></script>
+        <script src="inc/uikit/js/components/datepicker.min.js"></script>
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
               function SaveAsFile(t,f,m) {
@@ -682,14 +696,74 @@ $record_blob = implode("\\n", $record);
                             <?php endif; ?>
                         
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
-                        <div class="uk-alert">
+                        <div class="uk-alert-warning">
                             <h4 class="uk-margin-top">Upload do texto completo:</h4>
-                            <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>">
-                                <div class="uk-form-file">
+                            <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>" name="upload"> 
+                                <div id="upload-drop" class="uk-placeholder uk-text-center">
+                                    <i class="uk-icon-cloud-upload uk-icon-medium uk-text-muted uk-margin-small-right"></i> Arrastar arquivos aqui ou <a class="uk-form-file">selecionar arquivo<input id="upload-select" name="upload_file" type="file"></a>.
+                                </div>
+
+                                <div id="progressbar" class="uk-progress uk-hidden">
+                                    <div class="uk-progress-bar" style="width: 0%;">0%</div>
+                                </div>
+                                
+                                <script>
+
+                                    $(function(){
+
+                                        var progressbar = $("#progressbar"),
+                                            bar         = progressbar.find('.uk-progress-bar'),
+                                            settings    = {
+
+                                            method: 'POST', // HTTP method, default is 'POST'    
+
+                                            action: 'single.php', // upload url
+
+                                            allow : '*.(pdf|pptx)', // allow only images
+
+                                            loadstart: function() {
+                                                bar.css("width", "0%").text("0%");
+                                                progressbar.removeClass("uk-hidden");
+                                            },
+
+                                            progress: function(percent) {
+                                                percent = Math.ceil(percent);
+                                                bar.css("width", percent+"%").text(percent+"%");
+                                            },
+
+                                            allcomplete: function(response) {
+
+                                                bar.css("width", "100%").text("100%");
+
+                                                setTimeout(function(){
+                                                    progressbar.addClass("uk-hidden");
+                                                }, 250);
+
+                                                alert("Upload Completo")
+                                            }
+                                        };
+
+                                        var select = UIkit.uploadSelect($("#upload-select"), settings),
+                                            drop   = UIkit.uploadDrop($("#upload-drop"), settings);
+                                    });
+
+                                </script>                                
+                                                                
+                                <!--<div class="uk-form-file">
                                     <button class="uk-button">Selecionar arquivo</button>
                                     <input name="upload_file" data-validation="required" data-validation="mime size" data-validation-allowing="pdf, pptx" data-validation-max-size="100M" type="file">
-                                </div>
-                                <button class="uk-button">Enviar</button>
+                                </div> -->
+                                <div class="uk-form-select uk-button" data-uk-form-select>
+                                    <span>Informe o tipo de acesso <i class="uk-icon-caret-down"></i></span>
+                                    <select name="rights" data-validation="required">
+                                        <option value="">Informe o tipo de acesso <i class="uk-icon-caret-down"></i></option>
+                                        <option value="Acesso aberto">Acesso aberto</option>
+                                        <option value="Embargado">Embargado</option>
+                                    </select>
+                                </div><br/><br/>
+                                <span>Caso tenha embargo, informe a data de liberação</span><br/>
+                                <input type="date" name="embargo_date" data-uk-datepicker="{months:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'], weekdays:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], format:'YYYYMMDD'}" placeholder="Informe a data de embargo">                                
+                                <br/><br/><button class="uk-button">Enviar</button>
                             </form> 
                         </div>    
                         <?php endif; ?>
