@@ -1227,7 +1227,7 @@ function analisa_get($get) {
             "multi_match" : {
                 "query":      "'.$get['search_index'].'",
                 "type":       "cross_fields",
-                "fields":     [ "title", "authors_index", "subject", "resumo" ],
+                "fields":     [ "title", "authors_index", "authorUSP", "subject", "resumo" ],
                 "operator":   "and",
                 "minimum_should_match": "50%"
             }   
