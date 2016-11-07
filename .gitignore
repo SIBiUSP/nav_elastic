@@ -2,12 +2,7 @@ data/
 inc/config.php
 inc/analyticstracking.php
 /robots.txt
-<<<<<<< HEAD
-vendor/
-upload/
-=======
 composer.lock
 composer.phar
 vendor/
 upload/
->>>>>>> v2.0
