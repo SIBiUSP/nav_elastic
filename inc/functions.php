@@ -578,7 +578,7 @@ function generateDataGraphBar($client, $consulta, $campo, $sort, $sort_orientati
 };
 
 /* Function to generate Tables */
-function generateDataTable($client,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     }
@@ -589,7 +589,7 @@ function generateDataTable($client,$url, $consulta, $campo, $sort, $sort_orienta
         "aggregations": {
           "counts": {
             "terms": {
-              "field": "'.$campo.'",
+              "field": "'.$campo.'.keyword",
               "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
@@ -632,7 +632,7 @@ echo "<table class=\"uk-table\">
 
 
 /* Function to generate CSV */
-function generateCSV($client,$url, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
 
     if (!empty($sort)){
         $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -644,7 +644,7 @@ function generateCSV($client,$url, $consulta, $campo, $sort, $sort_orientation, 
         "aggregations": {
           "counts": {
             "terms": {
-              "field": "'.$campo.'",
+              "field": "'.$campo.'.keyword",
               "missing": "N/D",
               '.$sort_query.'
               "size":'.$tamanho.'
@@ -1224,13 +1224,11 @@ function analisa_get($get) {
         
     } elseif (!empty($get['search_index'])) {
         $search_term = '
-            "multi_match" : {
-                "query":      "'.$get['search_index'].'",
-                "type":       "cross_fields",
-                "fields":     [ "title", "authors_index", "authorUSP", "subject", "resumo" ],
-                "operator":   "and",
-                "minimum_should_match": "50%"
-            }   
+            "query_string" : {
+                "fields" : ["title", "authors_index", "authorUSP", "subject", "resumo"],
+                "query" : "'.$get['search_index'].'",
+                "default_operator": "AND"
+            }                
         ';
         
         unset($get['search_index']);
@@ -1298,7 +1296,8 @@ function analisa_get($get) {
         $search_term = '       
             "query_string" : {
                 "fields" : ["'.$search_fields.'"],
-                "query" : "'.implode(" AND ",$get['advanced_search']).'"
+                "query" : "'.implode(" ",$get['advanced_search']).'",
+                "default_operator": "AND"
             }        
    
         ';
@@ -1310,22 +1309,14 @@ function analisa_get($get) {
                     { "year.keyword" : "desc" }
                 ],    
             "query": {    
-                "bool": {
-                  "must": {
                     '.$search_term.'
-                  }
-                  }
             }
         }';
 
 
         $query_aggregate = '
             "query": {
-                "bool": {
-                  "must": {
                     '.$search_term.'
-                  }
-                  }
                 },
         ';
     
@@ -1348,6 +1339,10 @@ function analisa_get($get) {
         }
     
         $query_part = '"must" : ['.implode(",",$get_query1).']';
+        if (empty($filter)){
+            $filter=[];
+        }
+        
         $query_part2 = implode(",",$filter);
 
         $query_complete = '

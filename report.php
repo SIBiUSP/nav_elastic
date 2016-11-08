@@ -11,8 +11,14 @@
     $page = $result_get['page'];
     $new_get = $result_get['new_get'];
 
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'body' => $query_complete
+    ];  
+    
+    $cursor = $client->search($params);  
 
-    $cursor = query_elastic($query_complete,$client);
     $total = $cursor["hits"]["total"];
 ?>
 <html>
@@ -57,7 +63,7 @@
         
          <h3 class="uk-margin-top">Relatório com os seguintes parâmetros:
                     <?php foreach ($_GET as $filters) : ?>
-                    <?php echo implode(",",$filters);?>
+                        <?php echo implode(",",$filters);?>
                     <?php endforeach;?>
         </h3>
 
@@ -67,7 +73,7 @@
 
 
         <h3>Tipo de publicação (Somente os primeiros)</h3>
-        <?php $type_mat_bar = generateDataGraphBar($client,$url, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 4,$client); ?>
+        <?php $type_mat_bar = generateDataGraphBar($client, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 4); ?>
        
                 
                 <div id="type_chart" style="font-size:10px"></div>
@@ -96,16 +102,16 @@
                         }
                     })
                 </script> 
-                <?php generateDataTable($client,$url, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 9); ?>
+                <?php generateDataTable($client, $query_aggregate, "type", "_count", "desc", 'Tipo de publicação', 9); ?>
 
-                <?php $csv_type = generateCSV($client,$url, $query_aggregate, 'type',  "_count", "desc", 'Tipo de publicação', 500); ?> 
+                <?php $csv_type = generateCSV($client, $query_aggregate, 'type',  "_count", "desc", 'Tipo de publicação', 500); ?> 
                 <button class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_type; ?>','tipo_de_material.csv','text/plain;charset=utf-8')">
                     Exportar todos os tipos de publicação em csv
                 </button>
 
 
                 <h3>Unidade USP - Trabalhos (10 primeiros)</h3>
-                <?php $unidadeUSP_trab_bar = generateDataGraphBar($client,$url, $query_aggregate, "unidadeUSPtrabalhos", "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
+                <?php $unidadeUSP_trab_bar = generateDataGraphBar($client, $query_aggregate, "unidadeUSPtrabalhos", "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
 
 
                 <div id="unidadeUSP_chart"></div>
@@ -135,15 +141,15 @@
                     })
                 </script> 
 
-                <?php generateDataTable($client,$url, $query_aggregate, 'unidadeUSPtrabalhos', "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
-                <?php $csv_unidadeUSPtrabalhos = generateCSV($client,$url, $query_aggregate, 'unidadeUSPtrabalhos', "_count", 'desc', 'Unidade USP - Trabalhos', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'unidadeUSPtrabalhos', "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
+                <?php $csv_unidadeUSPtrabalhos = generateCSV($client, $query_aggregate, 'unidadeUSPtrabalhos', "_count", 'desc', 'Unidade USP - Trabalhos', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_unidadeUSPtrabalhos; ?>','unidadeUSP_trabalhos.csv','text/plain;charset=utf-8')">
                     Exportar todas os trabalhos por unidades em csv
                 </button>      
 
                 <h3>Unidade USP - Participações (10 primeiros)</h3>
-                <?php generateDataTable($client,$url, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
-                <?php $csv_unidadeUSP = generateCSV($client,$url, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
+                <?php $csv_unidadeUSP = generateCSV($client, $query_aggregate, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">
                     Exportar todas participações por Unidade em csv
                 </button>
@@ -152,8 +158,8 @@
 
 
                 <h3>Departamento - Participações</h3>
-                <?php generateDataTable($client,$url, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 9); ?>
-                <?php $csv_departamento = generateCSV($$client,url, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 9); ?>
+                <?php $csv_departamento = generateCSV($client, $query_aggregate, 'departamento', "_count", 'desc', 'Departamento - Participações', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_departamento); ?>','departamento_part.csv','text/plain;charset=utf-8')">
                     Exportar todos as participações dos departamentos em csv
                 </button>
@@ -161,16 +167,16 @@
 
 
                 <h3>Autores USP (10 primeiros)</h3>
-                <?php generateDataTable($client,$url, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 9); ?>
-                <?php $csv_authorUSP = generateCSV($client,$url, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 9); ?>
+                <?php $csv_authorUSP = generateCSV($client, $query_aggregate, 'authorUSP', "_count", 'desc', 'Autores USP', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_authorUSP); ?>','autoresUSP.csv','text/plain;charset=utf-8')">
                     Exportar todos os autores em csv
                 </button>
 
 
                 <h3>Obra da qual a produção faz parte (10 primeiros)</h3>      
-                <?php generateDataTable($client,$url, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
-                <?php $csv_ispartof = generateCSV($client,$url, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
+                <?php $csv_ispartof = generateCSV($client, $query_aggregate, 'ispartof', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
                 <?php $csv_ispartof = str_replace('"', '', $csv_ispartof); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_ispartof); ?>','obras.csv','text/plain;charset=utf-8')">
                     Exportar todos as obras em csv
@@ -178,8 +184,8 @@
 
 
                 <h3>Nome do evento (10 primeiros)</h3>        
-                <?php generateDataTable($client,$url, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 9); ?>
-                <?php $csv_evento = generateCSV($client,$url, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 9); ?>
+                <?php $csv_evento = generateCSV($client, $query_aggregate, 'evento', "_count", 'desc', 'Nome do evento', 10000); ?>
                 <?php $csv_evento = str_replace('"', '', $csv_evento); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_evento); ?>','evento.csv','text/plain;charset=utf-8')">
                     Exportar todos os eventos em csv
@@ -187,7 +193,7 @@
 
 
                 <h3>Ano de publicação</h3>  
-                <?php $ano_bar = generateDataGraphBar($client,$url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 19); ?>
+                <?php $ano_bar = generateDataGraphBar($client, $query_aggregate, 'year', "_term", 'desc', 'Ano', 19); ?>
 
                 <div id="ano_chart"></div>
                 <script type="application/javascript">
@@ -216,15 +222,15 @@
                     })
                 </script>       
 
-                <?php generateDataTable($client,$url, $query_aggregate, 'year', "_term", 'desc', 'Ano de publicação', 200); ?>
-                <?php $csv_year = generateCSV($client,$url, $query_aggregate, 'year', "_term", 'asc', 'Ano de publicação', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'year', "_term", 'desc', 'Ano de publicação', 200); ?>
+                <?php $csv_year = generateCSV($client, $query_aggregate, 'year', "_term", 'asc', 'Ano de publicação', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_year; ?>','ano.csv','text/plain;charset=utf-8')">
                     Exportar todos os anos em csv
                 </button>
 
                 <h3>Idioma</h3>       
-                <?php generateDataTable($client,$url, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10); ?>
-                <?php $csv_language = generateCSV($client,$url, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10000); ?>
+                <?php generateDataTable($client, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10); ?>
+                <?php $csv_language = generateCSV($client, $query_aggregate, 'language', "_count", 'desc', 'Idioma', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_language; ?>','idioma.csv','text/plain;charset=utf-8')">
                     Exportar todos os idiomas em csv
                 </button>
@@ -233,7 +239,7 @@
 
 
 
-<?php $internacionalizacao_bar = generateDataGraphBar($client,$url, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
+<?php $internacionalizacao_bar = generateDataGraphBar($client, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
 <div id="internacionalizacao_chart"></div>         
 <script type="application/javascript">
 var graphdef = {
@@ -259,18 +265,18 @@ height: 600
 })
 </script>      
 
-<?php generateDataTable($client,$url, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
-<?php $csv_internacionalizacao = generateCSV($client,$url, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10000); ?>
+<?php generateDataTable($client, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
+<?php $csv_internacionalizacao = generateCSV($client, $query_aggregate, 'internacionalizacao', "_count", 'desc', 'Internacionalização', 10000); ?>
 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_internacionalizacao; ?>','internacionalizacao.csv','text/plain;charset=utf-8')">Exportar em csv</button>
 
 <h3>País de publicação</h3>
-<?php generateDataTable($client,$url, $query_aggregate, 'country', "_count", 'desc', 'País de publicação', 10); ?>
-<?php $csv_country = generateCSV($client,$url, $query_aggregate, 'country', "_count", 'desc', 'País de publicação', 10000); ?>
+<?php generateDataTable($client, $query_aggregate, 'country', "_count", 'desc', 'País de publicação', 10); ?>
+<?php $csv_country = generateCSV($client, $query_aggregate, 'country', "_count", 'desc', 'País de publicação', 10000); ?>
 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','pais.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>
          
 <h3>Instituição de colaboração</h3>
-<?php generateDataTable($client,$url, $query_aggregate, 'colab_instituicao_trab', "_count", 'desc', 'Colaboração por instituição', 10); ?>
-<?php $csv_country = generateCSV($client,$url, $query_aggregate, 'colab_instituicao_trab', "_count", 'desc', 'Colaboração por instituição', 10000); ?>
+<?php generateDataTable($client, $query_aggregate, 'colab_instituicao_trab', "_count", 'desc', 'Colaboração por instituição', 10); ?>
+<?php $csv_country = generateCSV($client, $query_aggregate, 'colab_instituicao_trab', "_count", 'desc', 'Colaboração por instituição', 10000); ?>
 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','colaboracao.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>         
          
          
