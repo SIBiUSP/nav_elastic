@@ -6,10 +6,10 @@
     $result_get = analisa_get($_GET);
     $query_complete = $result_get['query_complete'];
     $query_aggregate = $result_get['query_aggregate'];
-    $escaped_url = $result_get['escaped_url'];
+    //$escaped_url = $result_get['escaped_url'];
     $limit = $result_get['limit'];
     $page = $result_get['page'];
-    $new_get = $result_get['new_get'];
+    //$new_get = $result_get['new_get'];
     $skip = $result_get['skip'];
 
     $params = [
@@ -47,6 +47,7 @@
         <script src="inc/uikit/js/components/accordion.min.js"></script>
         <script src="inc/uikit/js/components/pagination.min.js"></script>
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
+        <script src="inc/uikit/js/components/tooltip.min.js"></script>
         
         <!-- D3.js Libraries and CSS -->
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
@@ -74,32 +75,14 @@
 <div class="uk-panel uk-panel-box">
     <form class="uk-form" method="get" action="result.php">
     <fieldset>
+        
+        <?php if (!empty($_GET["search"])) : ?>
         <legend>Filtros ativos</legend>
-        <?php foreach ($new_get as $key => $value) : ?>
             <div class="uk-form-row">
-                <label><?php echo $key; ?>: <?php echo implode(",",$value); ?></label>
-                <input type="checkbox" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
+                <label><?php echo implode("<br/>",$_GET["search"]); ?></label>
             </div>
-        <?php endforeach;?>
-        <?php if (!empty($result_get['termo_consulta'])): ?>
-            <div class="uk-form-row">
-                <label>Consulta: <?php echo $result_get['termo_consulta']; ?></label>
-                <input type="checkbox" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
-            </div>
-        <?php endif; ?>
-        <?php if (!empty($result_get['data_inicio'])): ?>
-            <div class="uk-form-row">
-                <label>Data inicial: <?php echo $result_get['data_inicio']; ?></label>
-                <input type="checkbox" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
-            </div>
-        <?php endif; ?>
-        <?php if (!empty($result_get['data_fim'])): ?>
-            <div class="uk-form-row">
-                <label>Data final: <?php echo $result_get['data_fim']; ?></label>
-                <input type="checkbox" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
-            </div>
-        <?php endif; ?>         
         <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
+        <?php endif;?> 
     </fieldset>        
     </form>    
     <hr>
@@ -107,32 +90,32 @@
     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
         <hr>
     <?php 
-        gerar_faceta($query_aggregate,$escaped_url,$client,"base",10,"Base",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"type",10,"Tipo de material",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"unidadeUSPtrabalhos",100,"Unidade USP",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"departamentotrabalhos",100,"Departamento",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"authors",120,"Autores",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"authorUSP",100,"Autores USP",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"year",120,"Ano de publicação","desc");
-        gerar_faceta($query_aggregate,$escaped_url,$client,"subject",100,"Assuntos",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"language",40,"Idioma",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"ispartof",100,"É parte de ...",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"publisher",100,"Editora",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"evento",100,"Nome do evento",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"country",200,"País de publicação",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"tipotese",30,"Tipo de tese",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"areaconcentracao",100,"Área de concentração",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"programapossigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"programaposnome",100,"Departamento/Programa de Pós Graduação",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"indexado",100,"Indexado em",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"fatorimpacto",1000,"Fator de impacto","desc");         
-        gerar_faceta($query_aggregate,$escaped_url,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"internacionalizacao",30,"Internacionalização",null);  
-        gerar_faceta($query_aggregate,$escaped_url,$client,"colab",120,"País dos autores externos à USP",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_corrigido",100,"Colaboração institucional",null);
-        gerar_faceta($query_aggregate,$escaped_url,$client,"fomento",100,"Agência de fomento",null);
-        gerar_faceta_range($query_aggregate,$escaped_url,$client,"metrics.three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
-        gerar_faceta_range($query_aggregate,$escaped_url,$client,"metrics.full_citations_scopus",100,"Total de citações na Scopus");
+        gerar_faceta($query_aggregate,$client,"base",10,"Base",null);
+        gerar_faceta($query_aggregate,$client,"type",10,"Tipo de material",null);
+        gerar_faceta($query_aggregate,$client,"unidadeUSPtrabalhos",100,"Unidade USP",null);
+        gerar_faceta($query_aggregate,$client,"departamentotrabalhos",100,"Departamento",null);
+        gerar_faceta($query_aggregate,$client,"authors",120,"Autores",null);
+        gerar_faceta($query_aggregate,$client,"authorUSP",100,"Autores USP",null);
+        gerar_faceta($query_aggregate,$client,"year",120,"Ano de publicação","desc");
+        gerar_faceta($query_aggregate,$client,"subject",100,"Assuntos",null);
+        gerar_faceta($query_aggregate,$client,"language",40,"Idioma",null);
+        gerar_faceta($query_aggregate,$client,"ispartof",100,"É parte de ...",null);
+        gerar_faceta($query_aggregate,$client,"publisher",100,"Editora",null);
+        gerar_faceta($query_aggregate,$client,"evento",100,"Nome do evento",null);
+        gerar_faceta($query_aggregate,$client,"country",200,"País de publicação",null);
+        gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
+        gerar_faceta($query_aggregate,$client,"areaconcentracao",100,"Área de concentração",null);
+        gerar_faceta($query_aggregate,$client,"programapossigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$client,"programaposnome",100,"Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$client,"indexado",100,"Indexado em",null);
+        gerar_faceta($query_aggregate,$client,"fatorimpacto",1000,"Fator de impacto","desc");         
+        gerar_faceta($query_aggregate,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
+        gerar_faceta($query_aggregate,$client,"internacionalizacao",30,"Internacionalização",null);  
+        gerar_faceta($query_aggregate,$client,"colab",120,"País dos autores externos à USP",null);
+        gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração institucional",null);
+        gerar_faceta($query_aggregate,$client,"fomento",100,"Agência de fomento",null);
+        gerar_faceta_range($query_aggregate,$client,"three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
+        gerar_faceta_range($query_aggregate,$client,"full_citations_scopus",100,"Total de citações na Scopus");
     ?>
     </ul>
         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
@@ -140,12 +123,12 @@
             <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
             <hr>
             <?php         
-                gerar_faceta($query_aggregate,$escaped_url,$client,"codpesbusca",100,"Número USP",null);
-                gerar_faceta($query_aggregate,$escaped_url,$client,"codpes",100,"Número USP / Unidade",null);
-                gerar_faceta($query_aggregate,$escaped_url,$client,"issn_part",100,"ISSN",null);
-                gerar_faceta($query_aggregate,$escaped_url,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$escaped_url,$client,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
-                gerar_faceta($query_aggregate,$escaped_url,$client,"dataregistroinicial",100,"Data de registro","desc");
-                gerar_faceta($query_aggregate,$escaped_url,$client,"dataregistro",100,"Data de registro e alterações","desc");
+                gerar_faceta($query_aggregate,$client,"codpesbusca",100,"Número USP",null);
+                gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP / Unidade",null);
+                gerar_faceta($query_aggregate,$client,"issn_part",100,"ISSN",null);
+                gerar_faceta($query_aggregate,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$client,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
+                gerar_faceta($query_aggregate,$client,"dataregistroinicial",100,"Data de registro","desc");
+                gerar_faceta($query_aggregate,$client,"dataregistro",100,"Data de registro e alterações","desc");
             ?>
             </ul>
         <?php endif; ?>
@@ -153,56 +136,39 @@
     <form class="uk-form">
     <fieldset>
         <legend>Limitar datas</legend>
-        <div class="uk-form-row">
-            <label>Ano inicial</label>
-            <input type="text" placeholder="Ano inicial" name="date_init">
-        </div>
-        <div class="uk-form-row">
-            <label>Ano final</label>
-            <input type="text" placeholder="Ano final" name="date_end">
-        </div>
-        <?php foreach ($new_get as $key => $value) : ?>
-            <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
-            </div>
-        <?php endforeach;?>
-        <?php if (!empty($result_get['termo_consulta'])): ?>
-            <div class="uk-form-row">
-                <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
-            </div>
-        <?php endif; ?>
+
+        <script>
+            $( function() {
+            $( "#limitar-data" ).slider({
+              range: true,
+              min: 1900,
+              max: 2030,
+              values: [ 1900, 2030 ],
+              slide: function( event, ui ) {
+                $( "#date" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+              }
+            });
+            $( "#date" ).val( "year:[" + $( "#limitar-data" ).slider( "values", 0 ) +
+              " TO " + $( "#limitar-data" ).slider( "values", 1 ) + "]");
+            } );
+        </script>
+        <p>
+          <label for="date">Selecionar período de tempo:</label>
+          <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
+        </p>        
+        <div id="limitar-data" class="uk-margin-bottom"></div>        
+        
+        
         <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
     </fieldset>        
     </form>
     <hr>
     <?php if(!empty($_SESSION['oauthuserdata'])): ?>
-        <form class="uk-form" method="get" action="report.php">
             <fieldset>
-                <legend>Gerar relatório</legend>
-                <?php foreach ($new_get as $key => $value) : ?>
-                    <div class="uk-form-row">
-                        <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
-                    </div>
-                <?php endforeach;?>
-                <?php if (!empty($result_get['termo_consulta'])): ?>
-                    <div class="uk-form-row">
-                        <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
-                    </div>
-                <?php endif; ?>
-                <?php if (!empty($result_get['data_inicio'])): ?>
-                    <div class="uk-form-row">
-                        <input type="hidden" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
-                    </div>
-                <?php endif; ?>
-                <?php if (!empty($result_get['data_fim'])): ?>
-                    <div class="uk-form-row">
-                        <input type="hidden" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
-                    </div>
-                <?php endif; ?>         
-                <div class="uk-form-row"><button type="submit" class="uk-button-primary">Gerar relatório</button>
+                <legend>Gerar relatório</legend>                  
+                <div class="uk-form-row"><a href="<?php echo 'http://'.$_SERVER["SERVER_NAME"].'/~bdpi/report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
                 </div>
             </fieldset>        
-        </form>
     <?php endif; ?>                
             
 </div>

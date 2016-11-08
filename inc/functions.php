@@ -205,9 +205,9 @@ function unidadeUSP_inicio($client) {
     $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON','EP/IB/ICB/IQ/BUTANT /IPT','FO/EE/FSP');
     foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {        
         if (in_array($facets['key'],$programas_pos)) {        
-          $programas[] =  '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+          $programas[] =  '<li><a href="result.php?search[]=unidadeUSPtrabalhos:'.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         } else { 
-            echo '<li><a href="result.php?unidadeUSPtrabalhos[]='.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+            echo '<li><a href="result.php?search[]=unidadeUSPtrabalhos:'.strtoupper($facets['key']).'">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }
         
        if ($count == 12)
@@ -251,13 +251,13 @@ function base_inicio($client) {
     
     $response = $client->search($params);
     foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        echo '<li><a href="result.php?base[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+        echo '<li><a href="result.php?search[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
     }   
     
 }
 
 
-function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) {
+function gerar_faceta($consulta,$client,$field,$tamanho,$field_name,$sort) {
     $sort_query="";
     if (!empty($sort)){
          $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
@@ -286,6 +286,7 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
     
     
     
+    
     $response = $client->search($params);    
     
     echo '<li class="uk-parent">';    
@@ -295,7 +296,7 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
     foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
         echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
         echo '<p class="uk-form-controls-condensed">';
-        echo '<a href="'.$url.'&'.$field.'[]='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+        echo ''.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').') <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-plus" data-uk-tooltip title="E"></a> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&#92;&quot;'.$facets['key'].'&#92;&quot;" class="uk-icon-hover uk-icon-minus" data-uk-tooltip title="NÃO"></a>  <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-check-circle-o" data-uk-tooltip title="OU"></a>';
         echo '</p>';
         echo '</li>';
         
@@ -314,7 +315,7 @@ function gerar_faceta($consulta,$url,$client,$field,$tamanho,$field_name,$sort) 
 
 }
 
-function corrigir_faceta($consulta,$url,$client,$field,$tamanho,$nome_do_campo) {
+function corrigir_faceta($consulta,$client,$field,$tamanho,$nome_do_campo) {
 
     $query = '{
         '.$consulta.'
@@ -351,7 +352,7 @@ function corrigir_faceta($consulta,$url,$client,$field,$tamanho,$nome_do_campo) 
 
 }
 
-function gerar_faceta_range($consulta,$url,$client,$campo,$tamanho,$nome_do_campo) {
+function gerar_faceta_range($consulta,$client,$campo,$tamanho,$nome_do_campo) {
 
     $query = '
     {
@@ -359,7 +360,7 @@ function gerar_faceta_range($consulta,$url,$client,$campo,$tamanho,$nome_do_camp
         "aggs" : {
             "ranges" : {
                 "range" : {
-                    "field" : "'.$campo.'",
+                    "field" : "metrics.'.$campo.'",
                     "ranges" : [
                         { "to" : 1 },
                         { "from" : 1, "to" : 2 },
@@ -1132,45 +1133,24 @@ function limpar($text) {
 
 function analisa_get($get) {
     
-    $new_get = $get;
-    
-    $get = str_replace('"','\"',$get);
-    
-    /* Missing query */
-    foreach ($get as $k => $v){
-        if($v == 'N/D'){
-            $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
-            unset($get[$k]);
-        }
+    $search_fields = "";
+    if (!empty($get['fields'])) {
+        $search_fields = implode('","',$get['fields']);  
+    } else {            
+        $search_fields = "_all";
     }    
     
-    /* limpar base all */
-    if (isset($get['base']) && $get['base'][0] == 'all'){
-        unset($get['base']);
-        unset($new_get['base']);
-    }    
+    if (!empty($get['search'])){
+        $get['search'] = str_replace('"','\"',$get['search']);
+    }
+    
 
-    /* Subject */
-    if (isset($get['assunto'])){   
-        $get['subject'][] = $get['assunto'];
-        $new_get['subject'][] = $get['assunto'];
-        unset($get['assunto']);
-        unset($new_get['assunto']);
-    }    
-    
     /* Pagination */
     if (isset($get['page'])) {
         $page = $get['page'];
         unset($get['page']);
-        unset($new_get['page']);
     } else {
         $page = 1;
-    }
-    
-    /* Empty search_index */
-    if (empty($get['search_index'])){
-        unset($get['search_index']);
-        unset($new_get['search_index']);
     }
     
     /* Pagination variables */
@@ -1179,247 +1159,382 @@ function analisa_get($get) {
     $skip = ($page - 1) * $limit;
     $next = ($page + 1);
     $prev = ($page - 1);
-    $sort = array('year' => -1);    
+    $sort = array('year' => -1);       
     
-     if (!empty($get["date_init"])||(!empty($get["date_end"]))) {
-        $filter[] = '
-        {
-            "range" : {
-                "year" : {
-                    "gte" : '.$get["date_init"].',
-                    "lte" : '.$get["date_end"].'
-                }
-            }
-        }
-        ';
-        $novo_get[] = 'date_init='.$new_get['date_init'].'';
-        $novo_get[] = 'date_end='.$new_get['date_end'].''; 
-        $data_inicio = $get["date_init"];
-        $data_fim = $get["date_end"];
-        unset($new_get["date_init"]);
-        unset($new_get["date_end"]);         
-        unset($get["date_init"]);
-        unset($get["date_end"]);
+    if (!empty($get['codpesbusca'])){        
+        $get['search'][] = 'codpesbusca:'.$get['codpesbusca'].'';
     }
     
-    if (count($get) == 0) {
-        
-        $query_complete = '{   
-            "query": {    
-                 "match_all": {}
-             },
-            "sort":[
-                {"year.keyword":"desc"},
-                {"_uid":"desc"}
-            ]
-        }';
-        
-
-        $query_aggregate = '
-           "query": {    
-                 "match_all": {}
-             },
-        ';        
-       
-        
-    } elseif (!empty($get['search_index'])) {
-        $search_term = '
-            "query_string" : {
-                "fields" : ["title", "authors_index", "authorUSP", "subject", "resumo"],
-                "query" : "'.$get['search_index'].'",
-                "default_operator": "AND"
-            }                
-        ';
-        
-        unset($get['search_index']);
-
-        $filter = []; 
-        foreach ($get as $key => $value) {
-           if (count($value) > 1){
-               foreach ($value as $valor){
-                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-                }               
-           } else {
-               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
-           }
-            
-        }
-        
-        if (count($filter) > 0) {
-            $filter_query = ''.implode(",", $filter).''; 
-        } else {
-            $filter_query = '';
-        }
-
-
-        $query_complete = '{
-            "sort" : [
-                    { "year.keyword" : "desc" }
-                ],    
-            "query": {    
-                "bool": {
-                  "must": {
-                    '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'        
-                    ]
-                  }
-            }
-        }';
-
-
-        $query_aggregate = '
-            "query": {
-                "bool": {
-                  "must": {
-                    '.$search_term.'
-                  },
-                  "filter":[
-                    '.$filter_query.'
-                    ]
-                  }
-                },
-        ';
-        
-    } elseif (!empty($get['advanced_search'])) {        
-        
-        $get['advanced_search'] = str_replace('"','\"',$get['advanced_search']);
-        $search_fields = "";
-        if (!empty($get['fields'])) {
-            $search_fields = implode('","',$get['fields']);
-            unset($get['fields']); 
-        } else {            
-            $search_fields = "_all";
-        }
-        
-        $search_term = '       
-            "query_string" : {
-                "fields" : ["'.$search_fields.'"],
-                "query" : "'.implode(" ",$get['advanced_search']).'",
-                "default_operator": "AND"
-            }        
-   
-        ';
-        
-        unset($get['advanced_search']);
-
-        $query_complete = '{
-            "sort" : [
-                    { "year.keyword" : "desc" }
-                ],    
-            "query": {    
-                    '.$search_term.'
-            }
-        }';
-
-
-        $query_aggregate = '
-            "query": {
-                    '.$search_term.'
-                },
-        ';
+    if (!empty($get['assunto'])){        
+        $get['search'][] = 'subject:\"'.$get['assunto'].'\"';
+    }    
     
+    if (!empty($get['search'])){
+        $query = implode(" ", $get['search']); 
     } else {
-        
-        foreach ($get as $key => $value) {
-
-            $conta_value = count($value);
-            $get_query1 = [];
-            
-            if ($conta_value > 1) {
-                foreach ($value as $valor){
-                    $get_query1[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-                }                        
-            } else {
-                 foreach ($value as $valor){
-                     $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-                 }
-            }       
-        }
+        $query = "*";
+    }
     
-        $query_part = '"must" : ['.implode(",",$get_query1).']';
-        if (empty($filter)){
-            $filter=[];
+    $search_term = '
+        "query_string" : {
+            "fields" : ["'.$search_fields.'"],
+            "query" : "'.$query.'",
+            "default_operator": "AND",
+            "phrase_slop":10
+        }                
+    ';    
+    
+    $query_complete = '{
+        "sort" : [
+                { "year.keyword" : "desc" }
+            ],    
+        "query": {
+        '.$search_term.'
         }
-        
-        $query_part2 = implode(",",$filter);
+    }';
 
-        $query_complete = '
-                    {
-                       "sort" : [
-                           { "year.keyword" : "desc" }
-                       ],    
-                       "query" : {
-                          "constant_score" : {
-                             "filter" : {
-                                "bool" : {
-                                  "should" : [
-                                    { "bool" : {
-                                    '.$query_part.'
-                                   }} 
-                                  ],
-                                  "filter": [
-                                    '.$query_part2.'
-                                  ]
-                               }
-                             }
-                          }
-                       },
-                      "from": '.$skip.',
-                      "size": '.$limit.'
-                    }    
-        ';
-        
-        $query_aggregate = '
-                    "query" : {
-                      "constant_score" : {
-                         "filter" : {
-                            "bool" : {
-                              "should" : [
-                                { "bool" : {
-                                '.$query_part.'
-                               }} 
-                              ],
-                              "filter": [
-                                '.$query_part2.'
-                              ]
-                           }
-                         }
-                      }
-                   },
+    $query_aggregate = '
+        "query": {
+            '.$search_term.'
+        },
     ';
-    }
-        
-/* Pegar a URL atual */
     
     
-if (isset($new_get)){
     
-   $novo_get="";
-    if (!empty($new_get['search_index'])){
-        $novo_get[] = 'search_index='.$new_get['search_index'].'';
-        $termo_consulta = $new_get['search_index'];
-        unset($new_get['search_index']);
-    }  
-    
-    foreach ($new_get as $key => $value){
-        $novo_get[] = ''.$key.'[]='.$value[0].'';        
-    } 
-    if (!empty($novo_get)){
-        $pega_get = implode("&",$novo_get); 
-    } else {
-        $pega_get = "";
-    }
-       
-    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$pega_get.'';
-
-} else {
-    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
-}
-    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
-    
-    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
+//    $new_get = $get;
+//    
+//    $get = str_replace('"','\"',$get);
+//    
+//    /* Missing query */
+//    foreach ($get as $k => $v){
+//        if($v == 'N/D'){
+//            $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
+//            unset($get[$k]);
+//        }
+//    }    
+//    
+//    /* limpar base all */
+//    if (isset($get['base']) && $get['base'][0] == 'all'){
+//        unset($get['base']);
+//        unset($new_get['base']);
+//    }    
+//
+//    /* Subject */
+//    if (isset($get['assunto'])){   
+//        $get['subject'][] = $get['assunto'];
+//        $new_get['subject'][] = $get['assunto'];
+//        unset($get['assunto']);
+//        unset($new_get['assunto']);
+//    }    
+//    
+//    /* Pagination */
+//    if (isset($get['page'])) {
+//        $page = $get['page'];
+//        unset($get['page']);
+//        unset($new_get['page']);
+//    } else {
+//        $page = 1;
+//    }
+//    
+//    /* Empty search_index */
+//    if (empty($get['search_index'])){
+//        unset($get['search_index']);
+//        unset($new_get['search_index']);
+//    }
+//    
+//    /* Pagination variables */
+//
+//    $limit = 20;
+//    $skip = ($page - 1) * $limit;
+//    $next = ($page + 1);
+//    $prev = ($page - 1);
+//    $sort = array('year' => -1);    
+//    
+//     if (!empty($get["date_init"])||(!empty($get["date_end"]))) {
+//        $filter[] = '
+//        {
+//            "range" : {
+//                "year" : {
+//                    "gte" : '.$get["date_init"].',
+//                    "lte" : '.$get["date_end"].'
+//                }
+//            }
+//        }
+//        ';
+//        $novo_get[] = 'date_init='.$new_get['date_init'].'';
+//        $novo_get[] = 'date_end='.$new_get['date_end'].''; 
+//        $data_inicio = $get["date_init"];
+//        $data_fim = $get["date_end"];
+//        unset($new_get["date_init"]);
+//        unset($new_get["date_end"]);         
+//        unset($get["date_init"]);
+//        unset($get["date_end"]);
+//    }
+//    
+//    
+//     if (!empty($get["full_citations_scopus"])) {
+//         
+//        $range = explode("-", $get["full_citations_scopus"][0]);  
+//     
+//        $range_query = '
+//        {
+//            "range" : {
+//                "metrics.full_citations_scopus" : {
+//                    "gte" : '.$range[0].',
+//                    "lte" : '.$range[1].'
+//                }
+//            }
+//        }
+//        ';
+//         
+//        unset($get["full_citations_scopus"]); 
+//         
+//
+//    } else {
+//         $range_query = "";
+//     }
+//
+//     if (!empty($get["three_years_citations_scopus"])) {
+//         
+//        $range = explode("-", $get["three_years_citations_scopus"][0]);  
+//         
+//        $range_query = '
+//        {
+//            "range" : {
+//                "metrics.three_years_citations_scopus" : {
+//                    "gte" : '.$range[0].',
+//                    "lte" : '.$range[1].'
+//                }
+//            }
+//        }
+//        ';
+//
+//    } else {
+//         $range_query = "";
+//     }        
+//   
+//    
+//    if (count($get) == 0) {
+//        
+//        $query_complete = '{   
+//            "query": {    
+//                 "match_all": {}
+//             },
+//            "sort":[
+//                {"year.keyword":"desc"},
+//                {"_uid":"desc"}
+//            ]
+//        }';
+//        
+//
+//        $query_aggregate = '
+//           "query": {    
+//                 "match_all": {}
+//             },
+//        ';        
+//       
+//        
+//    } elseif (!empty($get['search_index'])) {
+//        $search_term = '
+//            "query_string" : {
+//                "fields" : ["title", "authors_index", "authorUSP", "subject", "resumo"],
+//                "query" : "'.$get['search_index'].'",
+//                "default_operator": "AND"
+//            }                
+//        ';
+//        
+//        unset($get['search_index']);
+//
+//        $filter = []; 
+//        foreach ($get as $key => $value) {
+//           if (count($value) > 1){
+//               foreach ($value as $valor){
+//                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
+//                }               
+//           } else {
+//               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
+//           }
+//            
+//        }
+//        
+//        if (count($filter) > 0) {
+//            $filter_query = ''.implode(",", $filter).''; 
+//        } else {
+//            $filter_query = '';
+//        }
+//
+//
+//        $query_complete = '{
+//            "sort" : [
+//                    { "year.keyword" : "desc" }
+//                ],    
+//            "query": {    
+//                "bool": {
+//                  "must": {
+//                    '.$search_term.'
+//                  },
+//                  "filter":[
+//                    '.$filter_query.'        
+//                    ]
+//                  }
+//            }
+//        }';
+//
+//
+//        $query_aggregate = '
+//            "query": {
+//                "bool": {
+//                  "must": {
+//                    '.$search_term.'
+//                  },
+//                  "filter":[
+//                    '.$filter_query.'
+//                    ]
+//                  }
+//                },
+//        ';
+//        
+//    } elseif (!empty($get['advanced_search'])) {        
+//        
+//        $get['advanced_search'] = str_replace('"','\"',$get['advanced_search']);
+//        $search_fields = "";
+//        if (!empty($get['fields'])) {
+//            $search_fields = implode('","',$get['fields']);
+//            unset($get['fields']); 
+//        } else {            
+//            $search_fields = "_all";
+//        }
+//        
+//        $search_term = '       
+//            "query_string" : {
+//                "fields" : ["'.$search_fields.'"],
+//                "query" : "'.implode(" ",$get['advanced_search']).'",
+//                "default_operator": "AND"
+//            }        
+//   
+//        ';
+//        
+//        unset($get['advanced_search']);
+//
+//        $query_complete = '{
+//            "sort" : [
+//                    { "year.keyword" : "desc" }
+//                ],    
+//            "query": {
+//                    '.$search_term.'
+//            }
+//        }';
+//
+//
+//        $query_aggregate = '
+//            "query": {
+//                    '.$search_term.'
+//                },
+//        ';
+//    
+//    } else {
+//        
+//        
+//        
+//        foreach ($get as $key => $value) {
+//
+//            $conta_value = count($value);
+//            $get_query1 = [];
+//            $get_query1[] = $range_query;
+//            
+//            if ($conta_value > 1) {
+//                foreach ($value as $valor){
+//                    $get_query1[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
+//                }                        
+//            } else {
+//                 foreach ($value as $valor){
+//                     $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
+//                 }
+//            }       
+//        }
+//    
+//        $query_part = '"must" : ['.implode(",",$get_query1).']';
+//        if (empty($filter)){
+//            $filter=[];
+//        }
+//        
+//        $query_part2 = implode(",",$filter);
+//
+//        $query_complete = '
+//                    {
+//                       "sort" : [
+//                           { "year.keyword" : "desc" }
+//                       ],
+//                       "query" : {
+//                          "constant_score" : {
+//                             "filter" : {
+//                                "bool" : {
+//                                  "should" : [
+//                                    { "bool" : {
+//                                    '.$query_part.'
+//                                   }} 
+//                                  ],
+//                                  "filter": [
+//                                    '.$query_part2.'
+//                                  ]
+//                               }
+//                             }
+//                          }
+//                       },
+//                      "from": '.$skip.',
+//                      "size": '.$limit.'
+//                    }    
+//        ';
+//                
+//        $query_aggregate = '
+//                    "query" : {  
+//                      "constant_score" : {
+//                         "filter" : {
+//                            "bool" : {
+//                              "should" : [
+//                                { "bool" : {
+//                                '.$query_part.'
+//                               }} 
+//                              ],
+//                              "filter": [
+//                                '.$query_part2.'
+//                              ]
+//                           }
+//                         }
+//                      }
+//                   },
+//        ';
+//}
+//        
+///* Pegar a URL atual */
+//    
+//    
+//if (isset($new_get)){
+//    
+//   $novo_get="";
+//    if (!empty($new_get['search_index'])){
+//        $novo_get[] = 'search_index='.$new_get['search_index'].'';
+//        $termo_consulta = $new_get['search_index'];
+//        unset($new_get['search_index']);
+//    }  
+//    
+//    foreach ($new_get as $key => $value){
+//        $novo_get[] = ''.$key.'[]='.$value[0].'';        
+//    } 
+//    if (!empty($novo_get)){
+//        $pega_get = implode("&",$novo_get); 
+//    } else {
+//        $pega_get = "";
+//    }
+//       
+//    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$pega_get.'';
+//
+//} else {
+//    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
+//}
+//    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
+//    
+return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
 }
 
   

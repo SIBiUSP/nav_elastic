@@ -77,7 +77,7 @@
 
                             <fieldset data-uk-margin>
                                 <legend>Número USP</legend>
-                                <input type="text" placeholder="Insira um número USP" name="codpesbusca[]" data-validation="required">
+                                <input type="text" placeholder="Insira um número USP" name="codpesbusca" data-validation="required">
                                 <button class="uk-button" type="submit">Buscar</button>
                             </fieldset>
 
@@ -109,6 +109,7 @@
                                 <p>Selecionar campos para realizar a busca: </p>
                                 <label><input type="checkbox" name="fields[]" value="title"> Título</label>
                                 <label><input type="checkbox" name="fields[]" value="authors_index"> Autores</label>
+                                <label><input type="checkbox" name="fields[]" value="authorUSP"> Autores USP</label>
                                 <label><input type="checkbox" name="fields[]" value="unidadeUSPtrabalhos"> Unidade USP</label>
                                 <label><input type="checkbox" name="fields[]" value="departamentotrabalhos"> Departamento</label>
                                 <label><input type="checkbox" name="fields[]" value="subject"> Assuntos</label>
@@ -133,12 +134,12 @@
                                 </script>
                                 <p>
                                   <label for="amount">Selecionar período de tempo:</label>
-                                  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="advanced_search[]">
+                                  <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
                                 </p>
 
                                 <div id="slider-range"></div>                                
                                 <br/>
-                                <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="advanced_search[]" data-validation="required"></textarea>
+                                <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="search[]" data-validation="required"></textarea>
                                 <button class="uk-button" type="submit">Buscar</button>
                                 <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
                             </fieldset>

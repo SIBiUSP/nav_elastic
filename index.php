@@ -43,13 +43,13 @@
                         <form class="uk-form" action="result.php" method="get">
                             <fieldset data-uk-margin>
                                 <legend>Pesquisa</legend>
-                                <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-large" name="search_index" data-validation="required">                                        
-                                <select name="base[]">
-                                    <option value="all">Todas as bases</option>
-                                    <option value="Produção científica">Produção científica</option>
-                                    <option value="Teses e dissertações">Teses e dissertações</option>
+                                <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-large" name="search[]" data-validation="required">                                        
+                                <select name="search[]">
+                                    <option disabled selected value>Todas as bases</option>
+                                    <option value="base:&#92;&quot;Produção científica&#92;&quot;">Produção científica</option>
+                                    <option value="base:&#92;&quot;Teses e dissertações&#92;&quot;">Teses e dissertações</option>
                                 </select>
-                                <button class="uk-button-primary">Buscar</button>                                    
+                                <button class="uk-button-primary">Buscar</button><br/>                                    
                             </fieldset>
                         </form>
                     </div>
@@ -121,7 +121,7 @@
 
                         <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -20px; height: 394px;">
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cebimar">
-                                <a href="result.php?unidadeUSPtrabalhos[]=CEBIMAR">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:CEBIMAR">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/CEBIMAR.jpg" alt="CEBIMAR">
@@ -131,7 +131,7 @@
                                 </a>
                             </div>
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cdcc">
-                                <a href="result.php?unidadeUSPtrabalhos[]=CDCC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:CDCC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/CDCC.jpg" alt="CDCC">
@@ -141,7 +141,7 @@
                                 </a>
                             </div>                                
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cena">
-                                <a href="result.php?unidadeUSPtrabalhos[]=CENA">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:CENA">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/CENA.jpg" alt="CENA">
@@ -151,7 +151,7 @@
                                 </a>
                             </div>
                             <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="each">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EACH">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EACH">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EACH.jpg" alt="EACH">
@@ -161,7 +161,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 632.049px; opacity: 1; display: block;" aria-hidden="false" data-filter="eca">
-                                <a href="result.php?unidadeUSPtrabalhos[]=ECA">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:ECA">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/ECA.jpg" alt="ECA">
@@ -171,7 +171,7 @@
                                 </a>
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 132px; left: 0px; opacity: 1; display: block;" aria-hidden="false" data-filter="ee">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EE">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EE">
                                     <div class="uk-panel uk-panel-hover uk-text-center" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser">
                                             <img src="inc/images/logosusp/EE.jpg" alt="EE">
@@ -181,7 +181,7 @@
                                 </a>                                    
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" data-filter="eerp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EERP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EERP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EERP.jpg" alt="EERP">
@@ -191,7 +191,7 @@
                                 </a>
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eefe">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EEFE">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EEFE">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EEFE.jpg" alt="EEFE">
@@ -201,7 +201,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eeferp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EEFERP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EEFERP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EEFERP.jpg" alt="EEFERP">
@@ -211,7 +211,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="eel">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EEL">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EEL">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EEL.jpg" alt="EEL">
@@ -221,7 +221,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="eesc">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EESC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EESC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EESC.jpg" alt="EESC">
@@ -231,7 +231,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ep">
-                                <a href="result.php?unidadeUSPtrabalhos[]=EP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:EP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/EP.jpg" alt="EP">
@@ -241,7 +241,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b,filter-e,filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="esalq">
-                                <a href="result.php?unidadeUSPtrabalhos[]=ESALQ">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:ESALQ">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/ESALQ.jpg" alt="ESALQ">
@@ -251,7 +251,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fau">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FAU">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FAU">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FAU.jpg" alt="FAU">
@@ -261,7 +261,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fcf">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FCF">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FCF">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FCF.jpg" alt="FCF">
@@ -271,7 +271,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fcfrp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FCFRP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FCFRP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FCFRP.jpg" alt="FCFRP">
@@ -281,7 +281,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fd">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FD">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FD">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FD.jpg" alt="FD">
@@ -291,7 +291,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fdrp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FDRP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FDRP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FDRP.jpg" alt="FDRP">
@@ -301,7 +301,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fea">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FEA">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FEA">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FEA.jpg" alt="FEA">
@@ -311,7 +311,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fearp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FEARP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FEARP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FEARP.jpg" alt="FEARP">
@@ -321,7 +321,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fe">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FE">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FE">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FE.jpg" alt="FE">
@@ -331,7 +331,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ffclrp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FFCLRP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FFCLRP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FFCLRP.jpg" alt="FFCLRP">
@@ -341,7 +341,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fflch">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FFLCH">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FFLCH">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FFLCH.jpg" alt="FFLCH">
@@ -351,7 +351,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fm">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FM">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FM">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FM.jpg" alt="FM">
@@ -361,7 +361,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fmrp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FMRP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FMRP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FMRP.jpg" alt="FMRP">
@@ -371,7 +371,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fmvz">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FMVZ">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FMVZ">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FMVZ.jpg" alt="FMVZ">
@@ -381,7 +381,7 @@
                                 </a> 
                             </div>                                 
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fo">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FO" style="padding:15px 0 0 0">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FO" style="padding:15px 0 0 0">
                                     <div class="uk-panel uk-panel-hover">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FO.jpg" alt="FO">
@@ -391,7 +391,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fob">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FOB" style="padding:15px 0 0 0">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FOB" style="padding:15px 0 0 0">
                                     <div class="uk-panel uk-panel-hover" style="padding:0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FOB.jpg" alt="FOB">
@@ -401,7 +401,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="forp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FORP" style="padding:15px 0 0 0">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FORP" style="padding:15px 0 0 0">
                                     <div class="uk-panel uk-panel-hover" style="padding:0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FORP.jpg" alt="FORP">
@@ -411,7 +411,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fsp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FSP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FSP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FSP.jpg" alt="FSP">
@@ -421,7 +421,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fzea">
-                                <a href="result.php?unidadeUSPtrabalhos[]=FZEA">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:FZEA">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/FZEA.jpg" alt="FZEA">
@@ -431,7 +431,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="hrac">
-                                <a href="result.php?unidadeUSPtrabalhos[]=HRAC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:HRAC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/HRAC.jpg" alt="HRAC">
@@ -441,7 +441,7 @@
                                 </a> 
                             </div>                                  
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="hu">
-                                <a href="result.php?unidadeUSPtrabalhos[]=HU">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:HU">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/HU.jpg" alt="HU">
@@ -451,7 +451,7 @@
                                 </a> 
                             </div>                                 
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iau">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IAU">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IAU">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IAU.jpg" alt="IAU">
@@ -461,7 +461,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iag">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IAG">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IAG">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IAG.jpg" alt="IAG">
@@ -471,7 +471,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ib">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IB">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IB">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IB.jpg" alt="IB">
@@ -481,7 +481,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="icb">
-                                <a href="result.php?unidadeUSPtrabalhos[]=ICB">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:ICB">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/ICB.jpg" alt="ICB">
@@ -491,7 +491,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="icmc">
-                                <a href="result.php?unidadeUSPtrabalhos[]=ICMC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:ICMC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/ICMC.jpg" alt="ICMC">
@@ -501,7 +501,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iee">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IEE">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IEE">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IEE.jpg" alt="IEE">
@@ -511,7 +511,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ieb">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IEB">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IEB">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IEB.jpg" alt="IEB">
@@ -521,7 +521,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="if">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IF">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IF">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IF.jpg" alt="IF">
@@ -531,7 +531,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ifsc">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IFSC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IFSC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IFSC.jpg" alt="IFSC">
@@ -541,7 +541,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="igc">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IGC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IGC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IGC.jpg" alt="IGC">
@@ -551,7 +551,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ime">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IME">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IME">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IME.jpg" alt="IME">
@@ -561,7 +561,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="imt">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IMT">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IMT">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IMT.jpg" alt="IMT">
@@ -571,7 +571,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ip">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IP.jpg" alt="IP">
@@ -581,7 +581,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iq">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IQ">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IQ">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IQ.jpg" alt="IQ">
@@ -591,7 +591,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iqsc">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IQSC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IQSC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IQSC.jpg" alt="IQSC">
@@ -601,7 +601,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iri">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IRI">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IRI">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IRI.jpg" alt="IRI">
@@ -611,7 +611,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="io">
-                                <a href="result.php?unidadeUSPtrabalhos[]=IO">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:IO">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/IO.jpg" alt="IO">
@@ -621,7 +621,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mae">
-                                <a href="result.php?unidadeUSPtrabalhos[]=MAE">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:MAE">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/MAE.jpg" alt="MAE">
@@ -631,7 +631,7 @@
                                 </a> 
                             </div>                                
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mac">
-                                <a href="result.php?unidadeUSPtrabalhos[]=MAC">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:MAC">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/MAC.jpg" alt="MAC">
@@ -641,7 +641,7 @@
                                 </a> 
                             </div>
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mz">
-                                <a href="result.php?unidadeUSPtrabalhos[]=MZ">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:MZ">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/MZ.jpg" alt="MZ">
@@ -651,7 +651,7 @@
                                 </a> 
                             </div>                                  
                             <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mp">
-                                <a href="result.php?unidadeUSPtrabalhos[]=MP">
+                                <a href="result.php?search[]=unidadeUSPtrabalhos:MP">
                                     <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
                                         <div class="uk-panel-teaser uk-text-center">
                                             <img src="inc/images/logosusp/MP.jpg" alt="MP">

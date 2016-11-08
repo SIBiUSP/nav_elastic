@@ -6,10 +6,10 @@
     $result_get = analisa_get($_GET);
     $query_complete = $result_get['query_complete'];
     $query_aggregate = $result_get['query_aggregate'];
-    $escaped_url = $result_get['escaped_url'];
+    //$escaped_url = $result_get['escaped_url'];
     $limit = $result_get['limit'];
     $page = $result_get['page'];
-    $new_get = $result_get['new_get'];
+    //$new_get = $result_get['new_get'];
 
     $params = [
         'index' => 'sibi',
