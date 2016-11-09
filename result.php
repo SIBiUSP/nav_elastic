@@ -159,10 +159,11 @@
           <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
         </p>        
         <div id="limitar-data" class="uk-margin-bottom"></div>        
-        <?php print_r($_GET["search"]); ?>
-        <?php foreach($_GET["search"] as $search_expression): ?>
-            <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
-        <?php endforeach; ?>
+        <?php if(!empty($_GET["search"])): ?>
+            <?php foreach($_GET["search"] as $search_expression): ?>
+                <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
+            <?php endforeach; ?>
+        <?php endif; ?>
         <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
     </fieldset>        
     </form>
