@@ -107,12 +107,12 @@
                             <fieldset data-uk-margin>
                                 <legend>String de busca avançada</legend>
                                 <p>Selecionar campos para realizar a busca: </p>
-                                <label><input type="checkbox" name="fields[]" value="title"> Título</label>
-                                <label><input type="checkbox" name="fields[]" value="authors_index"> Autores</label>
-                                <label><input type="checkbox" name="fields[]" value="authorUSP"> Autores USP</label>
+                                <label><input type="checkbox" name="fields[]" value="title" checked> Título</label>
+                                <label><input type="checkbox" name="fields[]" value="authors_index" checked> Autores</label>
+                                <label><input type="checkbox" name="fields[]" value="authorUSP" checked> Autores USP</label>
                                 <label><input type="checkbox" name="fields[]" value="unidadeUSPtrabalhos"> Unidade USP</label>
                                 <label><input type="checkbox" name="fields[]" value="departamentotrabalhos"> Departamento</label>
-                                <label><input type="checkbox" name="fields[]" value="subject"> Assuntos</label>
+                                <label><input type="checkbox" name="fields[]" value="subject" checked> Assuntos</label>
                                 <label><input type="checkbox" name="fields[]" value="colab_instituicao_corrigido"> Colaboração institucional</label>
                                 <label><input type="checkbox" name="fields[]" value="fomento"> Agência de Fomento</label>
                                 <label><input type="checkbox" name="fields[]" value="sysno"> Sysno</label>

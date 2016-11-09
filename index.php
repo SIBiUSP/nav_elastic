@@ -49,6 +49,11 @@
                                     <option value="base:&#92;&quot;Produção científica&#92;&quot;">Produção científica</option>
                                     <option value="base:&#92;&quot;Teses e dissertações&#92;&quot;">Teses e dissertações</option>
                                 </select>
+                                <input type="hidden" name="fields[]" value="title">
+                                <input type="hidden" name="fields[]" value="authors">
+                                <input type="hidden" name="fields[]" value="authorUSP">
+                                <input type="hidden" name="fields[]" value="subject">
+                                <input type="hidden" name="fields[]" value="resumo">
                                 <button class="uk-button-primary">Buscar</button><br/>                                    
                             </fieldset>
                         </form>

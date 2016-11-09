@@ -92,8 +92,8 @@
     <?php 
         gerar_faceta($query_aggregate,$client,"base",10,"Base",null);
         gerar_faceta($query_aggregate,$client,"type",10,"Tipo de material",null);
-        gerar_faceta($query_aggregate,$client,"unidadeUSPtrabalhos",100,"Unidade USP",null);
-        gerar_faceta($query_aggregate,$client,"departamentotrabalhos",100,"Departamento",null);
+        gerar_faceta($query_aggregate,$client,"unidadeUSP",100,"Unidade USP",null);
+        gerar_faceta($query_aggregate,$client,"departamento",100,"Departamento",null);
         gerar_faceta($query_aggregate,$client,"authors",120,"Autores",null);
         gerar_faceta($query_aggregate,$client,"authorUSP",100,"Autores USP",null);
         gerar_faceta($query_aggregate,$client,"year",120,"Ano de publicação","desc");
@@ -105,8 +105,8 @@
         gerar_faceta($query_aggregate,$client,"country",200,"País de publicação",null);
         gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
         gerar_faceta($query_aggregate,$client,"areaconcentracao",100,"Área de concentração",null);
-        gerar_faceta($query_aggregate,$client,"programapossigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
-        gerar_faceta($query_aggregate,$client,"programaposnome",100,"Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$client,"programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
+        gerar_faceta($query_aggregate,$client,"programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null);
         gerar_faceta($query_aggregate,$client,"indexado",100,"Indexado em",null);
         gerar_faceta($query_aggregate,$client,"fatorimpacto",1000,"Fator de impacto","desc");         
         gerar_faceta($query_aggregate,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
@@ -123,9 +123,9 @@
             <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
             <hr>
             <?php         
-                gerar_faceta($query_aggregate,$client,"codpesbusca",100,"Número USP",null);
-                gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP / Unidade",null);
-                gerar_faceta($query_aggregate,$client,"issn_part",100,"ISSN",null);
+                gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP",null);
+                gerar_faceta($query_aggregate,$client,"codpes_unidade",100,"Número USP / Unidade",null);
+                gerar_faceta($query_aggregate,$client,"issn",100,"ISSN",null);
                 gerar_faceta($query_aggregate,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$client,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
                 gerar_faceta($query_aggregate,$client,"dataregistroinicial",100,"Data de registro","desc");
                 gerar_faceta($query_aggregate,$client,"dataregistro",100,"Data de registro e alterações","desc");
@@ -423,8 +423,8 @@
                                                     if (!empty($r["_source"]['doi'])) {
                                                         $sfx_array[] = 'rft_id=info:doi/'.$r["_source"]['doi'][0].'';
                                                     }
-                                                    if (!empty($r["_source"]['issn_part'][0])) {
-                                                        $sfx_array[] = 'rft.issn='.$r["_source"]['issn_part'][0].'';
+                                                    if (!empty($r["_source"]['issn'][0])) {
+                                                        $sfx_array[] = 'rft.issn='.$r["_source"]['issn'][0].'';
                                                     }
                                                     if (!empty($r["_source"]['ispartof_data'][0])) {
                                                         $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';

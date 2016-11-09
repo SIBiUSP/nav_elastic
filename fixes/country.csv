@@ -11,6 +11,7 @@ ch,China
 ci,Croácia
 ck,Colômbia
 cl,Chile
+cou,Estados Unidos
 cr,Costa Rica
 cu,Cuba
 dcu,Estados Unidos
@@ -18,18 +19,22 @@ dk,Dinamarca
 dr,República Dominicana
 ec,Equador
 enk,Inglaterra
+es,El Salvador
 et,Etiópia
 fi,Finlândia
 flu,Estados Unidos
 fr,França
 gb,República de Kiribati
 gr,Grécia
+gt,Guatemala
 gw,Alemanha
+hiu,Estados Unidos
 hk,Hong-Kong
 hu,Hungria
 ie,Irlanda
 ii,Índia
 ilu,Estados Unidos
+io,Indonésia
 ir,Irã
 is,Israel
 it,Itália
@@ -37,7 +42,9 @@ ja,Japão
 ko,Coreia do Sul
 mau,Estados Unidos
 mdu,Estados Unidos
+mr,Marrocos
 mx,México
+my,Malásia
 ne,Holanda
 nl,Nova Caledonia
 no,Noruega
@@ -49,6 +56,7 @@ pau,Estados Unidos
 pe,Peru
 pk,Paquistão
 pl,Polônia
+pn,Panamá
 pr,Porto Rico
 po,Portugal
 py,Paraguai
@@ -64,7 +72,10 @@ sz,Suiça
 th,Tailândia
 ts,Emirados Árabes Unidos
 tu,Turquia
+txu,Estados Unidos
+xo,Eslováquia
 xr,República Checa
+xv,Eslovênia
 xx,Desconhecido
 xxk,Reino Unido
 xxu,Estados Unidos

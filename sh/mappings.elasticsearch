@@ -15,10 +15,6 @@ PUT /sibi
                 "type" : "asciifolding",
                 "preserve_original" : true
             },
-            "portuguese_keywords": {
-              "type":       "keyword_marker",
-              "keywords":   [] 
-            },
             "portuguese_stemmer": {
               "type":       "stemmer",
               "language":   "light_portuguese"
@@ -27,7 +23,7 @@ PUT /sibi
       "analyzer": {
         "portuguese": {
           "tokenizer": "standard",
-          "filter":  [ "standard", "lowercase", "my_ascii_folding","portuguese_stop","portuguese_keywords","portuguese_stemmer"]
+          "filter":  [ "standard", "lowercase", "my_ascii_folding","portuguese_stop","portuguese_stemmer"]
         }
       }
     }
@@ -37,728 +33,475 @@ PUT /sibi
 
 PUT /sibi/producao/_mapping
 {
-    "producao": {
-        "properties": {
-           "areaconcentracao": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "authorUSP": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "authors": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "authors_complete": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "authors_index": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "base": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "cat": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "codpes": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "codpesbusca": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "colab": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "colab_instituicao": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "colab_instituicao_trab": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "colab_int": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "colab_int_trab": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "country": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "dataregistro": {
-              "type": "float"
-           },
-           "dataregistrocompleta": {
-              "type": "date"
-           },
-           "dataregistroinicial": {
-              "type": "float"
-           },
-           "date": {
-              "type": "date"
-           },
-           "datestamp": {
-              "type": "date"
-           },
-           "departamento": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "departamentotrabalhos": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "descricaofisica": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "doi": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "evento": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "fatorimpacto": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "grupopesquisa": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "indexado": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "internacionalizacao": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "ispartof": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "ispartof_capitulo": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "ispartof_data": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "issn_part": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "language": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "metrics": {
-              "type": "object"
-           },
-           "orientador_complete": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "publisher": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "publisher_place": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "resumo": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "sibi_id": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "subject": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "subject_index": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "sysno": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "title": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "type": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "unidadeUSP": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "unidadeUSPtrabalhos": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "url": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           },
-           "year": {
-              "type": "text",
-              "fields": {
-                 "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                 }
-              }
-           }
-        }
-     }
- }
-
-
-
-PUT /sibi/producao/_mapping
-{
-    "producao": {
-        "properties": {
-            "areaconcentracao": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "authorUSP": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "authors": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "authors_complete": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "authors_index": {
-                "type": "string",
-                "analyzer": "portugues"
-            },            
-            "base": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "cat": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "codpes": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "codpesbusca": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab_instituicao": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab_instituicao_trab": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab_instituicao_corrigido": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab_instituicao_naocorrigido": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab_instituicao_geocode": {
-                "type": "geo_point"
-            },
-            "colab_int": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "colab_int_trab": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "country": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "dataregistro": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "dataregistroinicial": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "dataregistrocompleta": {
-                "type": "date",
-                "index": "not_analyzed"
-            },
-            "datestamp": {
-                "type": "date",
-                "index": "not_analyzed"
-            },       
-            "departamento": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "departamentotrabalhos": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "descricaofisica": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "doi": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "evento": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "fatorimpacto": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "fomento": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "grupopesquisa": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "indexado": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "internacionalizacao": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "ispartof": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "ispartof_capitulo": {
-                "type": "string"
-            },
-            "ispartof_data": {
-                "type": "string"
-            },
-            "issn_part": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "language": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "orientador_complete": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "publisher": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "publisher_place": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "record": {
-                "type": "string",
-                "analyzer": "portugues"
-            },
-            "resumo": {
-                "type": "string",
-                "analyzer": "portugues"
-            },            
-            "subject": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "subject_index": {
-                "type": "string",
-                "analyzer": "portugues"
-            },            
-            "sysno": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "tipotese": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "title": {
-                "type": "string",
-                "analyzer": "portugues"
-            },
-            "type": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "unidadeUSP": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "unidadeUSPtrabalhos": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "url": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "year": {
-                "type": "string",
-                "index": "not_analyzed"
+         "producao": {
+            "properties": {
+               "areaconcentracao": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "authorUSP": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "authors": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "authors_complete": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "authors_index": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "base": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "cat": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "codpes": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "codpes_unidade": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "colab": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "colab_instituicao": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "colab_instituicao_trab": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "colab_int": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "colab_int_trab": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "country": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "dataregistro": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "dataregistrocompleta": {
+                  "type": "date"
+               },
+               "dataregistroinicial": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "date": {
+                  "type": "date"
+               },
+               "datestamp": {
+                  "type": "date"
+               },
+               "departamento": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "departamentotrabalhos": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "descricaofisica": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "doi": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "evento": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "fatorimpacto": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "fomento": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "grupopesquisa": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "indexado": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "internacionalizacao": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "ispartof": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "ispartof_capitulo": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "ispartof_data": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "issn": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "language": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "metrics": {
+                  "properties": {
+                     "oadoi_is_free_to_read": {
+                        "type": "long"
+                     },
+                     "oadoi_oa_color": {
+                        "type": "text",
+                        "fields": {
+                           "keyword": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                           }
+                        }
+                     }
+                  }
+               },
+               "orientador_complete": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "programa_pos_nome": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "programa_pos_sigla": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "publisher": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "publisher_place": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "resumo": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "sibi_id": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "subject": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "subject_index": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "tipotese": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "title": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "type": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "unidadeUSP": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "unidadeUSPtrabalhos": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "url": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               },
+               "year": {
+                  "type": "text",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                     }
+                  }
+               }
             }
-        }
-    }
-}
-
-PUT /sibi/producao_metrics/_mapping
-{
-    "producao_metrics": {
-        "properties": {
-           "counter": {
-              "type": "long"
-           },
-           "script": {
-              "properties": {
-                 "inline": {
-                    "type": "string"
-                 },
-                 "params": {
-                    "properties": {
-                       "count": {
-                          "type": "long"
-                       }
-                    }
-                 }
-              }
-           },
-           "upsert": {
-              "properties": {
-                 "counter": {
-                    "type": "long"
-                 }
-              }
-           }
-        }
-    }
-}
-
-PUT /sibi/users/_mapping
-{
-    "users": {
-        "properties": {
-            "loginUsuario": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "nomeUsuario": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "tipoUsuario": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "emailPrincipalUsuario": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "emailAlternativoUsuario": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "emailUspUsuario": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "numeroTelefoneFormatado": {
-                "type": "string",
-                "index": "not_analyzed"
-            },   
-            "vínculo": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "tipoVinculo": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "codigoSetor": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "nomeAbreviadoSetor": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "nomeSetor": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "codigoUnidade": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "siglaUnidade": {
-                "type": "string",
-                "index": "not_analyzed"
-            },
-            "nomeUnidade": {
-                "type": "string",
-                "index": "not_analyzed"
-            }             
-        }
-    }
+         }
 }

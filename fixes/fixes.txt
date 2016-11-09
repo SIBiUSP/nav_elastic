@@ -73,8 +73,8 @@ marc_map('590n','grupopesquisa')
 split_field('grupopesquisa',';')
 
 # 599 - Sigla de departamento para teses
-marc_map('599a','programapossigla')
-marc_map('599b','programaposnome')
+marc_map('599a','programa_pos_sigla')
+marc_map('599b','programa_pos_nome')
 
 
 # 650 - Assunto
@@ -97,7 +97,7 @@ marc_map('711a','evento.$append')
 # 773t - É parte de
 marc_map('773t','ispartof')
 # 773x - ISSN
-marc_map('773x','issn_part')
+marc_map('773x','issn')
 # 773h - Dados de publicação
 marc_map('773h','ispartof_data')
 split_field("ispartof_data",",")
@@ -105,7 +105,7 @@ split_field("ispartof_data",",")
 # 773d - Dados de publicação - Livro
 marc_map('773d','ispartof_capitulo')
 
-split_field("issn_part","; ")
+split_field("issn","; ")
 # 856 - Texto completo
 
 marc_map('856[41]u','url',join:' - ')
@@ -123,9 +123,9 @@ marc_map('945l','internacionalizacao')
 # 946a - Autor USP
 marc_map('946a','authorUSP.$append')
 # 946a - Número USP
-marc_map('946be','codpes.$append',join:'/')
+marc_map('946be','codpes_unidade.$append',join:'/')
 # 946a - Número USP - Busca
-marc_map('946b','codpesbusca.$append')
+marc_map('946b','codpes.$append')
 # 946e - Unidade USP - Participações
 marc_map('946e','unidadeUSP.$append')
 replace_all("unidadeUSP.*","IFQSC-Q","IQSC")
@@ -135,12 +135,12 @@ replace_all("unidadeUSP.*","CBM","CEBIMAR")
 replace_all("unidadeUSP.*","HPRLLP","HRAC")
 # Unidade USP - Trabalhos
 copy_field("unidadeUSP","unidadeUSPtrabalhos")
-uniq(unidadeUSPtrabalhos)
+uniq(unidadeUSP)
 # 946eg - Unidade USP / Departamento - Participações
 marc_map('946eg','departamento.$append',join:'/')
 # Unidade USP / Departamento - Trabalhos
 copy_field("departamento","departamentotrabalhos")
-uniq(departamentotrabalhos)
+uniq(departamento)
 #- Year cleanup
 #   replace_all('year','^(?<=-)?0+','')
 #   unless all_match('year','^-?([0-9]|[123456789][0-9]+)$')
@@ -149,7 +149,7 @@ uniq(departamentotrabalhos)
 #Pegar data do CAT
 marc_map('CATc','dataregistro.$append')
 substring("dataregistro.*",0,6)
-sort_field("dataregistro", numeric:1)
+#sort_field("dataregistro", numeric:1)
 copy_field("dataregistro.0","dataregistroinicial")
 
 #datestamp
