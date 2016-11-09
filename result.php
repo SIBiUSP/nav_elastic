@@ -314,7 +314,7 @@
                                             Autores:
                                             <?php if (!empty($r["_source"]['authors'])) : ?>
                                             <?php foreach ($r["_source"]['authors'] as $autores) {
-                                                $authors_array[]='<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>';
+                                                $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
                                             } 
                                            $array_aut = implode(", ",$authors_array);
                                             unset($authors_array);
@@ -332,7 +332,7 @@
                                             <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
                                             <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
                                             <?php foreach ($unique as $unidadeUSP) : ?>
-                                                <a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
+                                                <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
                                             <?php endforeach;?>
                                             <?php endif; ?>
                                         </li>
@@ -341,7 +341,7 @@
                                             Assuntos:
                                             <?php if (!empty($r["_source"]['subject'])) : ?>
                                             <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
-                                                <a href="result.php?subject[]=<?php echo $assunto;?>"><?php echo $assunto;?></a>
+                                                <a href="result.php?assunto=<?php echo $assunto;?>"><?php echo $assunto;?></a>
                                             <?php endforeach;?>
                                             <?php endif; ?>
                                         </li>

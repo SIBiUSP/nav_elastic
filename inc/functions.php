@@ -251,7 +251,7 @@ function base_inicio($client) {
     
     $response = $client->search($params);
     foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        echo '<li><a href="result.php?search[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+        echo '<li><a href="result.php?search[]=base.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
     }   
     
 }

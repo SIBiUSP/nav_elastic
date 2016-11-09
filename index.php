@@ -46,8 +46,8 @@
                                 <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-large" name="search[]" data-validation="required">                                        
                                 <select name="search[]">
                                     <option disabled selected value>Todas as bases</option>
-                                    <option value="base:&#92;&quot;Produção científica&#92;&quot;">Produção científica</option>
-                                    <option value="base:&#92;&quot;Teses e dissertações&#92;&quot;">Teses e dissertações</option>
+                                    <option value="base.keyword:&quot;Produção científica&quot;">Produção científica</option>
+                                    <option value="base.keyword:&quot;Teses e dissertações&quot;">Teses e dissertações</option>
                                 </select>
                                 <input type="hidden" name="fields[]" value="title">
                                 <input type="hidden" name="fields[]" value="authors">
