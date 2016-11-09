@@ -79,7 +79,9 @@
         <?php if (!empty($_GET["search"])) : ?>
         <legend>Filtros ativos</legend>
             <div class="uk-form-row">
-                <label><?php echo implode("<br/>",$_GET["search"]); ?></label>
+                <?php foreach($_GET["search"] as $filters): ?>
+                    <input type="checkbox" name="search[]" value="<?php print_r(str_replace('"','&quot;',$filters)); ?>" checked><?php print_r($filters); ?><br/>
+                <?php endforeach; ?>
             </div>
         <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
         <?php endif;?> 
@@ -157,8 +159,10 @@
           <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
         </p>        
         <div id="limitar-data" class="uk-margin-bottom"></div>        
-        
-        
+        <?php print_r($_GET["search"]); ?>
+        <?php foreach($_GET["search"] as $search_expression): ?>
+            <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
+        <?php endforeach; ?>
         <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
     </fieldset>        
     </form>
