@@ -77,7 +77,7 @@
 
                             <fieldset data-uk-margin>
                                 <legend>Número USP</legend>
-                                <input type="text" placeholder="Insira um número USP" name="codpesbusca" data-validation="required">
+                                <input type="text" placeholder="Insira um número USP" name="codpes" data-validation="required">
                                 <button class="uk-button" type="submit">Buscar</button>
                             </fieldset>
 

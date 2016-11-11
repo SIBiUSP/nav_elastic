@@ -775,7 +775,7 @@ function compararRegistrosLattes ($client,$query_type,$query_year,$query_title,$
                         "multi_match" : {
                             "query":      "'.$codpes.'",
                             "type":       "cross_fields",
-                            "fields":     [ "codpesbusca" ],
+                            "fields":     [ "codpes" ],
                             "minimum_should_match": "100%" 
                          }
                     },
@@ -1163,8 +1163,8 @@ function analisa_get($get) {
     $prev = ($page - 1);
     $sort = array('year' => -1);       
     
-    if (!empty($get['codpesbusca'])){        
-        $get['search'][] = 'codpesbusca:'.$get['codpesbusca'].'';
+    if (!empty($get['codpes'])){        
+        $get['search'][] = 'codpes:'.$get['codpes'].'';
     }
     
     if (!empty($get['assunto'])){        
