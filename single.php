@@ -74,7 +74,16 @@ if (!empty($_FILES)) {
                 'id' => $uploadfile,
                 'body' => $query
             ];
-            $response_upload = $client->update($params);           
+            $response_upload = $client->update($params); 
+            
+            
+            $myfile = fopen("$uploadfile.json", "w") or die("Unable to open file!");
+            $txt = $query;
+            fwrite($myfile, $txt);
+            fclose($myfile);
+            
+            
+            
         } else {
             echo "Possível ataque de upload de arquivo!\n";
         }
@@ -88,12 +97,15 @@ if (!empty($_FILES)) {
 
 if (!empty($_POST['delete_file'])) {
     unlink($_POST['delete_file']);
+    $delete_json = ''.$_POST['delete_file'].'.json';
+    unlink($delete_json);
     $params = [
         'index' => 'sibi',
         'type' => 'files',
         'id' => $_POST['delete_file']
     ];
     $response_delete = $client->delete($params);
+    
     //print_r($response_delete);
     
 }

@@ -365,7 +365,9 @@ function gerar_faceta_range($consulta,$client,$campo,$tamanho,$nome_do_campo) {
                         { "to" : 1 },
                         { "from" : 1, "to" : 2 },
                         { "from" : 2, "to" : 5 },
-                        { "from" : 5 }
+                        { "from" : 5, "to" : 10 },
+                        { "from" : 10, "to" : 100 },
+                        { "from" : 100 }
                     ]
                 }
             }
