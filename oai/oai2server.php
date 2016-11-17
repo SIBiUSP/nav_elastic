@@ -252,7 +252,7 @@ class OAI2Server {
 
                     $identifier = $record['identifier'];
                     $datestamp = $this->formatDatestamp($record['datestamp']);
-                    $setspec = $_GET['set'];
+                    $setspec = $record['set'];
 
                     $status_deleted = (isset($record['deleted']) && ($record['deleted'] === true) &&
                                         (($this->identifyResponse['deletedRecord'] == 'transient') ||
