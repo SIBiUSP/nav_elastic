@@ -57,8 +57,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         function($resumptionToken = '') {
             return
                 array (
-                    array('setSpec'=>'class:collection', 'setName'=>'Collections'),
-                    array('setSpec'=>'math', 'setName'=>'Mathematics') ,
+                    array('setSpec'=>'prod', 'setName'=>'Produção Científica') ,
                     array('setSpec'=>'phys', 'setName'=>'Physics'),
                     array('setSpec'=>'phdthesis', 'setName'=>'PHD Thesis',
                           'setDescription'=>
@@ -79,11 +78,25 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
 //            if ($metadataPrefix != 'oai_dc') {
 //                throw new OAI2Exception('noRecordsMatch');
 //            }
-    
+            if (isset($set)) {
+                $filter[] = '{"term":{"base.keyword":"Produção científica"}}';
+                $filter_query = ''.implode(",", $filter).''; 
+            } else {
+                $filter_query="";
+            }
+            
             $query = '{
-                "query": {
+            
+            "query": {    
+                "bool": {
+                  "must": {
                     "match_all": {}
-                 },
+                  },
+                  "filter":[
+                    '.$filter_query.'        
+                    ]
+                  }
+            },
                 "sort" : [
                     {"_uid" : {"order" : "desc"}}
                     ]

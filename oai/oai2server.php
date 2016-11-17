@@ -202,8 +202,7 @@ class OAI2Server {
         
         
         if (isset($this->args['resumptionToken'])) {  
-//            var_dump($this->readResumptionToken($this->token_prefix.$this->args['resumptionToken']));
-//            if (count($this->args) > 1) {                
+//            if (count($this->args['resumptionToken']) > 1) {                
 //                $this->errors[] = new OAI2Exception('badArgument');
 //            } else {
 //                if ((int)$val+$this->token_valid < time()) {
@@ -253,7 +252,7 @@ class OAI2Server {
 
                     $identifier = $record['identifier'];
                     $datestamp = $this->formatDatestamp($record['datestamp']);
-                    $setspec = $record['set'];
+                    $setspec = $_GET['set'];
 
                     $status_deleted = (isset($record['deleted']) && ($record['deleted'] === true) &&
                                         (($this->identifyResponse['deletedRecord'] == 'transient') ||
