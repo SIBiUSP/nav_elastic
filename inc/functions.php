@@ -167,7 +167,7 @@ function ultimos_registros($client) {
         if (!empty($r["_source"]['authors'])) {
         echo '<div class="uk-comment-meta";">';    
         foreach ($r["_source"]['authors'] as $autores) {
-        echo '<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>, ';
+        echo '<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>, ';
         }
         echo '</div>';     
         };

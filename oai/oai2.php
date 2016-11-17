@@ -78,11 +78,19 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
 //            if ($metadataPrefix != 'oai_dc') {
 //                throw new OAI2Exception('noRecordsMatch');
 //            }
-            if (isset($set)) {
-                $filter[] = '{"term":{"base.keyword":"Produção científica"}}';
-                $filter_query = ''.implode(",", $filter).''; 
+            if (!empty($set)) {
+                
+                $filter[] = '{"term":{"base.keyword":"Produção científica"}}';                 
+            } 
+    
+            if (!empty($from)||!empty($until)){
+                $filter[]= '{ "range" : { "datestamp" : { "gte" : "'.$from.'", "lt" :  "'.$until.'" } } }';
+            }
+    
+            if (!empty($filter)){
+                $filter_query = ''.implode(",", $filter).'';
             } else {
-                $filter_query="";
+                $filter_query = "";
             }
             
             $query = '{
@@ -100,7 +108,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 "sort" : [
                     {"_uid" : {"order" : "desc"}}
                     ]
-                }';    
+                }';               
             
             $params = [
                 'index' => 'sibi',
