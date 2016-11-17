@@ -31,24 +31,6 @@ $identifyResponse["deletedRecord"] = 'no'; // How your repository handles deleti
                                            //                maintained. It MAY reveal a deleted status for records.
 $identifyResponse["granularity"] = 'YYYY-MM-DDThh:mm:ssZ';
 
-$example_record = array('identifier' => 'a.b.c',
-                        'datestamp' => date('Y-m-d-H:s'),
-                        'set' => 'class:activity',
-                        'metadata' => array(
-                            'container_name' => 'oai_dc:dc',
-                            'container_attributes' => array(
-                                'xmlns:oai_dc' => "http://www.openarchives.org/OAI/2.0/oai_dc/",
-                                'xmlns:dc' => "http://purl.org/dc/elements/1.1/",
-                                'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-                                'xsi:schemaLocation' =>
-                                'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd'
-                            ),
-                            'fields' => array(
-                                'dc:title' => 'Testing records',
-                                'dc:author' => 'Neis'
-                            )
-                       ));
-
 /* unit tests ;) */
 if (!isset($args)) {
     $args = $_GET;
@@ -93,10 +75,10 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         'ListRecords' =>
         function($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {
             global $client;
-    
-            if ($metadataPrefix != 'oai_dc') {
-                throw new OAI2Exception('noRecordsMatch');
-            }
+        
+//            if ($metadataPrefix != 'oai_dc') {
+//                throw new OAI2Exception('noRecordsMatch');
+//            }
     
             $query = '{
                 "query": {
@@ -106,7 +88,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                     {"_uid" : {"order" : "desc"}}
                     ]
                 }';    
-
+            
             $params = [
                 'index' => 'sibi',
                 'type' => 'producao',
@@ -160,9 +142,9 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         function($identifier, $metadataPrefix) {
             global $client;
 
-            if ($metadataPrefix != 'oai_dc') {
-                throw new OAI2Exception('noRecordsMatch');
-            }
+//            if ($metadataPrefix != 'oai_dc') {
+//                throw new OAI2Exception('noRecordsMatch');
+//            }
 
             $params = [
                 'index' => 'sibi',
