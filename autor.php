@@ -6,7 +6,7 @@
             include('inc/functions.php');
             include('inc/meta-header.php');
         
-                if (array_key_exists("codpesbusca", $_GET)) { 
+                if (array_key_exists("codpes", $_GET)) { 
                     $result_get = analisa_get($_GET);
                     //$query_complete = $result_get['query_complete'];
                     $query_aggregate = $result_get['query_aggregate'];
@@ -16,12 +16,21 @@
                     "size" : 10000
                     }            
                     ';
-                    $escaped_url = $result_get['escaped_url'];
+                    //$escaped_url = $result_get['escaped_url'];
                     $limit = $result_get['limit'];
                     $page = $result_get['page'];
-                    $new_get = $result_get['new_get'];
+                    //$new_get = $result_get['new_get'];
+                    
+                    $params = [
+                        'index' => 'sibi',
+                        'type' => 'producao',
+                        'size'=> $limit, 
+                        'body' => $query_complete
+                    ];  
 
-                    $cursor = query_elastic($query_complete,$server);
+                    $cursor = $client->search($params);                        
+                    //print_r($cursor);    
+                    //$cursor = query_elastic($query_complete,$server);
                     $total = $cursor["hits"]["total"];
         
                 } 
@@ -87,67 +96,50 @@
                     <div class="uk-panel uk-panel-box">
                         <form class="uk-form" method="get" action="result.php">
                         <fieldset>
+
+                            <?php if (!empty($_GET["codpes"])) : ?>
                             <legend>Filtros ativos</legend>
-                            <?php foreach ($new_get as $key => $value) : ?>
                                 <div class="uk-form-row">
-                                    <label><?php echo $key; ?>: <?php echo implode(",",$value); ?></label>
-                                    <input type="checkbox" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
+                                    <input type="checkbox" name="search[]" value="<?php print_r(str_replace('"','&quot;',$_GET["codpes"])); ?>" checked><?php print_r($_GET["codpes"]); ?><br/>
                                 </div>
-                            <?php endforeach;?>
-                            <?php if (!empty($result_get['termo_consulta'])): ?>
-                                <div class="uk-form-row">
-                                    <label>Consulta: <?php echo $result_get['termo_consulta']; ?></label>
-                                    <input type="checkbox" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($result_get['data_inicio'])): ?>
-                                <div class="uk-form-row">
-                                    <label>Data inicial: <?php echo $result_get['data_inicio']; ?></label>
-                                    <input type="checkbox" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($result_get['data_fim'])): ?>
-                                <div class="uk-form-row">
-                                    <label>Data final: <?php echo $result_get['data_fim']; ?></label>
-                                    <input type="checkbox" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
-                                </div>
-                            <?php endif; ?>         
                             <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
+                            <?php endif;?> 
                         </fieldset>        
-                        </form>    
+                        </form>   
                         <hr>
                         <h3 class="uk-panel-title">Resumo</h3>    
                         <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                             <hr>
-                        <?php 
-                            gerar_faceta($query_aggregate,$escaped_url,$server,base,10,"Base");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,type,10,"Tipo de material");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,unidadeUSPtrabalhos,100,"Unidade USP");              gerar_faceta($query_aggregate,$escaped_url,$server,departamentotrabalhos,100,"Departamento");             gerar_faceta($query_aggregate,$escaped_url,$server,authors,120,"Autores");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,year,120,"Ano de publicação","desc");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,subject,100,"Assuntos");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,language,40,"Idioma");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,ispartof,100,"É parte de ...");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,evento,100,"Nome do evento");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,country,200,"País de publicação");    
+                        <?php
+                            gerar_faceta($query_aggregate,$client,"base",10,"Base",null);
+                            gerar_faceta($query_aggregate,$client,"type",10,"Tipo de material",null);
+                            gerar_faceta($query_aggregate,$client,"unidadeUSPtrabalhos",100,"Unidade USP",null);             gerar_faceta($query_aggregate,$client,"departamentotrabalhos",100,"Departamento",null);             
+                            gerar_faceta($query_aggregate,$client,"authors",120,"Autores",null);
+                            gerar_faceta($query_aggregate,$client,"year",120,"Ano de publicação","desc");
+                            gerar_faceta($query_aggregate,$client,"subject",100,"Assuntos",null);
+                            gerar_faceta($query_aggregate,$client,"language",40,"Idioma",null);
+                            gerar_faceta($query_aggregate,$client,"ispartof",100,"É parte de ...",null);
+                            gerar_faceta($query_aggregate,$client,"evento",100,"Nome do evento",null);
+                            gerar_faceta($query_aggregate,$client,"country",200,"País de publicação",null);    
                         ?>
                         </ul>
                         <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                         <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                             <hr>
                         <?php 
-                            gerar_faceta($query_aggregate,$escaped_url,$server,authorUSP,100,"Autores USP");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,codpesbusca,100,"Número USP");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,codpes,100,"Número USP / Unidade"); gerar_faceta($query_aggregate,$escaped_url,$server,internacionalizacao,30,"Internacionalização");                           gerar_faceta($query_aggregate,$escaped_url,$server,tipotese,30,"Tipo de tese");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,fomento,100,"Agência de fomento");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,indexado,100,"Indexado em");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,issn_part,100,"ISSN");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,areaconcentracao,100,"Área de concentração");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,fatorimpacto,1000,"Fator de impacto","desc");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,grupopesquisa,100,"Grupo de pesquisa");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,colab,120,"País dos autores externos à USP");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,colab_int_trab,100,"Colaboração - Internacionalização"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_trab,100,"Colaboração - Instituição"); gerar_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_corrigido,100,"Colaboração - Instituição - Corrigido"); corrigir_faceta($query_aggregate,$escaped_url,$server,colab_instituicao_naocorrigido,100,"Colaboração - Instituição - Não corrigido");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,dataregistroinicial,100,"Data de registro","desc");
-                            gerar_faceta($query_aggregate,$escaped_url,$server,dataregistro,100,"Data de registro e alterações","desc");
+                            gerar_faceta($query_aggregate,$client,"authorUSP",100,"Autores USP",null);
+                            gerar_faceta($query_aggregate,$client,"codpesbusca",100,"Número USP",null);
+                            gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP / Unidade",null); gerar_faceta($query_aggregate,$client,"internacionalizacao",30,"Internacionalização",null);                           gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
+                            gerar_faceta($query_aggregate,$client,"fomento",100,"Agência de fomento",null);
+                            gerar_faceta($query_aggregate,$client,"indexado",100,"Indexado em",null);
+                            gerar_faceta($query_aggregate,$client,"issn_part",100,"ISSN",null);
+                            gerar_faceta($query_aggregate,$client,"areaconcentracao",100,"Área de concentração",null);
+                            gerar_faceta($query_aggregate,$client,"fatorimpacto",1000,"Fator de impacto","desc");
+                            gerar_faceta($query_aggregate,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
+                            gerar_faceta($query_aggregate,$client,"colab",120,"País dos autores externos à USP",null);
+                            gerar_faceta($query_aggregate,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); 
+                            gerar_faceta($query_aggregate,$client,"dataregistroinicial",100,"Data de registro","desc");
+                            gerar_faceta($query_aggregate,$client,"dataregistro",100,"Data de registro e alterações","desc");
                         ?>
                         </ul>
 
@@ -155,55 +147,44 @@
                         <form class="uk-form">
                         <fieldset>
                             <legend>Limitar datas</legend>
-                            <div class="uk-form-row">
-                                <label>Ano inicial</label>
-                                <input type="text" placeholder="Ano inicial" name="date_init">
-                            </div>
-                            <div class="uk-form-row">
-                                <label>Ano final</label>
-                                <input type="text" placeholder="Ano final" name="date_end">
-                            </div>
-                            <?php foreach ($new_get as $key => $value) : ?>
-                                <div class="uk-form-row">
-                                    <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
-                                </div>
-                            <?php endforeach;?>
-                            <?php if (!empty($result_get['termo_consulta'])): ?>
-                                <div class="uk-form-row">
-                                    <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
-                                </div>
+
+                            <script>
+                                $( function() {
+                                $( "#limitar-data" ).slider({
+                                  range: true,
+                                  min: 1900,
+                                  max: 2030,
+                                  values: [ 1900, 2030 ],
+                                  slide: function( event, ui ) {
+                                    $( "#date" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+                                  }
+                                });
+                                $( "#date" ).val( "year:[" + $( "#limitar-data" ).slider( "values", 0 ) +
+                                  " TO " + $( "#limitar-data" ).slider( "values", 1 ) + "]");
+                                } );
+                            </script>
+                            <p>
+                              <label for="date">Selecionar período de tempo:</label>
+                              <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
+                            </p>        
+                            <div id="limitar-data" class="uk-margin-bottom"></div>        
+                            <?php if(!empty($_GET["search"])): ?>
+                                <?php foreach($_GET["search"] as $search_expression): ?>
+                                    <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
+                                <?php endforeach; ?>
                             <?php endif; ?>
                             <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
                         </fieldset>        
                         </form>
                         <hr>
-                    <form class="uk-form" method="get" action="report.php">
-                        <fieldset>
-                            <legend>Gerar relatório</legend>
-                            <?php foreach ($new_get as $key => $value) : ?>
-                                <div class="uk-form-row">
-                                    <input type="hidden" checked="checked"  name="<?php echo $key; ?>[]" value="<?php echo implode(",",$value); ?>">
-                                </div>
-                            <?php endforeach;?>
-                            <?php if (!empty($result_get['termo_consulta'])): ?>
-                                <div class="uk-form-row">
-                                    <input type="hidden" checked="checked"  name="search_index" value="<?php echo $result_get['termo_consulta']; ?>">
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($result_get['data_inicio'])): ?>
-                                <div class="uk-form-row">
-                                    <input type="hidden" checked="checked"  name="date_init" value="<?php echo $result_get['data_inicio']; ?>">
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($result_get['data_fim'])): ?>
-                                <div class="uk-form-row">
-                                    <input type="hidden" checked="checked"  name="date_end" value="<?php echo $result_get['data_fim']; ?>">
-                                </div>
-                            <?php endif; ?>         
-                            <div class="uk-form-row"><button type="submit" class="uk-button-primary">Gerar relatório</button>
-                            </div>
-                        </fieldset>        
-                        </form>    
+                        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                                <fieldset>
+                                    <legend>Gerar relatório</legend>                  
+                                    <div class="uk-form-row"><a href="<?php echo 'http://'.$_SERVER["SERVER_NAME"].'/~bdpi/report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
+                                    </div>
+                                </fieldset>        
+                        <?php endif; ?>  
+                        
                     </div>
                     
                 </div>            
@@ -214,7 +195,7 @@
                     <a href="" class="uk-alert-close uk-close"></a>
                 
                     
-                <?php $ano_bar = generateDataGraphBar($server, $url, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
+                <?php $ano_bar = generateDataGraphBar($client, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
 
                 <div id="ano_chart" class="uk-visible-large"></div>
                 <script type="application/javascript">
@@ -334,8 +315,24 @@
                                         <li class="uk-h6 uk-margin-top">
                                             <p>Métricas:</p>
                                             <ul>
-                                                <li><div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div></li>
-                                                <li><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></li>
+                                                <li>
+                                                    <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                                </li>
+                                                <li>
+                                                    <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
+                                                </li>
+                                                <li>
+                                                     <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                                                    <!--
+                                                    < ?php 
+                                                        $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
+                                                        if (!empty($citations_scopus['abstract-citations-response'])) {
+                                                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
+                                                            echo '<br/><br/>';
+                                                        } 
+                                                    ? >
+                                                    -->
+                                                </li>
                                             </ul>  
                                         </li>
                                         <a href="#" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Citar</a>
