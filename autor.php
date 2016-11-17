@@ -100,7 +100,7 @@
                             <?php if (!empty($_GET["codpes"])) : ?>
                             <legend>Filtros ativos</legend>
                                 <div class="uk-form-row">
-                                    <input type="checkbox" name="search[]" value="<?php print_r(str_replace('"','&quot;',$_GET["codpes"])); ?>" checked><?php print_r($_GET["codpes"]); ?><br/>
+                                    <p><?php print_r($_GET["codpes"]); ?></p><br/>
                                 </div>
                             <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
                             <?php endif;?> 
@@ -128,8 +128,8 @@
                             <hr>
                         <?php 
                             gerar_faceta($query_aggregate,$client,"authorUSP",100,"Autores USP",null);
-                            gerar_faceta($query_aggregate,$client,"codpesbusca",100,"Número USP",null);
-                            gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP / Unidade",null); gerar_faceta($query_aggregate,$client,"internacionalizacao",30,"Internacionalização",null);                           gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
+                            gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP",null);
+                            gerar_faceta($query_aggregate,$client,"codpes_unidade",100,"Número USP / Unidade",null); gerar_faceta($query_aggregate,$client,"internacionalizacao",30,"Internacionalização",null);                           gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
                             gerar_faceta($query_aggregate,$client,"fomento",100,"Agência de fomento",null);
                             gerar_faceta($query_aggregate,$client,"indexado",100,"Indexado em",null);
                             gerar_faceta($query_aggregate,$client,"issn_part",100,"ISSN",null);
@@ -312,29 +312,31 @@
                                         <li class="uk-h6 uk-margin-top">
                                            <?php load_itens_new($r['_id']); ?>
                                         </li>
-                                        <li class="uk-h6 uk-margin-top">
-                                            <p>Métricas:</p>
-                                            <ul>
-                                                <li>
-                                                    <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                                </li>
-                                                <li>
-                                                    <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
-                                                </li>
-                                                <li>
-                                                     <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
-                                                    <!--
-                                                    < ?php 
-                                                        $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
-                                                        if (!empty($citations_scopus['abstract-citations-response'])) {
-                                                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
-                                                            echo '<br/><br/>';
-                                                        } 
-                                                    ? >
-                                                    -->
-                                                </li>
-                                            </ul>  
-                                        </li>
+                                        <?php if (!empty($r["_source"]['doi'])) : ?>
+                                            <li class="uk-h6 uk-margin-top">
+                                                <p>Métricas:</p>
+                                                <ul>
+                                                    <li>
+                                                        <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                                    </li>
+                                                    <li>
+                                                        <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
+                                                    </li>
+                                                    <li>
+                                                         <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                                                        <!--
+                                                        < ?php 
+                                                            $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
+                                                            if (!empty($citations_scopus['abstract-citations-response'])) {
+                                                                echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
+                                                                echo '<br/><br/>';
+                                                            } 
+                                                        ? >
+                                                        -->
+                                                    </li>
+                                                </ul>  
+                                            </li>
+                                        <?php endif; ?>
                                         <a href="#" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Citar</a>
                                         <div id="citacao<?php echo  $r['_id'];?>" class="uk-hidden">
                                         <li class="uk-h6 uk-margin-top">
