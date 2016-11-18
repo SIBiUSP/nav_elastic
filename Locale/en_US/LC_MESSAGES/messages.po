@@ -1,0 +1,18 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BDPI\n"
+"Report-Msgid-Bugs-To: tiago.murakami@st.sibi.usp.br \n"
+"Last-Translator: Tiago Murakami <tiago.murakami@dt.sibi.usp.br>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: 2016-11-18\n"
+"Language-Team: SIBiUSP\n"
+
+msgid "Todas as bases"
+msgstr "All sources"
+
+msgid "Buscar"
+msgstr "Search"
