@@ -1302,17 +1302,18 @@ function get_fulltext_file($id,$session){
 }
 
 
-class facets {
+class facets {   
     
-    public function gerar_faceta($consulta, $field,$tamanho,$field_name,$sort) {
-        global $client;        
+    public function facet($field,$tamanho,$field_name,$sort) {
+        global $client;
+        $query_aggregate = $this->query_aggregate;
         $sort_query="";
         if (!empty($sort)){
              $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
         }     
 
         $query = '{
-            '.$consulta.'
+            '.$query_aggregate.'
             "aggs": {
                 "counts": {
                     "terms": {
@@ -1359,10 +1360,11 @@ class facets {
 
     }
     
-    public function corrigir_faceta($consulta,$field,$tamanho,$nome_do_campo) {
+    public function rebuild_facet($field,$tamanho,$nome_do_campo) {
         global $client;
+        $query_aggregate = $this->query_aggregate;
         $query = '{
-            '.$consulta.'
+            '.$query_aggregate.'
             "aggs": {
                 "counts": {
                     "terms": {
@@ -1396,11 +1398,12 @@ class facets {
 
     }
 
-    public function gerar_faceta_range($consulta,$campo,$tamanho,$nome_do_campo) {
+    public function facet_range($campo,$tamanho,$nome_do_campo) {
         global $client;
+        $query_aggregate = $this->query_aggregate;
         $query = '
         {
-            '.$consulta.'
+            '.$query_aggregate.'
             "aggs" : {
                 "ranges" : {
                     "range" : {

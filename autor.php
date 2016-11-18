@@ -111,35 +111,43 @@
                         <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                             <hr>
                         <?php
-                            gerar_faceta($query_aggregate,$client,"base",10,"Base",null);
-                            gerar_faceta($query_aggregate,$client,"type",10,"Tipo de material",null);
-                            gerar_faceta($query_aggregate,$client,"unidadeUSPtrabalhos",100,"Unidade USP",null);             gerar_faceta($query_aggregate,$client,"departamentotrabalhos",100,"Departamento",null);             
-                            gerar_faceta($query_aggregate,$client,"authors",120,"Autores",null);
-                            gerar_faceta($query_aggregate,$client,"year",120,"Ano de publicação","desc");
-                            gerar_faceta($query_aggregate,$client,"subject",100,"Assuntos",null);
-                            gerar_faceta($query_aggregate,$client,"language",40,"Idioma",null);
-                            gerar_faceta($query_aggregate,$client,"ispartof",100,"É parte de ...",null);
-                            gerar_faceta($query_aggregate,$client,"evento",100,"Nome do evento",null);
-                            gerar_faceta($query_aggregate,$client,"country",200,"País de publicação",null);    
+                            $facets_author = new facets();
+                            $facets_author->query_aggregate = $query_aggregate;
+                            
+                            $facets_author->facet("base",10,"Base",null);
+                            $facets_author->facet("type",10,"Tipo de material",null);
+                            $facets_author->facet("unidadeUSPtrabalhos",100,"Unidade USP",null);             
+                            $facets_author->facet("departamentotrabalhos",100,"Departamento",null);             
+                            $facets_author->facet("authors",120,"Autores",null);
+                            $facets_author->facet("year",120,"Ano de publicação","desc");
+                            $facets_author->facet("subject",100,"Assuntos",null);
+                            $facets_author->facet("language",40,"Idioma",null);
+                            $facets_author->facet("ispartof",100,"É parte de ...",null);
+                            $facets_author->facet("evento",100,"Nome do evento",null);
+                            $facets_author->facet("country",200,"País de publicação",null);    
                         ?>
                         </ul>
                         <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                         <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                             <hr>
                         <?php 
-                            gerar_faceta($query_aggregate,$client,"authorUSP",100,"Autores USP",null);
-                            gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP",null);
-                            gerar_faceta($query_aggregate,$client,"codpes_unidade",100,"Número USP / Unidade",null); gerar_faceta($query_aggregate,$client,"internacionalizacao",30,"Internacionalização",null);                           gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
-                            gerar_faceta($query_aggregate,$client,"fomento",100,"Agência de fomento",null);
-                            gerar_faceta($query_aggregate,$client,"indexado",100,"Indexado em",null);
-                            gerar_faceta($query_aggregate,$client,"issn_part",100,"ISSN",null);
-                            gerar_faceta($query_aggregate,$client,"areaconcentracao",100,"Área de concentração",null);
-                            gerar_faceta($query_aggregate,$client,"fatorimpacto",1000,"Fator de impacto","desc");
-                            gerar_faceta($query_aggregate,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
-                            gerar_faceta($query_aggregate,$client,"colab",120,"País dos autores externos à USP",null);
-                            gerar_faceta($query_aggregate,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); 
-                            gerar_faceta($query_aggregate,$client,"dataregistroinicial",100,"Data de registro","desc");
-                            gerar_faceta($query_aggregate,$client,"dataregistro",100,"Data de registro e alterações","desc");
+                            $facets_author->facet("authorUSP",100,"Autores USP",null);
+                            $facets_author->facet("codpes",100,"Número USP",null);
+                            $facets_author->facet("codpes_unidade",100,"Número USP / Unidade",null); 
+                            $facets_author->facet("internacionalizacao",30,"Internacionalização",null);                           
+                            $facets_author->facet("tipotese",30,"Tipo de tese",null);
+                            $facets_author->facet("fomento",100,"Agência de fomento",null);
+                            $facets_author->facet("indexado",100,"Indexado em",null);
+                            $facets_author->facet("issn_part",100,"ISSN",null);
+                            $facets_author->facet("areaconcentracao",100,"Área de concentração",null);
+                            $facets_author->facet("fatorimpacto",1000,"Fator de impacto","desc");
+                            $facets_author->facet("grupopesquisa",100,"Grupo de pesquisa",null);
+                            $facets_author->facet("colab",120,"País dos autores externos à USP",null);
+                            $facets_author->facet("colab_int_trab",100,"Colaboração - Internacionalização",null); 
+                            $facets_author->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null); 
+                            $facets_author->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); 
+                            $facets_author->facet("dataregistroinicial",100,"Data de registro","desc");
+                            $facets_author->facet("dataregistro",100,"Data de registro e alterações","desc");
                         ?>
                         </ul>
 
