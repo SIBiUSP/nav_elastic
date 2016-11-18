@@ -16,3 +16,24 @@ msgstr "All sources"
 
 msgid "Buscar"
 msgstr "Search"
+
+msgid "Início"
+msgstr "Home"
+
+msgid "Busca avançada"
+msgstr "Advanced search"
+
+msgid "Contato"
+msgstr "Contact"
+
+msgid "Usuário"
+msgstr "User"
+
+msgid "Idioma"
+msgstr "Language"
+
+msgid "Português"
+msgstr "Portuguese"
+
+msgid "Inglês"
+msgstr "English"

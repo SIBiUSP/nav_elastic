@@ -17,3 +17,4 @@ msgstr "Todas as bases"
 
 msgid "Buscar"
 msgstr "Buscar"
+

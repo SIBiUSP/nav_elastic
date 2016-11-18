@@ -17,6 +17,6 @@ $translations->toPhpArrayFile('Locale/pt_BR/LC_MESSAGES/pt_BR.php');
 
 echo 'Tradução PT_BR atualizada<br/>';
 
-echo '<a href="index.php">Voltar</a> '
+echo '<a href="index.php">Voltar</a>';
 
 ?>

@@ -5,33 +5,31 @@
                 <a class="uk-navbar-brand uk-hidden-small" href="index.php" style="color:white">BDPI USP</a>
                 <ul class="uk-navbar-nav uk-hidden-small">
                     <li>
-                        <a href="index.php" style="color:white">Início</a>
+                        <a href="index.php" style="color:white"><?php echo $t->gettext('Início'); ?></a>
                     </li>
                     <li>
                         <a href="#" data-uk-toggle="{target:'#busca_contextualizada'}" style="color:white">Busca contextualizada</a>
                     </li>
                     <li>
-                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white">Busca avançada</a>
+                        <a href="#" data-uk-toggle="{target:'#busca_avancada'}" style="color:white"><?php echo $t->gettext('Busca avançada'); ?></a>
                     </li>                    
                 </ul>
                     <div class="uk-navbar-flip">
                         <ul class="uk-navbar-nav uk-hidden-small">
-                            <!--
                             <li data-uk-dropdown="{mode:'click'}">
                                 <a href="" style="color:white">
-                                    Idioma
+                                    <?php echo $t->gettext('Idioma'); ?>
                                     <i class="uk-icon-caret-down"></i>
                                 </a>
                                 <div class="uk-dropdown uk-dropdown-small">
                                     <ul class="uk-nav uk-nav-dropdown">
-                                        <li style="color:black"><a href="">Português</a></li>
-                                        <li><a href="">Inglês</a></li>
+                                        <li style="color:black"><a href="index.php?locale=pt_BR"><?php echo $t->gettext('Português'); ?></a></li>
+                                        <li><a href="index.php?locale=en_US"><?php echo $t->gettext('Inglês'); ?></a></li>
                                     </ul>
                                 </div> 
                             </li>
-                            -->
                             <li>
-                                <a href="contato.php" style="color:white">Contato</a>
+                                <a href="contato.php" style="color:white"><?php echo $t->gettext('Contato'); ?></a>
                             </li>
                             <!--
                             <li>
@@ -39,7 +37,7 @@
                             </li>
                             -->
                             <li data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
-                                <a href="" style="color:white"><i class="uk-icon-home"></i> Usuário</a>
+                                <a href="" style="color:white"><i class="uk-icon-home"></i> <?php echo $t->gettext('Usuário'); ?></a>
 
                                 <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
                                     <ul class="uk-nav uk-nav-navbar">
@@ -78,7 +76,7 @@
                             <fieldset data-uk-margin>
                                 <legend>Número USP</legend>
                                 <input type="text" placeholder="Insira um número USP" name="codpes" data-validation="required">
-                                <button class="uk-button" type="submit">Buscar</button>
+                                <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
 
                         </form>
