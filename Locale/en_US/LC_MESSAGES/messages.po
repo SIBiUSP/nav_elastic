@@ -12,7 +12,7 @@ msgstr ""
 "Language-Team: SIBiUSP\n"
 
 msgid "Todas as bases"
-msgstr "All sources"
+msgstr "All types"
 
 msgid "Buscar"
 msgstr "Search"
@@ -37,3 +37,18 @@ msgstr "Portuguese"
 
 msgid "Inglês"
 msgstr "English"
+
+msgid "Nossos números"
+msgstr "Statistics"
+
+msgid "Ferramentas"
+msgstr "Tools"
+
+msgid "Número USP"
+msgstr "USP ID"
+
+msgid "Pesquisa"
+msgstr "Search"
+
+msgid "Pesquise por termo ou autor"
+msgstr "Search for keyword or author"

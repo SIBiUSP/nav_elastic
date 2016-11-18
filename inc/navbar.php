@@ -41,7 +41,7 @@
 
                                 <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom" style="top: 40px; left: 0px;">
                                     <ul class="uk-nav uk-nav-navbar">
-                                        <li class="uk-nav-header">Ferramentas</li>
+                                        <li class="uk-nav-header"><?php echo $t->gettext('Ferramentas'); ?></li>
                                         <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
                                         <li><a href="comparar_wos.php">Comparador WoS</a></li>
                                         <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
@@ -74,7 +74,7 @@
                         <form class="uk-form" role="form" action="result.php" method="get">
 
                             <fieldset data-uk-margin>
-                                <legend>Número USP</legend>
+                                <legend><?php echo $t->gettext('Número USP'); ?></legend>
                                 <input type="text" placeholder="Insira um número USP" name="codpes" data-validation="required">
                                 <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
@@ -87,7 +87,7 @@
                                 <legend>Assunto do Vocabulário Controlado</legend>
                                 <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
                                 <input type="text" name="assunto" data-validation="required">
-                                <button class="uk-button" type="submit">Buscar</button>
+                                <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
 
                         </form>                          
@@ -138,7 +138,7 @@
                                 <div id="slider-range"></div>                                
                                 <br/>
                                 <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="search[]" data-validation="required"></textarea>
-                                <button class="uk-button" type="submit">Buscar</button>
+                                <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
                                 <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
                             </fieldset>
 

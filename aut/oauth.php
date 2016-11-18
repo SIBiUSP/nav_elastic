@@ -22,9 +22,7 @@ if( !empty( filter_input(INPUT_GET,'erro') ) ){
  exit;
 }
 
-session_start();
-
-include('../inc/config.php');
+include(__DIR__.'/../inc/config.php'); 
 
 if ( !empty( filter_input(INPUT_GET,'reset') ) )
 {

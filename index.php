@@ -44,8 +44,8 @@
                         <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
                         <form class="uk-form" action="result.php" method="get">
                             <fieldset data-uk-margin>
-                                <legend>Pesquisa</legend>
-                                <input type="text" placeholder="Pesquise por termo ou autor" class="uk-form-width-large" name="search[]" data-validation="required">                                        
+                                <legend><?php echo $t->gettext('Pesquisa'); ?></legend>
+                                <input type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" class="uk-form-width-large" name="search[]" data-validation="required">                                        
                                 <select name="search[]">
                                     <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
                                     <option value="base.keyword:&quot;Produção científica&quot;">Produção científica</option>
@@ -101,7 +101,7 @@
                         <i class="uk-icon-bar-chart uk-icon-large uk-text-primary"></i>
                     </div>
                     <div class="uk-width-5-6">
-                        <h2 class="uk-h3">Nossos números</h2>
+                        <h2 class="uk-h3"><?php echo $t->gettext('Nossos números'); ?></h2>
                         <ul class="uk-list uk-list-striped">
                             <li><?php echo number_format(contar_registros($client),0,',','.'); ?> registros</li>
                             <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>                                
