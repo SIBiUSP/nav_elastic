@@ -257,165 +257,9 @@ function base_inicio($client) {
 }
 
 
-function gerar_faceta($consulta,$client,$field,$tamanho,$field_name,$sort) {
-    $sort_query="";
-    if (!empty($sort)){
-         $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-    }     
-
-    
-    $query = '{
-        '.$consulta.'
-        "aggs": {
-            "counts": {
-                "terms": {
-                    "field": "'.$field.'.keyword",
-                    '.$sort_query.'
-                    "size" : '.$tamanho.'
-                }
-            }
-        }
-    }';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,          
-        'body' => $query
-    ];
-    
-    
-    
-    
-    $response = $client->search($params);    
-    
-    echo '<li class="uk-parent">';    
-    echo '<a href="#">'.$field_name.'</a>';
-    echo ' <ul class="uk-nav-sub">';
-    //$count = 1;
-    foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
-        echo '<p class="uk-form-controls-condensed">';
-        echo '<div class="uk-grid"><div class="uk-width-4-5">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div> <div class="uk-width-1-5"> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-plus" data-uk-tooltip title="E"></a> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-minus" data-uk-tooltip title="NÃO"></a>  <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-check-circle-o" data-uk-tooltip title="OU"></a></div>';
-        echo '</p>';
-        echo '</li>';
-        
-        //if ($count == 11)
-        //    {  
-        //         echo '<div id="'.$campo.'" class="uk-hidden">';
-        //    }
-        //$count++;
-    };
-    //if ($count > 12) {
-        //echo '</div>';
-        //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-    //}
-    echo   '</ul></li>';
 
 
-}
 
-function corrigir_faceta($consulta,$client,$field,$tamanho,$nome_do_campo) {
-
-    $query = '{
-        '.$consulta.'
-        "aggs": {
-            "counts": {
-                "terms": {
-                    "field": "'.$field.'.keyword",
-                    "order" : { "_count" : "desc" },
-                    "size" : '.$tamanho.'
-                }
-            }
-        }
-    }';    
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0, 
-        'body' => $query
-    ];
-    
-    $response = $client->search($params);
-    
-    echo '<li class="uk-parent">';
-    echo '<a href="#">'.$nome_do_campo.'</a>';
-    echo ' <ul class="uk-nav-sub">';
-    foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-        echo '<li class="uk-h6">';        
-        echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-        echo '</li>';
-    };
-    echo   '</ul>
-      </li>';
-
-}
-
-function gerar_faceta_range($consulta,$client,$campo,$tamanho,$nome_do_campo) {
-
-    $query = '
-    {
-        '.$consulta.'
-        "aggs" : {
-            "ranges" : {
-                "range" : {
-                    "field" : "metrics.'.$campo.'",
-                    "ranges" : [
-                        { "to" : 1 },
-                        { "from" : 1, "to" : 2 },
-                        { "from" : 2, "to" : 5 },
-                        { "from" : 5, "to" : 10 },
-                        { "from" : 10, "to" : 100 },
-                        { "from" : 100 }
-                    ]
-                }
-            }
-        }
-     }
-     ';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,          
-        'body' => $query
-    ];
-    
-    $response = $client->search($params); 
-    
-    //print_r($response);
-
-    echo '<li class="uk-parent">';    
-    echo '<a href="#">'.$nome_do_campo.'</a>';
-    echo ' <ul class="uk-nav-sub">';
-    echo '<form>';
-    //$count = 1;
-    foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
-        echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
-        echo '<p class="uk-form-controls-condensed">';
-        echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+metrics.'.$campo.':&quot;'.$facets['key'].'&quot;">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-        echo '</p>';
-        echo '</li>';
-        
-        //if ($count == 11)
-        //    {  
-        //         echo '<div id="'.$campo.'" class="uk-hidden">';
-        //    }
-        //$count++;
-    };
-    //if ($count > 12) {
-        //echo '</div>';
-        //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-    //}
-
-    echo '<input type="hidden" checked="checked" name="operator" value="AND">';
-    echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
-    echo '</form>';
-    echo   '</ul></li>';    
-    
-
-}
 
 
 /* Pegar o tipo de material */
@@ -1201,343 +1045,9 @@ function analisa_get($get) {
             '.$search_term.'
         },
     ';
-    
-    
-    
-//    $new_get = $get;
-//    
-//    $get = str_replace('"','\"',$get);
-//    
-//    /* Missing query */
-//    foreach ($get as $k => $v){
-//        if($v == 'N/D'){
-//            $filter[] = '{"missing" : { "field" : "'.$k.'" }}';
-//            unset($get[$k]);
-//        }
-//    }    
-//    
-//    /* limpar base all */
-//    if (isset($get['base']) && $get['base'][0] == 'all'){
-//        unset($get['base']);
-//        unset($new_get['base']);
-//    }    
-//
-//    /* Subject */
-//    if (isset($get['assunto'])){   
-//        $get['subject'][] = $get['assunto'];
-//        $new_get['subject'][] = $get['assunto'];
-//        unset($get['assunto']);
-//        unset($new_get['assunto']);
-//    }    
-//    
-//    /* Pagination */
-//    if (isset($get['page'])) {
-//        $page = $get['page'];
-//        unset($get['page']);
-//        unset($new_get['page']);
-//    } else {
-//        $page = 1;
-//    }
-//    
-//    /* Empty search_index */
-//    if (empty($get['search_index'])){
-//        unset($get['search_index']);
-//        unset($new_get['search_index']);
-//    }
-//    
-//    /* Pagination variables */
-//
-//    $limit = 20;
-//    $skip = ($page - 1) * $limit;
-//    $next = ($page + 1);
-//    $prev = ($page - 1);
-//    $sort = array('year' => -1);    
-//    
-//     if (!empty($get["date_init"])||(!empty($get["date_end"]))) {
-//        $filter[] = '
-//        {
-//            "range" : {
-//                "year" : {
-//                    "gte" : '.$get["date_init"].',
-//                    "lte" : '.$get["date_end"].'
-//                }
-//            }
-//        }
-//        ';
-//        $novo_get[] = 'date_init='.$new_get['date_init'].'';
-//        $novo_get[] = 'date_end='.$new_get['date_end'].''; 
-//        $data_inicio = $get["date_init"];
-//        $data_fim = $get["date_end"];
-//        unset($new_get["date_init"]);
-//        unset($new_get["date_end"]);         
-//        unset($get["date_init"]);
-//        unset($get["date_end"]);
-//    }
-//    
-//    
-//     if (!empty($get["full_citations_scopus"])) {
-//         
-//        $range = explode("-", $get["full_citations_scopus"][0]);  
-//     
-//        $range_query = '
-//        {
-//            "range" : {
-//                "metrics.full_citations_scopus" : {
-//                    "gte" : '.$range[0].',
-//                    "lte" : '.$range[1].'
-//                }
-//            }
-//        }
-//        ';
-//         
-//        unset($get["full_citations_scopus"]); 
-//         
-//
-//    } else {
-//         $range_query = "";
-//     }
-//
-//     if (!empty($get["three_years_citations_scopus"])) {
-//         
-//        $range = explode("-", $get["three_years_citations_scopus"][0]);  
-//         
-//        $range_query = '
-//        {
-//            "range" : {
-//                "metrics.three_years_citations_scopus" : {
-//                    "gte" : '.$range[0].',
-//                    "lte" : '.$range[1].'
-//                }
-//            }
-//        }
-//        ';
-//
-//    } else {
-//         $range_query = "";
-//     }        
-//   
-//    
-//    if (count($get) == 0) {
-//        
-//        $query_complete = '{   
-//            "query": {    
-//                 "match_all": {}
-//             },
-//            "sort":[
-//                {"year.keyword":"desc"},
-//                {"_uid":"desc"}
-//            ]
-//        }';
-//        
-//
-//        $query_aggregate = '
-//           "query": {    
-//                 "match_all": {}
-//             },
-//        ';        
-//       
-//        
-//    } elseif (!empty($get['search_index'])) {
-//        $search_term = '
-//            "query_string" : {
-//                "fields" : ["title", "authors_index", "authorUSP", "subject", "resumo"],
-//                "query" : "'.$get['search_index'].'",
-//                "default_operator": "AND"
-//            }                
-//        ';
-//        
-//        unset($get['search_index']);
-//
-//        $filter = []; 
-//        foreach ($get as $key => $value) {
-//           if (count($value) > 1){
-//               foreach ($value as $valor){
-//                    $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-//                }               
-//           } else {
-//               $filter[] = '{"term":{"'.$key.'.keyword":"'.$value[0].'"}}';
-//           }
-//            
-//        }
-//        
-//        if (count($filter) > 0) {
-//            $filter_query = ''.implode(",", $filter).''; 
-//        } else {
-//            $filter_query = '';
-//        }
-//
-//
-//        $query_complete = '{
-//            "sort" : [
-//                    { "year.keyword" : "desc" }
-//                ],    
-//            "query": {    
-//                "bool": {
-//                  "must": {
-//                    '.$search_term.'
-//                  },
-//                  "filter":[
-//                    '.$filter_query.'        
-//                    ]
-//                  }
-//            }
-//        }';
-//
-//
-//        $query_aggregate = '
-//            "query": {
-//                "bool": {
-//                  "must": {
-//                    '.$search_term.'
-//                  },
-//                  "filter":[
-//                    '.$filter_query.'
-//                    ]
-//                  }
-//                },
-//        ';
-//        
-//    } elseif (!empty($get['advanced_search'])) {        
-//        
-//        $get['advanced_search'] = str_replace('"','\"',$get['advanced_search']);
-//        $search_fields = "";
-//        if (!empty($get['fields'])) {
-//            $search_fields = implode('","',$get['fields']);
-//            unset($get['fields']); 
-//        } else {            
-//            $search_fields = "_all";
-//        }
-//        
-//        $search_term = '       
-//            "query_string" : {
-//                "fields" : ["'.$search_fields.'"],
-//                "query" : "'.implode(" ",$get['advanced_search']).'",
-//                "default_operator": "AND"
-//            }        
-//   
-//        ';
-//        
-//        unset($get['advanced_search']);
-//
-//        $query_complete = '{
-//            "sort" : [
-//                    { "year.keyword" : "desc" }
-//                ],    
-//            "query": {
-//                    '.$search_term.'
-//            }
-//        }';
-//
-//
-//        $query_aggregate = '
-//            "query": {
-//                    '.$search_term.'
-//                },
-//        ';
-//    
-//    } else {
-//        
-//        
-//        
-//        foreach ($get as $key => $value) {
-//
-//            $conta_value = count($value);
-//            $get_query1 = [];
-//            $get_query1[] = $range_query;
-//            
-//            if ($conta_value > 1) {
-//                foreach ($value as $valor){
-//                    $get_query1[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-//                }                        
-//            } else {
-//                 foreach ($value as $valor){
-//                     $filter[] = '{"term":{"'.$key.'.keyword":"'.$valor.'"}}';
-//                 }
-//            }       
-//        }
-//    
-//        $query_part = '"must" : ['.implode(",",$get_query1).']';
-//        if (empty($filter)){
-//            $filter=[];
-//        }
-//        
-//        $query_part2 = implode(",",$filter);
-//
-//        $query_complete = '
-//                    {
-//                       "sort" : [
-//                           { "year.keyword" : "desc" }
-//                       ],
-//                       "query" : {
-//                          "constant_score" : {
-//                             "filter" : {
-//                                "bool" : {
-//                                  "should" : [
-//                                    { "bool" : {
-//                                    '.$query_part.'
-//                                   }} 
-//                                  ],
-//                                  "filter": [
-//                                    '.$query_part2.'
-//                                  ]
-//                               }
-//                             }
-//                          }
-//                       },
-//                      "from": '.$skip.',
-//                      "size": '.$limit.'
-//                    }    
-//        ';
-//                
-//        $query_aggregate = '
-//                    "query" : {  
-//                      "constant_score" : {
-//                         "filter" : {
-//                            "bool" : {
-//                              "should" : [
-//                                { "bool" : {
-//                                '.$query_part.'
-//                               }} 
-//                              ],
-//                              "filter": [
-//                                '.$query_part2.'
-//                              ]
-//                           }
-//                         }
-//                      }
-//                   },
-//        ';
-//}
-//        
-///* Pegar a URL atual */
-//    
-//    
-//if (isset($new_get)){
-//    
-//   $novo_get="";
-//    if (!empty($new_get['search_index'])){
-//        $novo_get[] = 'search_index='.$new_get['search_index'].'';
-//        $termo_consulta = $new_get['search_index'];
-//        unset($new_get['search_index']);
-//    }  
-//    
-//    foreach ($new_get as $key => $value){
-//        $novo_get[] = ''.$key.'[]='.$value[0].'';        
-//    } 
-//    if (!empty($novo_get)){
-//        $pega_get = implode("&",$novo_get); 
-//    } else {
-//        $pega_get = "";
-//    }
-//       
-//    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'?'.$pega_get.'';
-//
-//} else {
-//    $url = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['PHP_SELF'].'';
-//}
-//    $escaped_url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');     
-//    
-return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
+ 
+    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
+
 }
 
   
@@ -1791,6 +1301,168 @@ function get_fulltext_file($id,$session){
     return $links_upload;
 }
 
+
+class facets {
+    
+    public function gerar_faceta($consulta, $field,$tamanho,$field_name,$sort) {
+        global $client;        
+        $sort_query="";
+        if (!empty($sort)){
+             $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
+        }     
+
+        $query = '{
+            '.$consulta.'
+            "aggs": {
+                "counts": {
+                    "terms": {
+                        "field": "'.$field.'.keyword",
+                        '.$sort_query.'
+                        "size" : '.$tamanho.'
+                    }
+                }
+            }
+        }';
+
+        $params = [
+            'index' => 'sibi',
+            'type' => 'producao',
+            'size'=> 0,          
+            'body' => $query
+        ];
+
+        $response = $client->search($params);    
+
+        echo '<li class="uk-parent">';    
+        echo '<a href="#">'.$field_name.'</a>';
+        echo ' <ul class="uk-nav-sub">';
+        //$count = 1;
+        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+            echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
+            echo '<p class="uk-form-controls-condensed">';
+            echo '<div class="uk-grid"><div class="uk-width-4-5">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div> <div class="uk-width-1-5"> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-plus" data-uk-tooltip title="E"></a> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-minus" data-uk-tooltip title="NÃO"></a>  <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" class="uk-icon-hover uk-icon-check-circle-o" data-uk-tooltip title="OU"></a></div>';
+            echo '</p>';
+            echo '</li>';
+
+            //if ($count == 11)
+            //    {  
+            //         echo '<div id="'.$campo.'" class="uk-hidden">';
+            //    }
+            //$count++;
+        };
+        //if ($count > 12) {
+            //echo '</div>';
+            //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
+        //}
+        echo   '</ul></li>';
+
+
+    }
+    
+    public function corrigir_faceta($consulta,$field,$tamanho,$nome_do_campo) {
+        global $client;
+        $query = '{
+            '.$consulta.'
+            "aggs": {
+                "counts": {
+                    "terms": {
+                        "field": "'.$field.'.keyword",
+                        "order" : { "_count" : "desc" },
+                        "size" : '.$tamanho.'
+                    }
+                }
+            }
+        }';    
+
+        $params = [
+            'index' => 'sibi',
+            'type' => 'producao',
+            'size'=> 0, 
+            'body' => $query
+        ];
+
+        $response = $client->search($params);
+
+        echo '<li class="uk-parent">';
+        echo '<a href="#">'.$nome_do_campo.'</a>';
+        echo ' <ul class="uk-nav-sub">';
+        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+            echo '<li class="uk-h6">';        
+            echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+            echo '</li>';
+        };
+        echo   '</ul>
+          </li>';
+
+    }
+
+    public function gerar_faceta_range($consulta,$campo,$tamanho,$nome_do_campo) {
+        global $client;
+        $query = '
+        {
+            '.$consulta.'
+            "aggs" : {
+                "ranges" : {
+                    "range" : {
+                        "field" : "metrics.'.$campo.'",
+                        "ranges" : [
+                            { "to" : 1 },
+                            { "from" : 1, "to" : 2 },
+                            { "from" : 2, "to" : 5 },
+                            { "from" : 5, "to" : 10 },
+                            { "from" : 10, "to" : 100 },
+                            { "from" : 100 }
+                        ]
+                    }
+                }
+            }
+         }
+         ';
+
+        $params = [
+            'index' => 'sibi',
+            'type' => 'producao',
+            'size'=> 0,          
+            'body' => $query
+        ];
+
+        $response = $client->search($params); 
+
+        //print_r($response);
+
+        echo '<li class="uk-parent">';    
+        echo '<a href="#">'.$nome_do_campo.'</a>';
+        echo ' <ul class="uk-nav-sub">';
+        echo '<form>';
+        //$count = 1;
+        foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
+            echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
+            echo '<p class="uk-form-controls-condensed">';
+            echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+metrics.'.$campo.':&quot;'.$facets['key'].'&quot;">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+            echo '</p>';
+            echo '</li>';
+
+            //if ($count == 11)
+            //    {  
+            //         echo '<div id="'.$campo.'" class="uk-hidden">';
+            //    }
+            //$count++;
+        };
+        //if ($count > 12) {
+            //echo '</div>';
+            //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
+        //}
+
+        echo '<input type="hidden" checked="checked" name="operator" value="AND">';
+        echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
+        echo '</form>';
+        echo   '</ul></li>';    
+
+
+    }
+    
+    
+}
 
 
 

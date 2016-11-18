@@ -91,33 +91,35 @@
     <h3 class="uk-panel-title">Refinar meus resultados</h3>    
     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
         <hr>
-    <?php 
-        gerar_faceta($query_aggregate,$client,"base",10,"Base",null);
-        gerar_faceta($query_aggregate,$client,"type",10,"Tipo de material",null);
-        gerar_faceta($query_aggregate,$client,"unidadeUSP",100,"Unidade USP",null);
-        gerar_faceta($query_aggregate,$client,"departamento",100,"Departamento",null);
-        gerar_faceta($query_aggregate,$client,"authors",120,"Autores",null);
-        gerar_faceta($query_aggregate,$client,"authorUSP",100,"Autores USP",null);
-        gerar_faceta($query_aggregate,$client,"year",120,"Ano de publicação","desc");
-        gerar_faceta($query_aggregate,$client,"subject",100,"Assuntos",null);
-        gerar_faceta($query_aggregate,$client,"language",40,"Idioma",null);
-        gerar_faceta($query_aggregate,$client,"ispartof",100,"É parte de ...",null);
-        gerar_faceta($query_aggregate,$client,"publisher",100,"Editora",null);
-        gerar_faceta($query_aggregate,$client,"evento",100,"Nome do evento",null);
-        gerar_faceta($query_aggregate,$client,"country",200,"País de publicação",null);
-        gerar_faceta($query_aggregate,$client,"tipotese",30,"Tipo de tese",null);
-        gerar_faceta($query_aggregate,$client,"areaconcentracao",100,"Área de concentração",null);
-        gerar_faceta($query_aggregate,$client,"programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
-        gerar_faceta($query_aggregate,$client,"programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null);
-        gerar_faceta($query_aggregate,$client,"indexado",100,"Indexado em",null);
-        gerar_faceta($query_aggregate,$client,"fatorimpacto",1000,"Fator de impacto","desc");         
-        gerar_faceta($query_aggregate,$client,"grupopesquisa",100,"Grupo de pesquisa",null);
-        gerar_faceta($query_aggregate,$client,"internacionalizacao",30,"Internacionalização",null);  
-        gerar_faceta($query_aggregate,$client,"colab",120,"País dos autores externos à USP",null);
-        gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração institucional",null);
-        gerar_faceta($query_aggregate,$client,"fomento",100,"Agência de fomento",null);
-        gerar_faceta_range($query_aggregate,$client,"three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
-        gerar_faceta_range($query_aggregate,$client,"full_citations_scopus",100,"Total de citações na Scopus");
+    <?php
+        $facets = new facets();
+        
+        $facets->gerar_faceta($query_aggregate,"base",10,"Base",null);
+        $facets->gerar_faceta($query_aggregate,"type",10,"Tipo de material",null);
+        $facets->gerar_faceta($query_aggregate,"unidadeUSP",100,"Unidade USP",null);
+        $facets->gerar_faceta($query_aggregate,"departamento",100,"Departamento",null);
+        $facets->gerar_faceta($query_aggregate,"authors",120,"Autores",null);
+        $facets->gerar_faceta($query_aggregate,"authorUSP",100,"Autores USP",null);
+        $facets->gerar_faceta($query_aggregate,"year",120,"Ano de publicação","desc");
+        $facets->gerar_faceta($query_aggregate,"subject",100,"Assuntos",null);
+        $facets->gerar_faceta($query_aggregate,"language",40,"Idioma",null);
+        $facets->gerar_faceta($query_aggregate,"ispartof",100,"É parte de ...",null);
+        $facets->gerar_faceta($query_aggregate,"publisher",100,"Editora",null);
+        $facets->gerar_faceta($query_aggregate,"evento",100,"Nome do evento",null);
+        $facets->gerar_faceta($query_aggregate,"country",200,"País de publicação",null);
+        $facets->gerar_faceta($query_aggregate,"tipotese",30,"Tipo de tese",null);
+        $facets->gerar_faceta($query_aggregate,"areaconcentracao",100,"Área de concentração",null);
+        $facets->gerar_faceta($query_aggregate,"programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
+        $facets->gerar_faceta($query_aggregate,"programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null);
+        $facets->gerar_faceta($query_aggregate,"indexado",100,"Indexado em",null);
+        $facets->gerar_faceta($query_aggregate,"fatorimpacto",1000,"Fator de impacto","desc");         
+        $facets->gerar_faceta($query_aggregate,"grupopesquisa",100,"Grupo de pesquisa",null);
+        $facets->gerar_faceta($query_aggregate,"internacionalizacao",30,"Internacionalização",null);  
+        $facets->gerar_faceta($query_aggregate,"colab",120,"País dos autores externos à USP",null);
+        $facets->gerar_faceta($query_aggregate,"colab_instituicao_corrigido",100,"Colaboração institucional",null);
+        $facets->gerar_faceta($query_aggregate,"fomento",100,"Agência de fomento",null);
+        $facets->gerar_faceta_range($query_aggregate,"three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
+        $facets->gerar_faceta_range($query_aggregate,"full_citations_scopus",100,"Total de citações na Scopus");
     ?>
     </ul>
         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
@@ -125,12 +127,15 @@
             <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
             <hr>
             <?php         
-                gerar_faceta($query_aggregate,$client,"codpes",100,"Número USP",null);
-                gerar_faceta($query_aggregate,$client,"codpes_unidade",100,"Número USP / Unidade",null);
-                gerar_faceta($query_aggregate,$client,"issn",100,"ISSN",null);
-                gerar_faceta($query_aggregate,$client,"colab_int_trab",100,"Colaboração - Internacionalização",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_trab",100,"Colaboração - Instituição",null); gerar_faceta($query_aggregate,$client,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); corrigir_faceta($query_aggregate,$client,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
-                gerar_faceta($query_aggregate,$client,"dataregistroinicial",100,"Data de registro","desc");
-                gerar_faceta($query_aggregate,$client,"dataregistro",100,"Data de registro e alterações","desc");
+                $facets->gerar_faceta($query_aggregate,"codpes",100,"Número USP",null);
+                $facets->gerar_faceta($query_aggregate,"codpes_unidade",100,"Número USP / Unidade",null);
+                $facets->gerar_faceta($query_aggregate,"issn",100,"ISSN",null);
+                $facets->gerar_faceta($query_aggregate,"colab_int_trab",100,"Colaboração - Internacionalização",null); 
+                $facets->gerar_faceta($query_aggregate,"colab_instituicao_trab",100,"Colaboração - Instituição",null); 
+                $facets->gerar_faceta($query_aggregate,"colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); 
+                $facets->corrigir_faceta($query_aggregate,"colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
+                $facets->gerar_faceta($query_aggregate,"dataregistroinicial",100,"Data de registro","desc");
+                $facets->gerar_faceta($query_aggregate,"dataregistro",100,"Data de registro e alterações","desc");
             ?>
             </ul>
         <?php endif; ?>
