@@ -616,13 +616,15 @@ $record_blob = implode("\\n", $record);
                                             <?php $metrics[] = '"scopus_snip_'.$snip["@year"].'": '.$snip["$"].'';?>
                                         </li>
                                     <?php endforeach; ?>
-
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
-                                        <li>                                                    
-                                            IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                            <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
-                                        </li>
-                                    <?php endforeach; ?>
+                                    
+                                    <?php if (isset($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"])): ?>    
+                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
+                                            <li>                                                    
+                                                IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
+                                                <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>    
                                     <?php 
                                         if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccess'])) {
                                             echo '<li>Periódico de acesso aberto</li>';

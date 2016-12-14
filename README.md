@@ -16,6 +16,11 @@ curl -s http://getcomposer.org/installer | php
 php composer.phar install --no-dev
 
 
+#Developers 
+
+Tiago Rodrigo Marçal Murakami
+Jan Leduc de Lara
+
 #Credits
 
 jQuery Form Validator - http://www.formvalidator.net
