@@ -63,8 +63,8 @@
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                         <h3 class="uk-panel-title">Contato</h3>
                         <p>
-                            <strong>Departamento Técnico do Sistema Integrado de Bibliotecas da Universidade de São Paulo</strong>
-                            <br>Rua da Biblioteca, S/N - Complexo Brasiliana
+                            <strong>Departamento Técnico do Sistema Integrado de Bibliotecas da Universidade de São Paulo</strong>     
+                            <br>Rua da Praça do Relógio, 109 - Bloco L  Térreo
                             <br>05508-050 - Cidade Universitária, São Paulo, SP - Brasil
                         </p>
                         <p>

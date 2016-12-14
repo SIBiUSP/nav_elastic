@@ -148,8 +148,8 @@ if (!empty($cursor["_source"]['ispartof'])) {
 $record[] = "T2  - ".$cursor["_source"]['ispartof']."";
 }
 
-if (!empty($cursor["_source"]['issn_part'][0])) {
-$record[] = "SN  - ".$cursor["_source"]['issn_part'][0]."";
+if (!empty($cursor["_source"]['issn'][0])) {
+$record[] = "SN  - ".$cursor["_source"]['issn'][0]."";
 }
 
 if (!empty($cursor["_source"]["doi"])) {
@@ -278,7 +278,7 @@ $record_blob = implode("\\n", $record);
         ], 
         "name": "'.$cursor["_source"]['ispartof'].'", 
         "issn": [
-            "'.$cursor["_source"]['issn_part'][0].'"
+            "'.$cursor["_source"]['issn'][0].'"
         ],  
         "publisher": "'.$cursor["_source"]['publisher'].'"
     },
@@ -356,12 +356,12 @@ $record_blob = implode("\\n", $record);
 
         <div class="uk-grid uk-margin-top" data-uk-grid-margin>
             
-            <?php if (!empty($cursor["_source"]['issn_part'][0])) : ?>
-                <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn_part'][0]),$api_elsevier); ?>
+            <?php if (!empty($cursor["_source"]['issn'][0])) : ?>
+                <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier); ?>
                 <?php
                     if (!empty($issn_info)) {
                         //print_r($issn_info);
-                        store_issn_info($client,$cursor["_source"]['issn_part'][0],json_encode($issn_info));
+                        store_issn_info($client,$cursor["_source"]['issn'][0],json_encode($issn_info));
                     }
                     
                 ?>
@@ -477,7 +477,7 @@ $record_blob = implode("\\n", $record);
                                 <ul class="uk-list uk-list-line">
                                     <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
                                     <li>
-                                        <a href="result.php?authors[]=<?php echo $autores;?>"><?php echo $autores;?></a>
+                                        <a href="result.php?search[]=authors.keyword:&quot;<?php echo $autores;?>&quot;"><?php echo $autores;?></a>
                                     </li>
                                     <?php endforeach;?>                                
                                 </ul>
@@ -492,7 +492,7 @@ $record_blob = implode("\\n", $record);
                                 <ul class="uk-list uk-list-line">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
                                 <li>
-                                    <a href="result.php?authorUSP[]=<?php echo $autoresUSP;?>"><?php echo $autoresUSP;?></a>
+                                    <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP;?>&quot;"><?php echo $autoresUSP;?></a>
                                 </li>
                                 <?php endforeach;?>
                                 </ul>
@@ -506,7 +506,7 @@ $record_blob = implode("\\n", $record);
                                 <h4 class="uk-margin-top">Unidades USP:</h4>
                                 <ul class="uk-list uk-list-line">
                                     <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
-                                    <li><a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a></li>
+                                    <li><a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a></li>
                                     <?php endforeach;?>
                                 </ul>
                             </li>
@@ -518,7 +518,7 @@ $record_blob = implode("\\n", $record);
                                 <h4 class="uk-margin-top">Assuntos:</h4>
                                 <ul class="uk-list uk-list-line">
                                     <?php foreach ($cursor["_source"]['subject'] as $subject): ?>
-                                    <li><a href="result.php?subject[]=<?php echo $subject;?>"><?php echo $subject;?></a></li>
+                                    <li><a href="result.php?assunto=<?php echo $subject;?>"><?php echo $subject;?></a></li>
                                     <?php endforeach;?>
                                 </ul>
                             </li>
@@ -530,7 +530,7 @@ $record_blob = implode("\\n", $record);
                                 <h4 class="uk-margin-top">Idioma:</h4>
                                 <ul class="uk-list uk-list-line">
                                    <?php foreach ($cursor["_source"]['language'] as $language): ?>
-                                        <li><a href="result.php?language[]=<?php echo $language;?>"><?php echo $language;?></a></li>
+                                        <li><a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a></li>
                                    <?php endforeach;?>
                                 </ul>                            
                             </li>
@@ -553,21 +553,21 @@ $record_blob = implode("\\n", $record);
                             <li>
                                 <h4 class="uk-margin-top">Imprenta:</h4>
                                 <ul class="uk-list uk-list-line">
-                                    <li>Local: <a href="result.php?publisher-place[]=<?php echo $cursor["_source"]['publisher-place'];?>"><?php echo $cursor["_source"]['publisher-   place'];?></a></li>
-                                    <li>Data de publicação: <a href="result.php?year[]=<?php echo $cursor["_source"]['year'];?>"><?php echo $cursor["_source"]['year'];?></a></li>
+                                    <li>Local: <a href="result.php?search[]=publisher-place.keyword:&quot;<?php echo $cursor["_source"]['publisher-place'];?>&quot;"><?php echo $cursor["_source"]['publisher-   place'];?></a></li>
+                                    <li>Data de publicação: <a href="result.php?search[]=year.keyword:&quot;<?php echo $cursor["_source"]['year'];?>&quot;"><?php echo $cursor["_source"]['year'];?></a></li>
                                 </ul>
                             </li>
                             
                         <?php endif; ?>    
                             
-                        <!-- Fonte -->
+                        <!-- Source -->
                         <?php if (!empty($cursor["_source"]['ispartof'])): ?>
                             <li>
                                 <h4 class="uk-margin-top">Fonte:</h4>
                                 <ul class="uk-list uk-list-line">
-                                    <li>Título: <a href="result.php?ispartof[]=<?php echo $cursor["_source"]['ispartof'];?>"><?php echo $cursor["_source"]['ispartof'];?></a></li>
-                                    <?php if (!empty($cursor["_source"]['issn_part'])): ?>
-                                    <li>ISSN: <a href="result.php?issn_part=<?php echo $cursor["_source"]['issn_part'][0];?>"><?php echo $cursor["_source"]['issn_part'][0];?></a></li>
+                                    <li>Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></li>
+                                    <?php if (!empty($cursor["_source"]['issn'])): ?>
+                                    <li>ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></li>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
                                     <li>Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></li>

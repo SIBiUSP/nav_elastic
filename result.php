@@ -267,8 +267,8 @@
                     
                     <!--    
                         
-                    < ?php if (!empty($r["_source"]['issn_part'][0])) : ?>
-                            < ?php $issn_info = get_title_elsevier(str_replace("-","",$r["_source"]['issn_part'][0]),$api_elsevier); ?>
+                    < ?php if (!empty($r["_source"]['issn'][0])) : ?>
+                            < ?php $issn_info = get_title_elsevier(str_replace("-","",$r["_source"]['issn'][0]),$api_elsevier); ?>
                     < ?php endif; ?>
 
                     -->
@@ -331,7 +331,7 @@
                                             <?php endif; ?>                           
                                         </li>
                                         
-                                        <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?ispartof[]=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>
+                                        <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $r["_source"]['ispartof'];?>&quot;"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>
                                         
                                         <li class="uk-h6">
                                             Unidades USP:
