@@ -104,7 +104,8 @@
                         <h2 class="uk-h3"><?php echo $t->gettext('Nossos números'); ?></h2>
                         <ul class="uk-list uk-list-striped">
                             <li><?php echo number_format(contar_registros($client),0,',','.'); ?> registros</li>
-                            <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>                                
+                            <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>
+                            <li><?php echo number_format(contar_arquivos($client),0,',','.'); ?> arquivos de texto integral</li>
                         </ul>
                     </div>
                 </div>

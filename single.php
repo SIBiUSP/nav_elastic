@@ -55,6 +55,7 @@ if (!empty($_FILES)) {
             '
             {
                 "doc":{
+                    "sysno":"'.$_GET['_id'].'",
                     "file_info" :[ 
                         {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
                         {"name_file":"'.$_FILES['upload_file']['name'].'"},

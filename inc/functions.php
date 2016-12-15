@@ -61,6 +61,27 @@ function contar_registros ($client) {
 
 }
 
+function contar_arquivos ($client) {
+
+    $query_all = '
+        {
+            "query": {
+                "match_all": {}
+            }
+        }        
+    ';
+    $params = [
+        'index' => 'sibi',
+        'type' => 'files',
+        'size'=> 0,
+        'body' => $query_all
+    ];
+    $response = $client->search($params);
+    return $response['hits']['total'];
+    print_r($response);
+
+}
+
 function contar_unicos ($field,$client) {
 
     $count_distinct_query = '

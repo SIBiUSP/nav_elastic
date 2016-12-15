@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2016-11-18T13:17:22-02:00
+POT-Creation-Date: 2016-12-15T07:31:42-02:00
 PO-Revision-Date: 2016-11-18
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
