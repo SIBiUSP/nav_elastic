@@ -73,6 +73,7 @@ if (!empty($_FILES)) {
                 'index' => 'sibi',
                 'type' => 'files',
                 'id' => $uploadfile,
+                'parent' => $_GET['_id'],
                 'body' => $query
             ];
             $response_upload = $client->update($params); 
@@ -470,8 +471,15 @@ $record_blob = implode("\\n", $record);
                     
                         <h2><?php echo $cursor["_source"]['title'];?> (<?php echo $cursor["_source"]['year']; ?>)</h2>
                         <ul class="uk-list">
+
+                        <!--Type -->
+                        <?php if (!empty($cursor["_source"]['type'])): ?>
+                            <li>
+                                <h4>Tipo: <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a></h4>                                
+                            </li>
+                        <?php endif; ?>                          
                             
-                            <!--List authors -->
+                        <!--List authors -->
                         <?php if (!empty($cursor["_source"]['authors'])): ?>
                             <li>
                                 <h4>Autor(es):</h4>

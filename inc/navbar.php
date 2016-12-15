@@ -52,6 +52,7 @@
                                             <li><a href="aut/oauth.php">Login</a></li>
                                         <?php else: ?>
                                             <li><a href="#"><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></a></li>
+                                            <li><a href="admin.php">Administração</a></li>
                                             <li><a href="aut/logout.php">Logout</a></li>
                                         <?php endif; ?>
                                     </ul>

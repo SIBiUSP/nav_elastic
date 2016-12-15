@@ -30,6 +30,15 @@ PUT /sibi
   }
 }
 
+PUT /sibi/files/_mapping
+{
+     "files": {
+        "_parent": {
+        "type": "producao" 
+        }
+    }
+}
+
 
 PUT /sibi/producao/_mapping
 {
@@ -59,8 +68,7 @@ PUT /sibi/producao/_mapping
                   "analyzer": "portuguese",
                   "fields": {
                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
+                        "type": "keyword"
                      }
                   }
                },
@@ -234,8 +242,7 @@ PUT /sibi/producao/_mapping
                   "type": "text",
                   "fields": {
                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
+                        "type": "keyword"
                      }
                   }
                },
@@ -297,8 +304,7 @@ PUT /sibi/producao/_mapping
                   "type": "text",
                   "fields": {
                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
+                        "type": "keyword"
                      }
                   }
                },
@@ -315,8 +321,7 @@ PUT /sibi/producao/_mapping
                   "type": "text",
                   "fields": {
                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
+                        "type": "keyword"
                      }
                   }
                },
@@ -452,8 +457,7 @@ PUT /sibi/producao/_mapping
                   "analyzer": "portuguese",
                   "fields": {
                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
+                        "type": "keyword"
                      }
                   }
                },
@@ -504,4 +508,5 @@ PUT /sibi/producao/_mapping
                }
             }
          }
+    }
 }
