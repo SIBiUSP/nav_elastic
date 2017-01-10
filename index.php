@@ -38,7 +38,7 @@
         
         <div class="uk-grid uk-margin-large-bottom" data-uk-grid-margin>
             <div class="uk-width-medium-1-1">
-                <div class="uk-vertical-align uk-text-center uk-responsive-width" style="background: url('') 50% 0 no-repeat; height: 350px;">
+                <div class="uk-vertical-align uk-text-center uk-responsive-width" style="background: url('') 50% 0 no-repeat; height: 400px;">
                     <div class="uk-vertical-align-middle uk-width-1-2">
                         <h1>Base de Produção Intelectual da USP</h1>
                         <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
