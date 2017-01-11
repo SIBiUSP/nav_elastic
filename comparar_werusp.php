@@ -23,7 +23,7 @@
     <body>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
-    <div class="uk-container uk-container-center uk-margin-top">  
+    <div class="uk-container uk-margin-top">  
                 
         <h1>CSV do weRUSP</h1>
                 

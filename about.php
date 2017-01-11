@@ -13,7 +13,7 @@
         <?php include_once("inc/analyticstracking.php") ?>
 
         <?php include('inc/navbar.php'); ?>
-<div class="uk-container uk-container-center uk-margin-large-top">
+<div class="uk-container uk-margin-large-top">
     <h1>Em breve</h1>
         
         

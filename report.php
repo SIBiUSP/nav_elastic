@@ -59,7 +59,7 @@
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
  
-     <div class="uk-container uk-container-center">   
+     <div class="uk-container">   
         
          <h3 class="uk-margin-top">Relatório com os seguintes parâmetros:
                     <?php foreach ($_GET as $filters) : ?>

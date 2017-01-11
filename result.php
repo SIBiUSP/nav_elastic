@@ -67,17 +67,17 @@
         <?php include_once("inc/analyticstracking.php") ?>  
         <?php include('inc/navbar.php'); ?>        
         
-        <div class="uk-container uk-container-center">
+        <div class="uk-container">
             <div class="uk-grid" data-uk-grid>                        
-                <div class="uk-width-small-1-2 uk-width-medium-2-6">                    
+                <div class="uk-width-small-1-2 uk-width-2-6@m">                    
                     
 
 <div class="uk-panel uk-panel-box">
-    <form class="uk-form" method="get" action="result.php">
+    <form method="get" action="result.php">
     <fieldset>
         
         <?php if (!empty($_GET["search"])) : ?>
-        <legend>Filtros ativos</legend>
+        <legend uk-form>Filtros ativos</legend>
             <div class="uk-form-row">
                 <?php foreach($_GET["search"] as $filters): ?>
                     <input type="checkbox" name="search[]" value="<?php print_r(str_replace('"','&quot;',$filters)); ?>" checked><?php print_r($filters); ?><br/>
@@ -188,7 +188,7 @@
 
                     
                 </div>
-                <div class="uk-width-small-1-2 uk-width-medium-4-6">
+                <div class="uk-width-small-1-2 uk-width-4-6@m">
                     
                 <div class="uk-alert" data-uk-alert>
                     <a href="" class="uk-alert-close uk-close"></a>
@@ -275,7 +275,7 @@
                         
                         <li>                        
                             <div class="uk-grid uk-flex-middle" data-uk-grid-   margin="">
-                                <div class="uk-width-medium-2-10 uk-row-first">
+                                <div class="uk-width-2-10@m uk-row-first">
                                     <div class="uk-panel uk-h6 uk-text-break">
                                         <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a>
                                     </div>
@@ -310,7 +310,7 @@
                                     </div>                                     
                                     
                                 </div>
-                                <div class="uk-width-medium-8-10 uk-flex-middle">
+                                <div class="uk-width-8-10@m uk-flex-middle">
                                     
                                     <ul class="uk-list">
                                         <li class="uk-margin-top uk-h4">

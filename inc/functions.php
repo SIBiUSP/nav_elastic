@@ -166,31 +166,31 @@ function ultimos_registros($client) {
         'size' => 11,
         'body' => $query
     ];
-    $response = $client->search($params);    
-
+    $response = $client->search($params); 
+    
     foreach ($response["hits"]["hits"] as $r){
         echo '<article class="uk-comment">
-        <header class="uk-comment-header">';    
+        <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>';    
         if (!empty($r["_source"]['unidadeUSP'])) {
             $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
         } else {
             $file = "";
         }
         if (file_exists($file)) {
-        echo '<img class="uk-comment-avatar" src="'.$file.'">';
+        echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="80" height="80" alt=""></div>';
         } else {
-        #echo ''.$r['unidadeUSP'].'</a>';
+
         };
+        echo '<div class="uk-width-expand">';
         if (!empty($r["_source"]['title'])){
-        echo '<a class="ui small header" href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
+        echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
         };
-        echo '<div class="extra">';
-        if (!empty($r["_source"]['authors'])) {
-        echo '<div class="uk-comment-meta";">';    
+        echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
+        if (!empty($r["_source"]['authors'])) { 
         foreach ($r["_source"]['authors'] as $autores) {
-        echo '<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>, ';
+        echo '<li><a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a></li>';
         }
-        echo '</div>';     
+        echo '</ul></div>';     
         };
         echo '</header>';
         echo '</article>';
@@ -233,7 +233,7 @@ function unidadeUSP_inicio($client) {
         
        if ($count == 12)
             {  
-                 echo '<div id="unidades" class="uk-hidden uk-list uk-list-striped">';
+                 echo '<div id="unidades" class="uk-list uk-list-striped" hidden>';
             }
         $count++;
     }
@@ -245,7 +245,7 @@ function unidadeUSP_inicio($client) {
     
     if ($count > 7) {
         echo '</div>';
-        echo '<button class="uk-button" data-uk-toggle="{target:\'#unidades\'}">Ver todas as unidades</button>';
+        echo '<button uk-toggle="target: #unidades">Ver todas as unidades</button>';
     }
      
 }
@@ -1313,9 +1313,9 @@ function get_fulltext_file($id,$session){
             }
             
             if( strpos( $file, '.pdf' ) !== false ) {
-                $links_upload[] = '<div class="uk-width-medium-1-4"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+                $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
             } else {
-                $links_upload[] = '<div class="uk-width-medium-1-4"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+                $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
             }
         }
     }
@@ -1488,6 +1488,21 @@ class facets {
     
 }
 
+function card_unidade ($sigla,$nome_unidade) {
+    $card = '
+    <div class="uk-card uk-card-default">
+        <a href="result.php?search[]=unidadeUSPtrabalhos:'.$sigla.'">
+            <div class="uk-card-media uk-card-media-top">
+                <img src="inc/images/logosusp/'.$sigla.'.jpg" alt="'.$sigla.'">
+            </div>
+            <div class="uk-card-body">
+                <p>'.$nome_unidade.'</p>
+            </div>
+        </a>   
+    </div>     
+    ';
+    return $card;
+}
 
 
 ?>

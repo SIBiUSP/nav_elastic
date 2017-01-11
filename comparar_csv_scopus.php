@@ -28,7 +28,7 @@
         
 
             <?php include('inc/navbar.php'); ?>
-            <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">  
+            <div class="uk-container uk-margin-top uk-margin-bottom">  
                 
                 <h1><a href="comparar_csv_scopus.php">CSV do Scopus</a></h1>
                 <p>Para obter o arquivo aceito, faça uma busca na Scopus e selecione os resultados que deseja comparar, clique em 'Export', escolha 'CSV' e 'Citation information only', e depois escolha 'CSV export with citation information only.' e clique em 'Export'. Será salvo um arquivo chamado scopus.csv, que é aceito pelo comparador.</p>

@@ -12,7 +12,7 @@
         <?php include_once("inc/analyticstracking.php") ?>
 
         <?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">       
+        <div class="uk-container uk-margin-top uk-margin-bottom">       
                 
             <h1><a href="comparar_lattes.php">XML do Lattes</a></h1>
             <p>Para obter o XML do Lattes, é necessário entrar no Currículo desejado e no topo à direita tem um botão de baixar XML. Depois é necessário dezipar o arquivo. O arquivo aceito é o curriculo.xml. Para resultados mais precisos, favor preencher o Número USP do autor.</p>

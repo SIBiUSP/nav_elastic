@@ -28,7 +28,7 @@
         
 
             <?php include('inc/navbar.php'); ?>
-            <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">  
+            <div class="uk-container uk-margin-top uk-margin-bottom">  
                 
                 <h1>CSV do Scopus</h1>
                 <p>Separado por tabulações</p>

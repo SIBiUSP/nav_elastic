@@ -343,20 +343,20 @@ $record_blob = implode("\\n", $record);
     <body>
         <?php if(!empty($response_upload)) : ?>
             <?php if ($response_upload['result'] == 'created'): ?>
-                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo incluído com sucesso", {status:'success'})</script>
+                <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo incluído com sucesso", {status:'success'})</script>
             <?php endif; ?>
         <?php endif; ?>
         <?php if(!empty($response_delete)) : ?>        
             <?php if ($response_delete['result'] == 'deleted'): ?>
-                <script>UIkit.notify("<i class='uk-icon-check'></i> Arquivo excluído com sucesso", {status:'danger'})</script>
+                <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo excluído com sucesso", {status:'danger'})</script>
             <?php endif; ?> 
         <?php endif; ?>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
 
-    <div class="uk-container uk-container-center uk-margin-large-bottom">
+    <div class="uk-container uk-margin-large-bottom">
 
-        <div class="uk-grid uk-margin-top" data-uk-grid-margin>
+        <div class="uk-grid uk-margin-top" uk-grid>
             
             <?php if (!empty($cursor["_source"]['issn'][0])) : ?>
                 <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier); ?>
@@ -370,7 +370,7 @@ $record_blob = implode("\\n", $record);
             <?php endif; ?>             
             
             
-            <div class="uk-width-medium-1-3">
+            <div class="uk-width-1-3@m">
                 <div class="uk-panel uk-panel-box">
                     
                    <?php
@@ -461,7 +461,7 @@ $record_blob = implode("\\n", $record);
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="uk-width-medium-2-3">
+            <div class="uk-width-2-3@m">
                 <ul class="uk-tab" data-uk-tab="{connect:'#single'}">
                     <li class="uk-active"><a href="">Visualização</a></li>
                     <li><a href="">Texto completo</a></li>
@@ -777,9 +777,9 @@ $record_blob = implode("\\n", $record);
                                     <input name="upload_file" data-validation="required" data-validation="mime size" data-validation-allowing="pdf, pptx" data-validation-max-size="100M" type="file">
                                 </div> -->
                                 <div class="uk-form-select uk-button" data-uk-form-select>
-                                    <span>Informe o tipo de acesso <i class="uk-icon-caret-down"></i></span>
+                                    <span>Informe o tipo de acesso <span uk-icon="icon: caret-down"></span></span>
                                     <select name="rights" data-validation="required">
-                                        <option value="">Informe o tipo de acesso <i class="uk-icon-caret-down"></i></option>
+                                        <option value="">Informe o tipo de acesso <span uk-icon="icon: caret-down"></span></option>
                                         <option value="Acesso aberto">Acesso aberto</option>
                                         <option value="Embargado">Embargado</option>
                                     </select>

@@ -12,21 +12,21 @@
     <body>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-container-center uk-margin-large-top">
+        <div class="uk-container uk-margin-large-top">
     
             
  <?php if(!empty($_SESSION['oauthuserdata'])): ?>              
             
             <h2>Área de administração e gerenciamento</h2>
-            <div class="uk-grid" data-uk-grid-margin>
+            <div class="uk-grid" uk-grid>
 
-                <div class="uk-width-medium-2-4">
+                <div class="uk-width-2-4@">
 
                     <p><a href="autoridades.php">Atualizar autoridades</a></p> 
                     
                 </div>
 
-                <div class="uk-width-medium-2-4">
+                <div class="uk-width-2-4@m">
                     
                     <p><a href="translate_en.php">Atualizar tradução para o Inglês</a></p>
                     <p><a href="translate_pt_BR.php">Atualizar tradução para o Português</a></p>

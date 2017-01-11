@@ -23,7 +23,7 @@
     <body>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
-    <div class="uk-container uk-container-center uk-margin-top">   
+    <div class="uk-container uk-margin-top">   
                 
         <h1><a href="comparar_wos.php">CSV da Web of Science</a></h1>
         <p>Para obter o arquivo, faça uma busca na Web of Science, selecione os registros, clique em 'Salvar em outros formatos de arquivo', selecione 'Autor, Título e Fonte' e em formato de arquivo 'Separado por tabulações (Win, UTF-8)'. Será salvo um arquivo chamado saverecs.txt, que é aceito pelo comparador.</p>
