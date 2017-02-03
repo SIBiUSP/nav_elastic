@@ -68,8 +68,8 @@
         <?php include('inc/navbar.php'); ?>        
         
         <div class="uk-container">
-            <div class="uk-grid" data-uk-grid>                        
-                <div class="uk-width-small-1-2 uk-width-2-6@m">                    
+            <div uk-grid>                        
+                <div class="uk-width-1-4@s uk-width-2-6@m">                    
                     
 
 <div class="uk-panel uk-panel-box">
@@ -88,9 +88,13 @@
     </fieldset>        
     </form>    
     <hr>
-    <h3 class="uk-panel-title">Refinar meus resultados</h3>    
-    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
-        <hr>
+    <h3 class="uk-panel-title">Refinar meus resultados</h3>
+    <hr>
+
+    <div class="uk-width-1-1@s uk-width-5-5@m">
+        <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>    
+    
+        
     <?php
         $facets = new facets();
         $facets->query_aggregate = $query_aggregate;
@@ -182,13 +186,13 @@
             </fieldset>        
     <?php endif; ?>                
             
-</div>
+</div></div></div>
     
                     
 
                     
-                </div>
-                <div class="uk-width-small-1-2 uk-width-4-6@m">
+                
+                <div class="uk-width-3-4@s uk-width-4-6@m">
                     
                 <div class="uk-alert" data-uk-alert>
                     <a href="" class="uk-alert-close uk-close"></a>
