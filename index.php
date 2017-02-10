@@ -34,83 +34,102 @@
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
         
-        
-        
-        <div class="uk-grid uk-margin-large-bottom" uk-grid>
-            <div class="uk-width-1-2@m">
-                <div class="uk-flex-middle" style="background: url('') 50% 0 no-repeat; height: 400px;">
-                    <div class="uk-width-1-2">
-                        <h1>Base de Produção Intelectual da USP</h1>
+        <div class="uk-background-cover uk-height-viewport" style="background-image: url(http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg);">
+            <div class="uk-container" >
+                <div class="uk-position-relative uk-margin-top">
+                    <div class="uk-position-top">
+                        <div class="uk-hidden@m">
+                            <a href="#offcanvas" style="color:#fff" uk-toggle><span uk-navbar-toggle-icon></span> <span class="uk-margin-small-left">Menu</span></a>
+                            <div id="offcanvas" uk-offcanvas>
+                                <div class="uk-offcanvas-bar">
+
+                                    <h3>Title</h3>
+
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+                                    <button class="uk-button uk-button-default uk-offcanvas-close uk-width-1-1 uk-margin" type="button">Close</button>
+
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="uk-visible@m">
+                            </div>
+                        <div class="uk-overlay uk-overlay-primary" style="padding: auto">
+                        <h2 style="color:#fcb421">Base de Produção Intelectual da USP</h2>
                         <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
-                        <form action="result.php" method="get">
-                            <fieldset>
-                                <legend class="uk-legend"><?php echo $t->gettext('Pesquisa'); ?></legend>
-                                <input type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" class="uk-input" name="search[]" data-validation="required">                                        
-                                <select class="uk-select" name="search[]">
-                                    <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
-                                    <option value="base.keyword:&quot;Produção científica&quot;">Produção científica</option>
-                                    <option value="base.keyword:&quot;Teses e dissertações&quot;">Teses e dissertações</option>
-                                </select>
-                                <input type="hidden" name="fields[]" value="title">
-                                <input type="hidden" name="fields[]" value="authors">
-                                <input type="hidden" name="fields[]" value="authorUSP">
-                                <input type="hidden" name="fields[]" value="subject">
-                                <input type="hidden" name="fields[]" value="resumo">
-                                <button class="uk-button-primary"><?php echo $t->gettext('Buscar'); ?></button><br/>                                    
-                            </fieldset>
-                        </form>
+
+                        
+                            <form class="uk-form-stacked" action="result.php">
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="form-stacked-text">Termos de busca</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="form-stacked-text" type="text" placeholder="O que você quer pesquisar?">
+                                    </div>
+                                </div>
+
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="form-stacked-select">Selecione a base</label>
+                                    <div class="uk-form-controls">
+                                        <select class="uk-select" id="form-stacked-select">
+                                            <option>Todas as bases</option>
+                                            <option>Produção Científica</option>
+                                            <option>Teses e Dissertações</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Pesquisar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                  </div>      
+            
+            
+            
+            </div>        
+        
+        <div class="uk-section uk-container">
+            <h1 class="uk-heading-line uk-text-center"><span>Mais informações</span></h1>        
+            <div class="uk-child-width-expand@s uk-text-center" uk-grid>
+                <div>
+                    <div class="uk-card">
+                        <h3 class="uk-card-title">Unidades USP e Programas de Pós-Graduação Interunidades</h3>
+                        <ul class="uk-list uk-list-divider">
+                            <?php unidadeUSP_inicio($client); ?>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div class="uk-card">
+                        <h3 class="uk-card-title">Base</h3>
+                        <ul class="uk-list uk-list-divider">
+                            <?php base_inicio($client); ?>
+                        </ul>                      
+                    </div>
+                </div>
+                <div>
+                    <div class="uk-card">
+                        <h3 class="uk-card-title"><?php echo $t->gettext('Nossos números'); ?></h3>
+                        <ul class="uk-list uk-list-divider">
+                            <li><?php echo number_format(contar_registros($client),0,',','.'); ?> registros</li>
+                            <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>
+                            <li><?php echo number_format(contar_arquivos($client),0,',','.'); ?> arquivos de texto integral</li>                        
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
+        
+        
+        <div class="uk-section uk-container">
+            <h1 class="uk-heading-line uk-text-center"><span>Últimos regístros</span></h1>
+            <?php ultimos_registros($client);?>
+        </div>        
 
         <div class="uk-container uk-margin-large-bottom">
         
-        <hr class="uk-grid-divider">
-            
-        <div class="uk-grid" uk-grid>
-            <div class="uk-width-1-3@m">
-                <div class="uk-grid">
-                    <div class="uk-width-1-6">
-                        <span uk-icon="icon: university"></span>
-                    </div>
-                    <div class="uk-width-5-6">
-                        <h2 class="uk-h3">Unidades USP e Programas de Pós-Graduação Interunidades</h2>
-                        <ul class="uk-list uk-list-striped">
-                            <?php unidadeUSP_inicio($client); ?>
-                        </ul>                            
-                    </div>
-                </div>
-            </div>
-            <div class="uk-width-1-3@m">
-                <div class="uk-grid">
-                    <div class="uk-width-1-6">
-                        <span uk-icon="icon: file"></span>
-                    </div>
-                    <div class="uk-width-5-6">
-                        <h2 class="uk-h3">Base</h2>
-                        <ul class="uk-list uk-list-striped">
-                            <?php base_inicio($client); ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-width-1-3@m">
-                <div class="uk-grid">
-                    <div class="uk-width-1-6">
-                        <span uk-icon="icon: bar-chart"></span>
-                    </div>
-                    <div class="uk-width-5-6">
-                        <h2 class="uk-h3"><?php echo $t->gettext('Nossos números'); ?></h2>
-                        <ul class="uk-list uk-list-striped">
-                            <li><?php echo number_format(contar_registros($client),0,',','.'); ?> registros</li>
-                            <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>
-                            <li><?php echo number_format(contar_arquivos($client),0,',','.'); ?> arquivos de texto integral</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>                
-        </div>
+
             
 <div class="uk-grid-match uk-child-width-expand@s uk-text-center" uk-grid>
     <?php echo card_unidade("CEBIMAR","Centro de Biologia Marinha (CEBIMAR)"); ?>
@@ -186,18 +205,6 @@
 </div> 
 
                              
-               
-
-
-            <hr class="uk-grid-divider">
-            
-            <div class="uk-grid" uk-grid>
-                <div class="uk-width-1-1@m">
-                    <h2 class="uk-h3">Últimos registros</h2>
-                    <?php ultimos_registros($client);?>       
-                     
-                </div>
-            </div>               
             
             <hr class="uk-grid-divider">
             
