@@ -1,11 +1,12 @@
-<div class="barrausp">
-    <nav class="uk-navbar-transparent uk-container" uk-navbar="dropbar: true; dropbarMode: push; mode:click" style="padding:0px">
+<div class="uk-position-top">
+<div class="uk-visible@m">
+    <nav class="uk-container uk-navbar-container uk-margin uk-navbar-transparent" uk-navbar="dropbar: true; dropbar-mode: push; mode: click">      
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
-                <li><a href="index.php" style="color:#fff;height:55px;padding-top:6px">Início</a></li>
-                <li><a href="#" style="color:#fff;height:55px;padding-top:6px">Busca institucional</a></li>
-                <li>
-                    <a href="#" style="color:#fff;height:55px;padding-top:6px">Busca avançada</a>
+                <li class="uk-active"><a href="index.php">Início</a></li>
+                <li class="uk-active"><a href="#">Busca institucional</a></li>
+                <li class="uk-active">
+                    <a href="#">Busca avançada</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li class="uk-active"><a href="#">Active</a></li>
@@ -18,19 +19,19 @@
                         </ul>
                     </div>
                 </li>
-            </ul>
+             </ul>
         </div>
         <div class="uk-navbar-center">
-            <a class="uk-navbar-item uk-logo" href="index.php" style="height:55px;padding-top:10px"><img src="http://lem.icmc.usp.br/img/logo_usp.png" width="80px"></a>
+            <a class="uk-navbar-item uk-logo" href="index.php"><img src="http://www.scs.usp.br/identidadevisual/wp-content/uploads/2013/08/usp-logo-png.png" width="110px"></a>
         </div>
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
-                <li><a href="#" style="color:#fff;height:55px;padding-top:6px">Contato</a></li>
-                <li>
-                    <a href="#" class="" aria-expanded="false" style="color:#fff;height:55px;padding-top:6px">Idioma</a>
+                <li class="uk-active"><a href="#">Contato</a></li>
+                <li class="uk-active">
+                    <a href="#" class="" aria-expanded="false">Idioma</a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Active</a></li>
+                            <li class="uk-active"><a href="#" style="height:57px">Active</a></li>
                              <li class="uk-parent">
                                 <a href="#">Parent</a>
                                 <ul class="uk-nav-sub">
@@ -62,14 +63,33 @@
                         </ul>
                     </div>
                 </li>
-                <li>
-                    <a href="#" class="" aria-expanded="false" style="color:#fff;height:55px;padding-top:6px">SIBiUSP</a>
+                <li class="uk-active">
+                    <a href="#" class="" aria-expanded="false">SIBiUSP</a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
                 </li>
             </ul>
-
-        </div>                        
-
+        </div>            
     </nav>
+</div>         
+<div class="uk-hidden@m">
+    <nav class="uk-navbar uk-navbar-container uk-navbar-transparent uk-margin">
+        <div class="uk-navbar-left">
+            <a class="uk-navbar-toggle" href="#offcanvas" style="color:#333" uk-toggle>
+                <span uk-navbar-toggle-icon></span> <span class="uk-margin-small-left">Menu</span>
+            </a>
+        </div>
+    </nav>
+    <div id="offcanvas" uk-offcanvas>
+        <div class="uk-offcanvas-bar">
 
+            <h3>Title</h3>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+            <button class="uk-button uk-button-default uk-offcanvas-close uk-width-1-1 uk-margin" type="button">Close</button>
+
+        </div>
+    </div>                            
 </div>
+
+</div> 
