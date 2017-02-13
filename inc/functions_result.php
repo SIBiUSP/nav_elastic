@@ -166,8 +166,8 @@ class facets {
             echo '<li>';
             echo '<p>';
             echo '<div uk-grid class="uk-text-small">
-                    <div class="uk-width-3-5@m">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-                    <div class="uk-width-2-5@m">
+                    <div class="uk-width-2-3">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
+                    <div class="uk-width-1-3">
                         <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="E" uk-icon="icon: close;ratio: 0.5"></a>
                         <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="NÃO" uk-icon="icon: minus;ratio: 0.5"></a>
                         <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="OU" uk-icon="icon: plus;ratio: 0.5"></a>
