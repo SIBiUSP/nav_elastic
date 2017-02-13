@@ -126,10 +126,14 @@ function consultar_vcusp($termo) {
     }
 }
 
-class facets {   
+class facets {
     
-    public function facet($field,$tamanho,$field_name,$sort) {
-        global $client;
+    function __construct() {
+       global $client; 
+       $this -> client = $client;
+    }
+    
+    public function facet($field,$tamanho,$field_name,$sort) {        
         $query_aggregate = $this->query_aggregate;
         $sort_query="";
         if (!empty($sort)){
@@ -156,7 +160,7 @@ class facets {
             'body' => $query
         ];
 
-        $response = $client->search($params);    
+        $response = $this->client->search($params);    
         
         echo '<li class="uk-parent">';    
         echo '<a href="#">'.$field_name.'</a>';
@@ -182,7 +186,6 @@ class facets {
     }
     
     public function rebuild_facet($field,$tamanho,$nome_do_campo) {
-        global $client;
         $query_aggregate = $this->query_aggregate;
         $query = '{
             '.$query_aggregate.'
@@ -204,7 +207,7 @@ class facets {
             'body' => $query
         ];
 
-        $response = $client->search($params);
+        $response = $this->client->search($params);
 
         echo '<li class="uk-parent">';
         echo '<a href="#">'.$nome_do_campo.'</a>';
@@ -220,7 +223,6 @@ class facets {
     }
 
     public function facet_range($campo,$tamanho,$nome_do_campo) {
-        global $client;
         $query_aggregate = $this->query_aggregate;
         $query = '
         {
@@ -250,7 +252,7 @@ class facets {
             'body' => $query
         ];
 
-        $response = $client->search($params); 
+        $response = $this->client->search($params); 
 
         //print_r($response);
 
