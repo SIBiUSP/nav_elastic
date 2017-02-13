@@ -1,5 +1,34 @@
 <?php
 
+/**
+ * Classe de interação com o Elasticsearch
+ */
+class elasticsearch {
+    /**
+     * Executa o commando get no Elasticsearch
+     * 
+     * @param string $_id ID do documento
+     * @param string $type Tipo de documento no índice do Elasticsearch                         
+     * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
+     * 
+     */
+    public static function elastic_get ($_id,$type,$fields) {
+        global $index;
+        global $client;
+        if (!defined('type_constant')) define('type_constant', ''.$type.'');
+        //define('fields', ''.$fields.'');
+        $params = [];
+        $params["index"] = $index;
+        $params["type"] = type_constant;
+        $params["id"] = $_id;
+        $params["_source"] = $fields;
+        
+        $response = $client->get($params);        
+        return $response;    
+    }   
+}
+
+
 function query_one_elastic ($_id,$client) {
     
     $params = [
@@ -38,7 +67,6 @@ function counter ($_id,$client) {
     $response = $client->update($params);        
     //print_r($response);
 }
-
 
 function contar_registros ($client) {
 
@@ -277,12 +305,6 @@ function base_inicio($client) {
     
 }
 
-
-
-
-
-
-
 /* Pegar o tipo de material */
 function get_type($material_type){
   switch ($material_type) {
@@ -312,49 +334,6 @@ function get_type($material_type){
       break;
   }
 }
-
-/* Recupera os exemplares do DEDALUS */
-function load_itens_new ($sysno) {
-    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
-    if ($xml->error == "No associated items"){
-
-    } else {
-        echo "<h5>Exemplares físicos disponíveis nas Bibliotecas da USP</h5>";
-        echo '<div id="exemplares'.$sysno.'">';
-        echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
-                    <thead>
-                      <tr>
-                        <th>Biblioteca</th>
-                        <th>Código de barras</th>
-                        <th>Status</th>
-                        <th>Número de chamada</th>";
-                        if ($xml->item->{'loan-status'} == "A"){
-                        echo "<th>Status</th>
-                        <th>Data provável de devolução</th>";
-                      } else {
-                        echo "<th>Status</th>";
-                      }
-                      echo "</tr>
-                    </thead>
-                  <tbody>";
-          foreach ($xml->item as $item) {
-            echo '<tr>';
-            echo '<td>'.$item->{'sub-library'}.'</td>';
-            echo '<td>'.$item->{'barcode'}.'</td>';
-            echo '<td>'.$item->{'item-status'}.'</td>';
-            echo '<td>'.$item->{'call-no-1'}.'</td>';
-            if ($item->{'loan-status'} == "A"){
-            echo '<td>Emprestado</td>';
-            echo '<td>'.$item->{'loan-due-date'}.'</td>';
-          } else {
-            echo '<td>Disponível</td>';
-          }
-            echo '</tr>';
-          }
-          echo "</tbody></table></div>";
-          }
-          flush();
-  }
 
 /* Recupera os exemplares do DEDALUS */
 function load_itens_single ($sysno) {
@@ -398,52 +377,6 @@ function load_itens_single ($sysno) {
           }
           flush();
   }
-
-/* Function to generate Graph Bar */
-function generateDataGraphBar($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
-
-    if (!empty($sort)){
-        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
-    }
-    $query = '
-    {
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'.keyword",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0, 
-        'body' => $query
-    ]; 
-    
-    $facet = $client->search($params);    
-    
-    $data_array= array();
-    foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
-        array_push($data_array,'{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
-    };
-    
-    if ($campo == "year" ) {
-        $data_array_inverse = array_reverse($data_array);
-        $comma_separated = implode(",", $data_array_inverse);
-    } else {
-        $comma_separated = implode(",", $data_array);
-    }
-
-    return $comma_separated;
-
-};
 
 /* Function to generate Tables */
 function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
@@ -496,8 +429,7 @@ echo "<table class=\"uk-table\">
     </table>";
 
 
-};
-
+}
 
 /* Function to generate CSV */
 function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
@@ -537,10 +469,9 @@ function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $face
     $comma_separated = implode("\\n", $data_array);
     return $comma_separated;
 
-};
+}
 
 /* Comparar registros */
-
 function compararRegistros ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
 
     $query = '
@@ -736,8 +667,6 @@ function compararRegistrosLattes ($client,$query_type,$query_year,$query_title,$
     }
 }
 
-
-
 function compararRegistrosScopus ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
     $query = '
@@ -806,7 +735,6 @@ function compararRegistrosScopus ($client,$query_type,$query_year,$query_title,$
             return $result_row;
     }
 }
-
 
 function compararCSVScopus ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
@@ -887,7 +815,6 @@ function compararCSVScopus ($client,$query_type,$query_year,$query_title,$query_
         return $result_row;
     }
 }
-
 
 function compararRegistrosWos ($client,$query_type,$query_year,$query_title,$query_authors,$query_DOI) {
 
@@ -1069,118 +996,7 @@ function analisa_get($get) {
  
     return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
 
-}
-
-  
-function consultar_vcusp($termo) {
-    echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
-    $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
-    
-    if ($xml->{'resume'}->{'cant_result'} != 0) {
-
-        $termo_xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchUp&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-        foreach (($termo_xml->{'result'}->{'term'}) as $string_up) {
-            $string_up_array[] = '<a href="result.php?assunto='.$string_up->{'string'}.'">'.$string_up->{'string'}.'</a>';    
-        };
-        echo 'Você também pode pesquisar pelos termos mais genéricos: ';
-        print_r(implode(" -> ",$string_up_array));
-        echo '<br/>';
-        $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-        if (!empty($termo_xml_down->{'result'}->{'term'})){
-            foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
-                $string_down_array[] = '<a href="result.php?assunto='.$string_down->{'string'}.'">'.$string_down->{'string'}.'</a>';     
-            };
-            echo 'Ou pesquisar pelo assuntos mais específicos: ';
-            print_r(implode(" - ",$string_down_array));            
-        }
-
-
-    } else {
-        $termo_naocorrigido[] = $termo_limpo;
-    }
-}
-
-function gera_consulta_citacao($citacao) {
-
-    $type = get_type($citacao["type"]);
-    $author_array = array();
-    foreach ($citacao["authors"] as $autor_citation){
-        $array_authors = explode(',', $autor_citation);
-        $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
-    };
-    $authors = implode(",",$author_array);
-
-    if (!empty($citacao["ispartof"])) {
-        $container = '"container-title": "'.$citacao["ispartof"].'",';
-    } else {
-        $container = "";
-    };
-    if (!empty($citacao["doi"])) {
-        $doi = '"DOI": "'.$citacao["doi"][0].'",';
-    } else {
-        $doi = "";
-    };
-
-    if (!empty($citacao["url"])) {
-        $url = '"URL": "'.$citacao["url"][0].'",';
-    } else {
-        $url = "";
-    };
-
-    if (!empty($citacao["publisher"])) {
-        $publisher = '"publisher": "'.$citacao["publisher"].'",';
-    } else {
-        $publisher = "";
-    };
-
-    if (!empty($citacao["publisher_place"])) {
-        $publisher_place = '"publisher-place": "'.$citacao["publisher_place"].'",';
-    } else {
-        $publisher_place = "";
-    };
-
-    $volume = "";
-    $issue = "";
-    $page_ispartof = "";
-
-    if (!empty($citacao["ispartof_data"])) {
-        foreach ($citacao["ispartof_data"] as $ispartof_data) {
-            if (strpos($ispartof_data, 'v.') !== false) {
-                $volume = '"volume": "'.str_replace("v.","",$ispartof_data).'",';
-            } elseif (strpos($ispartof_data, 'n.') !== false) {
-                $issue = '"issue": "'.str_replace("n.","",$ispartof_data).'",';
-            } elseif (strpos($ispartof_data, 'p.') !== false) {
-                $page_ispartof = '"page": "'.str_replace("p.","",$ispartof_data).'",';
-            }
-        }
-    }
-
-    $data = json_decode('{
-    "title": "'.$citacao["title"].'",
-    "type": "'.$type.'",
-    '.$container.'
-    '.$doi.'
-    '.$url.'
-    '.$publisher.'
-    '.$publisher_place.'
-    '.$volume.'
-    '.$issue.'
-    '.$page_ispartof.'
-    "issued": {
-    "date-parts": [
-    [
-    "'.$citacao["year"].'"
-    ]
-    ]
-    },
-    "author": [
-    '.$authors.'
-    ]
-    }');
-    
-    return $data;    
-    
-}
+}  
 
 function get_title_elsevier($issn,$api_elsevier) {
     // Get cURL resource
@@ -1299,207 +1115,19 @@ function store_issn_info($client,$issn,$issn_info){
     
 }
 
-function get_fulltext_file($id,$session){
-    $files_upload = glob('upload/'.$id[0].'/'.$id[1].'/'.$id[2].'/'.$id[3].'/'.$id[4].'/'.$id[5].'/'.$id[6].'/'.$id[7].'/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
-    $links_upload = "";
-    if (!empty($files_upload)){       
-        foreach($files_upload as $file) {
-            $delete = "";    
-            if (!empty($session)){
-                $delete = '<form method="POST" action="single.php?_id='.$id.'">
-                               <input name="delete_file" value="'.$file.'"  type="hidden">
-                               <button class="uk-close uk-close-alt uk-alert-danger" alt="Deletar arquivo"></button>
-                           </form>';
-            }
-            
-            if( strpos( $file, '.pdf' ) !== false ) {
-                $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
-            } else {
-                $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$file.'" target="_blank"><img src="inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
-            }
-        }
-    }
-    return $links_upload;
-}
-
-
-class facets {   
-    
-    public function facet($field,$tamanho,$field_name,$sort) {
-        global $client;
-        $query_aggregate = $this->query_aggregate;
-        $sort_query="";
-        if (!empty($sort)){
-             $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }     
-
-        $query = '{
-            '.$query_aggregate.'
-            "aggs": {
-                "counts": {
-                    "terms": {
-                        "field": "'.$field.'.keyword",
-                        '.$sort_query.'
-                        "size" : '.$tamanho.'
-                    }
-                }
-            }
-        }';
-
-        $params = [
-            'index' => 'sibi',
-            'type' => 'producao',
-            'size'=> 0,          
-            'body' => $query
-        ];
-
-        $response = $client->search($params);    
-        
-        echo '<li class="uk-parent">';    
-        echo '<a href="#">'.$field_name.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        //$count = 1;
-        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li>';
-            echo '<p>';
-            echo '<div class="uk-grid"><div class="uk-width-4-5@m">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div> <div class="uk-width-1-5@m"> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="E" uk-icon="icon: close"></a> <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="NÃO" uk-icon="icon: minus"></a>  <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="OU" uk-icon="icon: plus"></a></div>';
-            echo '</p>';
-            echo '</li>';
-
-            //if ($count == 11)
-            //    {  
-            //         echo '<div id="'.$campo.'" class="uk-hidden">';
-            //    }
-            //$count++;
-        };
-        //if ($count > 12) {
-            //echo '</div>';
-            //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-        //}
-        echo   '</ul></li>';
-
-
-    }
-    
-    public function rebuild_facet($field,$tamanho,$nome_do_campo) {
-        global $client;
-        $query_aggregate = $this->query_aggregate;
-        $query = '{
-            '.$query_aggregate.'
-            "aggs": {
-                "counts": {
-                    "terms": {
-                        "field": "'.$field.'.keyword",
-                        "order" : { "_count" : "desc" },
-                        "size" : '.$tamanho.'
-                    }
-                }
-            }
-        }';    
-
-        $params = [
-            'index' => 'sibi',
-            'type' => 'producao',
-            'size'=> 0, 
-            'body' => $query
-        ];
-
-        $response = $client->search($params);
-
-        echo '<li class="uk-parent">';
-        echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li class="uk-h6">';        
-            echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-            echo '</li>';
-        };
-        echo   '</ul>
-          </li>';
-
-    }
-
-    public function facet_range($campo,$tamanho,$nome_do_campo) {
-        global $client;
-        $query_aggregate = $this->query_aggregate;
-        $query = '
-        {
-            '.$query_aggregate.'
-            "aggs" : {
-                "ranges" : {
-                    "range" : {
-                        "field" : "metrics.'.$campo.'",
-                        "ranges" : [
-                            { "to" : 1 },
-                            { "from" : 1, "to" : 2 },
-                            { "from" : 2, "to" : 5 },
-                            { "from" : 5, "to" : 10 },
-                            { "from" : 10, "to" : 100 },
-                            { "from" : 100 }
-                        ]
-                    }
-                }
-            }
-         }
-         ';
-
-        $params = [
-            'index' => 'sibi',
-            'type' => 'producao',
-            'size'=> 0,          
-            'body' => $query
-        ];
-
-        $response = $client->search($params); 
-
-        //print_r($response);
-
-        echo '<li class="uk-parent">';    
-        echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        echo '<form>';
-        //$count = 1;
-        foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
-            echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
-            echo '<p class="uk-form-controls-condensed">';
-            echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+metrics.'.$campo.':&quot;'.$facets['key'].'&quot;">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-            echo '</p>';
-            echo '</li>';
-
-            //if ($count == 11)
-            //    {  
-            //         echo '<div id="'.$campo.'" class="uk-hidden">';
-            //    }
-            //$count++;
-        };
-        //if ($count > 12) {
-            //echo '</div>';
-            //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-        //}
-
-        echo '<input type="hidden" checked="checked" name="operator" value="AND">';
-        echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
-        echo '</form>';
-        echo   '</ul></li>';    
-
-
-    }
-    
-    
-}
-
 function card_unidade ($sigla,$nome_unidade) {
     $card = '
-    <div class="uk-card uk-card-default">
+    <div class="uk-text-center">
         <a href="result.php?search[]=unidadeUSPtrabalhos:'.$sigla.'">
-            <div class="uk-card-media uk-card-media-top">
-                <img src="inc/images/logosusp/'.$sigla.'.jpg" alt="'.$sigla.'">
+        <div class="uk-inline-clip uk-transition-toggle">
+            <img src="inc/images/fotosusp/'.$sigla.'.jpg" alt="">
+            <div class="uk-transition-fade uk-position-cover uk-position-small uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle">
+                <p class="uk-h6 uk-margin-remove">'.$nome_unidade.'</p>
             </div>
-            <div class="uk-card-body">
-                <p>'.$nome_unidade.'</p>
-            </div>
-        </a>   
-    </div>     
+        </div>
+        <p class="uk-margin-small-top">'.$sigla.'</p>
+        </a>
+    </div>
     ';
     return $card;
 }

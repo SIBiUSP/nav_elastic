@@ -26,7 +26,10 @@
         </div>
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#">Contato</a></li>
+                <li class="uk-active">
+                    <a href="#" class="" aria-expanded="false">Contato</a>
+                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                </li>               
                 <li class="uk-active">
                     <a href="#" class="" aria-expanded="false">Idioma</a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
@@ -63,10 +66,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="uk-active">
-                    <a href="#" class="" aria-expanded="false">SIBiUSP</a>
-                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                </li>
+                <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
             </ul>
         </div>            
     </nav>
