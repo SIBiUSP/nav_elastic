@@ -1,5 +1,78 @@
 <?php 
 
+function analisa_get($get) {
+    
+    $search_fields = "";
+    if (!empty($get['fields'])) {
+        $search_fields = implode('","',$get['fields']);  
+    } else {            
+        $search_fields = "_all";
+    }    
+    
+    if (!empty($get['search'])){
+        $get['search'] = str_replace('"','\"',$get['search']);
+    }
+    
+
+    /* Pagination */
+    if (isset($get['page'])) {
+        $page = $get['page'];
+        unset($get['page']);
+    } else {
+        $page = 1;
+    }
+    
+    /* Pagination variables */
+
+    $limit = 20;
+    $skip = ($page - 1) * $limit;
+    $next = ($page + 1);
+    $prev = ($page - 1);
+    $sort = array('year' => -1);       
+    
+    if (!empty($get['codpes'])){        
+        $get['search'][] = 'codpes:'.$get['codpes'].'';
+    }
+    
+    if (!empty($get['assunto'])){        
+        $get['search'][] = 'subject:\"'.$get['assunto'].'\"';
+    }    
+    
+    if (!empty($get['search'])){
+        $query = implode(" ", $get['search']); 
+    } else {
+        $query = "*";
+    }
+    
+    $search_term = '
+        "query_string" : {
+            "fields" : ["'.$search_fields.'"],
+            "query" : "'.$query.'",
+            "default_operator": "AND",
+            "analyzer":"portuguese",
+            "phrase_slop":10
+        }                
+    ';    
+    
+    $query_complete = '{
+        "sort" : [
+                { "year.keyword" : "desc" }
+            ],    
+        "query": {
+        '.$search_term.'
+        }
+    }';
+
+    $query_aggregate = '
+        "query": {
+            '.$search_term.'
+        },
+    ';
+ 
+    return compact('page','get','new_get','query_complete','query_aggregate','url','escaped_url','limit','termo_consulta','data_inicio','data_fim','skip');
+
+}  
+
 class processaResultados {
     
     /* Function to generate Graph Bar */
@@ -128,13 +201,6 @@ function consultar_vcusp($termo) {
 
 class facets {
     
-    function __construct() {
-        global $client;
-        global $index;
-        $this->client = $client;
-        $this->index = $index;
-    }
-    
     public function facet($field,$tamanho,$field_name,$sort) {        
         $query_aggregate = $this->query_aggregate;
         $sort_query="";
@@ -154,31 +220,20 @@ class facets {
                 }
             }
         }';
-
-        $params = [
-            'index' => $this->index,
-            'type' => 'producao',
-            'size'=> 0,          
-            'body' => $query
-        ];
-
-        $response = $this->client->search($params);    
+        $response = elasticsearch::elastic_search("producao",null,0,$query);
         
         echo '<li class="uk-parent">';    
-        echo '<a href="#">'.$field_name.'</a>';
+        echo '<a href="#" style="color:#333">'.$field_name.'</a>';
         echo ' <ul class="uk-nav-sub">';
         //$count = 1;
         foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
             echo '<li>';
-            echo '<p>';
-            echo '<div uk-grid class="uk-text-small">
-                    <div class="uk-width-2-3">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-                    <div class="uk-width-1-3">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="E" uk-icon="icon: close;ratio: 0.5"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="NÃO" uk-icon="icon: minus;ratio: 0.5"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="OU" uk-icon="icon: plus;ratio: 0.5"></a>
-                    </div>';
-            echo '</p>';
+            echo '<div uk-grid><div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
+                    <div class="uk-width-1-3" style="color:#333">
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" data-uk-tooltip title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>
+                    </div></div>';
             echo '</li>';
 
         };
@@ -202,14 +257,7 @@ class facets {
             }
         }';    
 
-        $params = [
-            'index' => $this->index,
-            'type' => 'producao',
-            'size'=> 0, 
-            'body' => $query
-        ];
-
-        $response = $this->client->search($params);
+        $response = elasticsearch::elastic_search("producao",null,0,$query);
 
         echo '<li class="uk-parent">';
         echo '<a href="#">'.$nome_do_campo.'</a>';
@@ -247,16 +295,7 @@ class facets {
          }
          ';
 
-        $params = [
-            'index' => $this->index,
-            'type' => 'producao',
-            'size'=> 0,          
-            'body' => $query
-        ];
-
-        $response = $this->client->search($params); 
-
-        //print_r($response);
+        $response = elasticsearch::elastic_search("producao",null,0,$query);
 
         echo '<li class="uk-parent">';    
         echo '<a href="#">'.$nome_do_campo.'</a>';
@@ -562,5 +601,151 @@ function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $face
     return $comma_separated;
 
 }
+
+function limpar($text) {
+    $utf8 = array(
+        '/[áàâãªä]/u'   =>   'a',
+        '/[ÁÀÂÃÄ]/u'    =>   'A',
+        '/[ÍÌÎÏ]/u'     =>   'I',
+        '/[íìîï]/u'     =>   'i',
+        '/[éèêë]/u'     =>   'e',
+        '/[ÉÈÊË]/u'     =>   'E',
+        '/[óòôõºö]/u'   =>   'o',
+        '/[ÓÒÔÕÖ]/u'    =>   'O',
+        '/[úùûü]/u'     =>   'u',
+        '/[ÚÙÛÜ]/u'     =>   'U',
+        '/ç/'           =>   'c',
+        '/Ç/'           =>   'C',
+        '/ñ/'           =>   'n',
+        '/Ñ/'           =>   'N',
+        '//'           =>   '', // UTF-8 hyphen to "normal" hyphen
+        '/[’‘]/u'    =>   ' ', // Literally a single quote
+        '/[“”«»„]/u'    =>   ' ', // Double quote
+        '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
+        '/[^A-Za-z0-9\\s]/' => '',
+        '/( )+/' => ' ',
+    );
+    
+    
+    return preg_replace(array_keys($utf8), array_values($utf8), $text);
+}
+
+function get_title_elsevier($issn,$api_elsevier) {
+    // Get cURL resource
+    $curl = curl_init();
+    // Set some options - we are passing in a useragent too here
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://api.elsevier.com/content/serial/title/issn/'.$issn.'?apiKey='.$api_elsevier.'',
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+    ));
+    // Send the request & save response to $resp
+    $resp = curl_exec($curl);
+    $data = json_decode($resp, TRUE);
+    return $data;
+    // Close request to clear up some resources
+    curl_close($curl);    
+}
+
+function get_articlefull_elsevier($doi,$api_elsevier) {
+    // Get cURL resource
+    $curl = curl_init();
+    // Set some options - we are passing in a useragent too here
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://api.elsevier.com/content/article/doi/'.$doi.'?apiKey='.$api_elsevier.'&httpAccept=text%2Fhtml',
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+    ));
+    // Send the request & save response to $resp
+    $resp = curl_exec($curl);    
+    return $resp;
+    // Close request to clear up some resources
+    curl_close($curl);    
+} 
+
+function get_citations_elsevier($doi,$api_elsevier) {
+    // Get cURL resource
+    $curl = curl_init();
+    // Set some options - we are passing in a useragent too here
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'https://api.elsevier.com/content/abstract/citations?doi='.$doi.'&apiKey='.$api_elsevier.'&httpAccept=application%2Fjson',
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+    ));
+    // Send the request & save response to $resp
+    $resp = curl_exec($curl);
+    $data = json_decode($resp, TRUE);
+    return $data;
+    // Close request to clear up some resources
+    curl_close($curl);    
+} 
+
+function get_oadoi($doi) {
+    // Get cURL resource
+    $curl = curl_init();
+    // Set some options - we are passing in a useragent too here
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => 'http://api.oadoi.org/v1/publication/doi/'.$doi.'',
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+    ));
+    // Send the request & save response to $resp
+    $resp = curl_exec($curl);
+    $data = json_decode($resp, TRUE);
+    return $data;
+    // Close request to clear up some resources
+    curl_close($curl);    
+}
+
+function metrics_update($client,$_id,$metrics_array){    
+
+    $query = 
+    '
+    {
+        "doc":{
+            "metrics" : {
+                '.implode(",",$metrics_array).'
+            },
+            "date":"'.date("Y-m-d").'"
+        },                    
+        "doc_as_upsert" : true
+    }
+    ';  
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'id' => $_id,
+        'body' => $query
+    ];
+    $response = $client->update($params);        
+    
+}
+
+function store_issn_info($client,$issn,$issn_info){    
+
+    $query = 
+    '
+    {
+        "doc":{
+            "issn_info" : 
+                '.$issn_info.'
+            ,
+            "date":"'.date("Y-m-d").'"
+        },                    
+        "doc_as_upsert" : true
+    }
+    ';
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'issn',
+        'id' => $issn,
+        'body' => $query
+    ];
+    $response = $client->update($params);
+    
+}
+
 
 ?>
