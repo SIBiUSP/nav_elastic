@@ -4,6 +4,7 @@
  * Classe de interação com o Elasticsearch
  */
 class elasticsearch {
+    
     /**
      * Executa o commando get no Elasticsearch
      * 
@@ -13,33 +14,222 @@ class elasticsearch {
      * 
      */
     public static function elastic_get ($_id,$type,$fields) {
-        global $index;
         global $client;
-        if (!defined('type_constant')) define('type_constant', ''.$type.'');
-        //define('fields', ''.$fields.'');
+        global $index;        
         $params = [];
         $params["index"] = $index;
-        $params["type"] = type_constant;
+        $params["type"] = $type;
         $params["id"] = $_id;
         $params["_source"] = $fields;
         
         $response = $client->get($params);        
         return $response;    
-    }   
-}
-
-
-function query_one_elastic ($_id,$client) {
+    } 
     
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'id' => ''.$_id.''
-    ];
-    $response = $client->get($params);
-    return $response;    
-
+    /**
+     * Executa o commando search no Elasticsearch
+     * 
+     * @param string $type Tipo de documento no índice do Elasticsearch                         
+     * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
+     * @param int $size Quantidade de registros nas respostas
+     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
+     * 
+     */    
+    public static function elastic_search ($type,$fields,$size,$body) {
+        global $client;
+        global $index;        
+        $params = [];
+        $params["index"] = $index;
+        $params["type"] = $type;
+        $params["_source"] = $fields;
+        $params["size"] = $size;
+        $params["body"] = $body;
+        
+        $response = $client->search($params);        
+        return $response;
+    }
+    
 }
+
+/**
+ * Classe de interação com o Elasticsearch
+ */
+class paginaInicial {
+    
+    static function contar_registros () {
+        $query_all = '
+            {
+                "query": {
+                    "match_all": {}
+                }
+            }        
+        ';
+        $response = elasticsearch::elastic_search("producao",null,0,$query_all);
+        return $response['hits']['total'];
+        print_r($response);
+
+    }
+    
+    static function contar_arquivos () {
+
+        $query_all = '
+            {
+                "query": {
+                    "match_all": {}
+                }
+            }        
+        ';
+        $response = elasticsearch::elastic_search("files",null,0,$query_all);
+        return $response['hits']['total'];
+        print_r($response);
+
+    } 
+
+    static function contar_unicos ($field) {
+
+        $count_distinct_query = '
+        {
+            "aggs" : {
+                "distinct_authors" : {
+                    "cardinality" : {
+                      "field" : "'.$field.'.keyword"
+                    }
+                }
+            }
+        }
+        ';
+        $response = elasticsearch::elastic_search("producao",null,0,$count_distinct_query);
+        return $response["aggregations"]["distinct_authors"]["value"];
+
+    }
+
+    
+    static function unidadeUSP_inicio() {
+
+        $query = '{
+            "aggs": {
+                "group_by_state": {
+                    "terms": {
+                        "field": "unidadeUSPtrabalhos.keyword",
+                        "order" : { "_term" : "asc" },
+                        "size" : 150
+                    }
+                }
+            }
+        }';
+
+        $response = elasticsearch::elastic_search("producao",null,0,$query);
+
+        $programas = [];
+        $count = 1;
+        $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON','EP/IB/ICB/IQ/BUTANT /IPT','FO/EE/FSP');
+        foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {        
+            if (in_array($facets['key'],$programas_pos)) {        
+              $programas[] =  '<li><a href="result.php?search[]=unidadeUSPtrabalhos:&quot;'.strtoupper($facets['key']).'&quot;">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+            } else { 
+                echo '<li><a href="result.php?search[]=unidadeUSPtrabalhos:&quot;'.strtoupper($facets['key']).'&quot;">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+            }
+
+           if ($count == 12)
+                {  
+                     echo '<div id="unidades" class="uk-list uk-list-striped" hidden>';
+                }
+            $count++;
+        }
+
+        if (!empty($programas)) {
+            echo '<li><b>Programas de Pós-Graduação Interunidades</b></li>';
+            echo implode("",$programas);
+        }
+
+        if ($count > 7) {
+            echo '</div>';
+            echo '<button uk-toggle="target: #unidades">Ver todas as unidades</button>';
+        }
+
+    }
+    
+    static function base_inicio() {
+
+        $query = '{
+            "aggs": {
+                "group_by_state": {
+                    "terms": {
+                        "field": "base.keyword",                    
+                        "size" : 5
+                    }
+                }
+            }
+        }';
+        $response = elasticsearch::elastic_search("producao",null,0,$query);
+        foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
+            echo '<li><a href="result.php?search[]=base.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+        }   
+
+    }    
+    
+    static function ultimos_registros() {
+
+        $query = '{
+                    "query": {
+                        "match_all": {}
+                     },
+                    "sort" : [
+                        {"_uid" : {"order" : "desc"}}
+                        ]
+                    }';
+        $response = elasticsearch::elastic_search("producao",null,11,$query);
+
+        foreach ($response["hits"]["hits"] as $r){
+            echo '<article class="uk-comment">
+            <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>';    
+            if (!empty($r["_source"]['unidadeUSP'])) {
+                $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
+            } else {
+                $file = "";
+            }
+            if (file_exists($file)) {
+            echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="80" height="80" alt=""></div>';
+            } else {
+
+            };
+            echo '<div class="uk-width-expand">';
+            if (!empty($r["_source"]['title'])){
+            echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
+            };
+            echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
+            if (!empty($r["_source"]['authors'])) { 
+            foreach ($r["_source"]['authors'] as $autores) {
+            echo '<li><a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a></li>';
+            }
+            echo '</ul></div>';     
+            };
+            echo '</header>';
+            echo '</article>';
+        }
+
+    }
+    
+    static function card_unidade ($sigla,$nome_unidade) {
+        $card = '
+        <div class="uk-text-center">
+            <a href="result.php?search[]=unidadeUSPtrabalhos:'.$sigla.'">
+            <div class="uk-inline-clip uk-transition-toggle">
+                <img src="inc/images/fotosusp/'.$sigla.'.jpg" alt="">
+                <div class="uk-transition-fade uk-position-cover uk-position-small uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle">
+                    <p class="uk-h6 uk-margin-remove">'.$nome_unidade.'</p>
+                </div>
+            </div>
+            <p class="uk-margin-small-top">'.$sigla.'</p>
+            </a>
+        </div>
+        ';
+        return $card;
+    }    
+    
+}
+
+
 
 function counter ($_id,$client) {
     $query = 
@@ -66,72 +256,6 @@ function counter ($_id,$client) {
     ];
     $response = $client->update($params);        
     //print_r($response);
-}
-
-function contar_registros ($client) {
-
-    $query_all = '
-        {
-            "query": {
-                "match_all": {}
-            }
-        }        
-    ';
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,
-        'body' => $query_all
-    ];
-    $response = $client->search($params);
-    return $response['hits']['total'];
-    print_r($response);
-
-}
-
-function contar_arquivos ($client) {
-
-    $query_all = '
-        {
-            "query": {
-                "match_all": {}
-            }
-        }        
-    ';
-    $params = [
-        'index' => 'sibi',
-        'type' => 'files',
-        'size'=> 0,
-        'body' => $query_all
-    ];
-    $response = $client->search($params);
-    return $response['hits']['total'];
-    print_r($response);
-
-}
-
-function contar_unicos ($field,$client) {
-
-    $count_distinct_query = '
-    {
-        "aggs" : {
-            "distinct_authors" : {
-                "cardinality" : {
-                  "field" : "'.$field.'.keyword"
-                }
-            }
-        }
-    }
-    ';
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size' => 0,
-        'body' => $count_distinct_query
-    ];
-    $response = $client->search($params);
-    return $response["aggregations"]["distinct_authors"]["value"];
-    
 }
 
 function store_user ($userdata,$client){
@@ -177,299 +301,8 @@ function store_user ($userdata,$client){
  
 }
 
-function ultimos_registros($client) {
-    
-    $query = '{
-                "query": {
-                    "match_all": {}
-                 },
-                "sort" : [
-                    {"_uid" : {"order" : "desc"}}
-                    ]
-                }';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size' => 11,
-        'body' => $query
-    ];
-    $response = $client->search($params); 
-    
-    foreach ($response["hits"]["hits"] as $r){
-        echo '<article class="uk-comment">
-        <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>';    
-        if (!empty($r["_source"]['unidadeUSP'])) {
-            $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
-        } else {
-            $file = "";
-        }
-        if (file_exists($file)) {
-        echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="80" height="80" alt=""></div>';
-        } else {
-
-        };
-        echo '<div class="uk-width-expand">';
-        if (!empty($r["_source"]['title'])){
-        echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
-        };
-        echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
-        if (!empty($r["_source"]['authors'])) { 
-        foreach ($r["_source"]['authors'] as $autores) {
-        echo '<li><a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a></li>';
-        }
-        echo '</ul></div>';     
-        };
-        echo '</header>';
-        echo '</article>';
-    }
-    
-}
-
-function unidadeUSP_inicio($client) {
-
-    $query = '{
-        "aggs": {
-            "group_by_state": {
-                "terms": {
-                    "field": "unidadeUSPtrabalhos.keyword",
-                    "order" : { "_term" : "asc" },
-                    "size" : 150
-                }
-            }
-        }
-    }';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,
-        'body' => $query
-    ];    
-    
-    $response = $client->search($params); 
-    
-    $programas = [];
-    $count = 1;
-    $programas_pos = array('BIOENG', 'BIOENGENHARIA', 'BIOINFORM', 'BIOINFORMÁTICA', 'BIOTECNOL','BIOTECNOLOGIA','ECOAGROEC','ECOLOGIA APLICA','ECOLOGIA APLICADA','EE/EERP','EESC/IQSC/FMRP','ENERGIA','ENFERM','ENFERMA','ENG DE MATERIAI','ENG DE MATERIAIS','ENGMAT','ENSCIENC','ENSINO CIÊNCIAS','EP/FEA/IEE/IF','ESTHISART','INTER - ENFERMA','IPEN','MAE/MAC/MP/MZ','MODMATFIN','MUSEOLOGIA','NUTHUMANA','NUTRIÇÃO HUMANA','PROCAM','PROLAM','ESTÉTICA HIST.','FCF/FEA/FSP','IB/ICB','HRACF','LASERODON','EP/IB/ICB/IQ/BUTANT /IPT','FO/EE/FSP');
-    foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {        
-        if (in_array($facets['key'],$programas_pos)) {        
-          $programas[] =  '<li><a href="result.php?search[]=unidadeUSPtrabalhos:&quot;'.strtoupper($facets['key']).'&quot;">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
-        } else { 
-            echo '<li><a href="result.php?search[]=unidadeUSPtrabalhos:&quot;'.strtoupper($facets['key']).'&quot;">'.strtoupper($facets['key']).' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
-        }
-        
-       if ($count == 12)
-            {  
-                 echo '<div id="unidades" class="uk-list uk-list-striped" hidden>';
-            }
-        $count++;
-    }
-    
-    if (!empty($programas)) {
-        echo '<li><b>Programas de Pós-Graduação Interunidades</b></li>';
-        echo implode("",$programas);
-    }
-    
-    if ($count > 7) {
-        echo '</div>';
-        echo '<button uk-toggle="target: #unidades">Ver todas as unidades</button>';
-    }
-     
-}
-
-function base_inicio($client) {
-
-    $query = '{
-        "aggs": {
-            "group_by_state": {
-                "terms": {
-                    "field": "base.keyword",                    
-                    "size" : 5
-                }
-            }
-        }
-    }';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,
-        'body' => $query
-    ];    
-    
-    $response = $client->search($params);
-    foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-        echo '<li><a href="result.php?search[]=base.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
-    }   
-    
-}
-
-/* Pegar o tipo de material */
-function get_type($material_type){
-  switch ($material_type) {
-  case "ARTIGO DE JORNAL":
-      return "article-newspaper";
-      break;
-  case "ARTIGO DE PERIODICO":
-      return "article-journal";
-      break;
-  case "PARTE DE MONOGRAFIA/LIVRO":
-      return "chapter";
-      break;
-  case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
-      return "interview";
-      break;
-  case "TRABALHO DE EVENTO-RESUMO":
-      return "paper-conference";
-      break;
-  case "TRABALHO DE EVENTO":
-      return "paper-conference";
-      break;     
-  case "TESE":
-      return "thesis";
-      break;          
-  case "TEXTO NA WEB":
-      return "post-weblog";
-      break;
-  }
-}
-
-/* Recupera os exemplares do DEDALUS */
-function load_itens_single ($sysno) {
-    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
-    if ($xml->error == "No associated items"){
-
-    } else {
-        echo "<h4>Exemplares físicos disponíveis nas Bibliotecas</h4>";
-        echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
-                    <thead>
-                      <tr>
-                        <th>Biblioteca</th>
-                        <th>Código de barras</th>
-                        <th>Status</th>
-                        <th>Número de chamada</th>";
-                        if ($xml->item->{'loan-status'} == "A"){
-                        echo "<th>Status</th>
-                        <th>Data provável de devolução</th>";
-                      } else {
-                        echo "<th>Status</th>";
-                      }
-                      echo "</tr>
-                    </thead>
-                  <tbody>";
-          foreach ($xml->item as $item) {
-            echo '<tr>';
-            echo '<td>'.$item->{'sub-library'}.'</td>';
-            echo '<td>'.$item->{'barcode'}.'</td>';
-            echo '<td>'.$item->{'item-status'}.'</td>';
-            echo '<td>'.$item->{'call-no-1'}.'</td>';
-            if ($item->{'loan-status'} == "A"){
-            echo '<td>Emprestado</td>';
-            echo '<td>'.$item->{'loan-due-date'}.'</td>';
-          } else {
-            echo '<td>Disponível</td>';
-          }
-            echo '</tr>';
-          }
-          echo "</tbody></table>";
-          echo '<hr>';
-          }
-          flush();
-  }
-
-/* Function to generate Tables */
-function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
-    if (!empty($sort)){
-        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
-    }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'.keyword",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,          
-        'body' => $query
-    ];
-    
-    $response = $client->search($params);  
-
-echo "<table class=\"uk-table\">
-  <thead>
-    <tr>
-      <th>".$facet_display_name."</th>
-      <th>Quantidade</th>
-    </tr>
-  </thead>
-  <tbody>";
-
-    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
-        echo "<tr>
-              <td>".$facets['key']."</td>
-              <td>".$facets['doc_count']."</td>
-            </tr>";
-    };
-
-  echo"</tbody>
-    </table>";
 
 
-}
-
-/* Function to generate CSV */
-function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
-
-    if (!empty($sort)){
-        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
-    }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'.keyword",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
-    
-    $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
-        'size'=> 0,          
-        'body' => $query
-    ];
-    
-    $response = $client->search($params); 
-    $data_array= array();
-    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
-        array_push($data_array,''.$facets["key"].'\\t'.$facets["doc_count"].'');
-    };
-    $comma_separated = implode("\\n", $data_array);
-    return $comma_separated;
-
-}
 
 /* Comparar registros */
 function compararRegistros ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
@@ -1115,22 +948,7 @@ function store_issn_info($client,$issn,$issn_info){
     
 }
 
-function card_unidade ($sigla,$nome_unidade) {
-    $card = '
-    <div class="uk-text-center">
-        <a href="result.php?search[]=unidadeUSPtrabalhos:'.$sigla.'">
-        <div class="uk-inline-clip uk-transition-toggle">
-            <img src="inc/images/fotosusp/'.$sigla.'.jpg" alt="">
-            <div class="uk-transition-fade uk-position-cover uk-position-small uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle">
-                <p class="uk-h6 uk-margin-remove">'.$nome_unidade.'</p>
-            </div>
-        </div>
-        <p class="uk-margin-small-top">'.$sigla.'</p>
-        </a>
-    </div>
-    ';
-    return $card;
-}
+
 
 
 ?>

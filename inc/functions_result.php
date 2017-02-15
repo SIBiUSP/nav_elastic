@@ -397,4 +397,170 @@ function get_fulltext_file($id,$session){
     return $links_upload;
 }
 
+/* Recupera os exemplares do DEDALUS */
+function load_itens_single ($sysno) {
+    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
+    if ($xml->error == "No associated items"){
+
+    } else {
+        echo "<h4>Exemplares físicos disponíveis nas Bibliotecas</h4>";
+        echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
+                    <thead>
+                      <tr>
+                        <th>Biblioteca</th>
+                        <th>Código de barras</th>
+                        <th>Status</th>
+                        <th>Número de chamada</th>";
+                        if ($xml->item->{'loan-status'} == "A"){
+                        echo "<th>Status</th>
+                        <th>Data provável de devolução</th>";
+                      } else {
+                        echo "<th>Status</th>";
+                      }
+                      echo "</tr>
+                    </thead>
+                  <tbody>";
+          foreach ($xml->item as $item) {
+            echo '<tr>';
+            echo '<td>'.$item->{'sub-library'}.'</td>';
+            echo '<td>'.$item->{'barcode'}.'</td>';
+            echo '<td>'.$item->{'item-status'}.'</td>';
+            echo '<td>'.$item->{'call-no-1'}.'</td>';
+            if ($item->{'loan-status'} == "A"){
+            echo '<td>Emprestado</td>';
+            echo '<td>'.$item->{'loan-due-date'}.'</td>';
+          } else {
+            echo '<td>Disponível</td>';
+          }
+            echo '</tr>';
+          }
+          echo "</tbody></table>";
+          echo '<hr>';
+          }
+          flush();
+  }
+
+/* Pegar o tipo de material */
+function get_type($material_type){
+  switch ($material_type) {
+  case "ARTIGO DE JORNAL":
+      return "article-newspaper";
+      break;
+  case "ARTIGO DE PERIODICO":
+      return "article-journal";
+      break;
+  case "PARTE DE MONOGRAFIA/LIVRO":
+      return "chapter";
+      break;
+  case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
+      return "interview";
+      break;
+  case "TRABALHO DE EVENTO-RESUMO":
+      return "paper-conference";
+      break;
+  case "TRABALHO DE EVENTO":
+      return "paper-conference";
+      break;     
+  case "TESE":
+      return "thesis";
+      break;          
+  case "TEXTO NA WEB":
+      return "post-weblog";
+      break;
+  }
+}
+
+/* Function to generate Tables */
+function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+    if (!empty($sort)){
+        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'.keyword",
+              "missing": "N/D",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
+    
+    $response = $client->search($params);  
+
+echo "<table class=\"uk-table\">
+  <thead>
+    <tr>
+      <th>".$facet_display_name."</th>
+      <th>Quantidade</th>
+    </tr>
+  </thead>
+  <tbody>";
+
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
+        echo "<tr>
+              <td>".$facets['key']."</td>
+              <td>".$facets['doc_count']."</td>
+            </tr>";
+    };
+
+  echo"</tbody>
+    </table>";
+
+
+}
+
+/* Function to generate CSV */
+function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+
+    if (!empty($sort)){
+        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    }
+    $query = '
+    {
+        "size": 0,
+        '.$consulta.'
+        "aggregations": {
+          "counts": {
+            "terms": {
+              "field": "'.$campo.'.keyword",
+              "missing": "N/D",
+              '.$sort_query.'
+              "size":'.$tamanho.'
+            }
+          }
+        }
+     }
+     ';
+    
+    $params = [
+        'index' => 'sibi',
+        'type' => 'producao',
+        'size'=> 0,          
+        'body' => $query
+    ];
+    
+    $response = $client->search($params); 
+    $data_array= array();
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
+        array_push($data_array,''.$facets["key"].'\\t'.$facets["doc_count"].'');
+    };
+    $comma_separated = implode("\\n", $data_array);
+    return $comma_separated;
+
+}
+
 ?>
