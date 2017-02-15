@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE){
     
 include('inc/config.php'); 
 include('inc/functions.php');
+include('inc/functions_result.php');
 
 /* Citeproc-PHP*/
 include 'inc/citeproc-php/CiteProc.php';
@@ -20,7 +21,7 @@ $citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
-$cursor = query_one_elastic($_GET['_id'],$client);
+$cursor = elasticsearch::elastic_get($_GET['_id'],"producao",null);
 
 /* Contador */
 counter($_GET['_id'],$client);
@@ -353,11 +354,11 @@ $record_blob = implode("\\n", $record);
         <?php endif; ?>
         <?php include_once("inc/analyticstracking.php") ?>
         <?php include('inc/navbar.php'); ?>
+        <br/><br/><br/>
 
     <div class="uk-container uk-margin-large-bottom">
 
-        <div class="uk-grid uk-margin-top" uk-grid>
-            
+        <div class="uk-grid uk-margin-top" uk-grid>            
             <?php if (!empty($cursor["_source"]['issn'][0])) : ?>
                 <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier); ?>
                 <?php
@@ -462,136 +463,119 @@ $record_blob = implode("\\n", $record);
                 </div>
             </div>
             <div class="uk-width-2-3@m">
-                <ul class="uk-tab" data-uk-tab="{connect:'#single'}">
-                    <li class="uk-active"><a href="">Visualização</a></li>
-                    <li><a href="">Texto completo</a></li>
-                </ul>
+                
+<ul class="uk-subnav uk-subnav-pill" uk-switcher>
+    <li class="uk-active"><a href="#">Visualização</a></li>
+    <li><a href="#">Texto completo</a></li>
+</ul>
+
+        
                 <ul id="single" class="uk-switcher uk-margin">
                     <li>
-                    
-                        <h2><?php echo $cursor["_source"]['title'];?> (<?php echo $cursor["_source"]['year']; ?>)</h2>
-                        <ul class="uk-list">
-
+                        <article class="uk-article">
                         <!--Type -->
                         <?php if (!empty($cursor["_source"]['type'])): ?>
-                            <li>
-                                <h4>Tipo: <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a></h4>                                
-                            </li>
-                        <?php endif; ?>                          
+                            <p class="uk-article-meta">    
+                                <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
+                            </p>    
+                        <?php endif; ?>                            
+                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?> (<?php echo $cursor["_source"]['year']; ?>)</a></h1>
                             
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['authors'])): ?>
-                            <li>
-                                <h4>Autor(es):</h4>
-                                <ul class="uk-list uk-list-line">
-                                    <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
-                                    <li>
-                                        <a href="result.php?search[]=authors.keyword:&quot;<?php echo $autores;?>&quot;"><?php echo $autores;?></a>
-                                    </li>
-                                    <?php endforeach;?>                                
-                                </ul>
-                            </li>
-                        <?php endif; ?>                            
-
-
-                        <!--Authors USP -->
-                        <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Autor(es) USP:</h4>
-                                <ul class="uk-list uk-list-line">
-                                <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-                                <li>
-                                    <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP;?>&quot;"><?php echo $autoresUSP;?></a>
-                                </li>
-                                <?php endforeach;?>
-                                </ul>
-                            </li>
-                        <?php endif; ?>                           
-
-
-                        <!--Unidades USP -->
-                        <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Unidades USP:</h4>
-                                <ul class="uk-list uk-list-line">
-                                    <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
-                                    <li><a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a></li>
-                                    <?php endforeach;?>
-                                </ul>
-                            </li>
-                         <?php endif; ?>   
-
-                        <!--Assuntos -->
-                        <?php if (!empty($cursor["_source"]['subject'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Assuntos:</h4>
-                                <ul class="uk-list uk-list-line">
-                                    <?php foreach ($cursor["_source"]['subject'] as $subject): ?>
-                                    <li><a href="result.php?assunto=<?php echo $subject;?>"><?php echo $subject;?></a></li>
-                                    <?php endforeach;?>
-                                </ul>
-                            </li>
+                            <p class="uk-article-meta">
+                            <?php foreach ($cursor["_source"]['authors'] as $autores) {
+                                $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
+                            } 
+                            $array_aut = implode("; ",$authors_array);
+                            unset($authors_array);
+                            print_r($array_aut);
+                            ?>
+                            </p>
                         <?php endif; ?>
                             
+                        <!--Unidades USP -->
+                        <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
+                            <p class="uk-text-small uk-margin-remove">
+                                Unidades USP:
+                                    <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
+                                    <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
+                                    <?php endforeach;?>
+                            </p>
+                         <?php endif; ?>                             
+                            
+                        <!--Authors USP -->
+                        <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
+                            <p class="uk-text-small uk-margin-remove">
+                                Autor(es) USP:
+                                <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
+                                <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP;?>&quot;"><?php echo $autoresUSP;?> </a>
+                                <?php endforeach;?>
+                                
+                            </p>
+                        <?php endif; ?>                                
+                            
+                        <!--Assuntos -->
+                        <?php if (!empty($cursor["_source"]['subject'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Assuntos:                            
+                            <?php foreach ($cursor["_source"]['subject'] as $assunto) : ?>
+                                <a href="result.php?assunto=<?php echo $assunto;?>"><?php echo $assunto;?></a>
+                            <?php endforeach;?>
+                        </p>
+                        <?php endif; ?>                        
+
                         <!-- Idioma -->
                         <?php if (!empty($cursor["_source"]['language'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Idioma:</h4>
-                                <ul class="uk-list uk-list-line">
+                            <p class="uk-text-small uk-margin-remove">
+                                Idioma:
                                    <?php foreach ($cursor["_source"]['language'] as $language): ?>
-                                        <li><a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a></li>
-                                   <?php endforeach;?>
-                                </ul>                            
-                            </li>
+                                        <a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a>
+                                   <?php endforeach;?>  
+                            </p>
                         <?php endif; ?>
                             
                         <!-- Resumo -->
                         <?php if (!empty($cursor["_source"]['resumo'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Resumo:</h4>
-                                <ul class="uk-list uk-list-line">
+                            <p class="uk-text-small uk-margin-remove">
+                                Resumo:
                                    <?php foreach ($cursor["_source"]['resumo'] as $resumo): ?>
-                                        <li><?php echo $resumo;?></li>
-                                   <?php endforeach;?>
-                                </ul>                            
-                            </li>
+                                        <?php echo $resumo;?>
+                                   <?php endforeach;?>     
+                            </p>
                         <?php endif; ?>                            
                             
                         <!-- Imprenta -->
                         <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Imprenta:</h4>
-                                <ul class="uk-list uk-list-line">
-                                    <li>Local: <a href="result.php?search[]=publisher-place.keyword:&quot;<?php echo $cursor["_source"]['publisher-place'];?>&quot;"><?php echo $cursor["_source"]['publisher-   place'];?></a></li>
-                                    <li>Data de publicação: <a href="result.php?search[]=year.keyword:&quot;<?php echo $cursor["_source"]['year'];?>&quot;"><?php echo $cursor["_source"]['year'];?></a></li>
-                                </ul>
-                            </li>
+                            <p class="uk-text-small uk-margin-remove">
+                                Imprenta:
+                                <p>Local: <a href="result.php?search[]=publisher-place.keyword:&quot;<?php echo $cursor["_source"]['publisher-place'];?>&quot;"><?php echo $cursor["_source"]['publisher-   place'];?></a></p>
+                                <p>Data de publicação: <a href="result.php?search[]=year.keyword:&quot;<?php echo $cursor["_source"]['year'];?>&quot;"><?php echo $cursor["_source"]['year'];?></a></p>
+                            </p>
                             
                         <?php endif; ?>    
                             
                         <!-- Source -->
                         <?php if (!empty($cursor["_source"]['ispartof'])): ?>
-                            <li>
-                                <h4 class="uk-margin-top">Fonte:</h4>
-                                <ul class="uk-list uk-list-line">
-                                    <li>Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></li>
+                            <p class="uk-text-small uk-margin-remove">
+                                Fonte:
+                                    <p class="uk-text-small uk-margin-remove">Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></p>
                                     <?php if (!empty($cursor["_source"]['issn'])): ?>
-                                    <li>ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></li>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></p>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
-                                    <li>Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></li>
+                                    <p class="uk-text-small uk-margin-remove">Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></p>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
-                                    <li>Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/></li>
+                                    <p class="uk-text-small uk-margin-remove">Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/></p>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
-                                    <li>Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></li>
+                                    <p class="uk-text-small uk-margin-remove">Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></p>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['doi'])): ?>
-                                    <li>DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a></li>
+                                    <p class="uk-text-small uk-margin-remove">DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a></p>
                                     <?php endif; ?>
-                                </ul>                            
-                            </li>
+                                </p>
                         <?php endif; ?>
                         
 

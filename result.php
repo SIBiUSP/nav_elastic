@@ -305,7 +305,7 @@
                                 </div>
                                 <div class="uk-width-4-5@m">    
                                     <article class="uk-article">
-                                        <p class="uk-text-lead"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)</a></p>
+                                        <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)</a></p>
                                         <?php if (!empty($r["_source"]['authors'])) : ?>
                                             <p class="uk-article-meta">
                                             <?php foreach ($r["_source"]['authors'] as $autores) {
@@ -318,10 +318,10 @@
                                             </p>        
                                         <?php endif; ?>                                                       
                                         <?php if (!empty($r["_source"]['ispartof'])) : ?>
-                                            <p class="uk-text-small">In: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $r["_source"]['ispartof'];?>&quot;"><?php echo $r["_source"]['ispartof'];?></a>
+                                            <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $r["_source"]['ispartof'];?>&quot;"><?php echo $r["_source"]['ispartof'];?></a>
                                             </p>
                                         <?php endif; ?> 
-                                        <p class="uk-text-small">
+                                        <p class="uk-text-small uk-margin-remove">
                                             Assuntos:
                                             <?php if (!empty($r["_source"]['subject'])) : ?>
                                             <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
@@ -330,7 +330,7 @@
                                             <?php endif; ?>
                                         </p>
                                         <?php if (!empty($r["_source"]['fatorimpacto'])) : ?>
-                                        <p class="uk-text-small">Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
+                                        <p class="uk-text-small uk-margin-remove">Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
                                         <?php endif; ?>
                                         <!-- Acesso ao texto completo - Começo -->
                                         <div class="uk-alert-primary" uk-alert>

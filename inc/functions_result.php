@@ -129,8 +129,10 @@ function consultar_vcusp($termo) {
 class facets {
     
     function __construct() {
-       global $client; 
-       $this -> client = $client;
+        global $client;
+        global $index;
+        $this->client = $client;
+        $this->index = $index;
     }
     
     public function facet($field,$tamanho,$field_name,$sort) {        
@@ -154,7 +156,7 @@ class facets {
         }';
 
         $params = [
-            'index' => 'sibi',
+            'index' => $this->index,
             'type' => 'producao',
             'size'=> 0,          
             'body' => $query
@@ -201,7 +203,7 @@ class facets {
         }';    
 
         $params = [
-            'index' => 'sibi',
+            'index' => $this->index,
             'type' => 'producao',
             'size'=> 0, 
             'body' => $query
@@ -246,7 +248,7 @@ class facets {
          ';
 
         $params = [
-            'index' => 'sibi',
+            'index' => $this->index,
             'type' => 'producao',
             'size'=> 0,          
             'body' => $query
