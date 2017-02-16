@@ -4,19 +4,78 @@
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
                 <li class="uk-active"><a href="index.php">Início</a></li>
-                <li class="uk-active"><a href="#">Busca institucional</a></li>
+                <li class="uk-active">
+                    <a href="#" class="" aria-expanded="false">Busca institucional</a>
+                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">
+                        <div class="uk-width-1-1@m">
+                            <div class="uk-alert uk-alert-large">
+                                <form class="uk-form" role="form" action="result.php" method="get">
+                                    <fieldset data-uk-margin>
+                                        <legend><?php echo $t->gettext('Número USP'); ?></legend>
+                                        <input type="text" placeholder="Insira um número USP" name="codpes" data-validation="required">
+                                        <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
+                                    </fieldset>
+                                </form>
+                                <form class="uk-form" role="form" action="result.php" method="get" name="assunto">
+                                    <fieldset data-uk-margin>
+                                        <legend>Assunto do Vocabulário Controlado</legend>
+                                        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+                                        <input type="text" name="assunto" data-validation="required">
+                                        <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
+                                    </fieldset>
+                                </form>        
+                            </div>
+                        </div> 
+                    </div>
+                </li>
                 <li class="uk-active">
                     <a href="#">Busca avançada</a>
                     <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Active</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li class="uk-nav-header">Header</li>
-                            <li><a href="#">Item</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li class="uk-nav-divider"></li>
-                            <li><a href="#">Item</a></li>
-                        </ul>
+                        <div class="uk-width-1-1@m">
+                            <div class="uk-alert uk-alert-large">
+                                <form class="uk-form" role="form" action="result.php" method="get">
+                                    <fieldset data-uk-margin>
+                                        <legend>String de busca avançada</legend>
+                                        <p>Selecionar campos para realizar a busca: </p>
+                                        <label><input type="checkbox" name="fields[]" value="title" checked> Título</label>
+                                        <label><input type="checkbox" name="fields[]" value="authors_index" checked> Autores</label>
+                                        <label><input type="checkbox" name="fields[]" value="authorUSP" checked> Autores USP</label>
+                                        <label><input type="checkbox" name="fields[]" value="unidadeUSPtrabalhos"> Unidade USP</label>
+                                        <label><input type="checkbox" name="fields[]" value="departamentotrabalhos"> Departamento</label>
+                                        <label><input type="checkbox" name="fields[]" value="subject" checked> Assuntos</label>
+                                        <label><input type="checkbox" name="fields[]" value="colab_instituicao_corrigido"> Colaboração institucional</label>
+                                        <label><input type="checkbox" name="fields[]" value="fomento"> Agência de Fomento</label>
+                                        <label><input type="checkbox" name="fields[]" value="sysno"> Sysno</label>
+                                        <br/>
+                                        <script>
+                                            $( function() {
+                                            $( "#slider-range" ).slider({
+                                              range: true,
+                                              min: 1900,
+                                              max: 2030,
+                                              values: [ 1900, 2030 ],
+                                              slide: function( event, ui ) {
+                                                $( "#amount" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+                                              }
+                                            });
+                                            $( "#amount" ).val( "year:[" + $( "#slider-range" ).slider( "values", 0 ) +
+                                              " TO " + $( "#slider-range" ).slider( "values", 1 ) + "]");
+                                            } );
+                                        </script>
+                                        <p>
+                                          <label for="amount">Selecionar período de tempo:</label>
+                                          <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
+                                        </p>
+
+                                        <div id="slider-range"></div>                                
+                                        <br/>
+                                        <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="search[]" data-validation="required"></textarea>
+                                        <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
+                                        <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </li>
              </ul>
@@ -27,11 +86,13 @@
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
                 <li class="uk-active">
-                    <a href="#" class="" aria-expanded="false">Contato</a>
-                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    <a href="#" class="" aria-expanded="false"><?php echo $t->gettext('Contato'); ?></a>
+                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </div>
                 </li>               
                 <li class="uk-active">
-                    <a href="#" class="" aria-expanded="false">Idioma</a>
+                    <a href="#" class="" aria-expanded="false">Sobre</a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li class="uk-active"><a href="#" style="height:57px">Active</a></li>
@@ -66,6 +127,36 @@
                         </ul>
                     </div>
                 </li>
+                <li class="uk-active">
+                    <a href="" class="" aria-expanded="false"><?php echo $t->gettext('Usuário'); ?></a>
+                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-nav-header"><?php echo $t->gettext('Ferramentas'); ?></li>
+                            <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
+                            <li><a href="comparar_wos.php">Comparador WoS</a></li>
+                            <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
+                            <li><a href="comparar_csv_scopus.php">Comparador Scopus</a></li>
+                            <li class="uk-nav-divider"></li>
+                            <li class="uk-nav-header">Acesso</li>
+                            <?php if(empty($_SESSION['oauthuserdata'])): ?>
+                                <li><a href="aut/oauth.php">Login</a></li>
+                            <?php else: ?>
+                                <li><a href="#"><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></a></li>
+                                <li><a href="admin.php">Administração</a></li>
+                                <li><a href="aut/logout.php">Logout</a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>                
+                </li>
+                
+                <?php if ($_SESSION['localeToUse'] == 'en_US') : ?>
+                    <li><a href="?locale=pt_BR"><img src="inc/images/br.jpg" width="25px"></a></li>
+                <?php else : ?>
+                    <li><a href="?locale=en_US"><img src="inc/images/en.png" width="25px"></a></li>
+                <?php endif ; ?>                
+                
+                
+                
                 <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
             </ul>
         </div>            
