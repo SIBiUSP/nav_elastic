@@ -1,55 +1,6 @@
 <?php
 
-/**
- * Classe de interação com o Elasticsearch
- */
-class elasticsearch {
-    
-    /**
-     * Executa o commando get no Elasticsearch
-     * 
-     * @param string $_id ID do documento
-     * @param string $type Tipo de documento no índice do Elasticsearch                         
-     * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
-     * 
-     */
-    public static function elastic_get ($_id,$type,$fields) {
-        global $client;
-        global $index;        
-        $params = [];
-        $params["index"] = $index;
-        $params["type"] = $type;
-        $params["id"] = $_id;
-        $params["_source"] = $fields;
-        
-        $response = $client->get($params);        
-        return $response;    
-    } 
-    
-    /**
-     * Executa o commando search no Elasticsearch
-     * 
-     * @param string $type Tipo de documento no índice do Elasticsearch                         
-     * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
-     * @param int $size Quantidade de registros nas respostas
-     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
-     * 
-     */    
-    public static function elastic_search ($type,$fields,$size,$body) {
-        global $client;
-        global $index;        
-        $params = [];
-        $params["index"] = $index;
-        $params["type"] = $type;
-        $params["_source"] = $fields;
-        $params["size"] = $size;
-        $params["body"] = $body;
-        
-        $response = $client->search($params);        
-        return $response;
-    }
-    
-}
+include('functions_core.php');
 
 /**
  * Classe de funções da página inicial

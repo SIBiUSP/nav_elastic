@@ -7,7 +7,7 @@
             include('inc/meta-header.php');
         
                 if (array_key_exists("codpes", $_GET)) { 
-                    $result_get = analisa_get($_GET);
+                    $result_get = get::analisa_get($_GET);
                     //$query_complete = $result_get['query_complete'];
                     $query_aggregate = $result_get['query_aggregate'];
                     $query_complete = '
