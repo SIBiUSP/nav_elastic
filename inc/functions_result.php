@@ -3,41 +3,31 @@
 class processaResultados {
     
     /* Function to generate Graph Bar */
-    static function generateDataGraphBar($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
-
-        if (!empty($sort)){
-            $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    static function generateDataGraphBar($query, $field, $sort, $sort_orientation, $facet_display_name, $size) {
+        global $index;
+        global $client;
+        
+        $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
+        if (isset($sort)) {
+            $query["aggs"]["counts"]["terms"]["order"][$sort] = $sort_orientation;
         }
-        $query = '
-        {
-            '.$consulta.'
-            "aggregations": {
-              "counts": {
-                "terms": {
-                  "field": "'.$campo.'.keyword",
-                  '.$sort_query.'
-                  "size":'.$tamanho.'
-                }
-              }
-            }
-         }
-         ';
-
+        $query["aggs"]["counts"]["terms"]["size"] = $size;
+        
         $params = [
-            'index' => 'sibi',
+            'index' => $index,
             'type' => 'producao',
             'size'=> 0, 
             'body' => $query
         ]; 
 
-        $facet = $client->search($params);    
+        $facet = $client->search($params);  
 
         $data_array= array();
         foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
             array_push($data_array,'{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
         };
 
-        if ($campo == "year" ) {
+        if ($field == "year" ) {
             $data_array_inverse = array_reverse($data_array);
             $comma_separated = implode(",", $data_array_inverse);
         } else {
@@ -124,140 +114,6 @@ function consultar_vcusp($termo) {
     } else {
         $termo_naocorrigido[] = $termo_limpo;
     }
-}
-
-class facets {
-    
-    public function facet($field,$tamanho,$field_name,$sort) {        
-        $query_aggregate = $this->query_aggregate;
-        $sort_query="";
-        if (!empty($sort)){
-             $sort_query = '"order" : { "_term" : "'.$sort.'" },';  
-        }     
-
-        $query = '{
-            '.$query_aggregate.'
-            "aggs": {
-                "counts": {
-                    "terms": {
-                        "field": "'.$field.'.keyword",
-                        '.$sort_query.'
-                        "size" : '.$tamanho.'
-                    }
-                }
-            }
-        }';
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
-        
-        echo '<li class="uk-parent">';    
-        echo '<a href="#" style="color:#333">'.$field_name.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        //$count = 1;
-        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li>';
-            echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-                    <div class="uk-width-1-3" style="color:#333">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>
-                    </div>
-                </div>';
-            echo '</li>';
-
-        };
-        echo   '</ul></li>';
-
-
-    }
-    
-    public function rebuild_facet($field,$tamanho,$nome_do_campo) {
-        $query_aggregate = $this->query_aggregate;
-        $query = '{
-            '.$query_aggregate.'
-            "aggs": {
-                "counts": {
-                    "terms": {
-                        "field": "'.$field.'.keyword",
-                        "order" : { "_count" : "desc" },
-                        "size" : '.$tamanho.'
-                    }
-                }
-            }
-        }';    
-
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
-
-        echo '<li class="uk-parent">';
-        echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li class="uk-h6">';        
-            echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-            echo '</li>';
-        };
-        echo   '</ul>
-          </li>';
-
-    }
-
-    public function facet_range($campo,$tamanho,$nome_do_campo) {
-        $query_aggregate = $this->query_aggregate;
-        $query = '
-        {
-            '.$query_aggregate.'
-            "aggs" : {
-                "ranges" : {
-                    "range" : {
-                        "field" : "metrics.'.$campo.'",
-                        "ranges" : [
-                            { "to" : 1 },
-                            { "from" : 1, "to" : 2 },
-                            { "from" : 2, "to" : 5 },
-                            { "from" : 5, "to" : 10 },
-                            { "from" : 10, "to" : 100 },
-                            { "from" : 100 }
-                        ]
-                    }
-                }
-            }
-         }
-         ';
-
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
-
-        echo '<li class="uk-parent">';    
-        echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        echo '<form>';
-        //$count = 1;
-        foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
-            echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
-            echo '<p class="uk-form-controls-condensed">';
-            echo '<input type="checkbox" name="'.$campo.'[]" value="'.$facets['key'].'"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+metrics.'.$campo.':&quot;'.$facets['key'].'&quot;">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-            echo '</p>';
-            echo '</li>';
-
-            //if ($count == 11)
-            //    {  
-            //         echo '<div id="'.$campo.'" class="uk-hidden">';
-            //    }
-            //$count++;
-        };
-        //if ($count > 12) {
-            //echo '</div>';
-            //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-        //}
-
-        echo '<input type="hidden" checked="checked" name="operator" value="AND">';
-        echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
-        echo '</form>';
-        echo   '</ul></li>';    
-
-
-    }
-    
-    
 }
 
 function gera_consulta_citacao($citacao) {

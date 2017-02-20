@@ -207,49 +207,6 @@ function counter ($_id,$client) {
     //print_r($response);
 }
 
-function store_user ($userdata,$client){
-    
-    $query_array[] = '"nomeUsuario" : "'.$userdata->{'nomeUsuario'}.'"';
-    $query_array[] = '"tipoUsuario" : "'.$userdata->{'tipoUsuario'}.'"';
-    $query_array[] = '"emailPrincipalUsuario" : "'.$userdata->{'emailPrincipalUsuario'}.'"';
-    $query_array[] = '"emailAlternativoUsuario" : "'.$userdata->{'emailAlternativoUsuario'}.'"';
-    $query_array[] = '"emailUspUsuario" : "'.$userdata->{'emailUspUsuario'}.'"';
-    $query_array[] = '"numeroTelefoneFormatado" : "'.$userdata->{'numeroTelefoneFormatado'}.'"';
-    
-    foreach ($userdata->{'vinculo'} as $vinculo) {
-        $query_vinculo[] = '{
-                "tipoVinculo" : "'.$vinculo->{'tipoVinculo'}.'",
-                "codigoSetor" : "'.$vinculo->{'codigoSetor'}.'",
-                "nomeAbreviadoSetor" : "'.$vinculo->{'nomeAbreviadoSetor'}.'",
-                "nomeSetor" : "'.$vinculo->{'nomeSetor'}.'",
-                "codigoUnidade" : "'.$vinculo->{'codigoUnidade'}.'",
-                "siglaUnidade" : "'.$vinculo->{'siglaUnidade'}.'",
-                "nomeUnidade" : "'.$vinculo->{'nomeUnidade'}.'"
-            }';         
-    }
-    
-    $query = 
-             '{
-                "doc":{
-                    "vinculo" : [
-                        '.implode(",",$query_vinculo).'
-                    ],
-                    '.implode(",",$query_array).'
-                },
-                "doc_as_upsert" : true
-            }';
-    
-    $num_usp = $userdata->{'loginUsuario'};
-    $params = [
-        'index' => 'sibi',
-        'type' => 'users',
-        'id' => "$num_usp",
-        'body' => $query
-    ];
-    $response = $client->update($params);   
- 
-}
-
 /* Comparar registros */
 function compararRegistros ($client,$query_type,$query_year,$query_title,$query_doi,$query_authors) {
 

@@ -5,11 +5,9 @@
 
     $result_get = get::analisa_get($_GET);
     $query_complete = $result_get['query_complete'];
-    $query_aggregate = $result_get['query_aggregate'];
-    //$escaped_url = $result_get['escaped_url'];
+    $query_aggregate = $result_get['query_aggregate'];    
     $limit = $result_get['limit'];
-    $page = $result_get['page'];
-    //$new_get = $result_get['new_get'];
+    $page = $result_get['page'];    
 
     $params = [
         'index' => 'sibi',

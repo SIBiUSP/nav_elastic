@@ -15,11 +15,9 @@
                     '.$result_get['query_aggregate'].'
                     "size" : 10000
                     }            
-                    ';
-                    //$escaped_url = $result_get['escaped_url'];
+                    ';                    
                     $limit = $result_get['limit'];
-                    $page = $result_get['page'];
-                    //$new_get = $result_get['new_get'];
+                    $page = $result_get['page'];                   
                     
                     $params = [
                         'index' => 'sibi',

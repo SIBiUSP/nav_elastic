@@ -5,24 +5,20 @@
     include('inc/functions_result.php');
 
     $result_get = get::analisa_get($_GET);
-    $query_complete = $result_get['query_complete'];
-    $query_aggregate = $result_get['query_aggregate'];
-    //$escaped_url = $result_get['escaped_url'];
+    $query = $result_get['query'];  
     $limit = $result_get['limit'];
     $page = $result_get['page'];
-    //$new_get = $result_get['new_get'];
-    $skip = $result_get['skip'];
+    $skip = $result_get['skip'];    
 
     $params = [
-        'index' => 'sibi',
+        'index' => $index,
         'type' => 'producao',
         'size'=> $limit,
         'from' => $skip,   
-        'body' => $query_complete
+        'body' => $query
     ];  
     
-    $cursor = $client->search($params);    
-
+    $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
 
     /* Citeproc-PHP*/
@@ -96,7 +92,7 @@
                         <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                             <?php
                                 $facets = new facets();
-                                $facets->query_aggregate = $query_aggregate;
+                                $facets->query = $query;
 
                                 $facets->facet("base",10,"Base",null);
                                 $facets->facet("type",10,"Tipo de material",null);
@@ -191,7 +187,7 @@
                 <!-- Gráfico do ano - Início -->    
                 <div class="uk-alert-primary" uk-alert>
                     <a class="uk-alert-close" uk-close></a>
-                    <?php $ano_bar = processaResultados::generateDataGraphBar($client, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
+                    <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'year', "_term", 'desc', 'Ano', 10); ?>
                     <div id="ano_chart" class="uk-visible@l"></div>
                     <script type="application/javascript">
                         var graphdef = {
@@ -454,7 +450,8 @@
                                             <div>
                                                 <a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao<?php echo  $r['_id'];?>; animation: uk-animation-fade">Como citar</a>
                                             </div>
-                                        </div>  
+                                        </div>
+                                        
                                         <div id="citacao<?php echo  $r['_id'];?>" hidden="hidden">
                                             <li class="uk-h6 uk-margin-top">
                                                 <div class="uk-alert-danger" uk-alert>A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
