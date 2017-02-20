@@ -114,7 +114,10 @@ class get {
         $skip = ($page - 1) * $limit;
         $next = ($page + 1);
         $prev = ($page - 1);
-        $sort = array('year' => -1);       
+        
+        $query['sort'] = [
+            ['year.keyword' => ['order' => 'desc']],
+        ];
 
         if (!empty($get['codpes'])){        
             $get['search'][] = 'codpes:'.$get['codpes'].'';
@@ -191,7 +194,8 @@ class users {
 
 class facets {
     
-    public function facet($field,$size,$field_name,$sort) {        
+    public function facet($field,$size,$field_name,$sort) {
+        global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
         if (isset($sort)) {
@@ -199,7 +203,7 @@ class facets {
         }
         $query["aggs"]["counts"]["terms"]["size"] = $size;
         
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
+        $response = elasticsearch::elastic_search($type,null,0,$query);
         
         echo '<li class="uk-parent">';    
         echo '<a href="#" style="color:#333">'.$field_name.'</a>';
@@ -224,7 +228,7 @@ class facets {
     }
     
     public function rebuild_facet($field,$size,$nome_do_campo) {
-        
+        global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
         if (isset($sort)) {
@@ -248,7 +252,7 @@ class facets {
     }
 
     public function facet_range($field,$size,$nome_do_campo) {
-        
+        global $type;
         $query = $this->query;
         $query["aggs"]["ranges"]["range"]["field"] = "metrics.$field";
         $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 1;
@@ -261,13 +265,12 @@ class facets {
         $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;
         //$query["aggs"]["counts"]["terms"]["size"] = $size;               
         
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
+        $response = elasticsearch::elastic_search($type,null,0,$query);
 
         echo '<li class="uk-parent">';    
         echo '<a href="#">'.$nome_do_campo.'</a>';
         echo ' <ul class="uk-nav-sub">';
         echo '<form>';
-        //$count = 1;
         foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
             echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
             echo '<p class="uk-form-controls-condensed">';
@@ -275,16 +278,7 @@ class facets {
             echo '</p>';
             echo '</li>';
 
-            //if ($count == 11)
-            //    {  
-            //         echo '<div id="'.$campo.'" class="uk-hidden">';
-            //    }
-            //$count++;
         };
-        //if ($count > 12) {
-            //echo '</div>';
-            //echo '<button class="uk-button" data-uk-toggle="{target:\'#'.$campo.'\'}">Ver mais</button>';
-        //}
 
         echo '<input type="hidden" checked="checked" name="operator" value="AND">';
         echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
