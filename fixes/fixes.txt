@@ -3,7 +3,12 @@
 #Pegar a base
 marc_map('BAS','base')
 replace_all("base","04","Produção científica")
-replace_all("base","03","Teses e dissertações") 
+replace_all("base","03","Teses e dissertações")
+replace_all("base","02","Periódicos")
+replace_all("base","01","Livros") 
+
+reject any_match("base","Periódicos")
+reject any_match("base","Livros")
 
 # 001 - Id
 marc_map('001','sysno')
