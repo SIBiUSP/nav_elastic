@@ -459,28 +459,28 @@
                                                     <li class="uk-margin-top">
                                                         <p><strong>ABNT</strong></p>
                                                         <?php
-                                                            $data = gera_consulta_citacao($r["_source"]);
+                                                            $data = citation::citation_query($r["_source"]);
                                                             print_r($citeproc_abnt->render($data, $mode));
                                                         ?>
                                                     </li>
                                                     <li class="uk-margin-top">
                                                         <p><strong>APA</strong></p>
                                                         <?php
-                                                            $data = gera_consulta_citacao($r["_source"]);
+                                                            $data = citation::citation_query($r["_source"]);
                                                             print_r($citeproc_apa->render($data, $mode));
                                                         ?>
                                                     </li>
                                                     <li class="uk-margin-top">
                                                         <p><strong>NLM</strong></p>
                                                         <?php
-                                                            $data = gera_consulta_citacao($r["_source"]);
+                                                            $data = citation::citation_query($r["_source"]);
                                                             print_r($citeproc_nlm->render($data, $mode));
                                                         ?>
                                                     </li>
                                                     <li class="uk-margin-top">
                                                         <p><strong>Vancouver</strong></p>
                                                         <?php
-                                                            $data = gera_consulta_citacao($r["_source"]);
+                                                            $data = citation::citation_query($r["_source"]);
                                                             print_r($citeproc_vancouver->render($data, $mode));
                                                         ?>
                                                     </li>                                                 

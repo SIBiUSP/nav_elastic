@@ -38,7 +38,6 @@ class processaResultados {
 
     }
     
-    
     /* Recupera os exemplares do DEDALUS */
     static function load_itens_new ($sysno) {
         $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
@@ -84,8 +83,6 @@ class processaResultados {
               flush();
       }
 
-
-
 }
 
 function consultar_vcusp($termo) {
@@ -114,88 +111,6 @@ function consultar_vcusp($termo) {
     } else {
         $termo_naocorrigido[] = $termo_limpo;
     }
-}
-
-function gera_consulta_citacao($citacao) {
-
-    $type = get_type($citacao["type"]);
-    $author_array = array();
-    foreach ($citacao["authors"] as $autor_citation){
-        $array_authors = explode(',', $autor_citation);
-        $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
-    };
-    $authors = implode(",",$author_array);
-
-    if (!empty($citacao["ispartof"])) {
-        $container = '"container-title": "'.$citacao["ispartof"].'",';
-    } else {
-        $container = "";
-    };
-    if (!empty($citacao["doi"])) {
-        $doi = '"DOI": "'.$citacao["doi"][0].'",';
-    } else {
-        $doi = "";
-    };
-
-    if (!empty($citacao["url"])) {
-        $url = '"URL": "'.$citacao["url"][0].'",';
-    } else {
-        $url = "";
-    };
-
-    if (!empty($citacao["publisher"])) {
-        $publisher = '"publisher": "'.$citacao["publisher"].'",';
-    } else {
-        $publisher = "";
-    };
-
-    if (!empty($citacao["publisher_place"])) {
-        $publisher_place = '"publisher-place": "'.$citacao["publisher_place"].'",';
-    } else {
-        $publisher_place = "";
-    };
-
-    $volume = "";
-    $issue = "";
-    $page_ispartof = "";
-
-    if (!empty($citacao["ispartof_data"])) {
-        foreach ($citacao["ispartof_data"] as $ispartof_data) {
-            if (strpos($ispartof_data, 'v.') !== false) {
-                $volume = '"volume": "'.str_replace("v.","",$ispartof_data).'",';
-            } elseif (strpos($ispartof_data, 'n.') !== false) {
-                $issue = '"issue": "'.str_replace("n.","",$ispartof_data).'",';
-            } elseif (strpos($ispartof_data, 'p.') !== false) {
-                $page_ispartof = '"page": "'.str_replace("p.","",$ispartof_data).'",';
-            }
-        }
-    }
-
-    $data = json_decode('{
-    "title": "'.$citacao["title"].'",
-    "type": "'.$type.'",
-    '.$container.'
-    '.$doi.'
-    '.$url.'
-    '.$publisher.'
-    '.$publisher_place.'
-    '.$volume.'
-    '.$issue.'
-    '.$page_ispartof.'
-    "issued": {
-    "date-parts": [
-    [
-    "'.$citacao["year"].'"
-    ]
-    ]
-    },
-    "author": [
-    '.$authors.'
-    ]
-    }');
-    
-    return $data;    
-    
 }
 
 function get_fulltext_file($id,$session){
