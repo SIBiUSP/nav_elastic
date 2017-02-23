@@ -22,6 +22,7 @@
     $total = $cursor["hits"]["total"];
 
     /* Citeproc-PHP*/
+
     include 'inc/citeproc-php/CiteProc.php';
     $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
     $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
