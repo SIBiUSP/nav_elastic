@@ -177,7 +177,7 @@
     <?php if(!empty($_SESSION['oauthuserdata'])): ?>
             <fieldset>
                 <legend>Gerar relatório</legend>                  
-                <div class="uk-form-row"><a href="<?php echo 'http://'.$_SERVER["SERVER_NAME"].'/~bdpi/report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
+                <div class="uk-form-row"><a href="<?php echo 'http://'.$_SERVER["SERVER_NAME"].'/report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
                 </div>
             </fieldset>        
     <?php endif; ?>                
