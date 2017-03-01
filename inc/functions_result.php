@@ -179,36 +179,6 @@ function load_itens_single ($sysno) {
           flush();
   }
 
-/* Pegar o tipo de material */
-function get_type($material_type){
-  switch ($material_type) {
-  case "ARTIGO DE JORNAL":
-      return "article-newspaper";
-      break;
-  case "ARTIGO DE PERIODICO":
-      return "article-journal";
-      break;
-  case "PARTE DE MONOGRAFIA/LIVRO":
-      return "chapter";
-      break;
-  case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
-      return "interview";
-      break;
-  case "TRABALHO DE EVENTO-RESUMO":
-      return "paper-conference";
-      break;
-  case "TRABALHO DE EVENTO":
-      return "paper-conference";
-      break;     
-  case "TESE":
-      return "thesis";
-      break;          
-  case "TEXTO NA WEB":
-      return "post-weblog";
-      break;
-  }
-}
-
 /* Function to generate Tables */
 function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
     if (!empty($sort)){

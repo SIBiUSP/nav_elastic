@@ -62,7 +62,7 @@
         
     </head>
     <body>
-        <?php include_once("inc/analyticstracking.php") ?>
+        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <div class="uk-margin-bottom">
             <?php include('inc/navbar.php'); ?>        
         </div>
