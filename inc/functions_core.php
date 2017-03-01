@@ -146,38 +146,25 @@ class get {
 class users {
     
     static function store_user ($userdata){
-        global $client;
-        global $index;
-
-        $query_array[] = '"nomeUsuario" : "'.$userdata->{'nomeUsuario'}.'"';
-        $query_array[] = '"tipoUsuario" : "'.$userdata->{'tipoUsuario'}.'"';
-        $query_array[] = '"emailPrincipalUsuario" : "'.$userdata->{'emailPrincipalUsuario'}.'"';
-        $query_array[] = '"emailAlternativoUsuario" : "'.$userdata->{'emailAlternativoUsuario'}.'"';
-        $query_array[] = '"emailUspUsuario" : "'.$userdata->{'emailUspUsuario'}.'"';
-        $query_array[] = '"numeroTelefoneFormatado" : "'.$userdata->{'numeroTelefoneFormatado'}.'"';
-
+        $query["doc"]["nomeUsuario"] = $userdata->{'nomeUsuario'};
+        $query["doc"]["tipoUsuario"] = $userdata->{'tipoUsuario'};
+        $query["doc"]["emailPrincipalUsuario"] = $userdata->{'emailPrincipalUsuario'};
+        $query["doc"]["emailAlternativoUsuario"] = $userdata->{'emailAlternativoUsuario'};
+        $query["doc"]["emailUspUsuario"] = $userdata->{'emailUspUsuario'};
+        $query["doc"]["numeroTelefoneFormatado"] = $userdata->{'numeroTelefoneFormatado'};       
+        
+        $i = 0;
         foreach ($userdata->{'vinculo'} as $vinculo) {
-            $query_vinculo[] = '{
-                    "tipoVinculo" : "'.$vinculo->{'tipoVinculo'}.'",
-                    "codigoSetor" : "'.$vinculo->{'codigoSetor'}.'",
-                    "nomeAbreviadoSetor" : "'.$vinculo->{'nomeAbreviadoSetor'}.'",
-                    "nomeSetor" : "'.$vinculo->{'nomeSetor'}.'",
-                    "codigoUnidade" : "'.$vinculo->{'codigoUnidade'}.'",
-                    "siglaUnidade" : "'.$vinculo->{'siglaUnidade'}.'",
-                    "nomeUnidade" : "'.$vinculo->{'nomeUnidade'}.'"
-                }';         
+            $query["doc"]["vinculo"][$i]["tipoVinculo"] = $vinculo->{'tipoVinculo'};
+            $query["doc"]["vinculo"][$i]["codigoSetor"] = $vinculo->{'codigoSetor'};
+            $query["doc"]["vinculo"][$i]["nomeAbreviadoSetor"] = $vinculo->{'nomeAbreviadoSetor'};
+            $query["doc"]["vinculo"][$i]["nomeSetor"] = $vinculo->{'nomeSetor'};
+            $query["doc"]["vinculo"][$i]["codigoUnidade"] = $vinculo->{'codigoUnidade'};
+            $query["doc"]["vinculo"][$i]["siglaUnidade"] = $vinculo->{'siglaUnidade'};
+            $query["doc"]["vinculo"][$i]["nomeUnidade"] = $vinculo->{'nomeUnidade'};
+            $i++;
         }
-
-        $query = 
-                 '{
-                    "doc":{
-                        "vinculo" : [
-                            '.implode(",",$query_vinculo).'
-                        ],
-                        '.implode(",",$query_array).'
-                    },
-                    "doc_as_upsert" : true
-                }';
+        $query["doc"]["doc_as_upsert"] = true;
 
         $num_usp = $userdata->{'loginUsuario'};
         $params = [
@@ -186,16 +173,14 @@ class users {
             'id' => "$num_usp",
             'body' => $query
         ];
-        $response = $client->update($params);   
-
+        $response = elasticsearch::elastic_update($num_usp,"users",$query);
     }    
     
 }
 
 class facets {
     
-    public function facet($field,$size,$field_name,$sort) {
-        global $type;
+    public function facet($field,$size,$field_name,$sort,$type) {
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
         if (isset($sort)) {
