@@ -3,7 +3,7 @@
     <nav class="uk-container uk-navbar-container uk-margin uk-navbar-transparent" uk-navbar="dropbar: true; dropbar-mode: push; mode: click">      
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="index.php">Início</a></li>
+                <li class="uk-active"><a href="index.php"><?php echo $t->gettext('Início'); ?></a></li>
                 <li class="uk-active">
                     <a href="#" class="" aria-expanded="false">Busca institucional</a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">
@@ -16,12 +16,12 @@
                                         <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
                                     </fieldset>
                                 </form>
-                                <form class="uk-form" role="form" action="result.php" method="get" name="assunto">
+                                <form class="uk-form" role="form" action="result.php" method="get" name="searchIBox">
                                     <fieldset data-uk-margin>
                                         <legend>Assunto do Vocabulário Controlado</legend>
-                                        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=assunto&f=assunto&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
-                                        <input type="text" name="assunto" data-validation="required">
-                                        <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
+                                        <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=searchIBox&f=searchIBox&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+                                        <input id='searchIBox' type="text" name="search[]" data-validation="required">
+                                        <button class="uk-button" type="submit" onclick="document.getElementById('searchIBox').value = 'subject.keyword:' + String.fromCharCode(34) + document.getElementById('searchIBox').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>                          
                                     </fieldset>
                                 </form>        
                             </div>
@@ -29,7 +29,7 @@
                     </div>
                 </li>
                 <li class="uk-active">
-                    <a href="#">Busca avançada</a>
+                    <a href="#"><?php echo $t->gettext('Busca avançada'); ?></a>
                     <div class="uk-navbar-dropdown">
                         <div class="uk-width-1-1@m">
                             <div class="uk-alert uk-alert-large">
@@ -92,7 +92,7 @@
                     </div>
                 </li>               
                 <li class="uk-active">
-                    <a href="sobre.php">Sobre</a>     
+                    <a href="sobre.php"><?php echo $t->gettext('Sobre'); ?></a>     
                 </li>
                 <li class="uk-active">
                     <a href="" class="" aria-expanded="false"><?php echo $t->gettext('Usuário'); ?></a>

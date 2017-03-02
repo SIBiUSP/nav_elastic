@@ -123,10 +123,6 @@ class get {
             $get['search'][] = 'codpes:'.$get['codpes'].'';
         }
 
-        if (!empty($get['assunto'])){        
-            $get['search'][] = 'subject:\"'.$get['assunto'].'\"';
-        }    
-
         if (!empty($get['search'])){
             $search = implode(" ",$get['search']);
             $query["query"]["query_string"]["query"] = $search;
