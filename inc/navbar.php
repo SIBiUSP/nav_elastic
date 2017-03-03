@@ -7,13 +7,13 @@
                 <li class="uk-active">
                     <a href="#" class="" aria-expanded="false">Busca institucional</a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">
-                        <div class="uk-width-1-1@m">
-                            <div class="uk-alert uk-alert-large">
+                        <div class="uk-grid-small" uk-grid>
+                            <div>
                                 <form class="uk-form" role="form" action="result.php" method="get">
                                     <fieldset data-uk-margin>
                                         <legend><?php echo $t->gettext('Número USP'); ?></legend>
-                                        <input type="text" placeholder="Insira um número USP" name="codpes" data-validation="required">
-                                        <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
+                                        <input id='searchCodpes' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                        <button class="uk-button" type="submit" onclick="document.getElementById('searchCodpes').value = 'codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                                     </fieldset>
                                 </form>
                                 <form class="uk-form" role="form" action="result.php" method="get" name="searchIBox">

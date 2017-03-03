@@ -73,6 +73,45 @@ class elasticsearch {
         return $response;
     }
 
+    /**
+     * Executa o commando delete no Elasticsearch
+     * 
+     * @param string $_id ID do documento
+     * @param string $type Tipo de documento no índice do Elasticsearch     
+     * 
+     */     
+    public static function elastic_delete ($_id,$type,$body) {
+        global $index;
+        global $client;
+        $params = [];
+        $params["index"] = $index;
+        $params["type"] = $type;
+        $params["id"] = $_id;
+        
+        $response = $client->delete($params);        
+        return $response;
+    }
+    
+    /**
+     * Executa o commando delete_by_query no Elasticsearch
+     * 
+     * @param string $_id ID do documento
+     * @param string $type Tipo de documento no índice do Elasticsearch
+     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
+     * 
+     */     
+    public static function elastic_delete_by_query ($_id,$type,$body) {
+        global $index;
+        global $client;
+        $params = [];
+        $params["index"] = $index;
+        $params["type"] = $type;
+        $params["id"] = $_id;
+        $params["body"] = $body;
+        
+        $response = $client->deleteByQuery($params);        
+        return $response;
+    }    
     
     /**
      * Executa o commando update no Elasticsearch e retorna uma resposta em html
@@ -118,10 +157,6 @@ class get {
         $query['sort'] = [
             ['year.keyword' => ['order' => 'desc']],
         ];
-
-        if (!empty($get['codpes'])){        
-            $get['search'][] = 'codpes:'.$get['codpes'].'';
-        }
 
         if (!empty($get['search'])){
             $search = implode(" ",$get['search']);

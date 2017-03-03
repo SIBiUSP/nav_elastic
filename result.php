@@ -217,6 +217,7 @@
                 <!-- Gráfico do ano - Fim -->    
                 
                 <!-- Vocabulário controlado - Início -->
+                <?php if(isset($_GET["search"])) : ?>    
                 <?php foreach ($_GET["search"] as $expressao_busca) : ?>    
                 <?php if (preg_match("/\bsubject.keyword\b/i",$expressao_busca,$matches)) : ?>
                     <div class="uk-alert-primary" uk-alert>
@@ -225,6 +226,7 @@
                     </div>   
                 <?php endif; ?>
                 <?php endforeach; ?>
+                <?php endif; ?>    
                 <!-- Vocabulário controlado - Fim -->
                 
                 <!-- Resultados -->
