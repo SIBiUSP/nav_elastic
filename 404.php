@@ -9,7 +9,7 @@
             <title>Entre em contato</title>
     </head>
     <body>
-        <?php include_once("inc/analyticstracking.php") ?>
+        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-large-top">
             <p>Não foi possível encontrar a página solicitada.</p>

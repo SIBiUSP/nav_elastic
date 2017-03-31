@@ -222,7 +222,7 @@
                 <?php if (preg_match("/\bsubject.keyword\b/i",$expressao_busca,$matches)) : ?>
                     <div class="uk-alert-primary" uk-alert>
                        <a class="uk-alert-close" uk-close></a>
-                       <?php $assunto = str_replace("subject.keyword:","",$expressao_busca); consultar_vcusp(str_replace("\"","",$assunto)); ?>
+                       <?php $assunto = str_replace("subject.keyword:","",$expressao_busca); USP::consultar_vcusp(str_replace("\"","",$assunto)); ?>
                     </div>   
                 <?php endif; ?>
                 <?php endforeach; ?>
@@ -374,7 +374,7 @@
                                                     if(empty($_SESSION['oauthuserdata'])){
                                                         $_SESSION['oauthuserdata']="";
                                                     } 
-                                                    $full_links = get_fulltext_file($r['_id'],$_SESSION['oauthuserdata']);
+                                                    $full_links = processaResultados::get_fulltext_file($r['_id'],$_SESSION['oauthuserdata']);
                                                     if (!empty($full_links)){
                                                         echo '<p class="uk-text-small">Download do texto completo</p><div class="uk-grid">';
                                                                 foreach ($full_links as $links) {

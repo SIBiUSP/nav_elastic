@@ -98,12 +98,6 @@
                     <a href="" class="" aria-expanded="false"><?php echo $t->gettext('Usuário'); ?></a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-nav-header"><?php echo $t->gettext('Ferramentas'); ?></li>
-                            <li><a href="comparar_lattes.php">Comparador Lattes</a></li>
-                            <li><a href="comparar_wos.php">Comparador WoS</a></li>
-                            <li><a href="comparar_werusp.php">Comparador weRUSP</a></li>
-                            <li><a href="comparar_csv_scopus.php">Comparador Scopus</a></li>
-                            <li class="uk-nav-divider"></li>
                             <li class="uk-nav-header">Acesso</li>
                             <?php if(empty($_SESSION['oauthuserdata'])): ?>
                                 <li><a href="aut/oauth.php">Login</a></li>

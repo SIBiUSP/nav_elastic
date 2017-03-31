@@ -352,7 +352,8 @@ $record_blob = implode("\\n", $record);
                 <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo excluído com sucesso", {status:'danger'})</script>
             <?php endif; ?> 
         <?php endif; ?>
-        <?php include_once("inc/analyticstracking.php") ?>
+        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
+
         <?php include('inc/navbar.php'); ?>
         <br/><br/><br/>
 

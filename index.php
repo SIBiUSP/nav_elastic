@@ -31,7 +31,7 @@
 
     <body>     
         
-        <?php include_once("inc/analyticstracking.php") ?>
+        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >

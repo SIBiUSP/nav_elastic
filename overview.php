@@ -27,7 +27,7 @@ if (!empty($_GET['unidade'])) {
         
     </head>
     <body>
-        <?php include_once("inc/analyticstracking.php") ?>
+        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-top"> 
             
