@@ -361,11 +361,11 @@ $record_blob = implode("\\n", $record);
 
         <div class="uk-grid uk-margin-top" uk-grid>            
             <?php if (!empty($cursor["_source"]['issn'][0])) : ?>
-                <?php $issn_info = get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier); ?>
+                <?php $issn_info = API::get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier); ?>
                 <?php
                     if (!empty($issn_info)) {
                         //print_r($issn_info);
-                        store_issn_info($client,$cursor["_source"]['issn'][0],json_encode($issn_info));
+                        API::store_issn_info($client,$cursor["_source"]['issn'][0],json_encode($issn_info));
                     }
                     
                 ?>
@@ -418,7 +418,7 @@ $record_blob = implode("\\n", $record);
                         -->
                     
                     <?php
-                        $full_citations = get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                        $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
                         if (!empty($full_citations["abstract-citations-response"])) {
                             echo '<h4>API SCOPUS</h4>';
                             echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
@@ -667,7 +667,7 @@ $record_blob = implode("\\n", $record);
                                 <?php endif; ?>
                             </div>
                            <?php if (!empty($cursor["_source"]['doi'])) {
-                                    $oadoi = get_oadoi($cursor["_source"]['doi'][0]);
+                                    $oadoi = API::get_oadoi($cursor["_source"]['doi'][0]);
                                     echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'][0].' (Fonte: <a href="oadoi.org">oaDOI API</a>)';
                                     echo '<ul>';
                                     if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
@@ -698,7 +698,7 @@ $record_blob = implode("\\n", $record);
                                     if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
                                         $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
                                     }
-                                    metrics_update($client,$_GET['_id'],$metrics);      
+                                    API::metrics_update($client,$_GET['_id'],$metrics);      
                                 }
                             ?>                            
                             <?php endif; ?>
@@ -783,7 +783,7 @@ $record_blob = implode("\\n", $record);
                             if(empty($_SESSION['oauthuserdata'])){
                                 $_SESSION['oauthuserdata']="";
                             } 
-                            $full_links = get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
+                            $full_links = processaResultados::get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
                             if (!empty($full_links)){
                                 echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
                                         foreach ($full_links as $links) {
@@ -841,7 +841,7 @@ $record_blob = implode("\\n", $record);
                             
                             <?php
                                 if (!empty($cursor["_source"]['doi'])) {
-                                    $full_html = get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                                    $full_html = API::get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
                                     print_r($full_html);                                    
                                 } 
                             ?>

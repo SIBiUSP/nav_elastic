@@ -273,7 +273,7 @@ class autoridades {
 class API {
     
 
-    function get_title_elsevier($issn,$api_elsevier) {
+    static function get_title_elsevier($issn,$api_elsevier) {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -290,7 +290,7 @@ class API {
         curl_close($curl);    
     }
 
-    function get_articlefull_elsevier($doi,$api_elsevier) {
+    static function get_articlefull_elsevier($doi,$api_elsevier) {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -306,7 +306,7 @@ class API {
         curl_close($curl);    
     } 
 
-    function get_citations_elsevier($doi,$api_elsevier) {
+    static function get_citations_elsevier($doi,$api_elsevier) {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -323,7 +323,7 @@ class API {
         curl_close($curl);    
     } 
 
-    function get_oadoi($doi) {
+    static function get_oadoi($doi) {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -340,7 +340,7 @@ class API {
         curl_close($curl);    
     }
 
-    function metrics_update($client,$_id,$metrics_array){    
+    static function metrics_update($client,$_id,$metrics_array){    
 
         $query = 
         '
@@ -365,7 +365,7 @@ class API {
 
     }
 
-    function store_issn_info($client,$issn,$issn_info){    
+    static function store_issn_info($client,$issn,$issn_info){    
 
         $query = 
         '

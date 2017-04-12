@@ -8,19 +8,10 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script> 
 
-<!-- Uikit 2 
-<link rel="stylesheet" href="inc/uikit/css/uikit.css">
-<script src="inc/uikit/js/uikit.min.js"></script>
-<script src="inc/uikit/js/components/grid.js"></script>
--->
-
 <!-- Uikit 3 -->
-<link rel="stylesheet" href="inc/uikit3/css/uikit.min.css" />
-<script src="inc/uikit3/js/uikit.min.js"></script>
-<!--
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.11/css/uikit.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.11/js/uikit.min.js"></script>
--->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/css/uikit.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/js/uikit-icons.min.js"></script>
 
 <!-- USP Custom -->
 <link rel="stylesheet" href="inc/css/style.css">

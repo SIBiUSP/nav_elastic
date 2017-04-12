@@ -22,7 +22,6 @@ class paginaInicial {
     }
     
     static function contar_arquivos () {
-
         $query_all = '
             {
                 "query": {
@@ -631,6 +630,152 @@ function compararRegistrosWos ($client,$query_type,$query_year,$query_title,$que
             return $result_row;
         
     }
+}
+
+/* Recupera os exemplares do DEDALUS */
+function load_itens_single ($sysno) {
+    $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
+    if ($xml->error == "No associated items"){
+    } else {
+        echo "<h4>Exemplares físicos disponíveis nas Bibliotecas</h4>";
+        echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
+                    <thead>
+                      <tr>
+                        <th>Biblioteca</th>
+                        <th>Código de barras</th>
+                        <th>Status</th>
+                        <th>Número de chamada</th>";
+                        if ($xml->item->{'loan-status'} == "A"){
+                        echo "<th>Status</th>
+                        <th>Data provável de devolução</th>";
+                      } else {
+                        echo "<th>Status</th>";
+                      }
+                      echo "</tr>
+                    </thead>
+                  <tbody>";
+          foreach ($xml->item as $item) {
+            echo '<tr>';
+            echo '<td>'.$item->{'sub-library'}.'</td>';
+            echo '<td>'.$item->{'barcode'}.'</td>';
+            echo '<td>'.$item->{'item-status'}.'</td>';
+            echo '<td>'.$item->{'call-no-1'}.'</td>';
+            if ($item->{'loan-status'} == "A"){
+            echo '<td>Emprestado</td>';
+            echo '<td>'.$item->{'loan-due-date'}.'</td>';
+          } else {
+            echo '<td>Disponível</td>';
+          }
+            echo '</tr>';
+          }
+          echo "</tbody></table>";
+          echo '<hr>';
+          }
+          flush();
+  }
+
+function gera_consulta_citacao($citacao) {
+    $type = get_type($citacao["type"]);
+    $author_array = array();
+    foreach ($citacao["authors"] as $autor_citation){
+        $array_authors = explode(',', $autor_citation);
+        $author_array[] = '{"family":"'.$array_authors[0].'","given":"'.$array_authors[1].'"}';
+    };
+    $authors = implode(",",$author_array);
+    if (!empty($citacao["ispartof"])) {
+        $container = '"container-title": "'.$citacao["ispartof"].'",';
+    } else {
+        $container = "";
+    };
+    if (!empty($citacao["doi"])) {
+        $doi = '"DOI": "'.$citacao["doi"][0].'",';
+    } else {
+        $doi = "";
+    };
+    if (!empty($citacao["url"])) {
+        $url = '"URL": "'.$citacao["url"][0].'",';
+    } else {
+        $url = "";
+    };
+    if (!empty($citacao["publisher"])) {
+        $publisher = '"publisher": "'.$citacao["publisher"].'",';
+    } else {
+        $publisher = "";
+    };
+    if (!empty($citacao["publisher_place"])) {
+        $publisher_place = '"publisher-place": "'.$citacao["publisher_place"].'",';
+    } else {
+        $publisher_place = "";
+    };
+    $volume = "";
+    $issue = "";
+    $page_ispartof = "";
+    if (!empty($citacao["ispartof_data"])) {
+        foreach ($citacao["ispartof_data"] as $ispartof_data) {
+            if (strpos($ispartof_data, 'v.') !== false) {
+                $volume = '"volume": "'.str_replace("v.","",$ispartof_data).'",';
+            } elseif (strpos($ispartof_data, 'n.') !== false) {
+                $issue = '"issue": "'.str_replace("n.","",$ispartof_data).'",';
+            } elseif (strpos($ispartof_data, 'p.') !== false) {
+                $page_ispartof = '"page": "'.str_replace("p.","",$ispartof_data).'",';
+            }
+        }
+    }
+    $data = json_decode('{
+    "title": "'.$citacao["title"].'",
+    "type": "'.$type.'",
+    '.$container.'
+    '.$doi.'
+    '.$url.'
+    '.$publisher.'
+    '.$publisher_place.'
+    '.$volume.'
+    '.$issue.'
+    '.$page_ispartof.'
+    "issued": {
+    "date-parts": [
+    [
+    "'.$citacao["year"].'"
+    ]
+    ]
+    },
+    "author": [
+    '.$authors.'
+    ]
+    }');
+    
+    return $data;    
+    
+}
+
+/* Pegar o tipo de material */
+function get_type($material_type){
+  switch ($material_type) {
+  case "ARTIGO DE JORNAL":
+      return "article-newspaper";
+      break;
+  case "ARTIGO DE PERIODICO":
+      return "article-journal";
+      break;
+  case "PARTE DE MONOGRAFIA/LIVRO":
+      return "chapter";
+      break;
+  case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
+      return "interview";
+      break;
+  case "TRABALHO DE EVENTO-RESUMO":
+      return "paper-conference";
+      break;
+  case "TRABALHO DE EVENTO":
+      return "paper-conference";
+      break;     
+  case "TESE":
+      return "thesis";
+      break;          
+  case "TEXTO NA WEB":
+      return "post-weblog";
+      break;
+  }
 }
 
 ?>
