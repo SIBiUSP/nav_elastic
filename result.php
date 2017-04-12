@@ -5,19 +5,18 @@
     include('inc/functions_result.php');
 
     $result_get = get::analisa_get($_GET);
-    $query = $result_get['query'];  
+    $body = $result_get['query'];  
     $limit = $result_get['limit'];
     $page = $result_get['page'];
     $skip = $result_get['skip'];    
 
-    $params = [
-        'index' => $index,
-        'type' => 'producao',
-        'size'=> $limit,
-        'from' => $skip,   
-        'body' => $query
-    ];  
-    
+    $params = [];
+    $params["index"] = $index;
+    $params["type"] = $type;
+    $params["size"] = $limit;
+    $params["from"] = $skip;
+    $params["body"] = $body;
+
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
 
