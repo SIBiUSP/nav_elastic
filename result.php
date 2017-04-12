@@ -94,32 +94,32 @@
                                 $facets = new facets();
                                 $facets->query = $query;
 
-                                $facets->facet("base",10,"Base",null,"producao");
-                                $facets->facet("type",10,"Tipo de material",null,"producao");
-                                $facets->facet("unidadeUSP",100,"Unidade USP",null,"producao");
-                                $facets->facet("departamento",100,"Departamento",null,"producao");
-                                $facets->facet("authors",120,"Autores",null,"producao");
-                                $facets->facet("authorUSP",100,"Autores USP",null,"producao");
-                                $facets->facet("year",120,"Ano de publicação","desc","producao");
-                                $facets->facet("subject",100,"Assuntos",null,"producao");
-                                $facets->facet("language",40,"Idioma",null,"producao");
-                                $facets->facet("ispartof",100,"É parte de ...",null,"producao");
-                                $facets->facet("publisher",100,"Editora",null,"producao");
-                                $facets->facet("evento",100,"Nome do evento",null,"producao");
-                                $facets->facet("country",200,"País de publicação",null,"producao");
-                                $facets->facet("tipotese",30,"Tipo de tese",null,"producao");
-                                $facets->facet("areaconcentracao",100,"Área de concentração",null,"producao");
-                                $facets->facet("programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"producao");
-                                $facets->facet("programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"producao");
-                                $facets->facet("indexado",100,"Indexado em",null,"producao");
-                                $facets->facet("fatorimpacto",1000,"Fator de impacto","desc","producao");         
-                                $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"producao");
-                                $facets->facet("internacionalizacao",30,"Internacionalização",null,"producao");  
-                                $facets->facet("colab",120,"País dos autores externos à USP",null,"producao");
-                                $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null,"producao");
-                                $facets->facet("fomento",100,"Agência de fomento",null,"producao");
-                                $facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus","producao");
-                                $facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus","producao");
+                                $facets->facet("base",10,"Base",null);
+                                $facets->facet("type",10,"Tipo de material",null);
+                                $facets->facet("unidadeUSP",100,"Unidade USP",null);
+                                $facets->facet("departamento",100,"Departamento",null);
+                                $facets->facet("authors",120,"Autores",null);
+                                $facets->facet("authorUSP",100,"Autores USP",null);
+                                $facets->facet("year",120,"Ano de publicação","desc");
+                                $facets->facet("subject",100,"Assuntos",null);
+                                $facets->facet("language",40,"Idioma",null);
+                                $facets->facet("ispartof",100,"É parte de ...",null);
+                                $facets->facet("publisher",100,"Editora",null);
+                                $facets->facet("evento",100,"Nome do evento",null);
+                                $facets->facet("country",200,"País de publicação",null);
+                                $facets->facet("tipotese",30,"Tipo de tese",null);
+                                $facets->facet("areaconcentracao",100,"Área de concentração",null);
+                                $facets->facet("programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
+                                $facets->facet("programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null);
+                                $facets->facet("indexado",100,"Indexado em",null);
+                                $facets->facet("fatorimpacto",1000,"Fator de impacto","desc");         
+                                $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null);
+                                $facets->facet("internacionalizacao",30,"Internacionalização",null);  
+                                $facets->facet("colab",120,"País dos autores externos à USP",null);
+                                $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null);
+                                $facets->facet("fomento",100,"Agência de fomento",null);
+                                $facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
+                                $facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus");
                             ?>
                         </ul>
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>

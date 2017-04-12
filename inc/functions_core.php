@@ -211,7 +211,8 @@ class users {
 
 class facets {
     
-    public function facet($field,$size,$field_name,$sort,$type) {
+    public function facet($field,$size,$field_name,$sort) {
+        global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
         if (isset($sort)) {
