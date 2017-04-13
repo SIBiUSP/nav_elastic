@@ -40,7 +40,7 @@
         <?php
             include('inc/meta-header.php'); 
         ?>        
-        <title>BDPI USP - Resultado da busca</title>
+        <title><?php echo $branch_abrev; ?> - Resultado da busca</title>
         <script src="inc/uikit/js/components/accordion.min.js"></script>
         <script src="inc/uikit/js/components/pagination.min.js"></script>
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
@@ -305,7 +305,7 @@
                                 </div>
                                 <div class="uk-width-4-5@m">    
                                     <article class="uk-article">
-                                        <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)</a></p>
+                                        <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?><?php if (!empty($r["_source"]['year'])) { echo ' ('.$r["_source"]['year'].')'; } ?></a></p>
                                         <?php if (!empty($r["_source"]['authors'])) : ?>
                                             <p class="uk-article-meta">
                                             <?php foreach ($r["_source"]['authors'] as $autores) {

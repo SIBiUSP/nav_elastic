@@ -192,7 +192,7 @@ $record_blob = implode("\\n", $record);
 <html lang="pt-br" dir="ltr">
     <head>
         <?php include('inc/meta-header.php'); ?>
-        <title>BDPI USP - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
+        <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
         <script src="inc/uikit/js/components/slideset.js"></script>
         <script src="inc/uikit/js/components/notify.min.js"></script>
         <script src="inc/uikit/js/components/upload.min.js"></script>
@@ -480,7 +480,7 @@ $record_blob = implode("\\n", $record);
                                 <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
                             </p>    
                         <?php endif; ?>                            
-                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?> (<?php echo $cursor["_source"]['year']; ?>)</a></h1>
+                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?><?php if (!empty($cursor["_source"]['year'])) { echo ' ('.$cursor["_source"]['year'].')'; } ?></a></h1>
                             
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['authors'])): ?>
