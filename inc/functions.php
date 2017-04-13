@@ -146,7 +146,11 @@ class paginaInicial {
             };
             echo '<div class="uk-width-expand">';
             if (!empty($r["_source"]['title'])){
-            echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].' ('.$r["_source"]['year'].')</h4></a>';
+                echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].'';
+                if (!empty($r["_source"]['year'])){
+                   echo ' ('.$r["_source"]['year'].')';
+                }         
+                echo '</h4></a>';
             };
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
             if (!empty($r["_source"]['authors'])) { 
