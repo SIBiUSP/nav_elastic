@@ -8,6 +8,7 @@ include('functions_core.php');
 class paginaInicial {
     
     static function contar_registros () {
+        global $type;
         $query_all = '
             {
                 "query": {
@@ -15,7 +16,7 @@ class paginaInicial {
                 }
             }        
         ';
-        $response = elasticsearch::elastic_search("producao",null,0,$query_all);
+        $response = elasticsearch::elastic_search($type,null,0,$query_all);
         return $response['hits']['total'];
         print_r($response);
 
@@ -36,7 +37,7 @@ class paginaInicial {
     } 
 
     static function contar_unicos ($field) {
-
+        global $type;
         $count_distinct_query = '
         {
             "aggs" : {
@@ -48,14 +49,14 @@ class paginaInicial {
             }
         }
         ';
-        $response = elasticsearch::elastic_search("producao",null,0,$count_distinct_query);
+        $response = elasticsearch::elastic_search($type,null,0,$count_distinct_query);
         return $response["aggregations"]["distinct_authors"]["value"];
 
     }
 
     
     static function unidadeUSP_inicio() {
-
+        global $type;
         $query = '{
             "aggs": {
                 "group_by_state": {
@@ -68,7 +69,7 @@ class paginaInicial {
             }
         }';
 
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
+        $response = elasticsearch::elastic_search($type,null,0,$query);
 
         $programas = [];
         $count = 1;
@@ -100,7 +101,7 @@ class paginaInicial {
     }
     
     static function base_inicio() {
-
+        global $type;
         $query = '{
             "aggs": {
                 "group_by_state": {
@@ -111,7 +112,7 @@ class paginaInicial {
                 }
             }
         }';
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
+        $response = elasticsearch::elastic_search($type,null,0,$query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
             echo '<li><a href="result.php?search[]=base.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }   
@@ -119,7 +120,7 @@ class paginaInicial {
     }    
     
     static function ultimos_registros() {
-
+        global $type;
         $query = '{
                     "query": {
                         "match_all": {}
@@ -128,7 +129,7 @@ class paginaInicial {
                         {"_uid" : {"order" : "desc"}}
                         ]
                     }';
-        $response = elasticsearch::elastic_search("producao",null,11,$query);
+        $response = elasticsearch::elastic_search($type,null,11,$query);
 
         foreach ($response["hits"]["hits"] as $r){
             echo '<article class="uk-comment">

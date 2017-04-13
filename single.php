@@ -21,7 +21,7 @@ $citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
-$cursor = elasticsearch::elastic_get($_GET['_id'],"producao",null);
+$cursor = elasticsearch::elastic_get($_GET['_id'],$type,null);
 
 /* Contador */
 counter($_GET['_id'],$client);

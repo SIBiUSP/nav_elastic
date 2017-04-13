@@ -5,7 +5,7 @@
     include('inc/functions_result.php');
 
     $result_get = get::analisa_get($_GET);
-    $body = $result_get['query'];  
+    $query = $result_get['query'];  
     $limit = $result_get['limit'];
     $page = $result_get['page'];
     $skip = $result_get['skip'];    
@@ -15,7 +15,7 @@
     $params["type"] = $type;
     $params["size"] = $limit;
     $params["from"] = $skip;
-    $params["body"] = $body;
+    $params["body"] = $query;
 
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];

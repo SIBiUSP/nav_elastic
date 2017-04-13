@@ -253,7 +253,7 @@ class facets {
         }
         $query["aggs"]["counts"]["terms"]["size"] = $size;        
         
-        $response = elasticsearch::elastic_search("producao",null,0,$query);
+        $response = elasticsearch::elastic_search($type,null,0,$query);
 
         echo '<li class="uk-parent">';
         echo '<a href="#">'.$nome_do_campo.'</a>';

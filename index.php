@@ -13,7 +13,7 @@
             /* Define variables */
             define('authorUSP','authorUSP');
         ?> 
-        <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
+        <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
         <meta property="og:url" content="http://bdpi.usp.br">
@@ -39,8 +39,7 @@
                 <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg);">
                     <?php include('inc/navbar.php'); ?>
                     <div class="uk-overlay uk-overlay-primary">
-                    <h2 style="color:#fcb421">Base de Produção Intelectual da Universidade de São Paulo</h2>
-                    <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
+                    <h2 style="color:#fcb421"><?php echo $branch; ?></h2>                    
                         <form class="uk-form-stacked" action="result.php">
 
                             <div class="uk-margin">
@@ -102,7 +101,7 @@
         
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span>Últimos regístros</span></h1>
-            <?php paginaInicial::ultimos_registros($client);?>
+            <?php paginaInicial::ultimos_registros();?>
         </div>        
 
         <div class="uk-container uk-section uk-margin-large-bottom">
