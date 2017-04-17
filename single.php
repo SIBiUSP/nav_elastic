@@ -390,8 +390,11 @@ $record_blob = implode("\\n", $record);
                         </p>    
                     <?php endif; ?>                            
                     <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?><?php if (!empty($cursor["_source"]['year'])) { echo ' ('.$cursor["_source"]['year'].')'; } ?></a></h1>
+                    
+                    <?php if (!empty($cursor["_source"]["title_original"])): ?>
                     <h4 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title_original"];?></a></h4>
-                            
+                    <?php endif; ?>
+                    
                      <!--List authors -->
                     <?php if (!empty($cursor["_source"]['authors'])): ?>
                         <p class="uk-article-meta">
@@ -414,6 +417,15 @@ $record_blob = implode("\\n", $record);
                             <?php endforeach;?>
                         </p>
                     <?php endif; ?>
+                    <?php if (!empty($cursor["_source"]['meio_de_expressao'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Meio de expressão:                            
+                            <?php foreach ($cursor["_source"]['meio_de_expressao'] as $meio_de_expressao) : ?>
+                                <a href="result.php?search[]=meio_de_expressao.keyword:&quot;<?php echo $meio_de_expressao;?>&quot;"><?php echo $meio_de_expressao;?></a>
+                            <?php endforeach;?>
+                        </p>
+                    <?php endif; ?>                       
+                    
                     <?php if (!empty($cursor["_source"]['genero_e_forma'])): ?>
                         <p class="uk-text-small uk-margin-remove">
                             Genero e forma:                            

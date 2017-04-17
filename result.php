@@ -101,18 +101,22 @@
                             <?php
                                 $facets = new facets();
                                 $facets->query = $query;
+                            
+                                if (!isset($_GET["search"])) {
+                                    $_GET["search"] = null;                                    
+                                }
 
-                                $facets->facet("type",10,"Tipo de material",null);
-                                $facets->facet("authors",120,"Autores",null);
-                                $facets->facet("authors_function",120,"Função dos autores",null);
-                                $facets->facet("meio_de_expressao",200,"Meio de expressão",null);                            
-                                $facets->facet("year",120,"Ano de publicação","desc");
-                                $facets->facet("genero_e_forma",100,"Gênero e forma",null);
-                                $facets->facet("subject",100,"Assuntos",null);
-                                $facets->facet("language",40,"Idioma",null);
-                                $facets->facet("ispartof",100,"É parte de ...",null);
-                                $facets->facet("publisher",100,"Editora",null);
-                                $facets->facet("country",200,"País de publicação",null);
+                                $facets->facet("type",10,"Tipo de material",null,$_GET["search"]);
+                                $facets->facet("authors",120,"Autores",null,$_GET["search"]);
+                                $facets->facet("authors_function",120,"Função dos autores",null,$_GET["search"]);
+                                $facets->facet("meio_de_expressao",200,"Meio de expressão",null,$_GET["search"]);                            
+                                $facets->facet("year",120,"Ano de publicação","desc",$_GET["search"]);
+                                $facets->facet("genero_e_forma",100,"Gênero e forma",null,$_GET["search"]);
+                                $facets->facet("subject",100,"Assuntos",null,$_GET["search"]);
+                                $facets->facet("language",40,"Idioma",null,$_GET["search"]);
+                                $facets->facet("ispartof",100,"É parte de ...",null,$_GET["search"]);
+                                $facets->facet("publisher",100,"Editora",null,$_GET["search"]);
+                                $facets->facet("country",200,"País de publicação",null,$_GET["search"]);
                             ?>
                         </ul>
                         <hr>

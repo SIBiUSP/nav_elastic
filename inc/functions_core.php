@@ -211,7 +211,7 @@ class users {
 
 class facets {
     
-    public function facet($field,$size,$field_name,$sort) {
+    public function facet($field,$size,$field_name,$sort,$get_search) {
         global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
@@ -233,10 +233,11 @@ class facets {
                     <div class="uk-width-1-3" style="color:#333">
                         <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
                         <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>
-                    </div>
-                </div>';
-            echo '</li>';
+                    ';
+            if (isset($get_search)) {
+                echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>';
+            } 
+            echo '</div></div></li>';
 
         };
         echo   '</ul></li>';

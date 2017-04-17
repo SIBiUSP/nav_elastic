@@ -45,7 +45,7 @@
                             <div class="uk-margin">
                                 <label class="uk-form-label" for="form-stacked-text">Termos de busca - <a href="result.php">ou clique aqui para ver todos os registros</a></label>
                                 <div class="uk-form-controls">
-                                    <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por título, autor, meio de expressão ou gênero e forma'); ?>" name="search[]" data-validation="required">
+                                    <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Buscar por título, autor, meio de expressão ou gênero e forma'); ?>" name="search[]" data-validation="required">
                                 <input type="hidden" name="fields[]" value="title">
                                 <input type="hidden" name="fields[]" value="authors">
                                 <input type="hidden" name="fields[]" value="genero_e_forma">
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
 
-                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Pesquisar</button>
+                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Buscar</button>
                         </form>
                     </div>
                 </div>
