@@ -100,21 +100,21 @@ class paginaInicial {
 
     }
     
-    static function base_inicio() {
+    static function instrumento_inicio() {
         global $type;
         $query = '{
             "aggs": {
                 "group_by_state": {
                     "terms": {
-                        "field": "base.keyword",                    
-                        "size" : 5
+                        "field": "instrumento.keyword",                    
+                        "size" : 10
                     }
                 }
             }
         }';
         $response = elasticsearch::elastic_search($type,null,0,$query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-            echo '<li><a href="result.php?search[]=base.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+            echo '<li><a href="result.php?search[]=instrumento.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }   
 
     }    

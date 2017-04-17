@@ -16,10 +16,10 @@
         <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
-        <meta property="og:url" content="http://bdpi.usp.br">
-        <meta property="og:title" content="Base de Produção Intelectual da USP - Página Principal">
-        <meta property="og:site_name" content="Base de Produção Intelectual da USP">
-        <meta property="og:description" content="Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.">
+        <meta property="og:url" content="<?php echo $url; ?>">
+        <meta property="og:title" content="<?php echo $branch; ?> - Página Principal">
+        <meta property="og:site_name" content="<?php echo $branch; ?>">
+        <meta property="og:description" content="<?php echo $branch_description; ?>">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
         <meta property="og:image:width" content="800"> 
@@ -36,7 +36,7 @@
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
             <div class="uk-container">
-                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg);">
+                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(inc/images/Partitura_foto-Cecília-Bastos-01-5.jpg);">
                     <?php include('inc/navbar.php'); ?>
                     <div class="uk-overlay uk-overlay-primary">
                     <h2 style="color:#fcb421"><?php echo $branch; ?></h2>                    
@@ -45,20 +45,14 @@
                             <div class="uk-margin">
                                 <label class="uk-form-label" for="form-stacked-text">Termos de busca</label>
                                 <div class="uk-form-controls">
-                                    <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" data-validation="required">
+                                    <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por título, autor ou meio de expressão'); ?>" name="search[]" data-validation="required">
+                                <input type="hidden" name="fields[]" value="title">
+                                <input type="hidden" name="fields[]" value="authors">
+                                <input type="hidden" name="fields[]" value="genero_e_forma">
+                                <input type="hidden" name="fields[]" value="instrumento">
                                 </div>
                             </div>
 
-                            <div class="uk-margin">
-                                <label class="uk-form-label" for="form-stacked-select">Selecione a base</label>
-                                <div class="uk-form-controls">
-                                    <select class="uk-select" id="form-stacked-select" name="search[]">
-                                        <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
-                                        <option value="base.keyword:&quot;Produção científica&quot;">Produção Científica</option>
-                                        <option value="base.keyword:&quot;Teses e dissertações&quot;">Teses e Dissertações</option>
-                                    </select>
-                                </div>
-                            </div>
                             <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Pesquisar</button>
                         </form>
                     </div>
@@ -69,31 +63,18 @@
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span>Mais informações</span></h1>        
             <div class="uk-child-width-expand@s uk-text-center" uk-grid>
-                <div>
-                    <div class="uk-card">
-                        <h3 class="uk-card-title">Unidades USP e Programas de Pós-Graduação Interunidades</h3>
-                        <ul class="uk-list uk-list-divider">
-                            <?php paginaInicial::unidadeUSP_inicio(); ?>
-                        </ul>
-                    </div>
+                <div class="uk-card">
+                    <h3 class="uk-card-title">Intrumentos (10+)</h3>
+                    <ul class="uk-list uk-list-divider">
+                        <?php paginaInicial::instrumento_inicio(); ?>
+                    </ul>                      
                 </div>
-                <div>
-                    <div class="uk-card">
-                        <h3 class="uk-card-title">Bases</h3>
-                        <ul class="uk-list uk-list-divider">
-                            <?php paginaInicial::base_inicio(); ?>
-                        </ul>                      
-                    </div>
-                </div>
-                <div>
-                    <div class="uk-card">
-                        <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
-                        <ul class="uk-list uk-list-divider">
-                            <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> registros</li>
-                            <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP"),0,',','.'); ?> autores vinculados à USP</li>
-                            <li><?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li>                        
-                        </ul>
-                    </div>
+                <div class="uk-card">
+                    <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
+                    <ul class="uk-list uk-list-divider">
+                        <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> registros</li>
+                        <li><?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li>                        
+                    </ul>
                 </div>
             </div>
         </div>  
@@ -104,9 +85,12 @@
             <?php paginaInicial::ultimos_registros();?>
         </div>        
 
+<!-- 
         <div class="uk-container uk-section uk-margin-large-bottom">
              <h1 class="uk-heading-line uk-text-center"><span>Unidades USP</span></h1>
-        
+
+            
+           
 <div class="uk-child-width-1-3 uk-child-width-1-6@s uk-grid-match uk-grid-small" uk-grid>
     <?php echo paginaInicial::card_unidade("CEBIMAR","Centro de Biologia Marinha (CEBIMAR)"); ?>
     <?php echo paginaInicial::card_unidade("CDCC","Centro de Divulgação Científica e Cultural (CDCC)"); ?>
@@ -163,7 +147,7 @@
     <?php echo paginaInicial::card_unidade("MZ","Museu de Zoologia (MZ)"); ?>
     <?php echo paginaInicial::card_unidade("MP","Museu Paulista (MP)"); ?>    
 </div>      
-
+-->
                  
             
             <hr class="uk-grid-divider">

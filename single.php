@@ -360,36 +360,9 @@ $record_blob = implode("\\n", $record);
     <div class="uk-container uk-margin-large-bottom">
 
         <div class="uk-grid uk-margin-top" uk-grid>            
-            <?php if (!empty($cursor["_source"]['issn'][0])) : ?>
-                <?php $issn_info = API::get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier); ?>
-                <?php
-                    if (!empty($issn_info)) {
-                        //print_r($issn_info);
-                        API::store_issn_info($client,$cursor["_source"]['issn'][0],json_encode($issn_info));
-                    }
-                    
-                ?>
-            <?php endif; ?>             
-            
             
             <div class="uk-width-1-3@m">
                 <div class="uk-panel uk-panel-box">
-                    
-                   <?php
-                        if (isset($issn_info["serial-metadata-response"])) {
-                            $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";
-                            
-                    $headers = get_headers($image_url, 1);
-                    if ($headers[0] == 'HTTP/1.1 200 OK') {
-                            if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
-                                echo '<div class="uk-margin-top uk-margin-bottom">';    
-                                echo '<img src="'.$image_url.'">';
-                                echo '</div>';
-                            }
-                    }                            
-
-                        } 
-                    ?>
                     
                     <h3 class="uk-panel-title">Ver registro no DEDALUS</h3>
                     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
@@ -404,254 +377,100 @@ $record_blob = implode("\\n", $record);
                         <li>
                             <button class="uk-button-small uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
                         </li>
-                        <li>
-                    <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
-                    <h4>Visitas ao registro: <?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
-                    <?php endif; ?>                
-                        </li>
                     </ul>
-                    <?php if (!empty($cursor["_source"]['doi'])): ?>
-                        <h3 class="uk-panel-title">Métricas</h3>
-                        <hr>
-                        <!-- 
-                            <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
-                        -->
-                    
-                    <?php
-                        $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
-                        if (!empty($full_citations["abstract-citations-response"])) {
-                            echo '<h4>API SCOPUS</h4>';
-                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
-                            echo '<h5>Ver perfil dos autores na SCOPUS:</h5>';
-                            foreach ($full_citations["abstract-citations-response"]["citeInfoMatrix"]["citeInfoMatrixXML"]["citationMatrix"]["citeInfo"][0]["author"] as $authors_scopus) {
-                            //print_r($authors_scopus);
-                            echo '<a href="https://www.scopus.com/authid/detail.uri?partnerID=HzOxMe3b&authorId='.$authors_scopus['authid'].'&origin=inward">'.$authors_scopus['index-name'].'</a><br/>';
-                            }
-                             
-                            echo '
-                            <table class="uk-table">
-                                <caption>Citações na Scopus nos últimos 3 anos</caption>
-                                <thead>
-                                    <tr>';
-                            foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnHeading"] as $header){
-                                echo '<th>'.$header["$"].'</th>';
-                            }
-                            echo '
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>';
-                            foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnTotal"] as $total){
-                                echo '<td>'.$total["$"].'</td>';
-                            }
-                            echo ' 
-                                    </tr>
-                                </tbody>
-                            </table>                        
-
-                            ';
-                            //print_r($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]);
-                            echo 'Total de citações nos últimos 3 anos: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'<br/>';
-                            echo 'Total de citações: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'<br/>';
-                        
-                    
-                            
-                            $metrics[] = '"three_years_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
-                            $metrics[] = '"full_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
-                        }
-                    ?>
-                    <?php endif; ?>
                 </div>
             </div>
             <div class="uk-width-2-3@m">
                 
-<ul class="uk-subnav uk-subnav-pill" uk-switcher>
-    <li class="uk-active"><a href="#">Visualização</a></li>
-    <li><a href="#">Texto completo</a></li>
-</ul>
-
-        
-                <ul id="single" class="uk-switcher uk-margin">
-                    <li>
-                        <article class="uk-article">
-                        <!--Type -->
-                        <?php if (!empty($cursor["_source"]['type'])): ?>
-                            <p class="uk-article-meta">    
-                                <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
-                            </p>    
-                        <?php endif; ?>                            
-                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?><?php if (!empty($cursor["_source"]['year'])) { echo ' ('.$cursor["_source"]['year'].')'; } ?></a></h1>
+                <article class="uk-article">
+                    <!--Type -->
+                    <?php if (!empty($cursor["_source"]['type'])): ?>
+                        <p class="uk-article-meta">    
+                            <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
+                        </p>    
+                    <?php endif; ?>                            
+                    <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?><?php if (!empty($cursor["_source"]['year'])) { echo ' ('.$cursor["_source"]['year'].')'; } ?></a></h1>
+                    <h4 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title_original"];?></a></h4>
                             
-                        <!--List authors -->
-                        <?php if (!empty($cursor["_source"]['authors'])): ?>
-                            <p class="uk-article-meta">
-                            <?php foreach ($cursor["_source"]['authors'] as $autores) {
-                                $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
-                            } 
-                            $array_aut = implode("; ",$authors_array);
-                            unset($authors_array);
-                            print_r($array_aut);
-                            ?>
-                            </p>
-                        <?php endif; ?>
+                     <!--List authors -->
+                    <?php if (!empty($cursor["_source"]['authors'])): ?>
+                        <p class="uk-article-meta">
+                        <?php foreach ($cursor["_source"]['authors'] as $autores) {
+                            $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
+                        } 
+                        $array_aut = implode("; ",$authors_array);
+                        unset($authors_array);
+                        print_r($array_aut);
+                        ?>
+                        </p>
+                    <?php endif; ?>
                             
-                        <!--Unidades USP -->
-                        <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Unidades USP:
-                                    <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
-                                    <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
-                                    <?php endforeach;?>
-                            </p>
-                         <?php endif; ?>                             
-                            
-                        <!--Authors USP -->
-                        <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Autor(es) USP:
-                                <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-                                <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP;?>&quot;"><?php echo $autoresUSP;?> </a>
-                                <?php endforeach;?>
-                                
-                            </p>
-                        <?php endif; ?>                                
-                            
-                        <!--Assuntos -->
-                        <?php if (!empty($cursor["_source"]['subject'])): ?>
+                    <!--Assuntos -->
+                    <?php if (!empty($cursor["_source"]['subject'])): ?>
                         <p class="uk-text-small uk-margin-remove">
                             Assuntos:                            
                             <?php foreach ($cursor["_source"]['subject'] as $assunto) : ?>
-                                <a href="result.php?assunto=<?php echo $assunto;?>"><?php echo $assunto;?></a>
+                                <a href="result.php?search[]=subject.keyword:&quot;<?php echo $assunto;?>&quot;"><?php echo $assunto;?></a>
                             <?php endforeach;?>
                         </p>
-                        <?php endif; ?>                        
+                    <?php endif; ?>
+                    <?php if (!empty($cursor["_source"]['genero_e_forma'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Genero e forma:                            
+                            <?php foreach ($cursor["_source"]['genero_e_forma'] as $genero) : ?>
+                                <a href="result.php?search[]=genero_e_forma.keyword:&quot;<?php echo $genero;?>&quot;"><?php echo $genero;?></a>
+                            <?php endforeach;?>
+                        </p>
+                    <?php endif; ?>                     
 
-                        <!-- Idioma -->
-                        <?php if (!empty($cursor["_source"]['language'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Idioma:
-                                   <?php foreach ($cursor["_source"]['language'] as $language): ?>
-                                        <a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a>
-                                   <?php endforeach;?>  
-                            </p>
+                    <!-- Idioma -->
+                    <?php if (!empty($cursor["_source"]['language'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Idioma:
+                               <?php foreach ($cursor["_source"]['language'] as $language): ?>
+                                    <a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a>
+                               <?php endforeach;?>  
+                        </p>
+                    <?php endif; ?>
+                            
+                    <!-- Resumo -->
+                    <?php if (!empty($cursor["_source"]['resumo'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Resumo:
+                               <?php foreach ($cursor["_source"]['resumo'] as $resumo): ?>
+                                    <?php echo $resumo;?>
+                               <?php endforeach;?>     
+                        </p>
+                    <?php endif; ?>                            
+                            
+                    <!-- Imprenta -->
+                    <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
+                        <p class="uk-text-small uk-margin-remove">Imprenta:</p>
+                        <p>Local: <a href="result.php?search[]=publisher-place.keyword:&quot;<?php echo $cursor["_source"]['publisher-place'];?>&quot;"><?php echo $cursor["_source"]['publisher-place']; ?></a></p>
+                        <p>Data de publicação: <a href="result.php?search[]=year.keyword:&quot;<?php echo $cursor["_source"]['year'];?>&quot;"><?php echo $cursor["_source"]['year']; ?></a></p>                         
+                    <?php endif; ?>    
+                            
+                    <!-- Source -->
+                    <?php if (!empty($cursor["_source"]['ispartof'])): ?>
+                        <p class="uk-text-small uk-margin-remove">Fonte:</p>
+                        <p class="uk-text-small uk-margin-remove">Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></p>
+                        <?php if (!empty($cursor["_source"]['issn'])): ?>
+                        <p class="uk-text-small uk-margin-remove">ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></p>
                         <?php endif; ?>
-                            
-                        <!-- Resumo -->
-                        <?php if (!empty($cursor["_source"]['resumo'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Resumo:
-                                   <?php foreach ($cursor["_source"]['resumo'] as $resumo): ?>
-                                        <?php echo $resumo;?>
-                                   <?php endforeach;?>     
-                            </p>
-                        <?php endif; ?>                            
-                            
-                        <!-- Imprenta -->
-                        <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Imprenta:
-                                <p>Local: <a href="result.php?search[]=publisher-place.keyword:&quot;<?php echo $cursor["_source"]['publisher-place'];?>&quot;"><?php echo $cursor["_source"]['publisher-   place'];?></a></p>
-                                <p>Data de publicação: <a href="result.php?search[]=year.keyword:&quot;<?php echo $cursor["_source"]['year'];?>&quot;"><?php echo $cursor["_source"]['year'];?></a></p>
-                            </p>
-                            
-                        <?php endif; ?>    
-                            
-                        <!-- Source -->
-                        <?php if (!empty($cursor["_source"]['ispartof'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Fonte:
-                                    <p class="uk-text-small uk-margin-remove">Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></p>
-                                    <?php if (!empty($cursor["_source"]['issn'])): ?>
-                                    <p class="uk-text-small uk-margin-remove">ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></p>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
-                                    <p class="uk-text-small uk-margin-remove">Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></p>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
-                                    <p class="uk-text-small uk-margin-remove">Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/></p>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
-                                    <p class="uk-text-small uk-margin-remove">Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></p>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['doi'])): ?>
-                                    <p class="uk-text-small uk-margin-remove">DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a></p>
-                                    <?php endif; ?>
-                                </p>
+                        <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
+                        <p class="uk-text-small uk-margin-remove">Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></p>
                         <?php endif; ?>
-                        
+                        <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
+                        <p class="uk-text-small uk-margin-remove">Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/></p>
+                        <?php endif; ?>
+                        <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
+                        <p class="uk-text-small uk-margin-remove">Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></p>
+                        <?php endif; ?>
+                        <?php if (!empty($cursor["_source"]['doi'])): ?>
+                        <p class="uk-text-small uk-margin-remove">DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a></p>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
-                        <?php if (isset($issn_info["serial-metadata-response"])): ?>
-                            <div class="uk-alert">
-                                <li class="uk-h6">
-                                    Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API)
-                                    <ul>
-                                        <li>
-                                            Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
-                                        </li>
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
-                                        <li> 
-                                            Área: <?php 
-                                                      print_r($subj_area["$"]);
-                                                      $subject_area_array[] = '"'.$subj_area["$"].'"';
-                                                  ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                    <?php $metrics[] = '"subject_area_scopus":['.implode(",",$subject_area_array).']'; ?>    
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
-                                        <li>                                                    
-                                            SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
-                                            <?php $metrics[] = '"scopus_sjr_'.$sjr["@year"].'": '.$sjr["$"].'';?>
-                                        </li>
-                                    <?php endforeach; ?>
-
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
-                                        <li>                                                    
-                                            SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
-                                            <?php $metrics[] = '"scopus_snip_'.$snip["@year"].'": '.$snip["$"].'';?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                    
-                                    <?php if (isset($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"])): ?>    
-                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
-                                            <li>                                                    
-                                                IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                                <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>    
-                                    <?php 
-                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccess'])) {
-                                            echo '<li>Periódico de acesso aberto</li>';
-                                            $metrics[] = '"scopus_openaccess":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccess'].'"';
-                                        }
-                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'])) {
-                                            echo '<li>Artigo em Acesso aberto</li>';
-                                            $metrics[] = '"scopus_openaccessArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'].'"';
-                                        }
-                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'])) {
-                                            echo '<li>Artigo em arquivo de Acesso aberto</li>';
-                                            $metrics[] = '"scopus_openArchiveArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'].'"';
-                                        } 
-                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessType'])) {
-                                            echo '<li>Tipo de acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'</li>';
-                                            $metrics[] = '"scopus_openaccessType":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'"';
-                                        }  
-                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'])) {
-                                            echo '<li>Data de início do acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'</li>';
-                                            $metrics[] = '"scopus_openaccessStartDate":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'"';
-                                        }
-                                        if (!empty($issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'])) {
-                                            echo '<li>Acesso aberto pago pelo autor: '.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'</li>';
-                                            $metrics[] = '"scopus_oaAllowsAuthorPaid":"'.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'"';
-                                        }                                        
-                                    ?>    
-                                    </ul>
-                                </li>
-                          </div>    
-                                        
-                          <?php flush(); unset($issn_info); endif; ?>       
-                        
-                        </ul>
                             <?php if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) : ?>
                             <hr>
                             <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
@@ -662,46 +481,8 @@ $record_blob = implode("\\n", $record);
                                         <?php endif; ?>
                                     <?php endforeach;?>
                                 <?php endif; ?>
-                                <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
-                                <?php endif; ?>
                             </div>
-                           <?php if (!empty($cursor["_source"]['doi'])) {
-                                    $oadoi = API::get_oadoi($cursor["_source"]['doi'][0]);
-                                    echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'][0].' (Fonte: <a href="oadoi.org">oaDOI API</a>)';
-                                    echo '<ul>';
-                                    if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
-                                        echo '<li>Este periódico é de assinatura</li>';
-                                    } else {
-                                        echo '<li>Este periódico é de acesso aberto</li>';
-                                    }
-                                    if ($oadoi['results'][0]['is_free_to_read'] == 1) {
-                                        echo '<li>Este artigo é de acesso aberto</li>';
-                                    } else {
-                                        echo '<li>Este artigo NÃO é de acesso aberto<br/>';
-                                    }
-                                    if (!empty($oadoi['results'][0]['is_free_to_read'])) {                                        
-                                        $metrics[] = '"oadoi_is_free_to_read": '.$oadoi['results'][0]['is_free_to_read'].'';
-                                    }    
-                                    if (!empty($oadoi['results'][0]['free_fulltext_url'])) {                                        
-                                        echo '<li><a href="'.$oadoi['results'][0]['free_fulltext_url'].'">URL de acesso aberto</a></li>';
-                                    }
-                                    if (!empty($oadoi['results'][0]['oa_color'])) {  
-                                        echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
-                                        $metrics[] = '"oadoi_oa_color": "'.$oadoi['results'][0]['oa_color'].'"';
-                                    }
-                                    if (!empty($oadoi['results'][0]['license'])) {                                        
-                                        echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
-                                    }
-                                    echo '</ul></div>';
-                                    
-                                    if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
-                                        $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
-                                    }
-                                    API::metrics_update($client,$_GET['_id'],$metrics);      
-                                }
-                            ?>                            
-                            <?php endif; ?>
+                        <?php endif; ?>
                         
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                         <div class="uk-alert-warning">
@@ -839,137 +620,7 @@ $record_blob = implode("\\n", $record);
                      <li>
                         <div class="uk-overflow-container">
                             
-                            <?php
-                                if (!empty($cursor["_source"]['doi'])) {
-                                    $full_html = API::get_articlefull_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
-                                    print_r($full_html);                                    
-                                } 
-                            ?>
-                            
-                            
-                            
-                    <!-- <table class="uk-table">
-                                <thead>
-                                    <tr>
-                                        <th>Campo</th>
-                                        <th>Ind. 1</th>
-                                        <th>Ind. 2</th>
-                                        <th>Subcampo</th>
-                                        <th>Conteúdo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    < ?php foreach ($cursor["_source"]["record"] as $fields){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[3]).'';
-                                            echo '<td>'.htmlentities($fields[4]).'';
-                                        echo '</tr>';
-                                    if (!empty($fields[5])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[5]).'';
-                                            echo '<td>'.htmlentities($fields[6]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[7])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[7]).'';
-                                            echo '<td>'.htmlentities($fields[8]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[9])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[9]).'';
-                                            echo '<td>'.htmlentities($fields[10]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[11])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[11]).'';
-                                            echo '<td>'.htmlentities($fields[12]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[13])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[13]).'';
-                                            echo '<td>'.htmlentities($fields[14]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[15])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[15]).'';
-                                            echo '<td>'.htmlentities($fields[16]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[17])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[17]).'';
-                                            echo '<td>'.htmlentities($fields[18]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[19])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[19]).'';
-                                            echo '<td>'.htmlentities($fields[20]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[21])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[21]).'';
-                                            echo '<td>'.htmlentities($fields[22]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[23])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[23]).'';
-                                            echo '<td>'.htmlentities($fields[24]).'';
-                                        echo '</tr>';
-                                    }
-                                    if (!empty($fields[25])){
-                                        echo '<tr>';
-                                            echo '<td>'.htmlentities($fields[0]).'';
-                                            echo '<td>'.htmlentities($fields[1]).'';
-                                            echo '<td>'.htmlentities($fields[2]).'';
-                                            echo '<td>'.htmlentities($fields[25]).'';
-                                            echo '<td>'.htmlentities($fields[26]).'';
-                                        echo '</tr>';
-                                    }
-                                    };
-                                    ?>
-                                </tbody>
-                            </table> -->
+ 
                             </div>
                     </li> 
                 </ul>
