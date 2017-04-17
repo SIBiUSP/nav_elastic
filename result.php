@@ -227,42 +227,33 @@
                 <?php endforeach; ?>
                 <?php endif; ?>    
                 <!-- Vocabulário controlado - Fim -->
-                
+                    
                 <!-- Resultados -->
                     <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
-                        <div> 
-                        <!--    
-                            <ul class="uk-subnav uk-nav-parent-icon uk-subnav-pill">
-                                <li>Ordenar por:</li>
-
-                                <!-- This is the container enabling the JavaScript - ->
-                                <li data-uk-dropdown="{mode:'click'}">
-
-                                    <!-- This is the nav item toggling the dropdown - ->
-                                    <a href="">Data (Novos)</a>
-
-                                    <!-- This is the dropdown - ->
-                                    <div class="uk-dropdown uk-dropdown-small">
-                                        <ul class="uk-nav uk-nav-dropdown">
-                                            <li><a href="">Data (Antigos)</a></li>
-                                            <li><a href="">Título</a></li>
-                                        </ul>
-                                    </div>
-
-                                </li>
-                            </ul>
-                        -->
-                            
-                        </div>
-                        <div><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
                         <div>
-                        <!-- TO DO - Arrumar paginação    
-                            
-                            <ul class="uk-pagination" data-uk-pagination="{items:< ?php print_r($total);?>,itemsOnPage:< ?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:< ?php print_r($page-1);?>}"></ul>
-
-                        -->
+                            <ul class="uk-pagination">
+                                <?php if ($page == 1) :?>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php else :?>
+                                    <?php $get_data["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php endif; ?>
+                            </ul>    
                         </div>
-                    </div>
+                        <div>
+                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p>
+                        </div>
+                        <div>
+                            <ul class="uk-pagination">
+                                <?php if ($total/$limit > $page): ?>
+                                    <?php $get_data["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php else :?>
+                                    <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php endif; ?>
+                            </ul>                            
+                        </div>
+                    </div>                    
                     
                     <hr class="uk-grid-divider">
                     <div class="uk-width-1-1 uk-margin-top uk-description-list-line">
@@ -501,19 +492,38 @@
                         </ul> 
                         
                     <hr class="uk-grid-divider">
-                    <div class="uk-grid uk-margin-top">
-                        <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
-                        <div class="uk-width-1-2">
-                            <ul class="uk-pagination" data-uk-pagination="{items:<?php print_r($total);?>,itemsOnPage:<?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:<?php print_r($page-1);?>}"></ul>                         
+                        
+                    <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
+                        <div>
+                            <ul class="uk-pagination">
+                                <?php if ($page == 1) :?>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php else :?>
+                                    <?php $get_data["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php endif; ?>
+                            </ul>    
                         </div>
-                    </div>                   
-                    
-
+                        <div>
+                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p>
+                        </div>
+                        <div>
+                            <ul class="uk-pagination">
+                                <?php if ($total/$limit > $page): ?>
+                                    <?php $get_data["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php else :?>
+                                    <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php endif; ?>
+                            </ul>                            
+                        </div>
+                    </div> 
                     
                 </div>
             </div>
             <hr class="uk-grid-divider">
-<?php include('inc/footer.php'); ?>          
+            </div>
+            <?php include('inc/footer.php'); ?>          
         </div>
                 
 
