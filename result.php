@@ -375,7 +375,7 @@
                     
                 </div>
             </div>
-            <hr class="uk-grid-divider">
+            <hr class="uk-grid-divider"></div>
 <?php include('inc/footer.php'); ?>          
         </div>
                 
