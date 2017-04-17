@@ -44,7 +44,7 @@
                 
                 
                 
-                <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
+                <li class="uk-active"><a href="http://sibi.usp.br" style="color:#fff">SIBiUSP</a></li>
             </ul>
         </div>            
     </nav>

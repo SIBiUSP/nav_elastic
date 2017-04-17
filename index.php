@@ -43,7 +43,7 @@
                         <form class="uk-form-stacked" action="result.php">
 
                             <div class="uk-margin">
-                                <label class="uk-form-label" for="form-stacked-text">Termos de busca</label>
+                                <label class="uk-form-label" for="form-stacked-text">Termos de busca - <a href="result.php">ou clique aqui para ver todos os registros</a></label>
                                 <div class="uk-form-controls">
                                     <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por título, autor, meio de expressão ou gênero e forma'); ?>" name="search[]" data-validation="required">
                                 <input type="hidden" name="fields[]" value="title">
