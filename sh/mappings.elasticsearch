@@ -273,15 +273,15 @@ PUT /sibi/producao/_mapping
                      }
                   }
                },
-               "grupopesquisa": {
+               "genero_e_forma": {
                   "type": "text",
+                  "analyzer": "portuguese",
                   "fields": {
                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
+                        "type": "keyword"
                      }
                   }
-               },
+               },                
                "indexado": {
                   "type": "text",
                   "fields": {
