@@ -93,33 +93,37 @@
                             <?php
                                 $facets = new facets();
                                 $facets->query = $query;
+                            
+                                if (!isset($_GET["search"])) {
+                                    $_GET["search"] = null;                                    
+                                }                            
 
-                                $facets->facet("base",10,"Base",null);
-                                $facets->facet("type",10,"Tipo de material",null);
-                                $facets->facet("unidadeUSP",100,"Unidade USP",null);
-                                $facets->facet("departamento",100,"Departamento",null);
-                                $facets->facet("authors",120,"Autores",null);
-                                $facets->facet("authorUSP",100,"Autores USP",null);
-                                $facets->facet("year",120,"Ano de publicação","desc");
-                                $facets->facet("subject",100,"Assuntos",null);
-                                $facets->facet("language",40,"Idioma",null);
-                                $facets->facet("ispartof",100,"É parte de ...",null);
-                                $facets->facet("publisher",100,"Editora",null);
-                                $facets->facet("evento",100,"Nome do evento",null);
-                                $facets->facet("country",200,"País de publicação",null);
-                                $facets->facet("tipotese",30,"Tipo de tese",null);
-                                $facets->facet("areaconcentracao",100,"Área de concentração",null);
-                                $facets->facet("programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null);
-                                $facets->facet("programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null);
-                                $facets->facet("indexado",100,"Indexado em",null);
-                                $facets->facet("fatorimpacto",1000,"Fator de impacto","desc");         
-                                $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null);
-                                $facets->facet("internacionalizacao",30,"Internacionalização",null);  
-                                $facets->facet("colab",120,"País dos autores externos à USP",null);
-                                $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null);
-                                $facets->facet("fomento",100,"Agência de fomento",null);
-                                $facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
-                                $facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus");
+                                $facets->facet("base",10,"Base",null,$_GET["search"]);
+                                $facets->facet("type",10,"Tipo de material",null,$_GET["search"]);
+                                $facets->facet("unidadeUSP",100,"Unidade USP",null,$_GET["search"]);
+                                $facets->facet("departamento",100,"Departamento",null,$_GET["search"]);
+                                $facets->facet("authors",120,"Autores",null,$_GET["search"]);
+                                $facets->facet("authorUSP",100,"Autores USP",null,$_GET["search"]);
+                                $facets->facet("year",120,"Ano de publicação","desc",$_GET["search"]);
+                                $facets->facet("subject",100,"Assuntos",null,$_GET["search"]);
+                                $facets->facet("language",40,"Idioma",null,$_GET["search"]);
+                                $facets->facet("ispartof",100,"É parte de ...",null,$_GET["search"]);
+                                $facets->facet("publisher",100,"Editora",null,$_GET["search"]);
+                                $facets->facet("evento",100,"Nome do evento",null,$_GET["search"]);
+                                $facets->facet("country",200,"País de publicação",null,$_GET["search"]);
+                                $facets->facet("tipotese",30,"Tipo de tese",null,$_GET["search"]);
+                                $facets->facet("areaconcentracao",100,"Área de concentração",null,$_GET["search"]);
+                                $facets->facet("programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,$_GET["search"]);
+                                $facets->facet("programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,$_GET["search"]);
+                                $facets->facet("indexado",100,"Indexado em",null,$_GET["search"]);
+                                $facets->facet("fatorimpacto",1000,"Fator de impacto","desc",$_GET["search"]);         
+                                $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,$_GET["search"]);
+                                $facets->facet("internacionalizacao",30,"Internacionalização",null,$_GET["search"]);  
+                                $facets->facet("colab",120,"País dos autores externos à USP",null,$_GET["search"]);
+                                $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null,$_GET["search"]);
+                                $facets->facet("fomento",100,"Agência de fomento",null,$_GET["search"]);
+                                $facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
+                                $facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
                             ?>
                         </ul>
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
@@ -127,15 +131,15 @@
                             <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                             <hr>
                             <?php         
-                                $facets->facet("codpes",100,"Número USP",null);
-                                $facets->facet("codpes_unidade",100,"Número USP / Unidade",null);
-                                $facets->facet("issn",100,"ISSN",null);
-                                $facets->facet("colab_int_trab",100,"Colaboração - Internacionalização",null); 
-                                $facets->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null); 
-                                $facets->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); 
-                                $facets->rebuild_facet("colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido");
-                                $facets->facet("dataregistroinicial",100,"Data de registro","desc");
-                                $facets->facet("dataregistro",100,"Data de registro e alterações","desc");
+                                $facets->facet("codpes",100,"Número USP",null,$_GET["search"]);
+                                $facets->facet("codpes_unidade",100,"Número USP / Unidade",null,$_GET["search"]);
+                                $facets->facet("issn",100,"ISSN",null,$_GET["search"]);
+                                $facets->facet("colab_int_trab",100,"Colaboração - Internacionalização",null,$_GET["search"]); 
+                                $facets->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null,$_GET["search"]); 
+                                $facets->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null,$_GET["search"]); 
+                                $facets->rebuild_facet("colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido",$_GET["search"]);
+                                $facets->facet("dataregistroinicial",100,"Data de registro","desc",$_GET["search"]);
+                                $facets->facet("dataregistro",100,"Data de registro e alterações","desc",$_GET["search"]);
                             ?>
                             </ul>
                         <?php endif; ?>
