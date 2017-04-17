@@ -4,11 +4,19 @@
     include('inc/functions.php');
     include('inc/functions_result.php');
 
+    $url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
     $result_get = get::analisa_get($_GET);
     $query = $result_get['query'];  
     $limit = $result_get['limit'];
     $page = $result_get['page'];
-    $skip = $result_get['skip'];    
+    $skip = $result_get['skip'];
+    
+
+    /*pagination - start*/
+    $get_data = $_GET;    
+    /*pagination - end*/
+    
 
     $params = [];
     $params["index"] = $index;
@@ -115,9 +123,9 @@
                                     $( function() {
                                     $( "#limitar-data" ).slider({
                                       range: true,
-                                      min: 1900,
+                                      min: 1700,
                                       max: 2030,
-                                      values: [ 1900, 2030 ],
+                                      values: [ 1700, 2030 ],
                                       slide: function( event, ui ) {
                                         $( "#date" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
                                       }
@@ -167,37 +175,28 @@
                 
                 <!-- Resultados -->
                     <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
-                        <div> 
-                        <!--    
-                            <ul class="uk-subnav uk-nav-parent-icon uk-subnav-pill">
-                                <li>Ordenar por:</li>
-
-                                <!-- This is the container enabling the JavaScript - ->
-                                <li data-uk-dropdown="{mode:'click'}">
-
-                                    <!-- This is the nav item toggling the dropdown - ->
-                                    <a href="">Data (Novos)</a>
-
-                                    <!-- This is the dropdown - ->
-                                    <div class="uk-dropdown uk-dropdown-small">
-                                        <ul class="uk-nav uk-nav-dropdown">
-                                            <li><a href="">Data (Antigos)</a></li>
-                                            <li><a href="">Título</a></li>
-                                        </ul>
-                                    </div>
-
-                                </li>
-                            </ul>
-                        -->
-                            
-                        </div>
-                        <div><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
                         <div>
-                        <!-- TO DO - Arrumar paginação    
-                            
-                            <ul class="uk-pagination" data-uk-pagination="{items:< ?php print_r($total);?>,itemsOnPage:< ?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:< ?php print_r($page-1);?>}"></ul>
-
-                        -->
+                            <ul class="uk-pagination">
+                                <?php if ($page == 1) :?>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php else :?>
+                                    <?php $get_data["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php endif; ?>
+                            </ul>    
+                        </div>
+                        <div>
+                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p>
+                        </div>
+                        <div>
+                            <ul class="uk-pagination">
+                                <?php if ($total/$limit > $page): ?>
+                                    <?php $get_data["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php else :?>
+                                    <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php endif; ?>
+                            </ul>                            
                         </div>
                     </div>
                     
@@ -232,13 +231,27 @@
                                             </p>
                                         <?php endif; ?> 
                                         <p class="uk-text-small uk-margin-remove">
-                                            Assuntos:
                                             <?php if (!empty($r["_source"]['subject'])) : ?>
-                                            <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
-                                                <a href="result.php?search[]=subject.keyword:&quot;<?php echo $assunto;?>&quot;"><?php echo $assunto;?></a>
-                                            <?php endforeach;?>
+                                                Assuntos:
+                                                <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
+                                                    <a href="result.php?search[]=subject.keyword:&quot;<?php echo $assunto;?>&quot;"><?php echo $assunto;?></a>
+                                                <?php endforeach;?>
                                             <?php endif; ?>
+                                            <?php if (!empty($r["_source"]['genero_e_forma'])) : ?>
+                                                Gênero e forma:
+                                                <?php foreach ($r["_source"]['genero_e_forma'] as $genero_e_forma) : ?>
+                                                    <a href="result.php?search[]=genero_e_forma.keyword:&quot;<?php echo $genero_e_forma;?>&quot;"><?php echo $genero_e_forma;?></a>
+                                                <?php endforeach;?>
+                                            <?php endif; ?>                                            
                                         </p>
+                                        <p class="uk-text-small uk-margin-remove">
+                                            <?php if (!empty($r["_source"]['meio_de_expressao'])) : ?>
+                                                Meio de expressão:
+                                                <?php foreach ($r["_source"]['meio_de_expressao'] as $meio_de_expressao) : ?>
+                                                    <a href="result.php?search[]=meio_de_expressao.keyword:&quot;<?php echo $meio_de_expressao;?>&quot;"><?php echo $meio_de_expressao;?></a>
+                                                <?php endforeach;?>
+                                            <?php endif; ?>                                            
+                                        </p>                                        
                                         <?php if (!empty($r["_source"]['fatorimpacto'])) : ?>
                                         <p class="uk-text-small uk-margin-remove">Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
                                         <?php endif; ?>
@@ -334,14 +347,31 @@
                         </ul> 
                         
                     <hr class="uk-grid-divider">
-                    <div class="uk-grid uk-margin-top">
-                        <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
-                        <div class="uk-width-1-2">
-                            <ul class="uk-pagination" data-uk-pagination="{items:<?php print_r($total);?>,itemsOnPage:<?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:<?php print_r($page-1);?>}"></ul>                         
+                    <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
+                        <div>
+                            <ul class="uk-pagination">
+                                <?php if ($page == 1) :?>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php else :?>
+                                    <?php $get_data["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                <?php endif; ?>
+                            </ul>    
                         </div>
-                    </div>                   
-                    
-
+                        <div>
+                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p>
+                        </div>
+                        <div>
+                            <ul class="uk-pagination">
+                                <?php if ($total/$limit > $page): ?>
+                                    <?php $get_data["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php else :?>
+                                    <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                <?php endif; ?>
+                            </ul>                            
+                        </div>
+                    </div>                      
                     
                 </div>
             </div>
