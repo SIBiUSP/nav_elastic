@@ -343,6 +343,15 @@ PUT /sibi/producao/_mapping
                      }
                   }
                },
+               "meio_de_expressao": {
+                  "type": "text",
+                  "analyzer": "portuguese",
+                  "fields": {
+                     "keyword": {
+                        "type": "keyword"
+                     }
+                  }
+               },               
                "metrics": {
                   "properties": {
                      "oadoi_is_free_to_read": {

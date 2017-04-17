@@ -97,7 +97,7 @@
                                 $facets->facet("type",10,"Tipo de material",null);
                                 $facets->facet("authors",120,"Autores",null);
                                 $facets->facet("authors_function",120,"Função dos autores",null);
-                                $facets->facet("instrumento",200,"Meio de expressão",null);                            
+                                $facets->facet("meio_de_expressao",200,"Meio de expressão",null);                            
                                 $facets->facet("year",120,"Ano de publicação","desc");
                                 $facets->facet("genero_e_forma",100,"Gênero e forma",null);
                                 $facets->facet("subject",100,"Assuntos",null);

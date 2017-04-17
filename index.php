@@ -49,7 +49,7 @@
                                 <input type="hidden" name="fields[]" value="title">
                                 <input type="hidden" name="fields[]" value="authors">
                                 <input type="hidden" name="fields[]" value="genero_e_forma">
-                                <input type="hidden" name="fields[]" value="instrumento">
+                                <input type="hidden" name="fields[]" value="meio_de_expressao">
                                 </div>
                             </div>
 
@@ -64,11 +64,17 @@
             <h1 class="uk-heading-line uk-text-center"><span>Mais informações</span></h1>        
             <div class="uk-child-width-expand@s uk-text-center" uk-grid>
                 <div class="uk-card">
-                    <h3 class="uk-card-title">Intrumentos (10+)</h3>
+                    <h3 class="uk-card-title">Meio de expressão (10+)</h3>
                     <ul class="uk-list uk-list-divider">
-                        <?php paginaInicial::instrumento_inicio(); ?>
+                        <?php paginaInicial::facet_inicio("meio_de_expressao"); ?>
                     </ul>                      
                 </div>
+                <div class="uk-card">
+                    <h3 class="uk-card-title">Gênero e forma (10+)</h3>
+                    <ul class="uk-list uk-list-divider">
+                        <?php paginaInicial::facet_inicio("genero_e_forma"); ?>
+                    </ul>                      
+                </div>                
                 <div class="uk-card">
                     <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
                     <ul class="uk-list uk-list-divider">
