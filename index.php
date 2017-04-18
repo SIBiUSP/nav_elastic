@@ -54,9 +54,14 @@
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="search[]">
                                         <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
-                                        <option value="base.keyword:&quot;Produção científica&quot;">Produção Científica</option>
-                                        <option value="base.keyword:&quot;Teses e dissertações&quot;">Teses e Dissertações</option>
+                                        <option value="base.keyword:&quot;Produção científica&quot;" style="color:#333">Produção Científica</option>
+                                        <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#333">Teses e Dissertações</option>
                                     </select>
+                                <input type="hidden" name="fields[]" value="title">
+                                <input type="hidden" name="fields[]" value="authors">
+                                <input type="hidden" name="fields[]" value="authorUSP">
+                                <input type="hidden" name="fields[]" value="subject">
+                                <input type="hidden" name="fields[]" value="resumo">                                    
                                 </div>
                             </div>
                             <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Pesquisar</button>
