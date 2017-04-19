@@ -1,7 +1,7 @@
 # nav_elastic
 
 
-#Install
+## Install
 
 Run: 
 
@@ -15,13 +15,20 @@ curl -s http://getcomposer.org/installer | php
 
 php composer.phar install --no-dev
 
+## System requirements
 
-#Developers 
+php5-curl
+
+php5-json > 1.3.7
+
+
+## Developers 
 
 Tiago Rodrigo Marçal Murakami
+
 Jan Leduc de Lara
 
-#Credits
+## Credits
 
 jQuery Form Validator - http://www.formvalidator.net
 
