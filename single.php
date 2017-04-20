@@ -15,9 +15,6 @@ $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
 $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
 $lang = "br";
 $citeproc_abnt = new citeproc($csl_abnt,$lang);
-$citeproc_apa = new citeproc($csl_apa,$lang);
-$citeproc_nlm = new citeproc($csl_nlm,$lang);
-$citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
 /* Montar a consulta */
@@ -602,28 +599,7 @@ $record_blob = implode("\\n", $record);
                                             $data = gera_consulta_citacao($cursor["_source"]);
                                             print_r($citeproc_abnt->render($data, $mode));
                                         ?>                                    
-                                    </li>
-                                    <li class="uk-margin-top">
-                                        <p><strong>APA</strong></p>
-                                        <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
-                                            print_r($citeproc_apa->render($data, $mode));
-                                        ?>                                    
-                                    </li>
-                                    <li class="uk-margin-top">
-                                        <p><strong>NLM</strong></p>
-                                        <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
-                                            print_r($citeproc_nlm->render($data, $mode));
-                                        ?>                                    
-                                    </li>
-                                    <li class="uk-margin-top">
-                                        <p><strong>Vancouver</strong></p>
-                                        <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
-                                            print_r($citeproc_vancouver->render($data, $mode));
-                                        ?>                                    
-                                    </li>                                      
+                                    </li>                                     
                                 </ul>
                                 </p>
                             </div>                           

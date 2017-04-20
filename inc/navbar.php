@@ -20,21 +20,23 @@
                 <li class="uk-active">
                     <a href="sobre.php"><?php echo $t->gettext('Sobre'); ?></a>     
                 </li>
+                <!--
                 <li class="uk-active">
-                    <a href="" class="" aria-expanded="false"><?php echo $t->gettext('Usuário'); ?></a>
+                    <a href="" class="" aria-expanded="false">< ?php echo $t->gettext('Usuário'); ?></a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li class="uk-nav-header">Acesso</li>
-                            <?php if(empty($_SESSION['oauthuserdata'])): ?>
+                            < ?php if(empty($_SESSION['oauthuserdata'])): ?>
                                 <li><a href="aut/oauth.php">Login</a></li>
-                            <?php else: ?>
-                                <li><a href="#"><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></a></li>
+                            < ?php else: ?>
+                                <li><a href="#">< ?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></a></li>
                                 <li><a href="admin.php">Administração</a></li>
                                 <li><a href="aut/logout.php">Logout</a></li>
-                            <?php endif; ?>
+                            < ?php endif; ?>
                         </ul>
                     </div>                
                 </li>
+                -->
                 
                 <?php if ($_SESSION['localeToUse'] == 'en_US') : ?>
                     <li><a href="?locale=pt_BR"><img src="inc/images/br.jpg" width="25px"></a></li>
