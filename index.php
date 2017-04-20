@@ -78,8 +78,7 @@
                 <div class="uk-card">
                     <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
                     <ul class="uk-list uk-list-divider">
-                        <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> registros</li>
-                        <li><?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li>                        
+                        <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> registros</li>                                            
                     </ul>
                 </div>
             </div>
@@ -89,76 +88,11 @@
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span>Últimos registros</span></h1>
             <?php paginaInicial::ultimos_registros();?>
-        </div>        
-
-<!-- 
-        <div class="uk-container uk-section uk-margin-large-bottom">
-             <h1 class="uk-heading-line uk-text-center"><span>Unidades USP</span></h1>
-
+        </div>                         
             
-           
-<div class="uk-child-width-1-3 uk-child-width-1-6@s uk-grid-match uk-grid-small" uk-grid>
-    <?php echo paginaInicial::card_unidade("CEBIMAR","Centro de Biologia Marinha (CEBIMAR)"); ?>
-    <?php echo paginaInicial::card_unidade("CDCC","Centro de Divulgação Científica e Cultural (CDCC)"); ?>
-    <?php echo paginaInicial::card_unidade("CENA","Centro de Energia Nuclear na Agricultura (CENA)"); ?>
-    <?php echo paginaInicial::card_unidade("EACH","Escola de Artes, Ciências e Humanidades (EACH)"); ?>
-    <?php echo paginaInicial::card_unidade("ECA","Escola de Comunicações e Artes (ECA)"); ?>
-    <?php echo paginaInicial::card_unidade("EE","Escola de Enfermagem (EE)"); ?>
-    <?php echo paginaInicial::card_unidade("EERP","Escola de Enfermagem de Ribeirão Preto (EERP)"); ?>
-    <?php echo paginaInicial::card_unidade("EEFE","Escola de Educação Física e Esporte (EEFE)"); ?>
-    <?php echo paginaInicial::card_unidade("EEFERP","Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)"); ?>
-    <?php echo paginaInicial::card_unidade("EEL","Escola de Engenharia de Lorena (EEL)"); ?>
-    <?php echo paginaInicial::card_unidade("EESC","Escola de Engenharia de São Carlos (EESC)"); ?>
-    <?php echo paginaInicial::card_unidade("EP","Escola Politécnica (EP)"); ?>
-    <?php echo paginaInicial::card_unidade("ESALQ","Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)"); ?>
-    <?php echo paginaInicial::card_unidade("FAU","Faculdade de Arquitetura e Urbanismo (FAU)"); ?>
-    <?php echo paginaInicial::card_unidade("FCF","Faculdade de Ciências Farmacêuticas (FCF)"); ?>
-    <?php echo paginaInicial::card_unidade("FCFRP","Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)"); ?>
-    <?php echo paginaInicial::card_unidade("FD","Faculdade de Direito (FD)"); ?>
-    <?php echo paginaInicial::card_unidade("FDRP","Faculdade de Direito de Ribeirão Preto (FDRP)"); ?>
-    <?php echo paginaInicial::card_unidade("FEA","Faculdade de Economia, Administração e Contabilidade (FEA)"); ?>
-    <?php echo paginaInicial::card_unidade("FEARP","Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)"); ?>
-    <?php echo paginaInicial::card_unidade("FE","Faculdade de Educação (FE)"); ?>
-    <?php echo paginaInicial::card_unidade("FFCLRP","Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)"); ?>
-    <?php echo paginaInicial::card_unidade("FFLCH","Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)"); ?>
-    <?php echo paginaInicial::card_unidade("FM","Faculdade de Medicina (FM)"); ?>
-    <?php echo paginaInicial::card_unidade("FMRP","Faculdade de Medicina de Ribeirão Preto (FMRP)"); ?>
-    <?php echo paginaInicial::card_unidade("FMVZ","Faculdade de Medicina Veterinária e Zootecnia (FMVZ)"); ?>
-    <?php echo paginaInicial::card_unidade("FO","Faculdade de Odontologia (FO)"); ?>
-    <?php echo paginaInicial::card_unidade("FOB","Faculdade de Odontologia de Bauru (FOB)"); ?>
-    <?php echo paginaInicial::card_unidade("FORP","Faculdade de Odontologia de Ribeirão Preto (FORP)"); ?>
-    <?php echo paginaInicial::card_unidade("FSP","Faculdade de Saúde Pública (FSP)"); ?>
-    <?php echo paginaInicial::card_unidade("FZEA","Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)"); ?>
-    <?php echo paginaInicial::card_unidade("HRAC","Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)"); ?>
-    <?php echo paginaInicial::card_unidade("HU","Hospital Universitário (HU)"); ?>
-    <?php echo paginaInicial::card_unidade("IAU","Instituto de Arquitetura e Urbanismo (IAU)"); ?>
-    <?php echo paginaInicial::card_unidade("IAG","Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)"); ?>
-    <?php echo paginaInicial::card_unidade("IB","Instituto de Biociências (IB)"); ?>
-    <?php echo paginaInicial::card_unidade("ICB","Instituto de Ciências Biomédicas (ICB)"); ?>
-    <?php echo paginaInicial::card_unidade("ICMC","Instituto de Ciências Matemáticas e de Computação (ICMC)"); ?>
-    <?php echo paginaInicial::card_unidade("IEE","Instituto de Energia e Ambiente (IEE)"); ?>
-    <?php echo paginaInicial::card_unidade("IEB","Instituto de Estudos Brasileiros (IEB)"); ?>
-    <?php echo paginaInicial::card_unidade("IF","Instituto de Física (IF)"); ?>
-    <?php echo paginaInicial::card_unidade("IFSC","Instituto de Física de São Carlos (IFSC)"); ?>
-    <?php echo paginaInicial::card_unidade("IGC","Instituto de Geociências (IGc)"); ?>
-    <?php echo paginaInicial::card_unidade("IME","Instituto de Matemática e Estatística (IME)"); ?>
-    <?php echo paginaInicial::card_unidade("IMT","Instituto de Medicina Tropical de São Paulo (IMT)"); ?>
-    <?php echo paginaInicial::card_unidade("IP","Instituto de Psicologia (IP)"); ?>
-    <?php echo paginaInicial::card_unidade("IQ","Instituto de Química (IQ)"); ?>
-    <?php echo paginaInicial::card_unidade("IQSC","Instituto de Química de São Carlos (IQSC)"); ?>
-    <?php echo paginaInicial::card_unidade("IRI","Instituto de Relações Internacionais (IRI)"); ?>
-    <?php echo paginaInicial::card_unidade("IO","Instituto Oceanográfico (IO)"); ?>
-    <?php echo paginaInicial::card_unidade("MAE","Museu de Arqueologia e Etnologia (MAE)"); ?>
-    <?php echo paginaInicial::card_unidade("MAC","Museu de Arte Contemporânea (MAC)"); ?>
-    <?php echo paginaInicial::card_unidade("MZ","Museu de Zoologia (MZ)"); ?>
-    <?php echo paginaInicial::card_unidade("MP","Museu Paulista (MP)"); ?>    
-</div>      
--->
-                 
+        <hr class="uk-grid-divider">
             
-            <hr class="uk-grid-divider">
-            
-<?php include('inc/footer.php'); ?>
+        <?php include('inc/footer.php'); ?>
 
         </div>
         
