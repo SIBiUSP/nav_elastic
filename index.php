@@ -87,7 +87,7 @@
         
         
         <div class="uk-section uk-container">
-            <h1 class="uk-heading-line uk-text-center"><span>Últimos regístros</span></h1>
+            <h1 class="uk-heading-line uk-text-center"><span>Últimos registros</span></h1>
             <?php paginaInicial::ultimos_registros();?>
         </div>        
 
