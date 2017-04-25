@@ -10,20 +10,20 @@ class processaResultados {
         } else {
 
 
-            echo '<div id="exemplares'.$sysno.'">';
-            echo "<table class=\"uk-table uk-table-small uk-text-small uk-table-striped\">
+            echo '<div id="exemplares'.$sysno.'" class="uk-text-small">';
+            echo "<table class=\"uk-table uk-table-responsive uk-table-striped\">
                         <caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>
                         <thead>
                           <tr>
-                            <th>Biblioteca</th>
-                            <th>Código de barras</th>
-                            <th>Status</th>
-                            <th>Número de chamada</th>";
+                            <th><small>Biblioteca</small></th>
+                            <th><small>Código de barras</small></th>
+                            <th><small>Status</small></th>
+                            <th><small>Número de chamada</small></th>";
                             if ($xml->item->{'loan-status'} == "A"){
-                            echo "<th>Status</th>
-                            <th>Data provável de devolução</th>";
+                            echo "<th><small>Status</small></th>
+                            <th><small>Data provável de devolução</small></th>";
                           } else {
-                            echo "<th>Status</th>";
+                            echo "<th><small>Status</small></th>";
                           }
                           echo "</tr>
                         </thead>
