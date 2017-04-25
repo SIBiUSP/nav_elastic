@@ -16,29 +16,29 @@ class processaResultados {
                         <thead>
                           <tr>
                             <th><small>Biblioteca</small></th>
-                            <th><small>Código de barras</small></th>
+                            <th><small>Cód. de barras</small></th>
                             <th><small>Status</small></th>
-                            <th><small>Número de chamada</small></th>";
+                            <th><small>Núm. de chamada</small></th>";
                             if ($xml->item->{'loan-status'} == "A"){
-                            echo "<th><small>Status</small></th>
+                            echo "<th><small>Disponibilidade</small></th>
                             <th><small>Data provável de devolução</small></th>";
                           } else {
-                            echo "<th><small>Status</small></th>";
+                            echo "<th><small>Disponibilidade</small></th>";
                           }
                           echo "</tr>
                         </thead>
                       <tbody>";
               foreach ($xml->item as $item) {
                 echo '<tr>';
-                echo '<td>'.$item->{'sub-library'}.'</td>';
-                echo '<td>'.$item->{'barcode'}.'</td>';
-                echo '<td>'.$item->{'item-status'}.'</td>';
-                echo '<td>'.$item->{'call-no-1'}.'</td>';
+                echo '<td><small>'.$item->{'sub-library'}.'</small></td>';
+                echo '<td><small>'.$item->{'barcode'}.'</small></td>';
+                echo '<td><small>'.$item->{'item-status'}.'</small></td>';
+                echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
                 if ($item->{'loan-status'} == "A"){
-                echo '<td>Emprestado</td>';
-                echo '<td>'.$item->{'loan-due-date'}.'</td>';
+                echo '<td><small>Emprestado</small></td>';
+                echo '<td><small>'.$item->{'loan-due-date'}.'</small></td>';
               } else {
-                echo '<td>Disponível</td>';
+                echo '<td><small>Disponível</small></td>';
               }
                 echo '</tr>';
               }
