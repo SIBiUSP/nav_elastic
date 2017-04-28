@@ -5,7 +5,6 @@ if (session_status() === PHP_SESSION_NONE){
     
 include('inc/config.php'); 
 include('inc/functions.php');
-include('inc/functions_result.php');
 
 /* Citeproc-PHP*/
 include 'inc/citeproc-php/CiteProc.php';
@@ -24,7 +23,7 @@ $mode = "reference";
 $cursor = elasticsearch::elastic_get($_GET['_id'],$type,null);
 
 /* Contador */
-counter($_GET['_id'],$client);
+//counter($_GET['_id'],$client); (Necessário melhorar)
 
 /* Upload de PDF */
 
@@ -810,28 +809,28 @@ $record_blob = implode("\\n", $record);
                                     <li class="uk-margin-top">
                                         <p><strong>ABNT</strong></p>
                                         <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            $data = citation::citation_query($cursor["_source"]);
                                             print_r($citeproc_abnt->render($data, $mode));
                                         ?>                                    
                                     </li>
                                     <li class="uk-margin-top">
                                         <p><strong>APA</strong></p>
                                         <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            $data = citation::citation_query($cursor["_source"]);
                                             print_r($citeproc_apa->render($data, $mode));
                                         ?>                                    
                                     </li>
                                     <li class="uk-margin-top">
                                         <p><strong>NLM</strong></p>
                                         <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            $data = citation::citation_query($cursor["_source"]);
                                             print_r($citeproc_nlm->render($data, $mode));
                                         ?>                                    
                                     </li>
                                     <li class="uk-margin-top">
                                         <p><strong>Vancouver</strong></p>
                                         <?php
-                                            $data = gera_consulta_citacao($cursor["_source"]);
+                                            $data = citation::citation_query($cursor["_source"]);
                                             print_r($citeproc_vancouver->render($data, $mode));
                                         ?>                                    
                                     </li>                                      

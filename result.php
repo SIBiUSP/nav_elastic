@@ -2,7 +2,6 @@
 <?php
     include('inc/config.php'); 
     include('inc/functions.php');
-    include('inc/functions_result.php');
 
     $result_get = get::analisa_get($_GET);
     $query = $result_get['query'];  
