@@ -796,7 +796,11 @@ $record_blob = implode("\\n", $record);
                         
                         
                         <hr>                            
-                        <?php load_itens_single($cursor["_id"]); ?>                            
+                        <?php
+                            if ($dedalus == true) {
+                                processaResultados::load_itens_new($cursor["_id"]);
+                            }                             
+                        ?>                            
   
                             <div class="extra" style="color:black;">
                                 <h4>Como citar</h4>

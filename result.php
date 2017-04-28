@@ -362,7 +362,11 @@
                                                     <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>" target="_blank"> Ou pesquise este registro no <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
                                                 </p>
                                                 <?php endif; ?>
-                                                <?php processaResultados::load_itens_new($r['_id']); ?>
+                                                <?php
+                                                    if ($dedalus == true) {
+                                                        processaResultados::load_itens_new($r['_id']);
+                                                    } 
+                                                ?>
                                             
                                                 <?php 
                                                     if(empty($_SESSION['oauthuserdata'])){
