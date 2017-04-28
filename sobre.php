@@ -12,23 +12,16 @@
     <body> 
         <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
 
-        <?php include('inc/navbar.php'); ?>
-<div class="uk-container uk-margin-large-top">
-    <h1>Em breve</h1>
-        
-        
-        
-        <hr class="uk-grid-divider">
+		<?php include('inc/navbar.php'); ?>
+        <div class="uk-container uk-margin-large-top">
+            <h1>Em breve</h1>
+            <hr class="uk-grid-divider">
             
-     
-                        
-<?php include('inc/footer.php'); ?>
+            <?php include('inc/footer.php'); ?>
 
         </div>
         
-        
-<?php include('inc/offcanvas.php'); ?>
-            
+    <?php include('inc/offcanvas.php'); ?>
         
     </body>
 </html>
