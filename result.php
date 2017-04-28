@@ -45,12 +45,15 @@
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
         <script src="inc/uikit/js/components/tooltip.min.js"></script>
         
-        <!-- D3.js Libraries and CSS -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
 
-        <!-- UV Charts -->
-        <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
-        
+        <?php if ($year_result_graph == true) : ?>
+            <!-- D3.js Libraries and CSS -->
+            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
+
+            <!-- UV Charts -->
+            <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
+        <?php endif; ?>
+
         <!-- Altmetric Script -->
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
         
@@ -187,36 +190,38 @@
                 
                 <div class="uk-width-3-4@s uk-width-4-6@m">
                 
-                <!-- Gráfico do ano - Início -->    
-                <div class="uk-alert-primary" uk-alert>
-                    <a class="uk-alert-close" uk-close></a>
-                    <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'year', "_term", 'desc', 'Ano', 10); ?>
-                    <div id="ano_chart" class="uk-visible@l"></div>
-                    <script type="application/javascript">
-                        var graphdef = {
-                            categories : ['Ano'],
-                            dataset : {
-                                'Ano' : [<?= $ano_bar; ?>]
+                <?php if ($year_result_graph == true) : ?>
+                    <!-- Gráfico do ano - Início -->    
+                    <div class="uk-alert-primary" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'year', "_term", 'desc', 'Ano', 10); ?>
+                        <div id="ano_chart" class="uk-visible@l"></div>
+                        <script type="application/javascript">
+                            var graphdef = {
+                                categories : ['Ano'],
+                                dataset : {
+                                    'Ano' : [<?= $ano_bar; ?>]
+                                }
                             }
-                        }
-                        var chart = uv.chart ('Bar', graphdef, {
-                            meta : {
-                                position: '#ano_chart',
-                                caption : 'Ano de publicação',
-                                hlabel : 'Ano',
-                                vlabel : 'Registros'
-                            },
-                            graph : {
-                                orientation : "Vertical"
-                            },
-                            dimension : {
-                                width: 650,
-                                height: 110
-                            }
-                        })
-                    </script>                        
-                    </div>
-                <!-- Gráfico do ano - Fim -->    
+                            var chart = uv.chart ('Bar', graphdef, {
+                                meta : {
+                                    position: '#ano_chart',
+                                    caption : 'Ano de publicação',
+                                    hlabel : 'Ano',
+                                    vlabel : 'Registros'
+                                },
+                                graph : {
+                                    orientation : "Vertical"
+                                },
+                                dimension : {
+                                    width: 650,
+                                    height: 110
+                                }
+                            })
+                        </script>                        
+                        </div>
+                    <!-- Gráfico do ano - Fim -->
+                <?php endif; ?>    
                 
                 <!-- Vocabulário controlado - Início -->
                 <?php if(isset($_GET["search"])) : ?>    
