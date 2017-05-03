@@ -63,10 +63,11 @@
         
     </head>
     <body>
+        <?php include('inc/navbar.php'); ?>
+        <br/><br/><br/>
+ 
         <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <div class="uk-container">
-
-            <?php include('inc/navbar.php'); ?>
 
             <div class="uk-grid-divider" uk-grid>
                 <div class="uk-width-1-4@s uk-width-2-6@m">
@@ -252,8 +253,8 @@
                                 <?php if ($page == 1) :?>
                                     <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php else :?>
-                                    <?php $get_data["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <?php $result_get["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($result_get['query']); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php endif; ?>
                             </ul>    
                         </div>
@@ -263,8 +264,8 @@
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($total/$limit > $page): ?>
-                                    <?php $get_data["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <?php $result_get["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($result_get['query']); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php else :?>
                                     <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php endif; ?>
@@ -526,8 +527,8 @@
                                 <?php if ($page == 1) :?>
                                     <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php else :?>
-                                    <?php $get_data["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <?php $result_get["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($result_get); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php endif; ?>
                             </ul>    
                         </div>
@@ -537,8 +538,8 @@
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($total/$limit > $page): ?>
-                                    <?php $get_data["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <?php $result_get["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($result_get); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php else :?>
                                     <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php endif; ?>
