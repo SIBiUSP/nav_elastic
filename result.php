@@ -284,38 +284,14 @@
                                     <div class="uk-grid-divider" uk-grid>
                                         <div class="uk-width-1-5@m">
                                             <p><a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a></p>
-                                            <p>                              
-                                                    Unidades USP:
-                                                    <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
-                                                    <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
-                                                    <?php foreach ($unique as $unidadeUSP) : ?>
-                                                        <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
-                                                    <?php endforeach;?>
-                                                    <?php endif; ?>                                   
+                                            <p>Unidades USP:
+                                                <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
+                                                <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
+                                                <?php foreach ($unique as $unidadeUSP) : ?>
+                                                    <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
+                                                <?php endforeach;?>
+                                                <?php endif; ?>                                   
                                             </p>
-                                            
-                                            <!-- Se tem capa disponível na API da Elsevier  -->
-                                            
-                                            <?php
-                                                if ($use_api_elsevier == true) {
-                                                    if (isset($issn_info["serial-metadata-response"])) {
-                                                    $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";
-                                                        if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
-                                                            echo '<img src="'.$image_url.'">';
-                                                        }
-                                                    } 
-                                                } 
-
-                                            ?>
-                                            
-                                            <!-- Se é de acesso aberto  -->
-                                            <?php
-                                                if (isset($issn_info["serial-metadata-response"])) {
-                                                    if ($issn_info["serial-metadata-response"]["entry"][0]["openaccess"] == '1') {                                     
-                                                            echo '<img src="inc/images/openaccess-t.png">';
-                                                    }
-                                                }
-                                            ?>                                    
                                             
                                         </div>
                                         <div class="uk-width-4-5@m">    
@@ -405,64 +381,30 @@
                                                     
                                                 </div>
                                                 <!-- Acesso ao texto completo - Fim -->
-                                                <!-- Informações de APIs - Início -->
-                                                <?php if (isset($issn_info["serial-metadata-response"])): ?>
-                                                <div class="uk-alert-danger" uk-alert>
-                                                    <li class="uk-h6">
-                                                        Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API):
-                                                        <ul>
-                                                            <li>
-                                                                Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
-                                                            </li>
-                                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
-                                                            <li> 
-                                                                Área: <?php print_r($subj_area["$"]); ?>
-                                                            </li>
-                                                        <?php endforeach; ?>                                                    
-                                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
-                                                            <li>                                                    
-                                                                SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
-                                                            </li>
-                                                        <?php endforeach; ?>
-
-                                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
-                                                            <li>                                                    
-                                                                SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
-                                                            </li>
-                                                        <?php endforeach; ?>
-
-                                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
-                                                            <li>                                                    
-                                                                IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                                            </li>
-                                                        <?php endforeach; ?>
-                                                        </ul>
-                                                    </li>
-                                                </div> 
-                                                <?php flush(); unset($issn_info); endif; ?>                                         
-                                                <!-- Informações de APIs - Fim -->
                                                 
                                                 <!-- Métricas - Início -->
-                                                <?php if (!empty($r["_source"]['doi'])) : ?>
-                                                <div class="uk-alert-warning" uk-alert>
-                                                    <p>Métricas:</p>
-                                                    <div uk-grid>
-                                                        <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                                        <div><a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
-                                                        <div><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></div>
-                                                        <div>
-                                                            <!--
-                                                            < ?php 
-                                                                $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
-                                                                if (!empty($citations_scopus['abstract-citations-response'])) {
-                                                                    echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
-                                                                    echo '<br/><br/>';
-                                                                } 
-                                                            ? >
-                                                            -->                                                
+                                                <?php if ($show_metrics == true) : ?>
+                                                    <?php if (!empty($r["_source"]['doi'])) : ?>
+                                                    <div class="uk-alert-warning" uk-alert>
+                                                        <p>Métricas:</p>
+                                                        <div uk-grid>
+                                                            <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                                            <div><a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
+                                                            <div><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></div>
+                                                            <div>
+                                                                <!--
+                                                                < ?php 
+                                                                    $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
+                                                                    if (!empty($citations_scopus['abstract-citations-response'])) {
+                                                                        echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
+                                                                        echo '<br/><br/>';
+                                                                    } 
+                                                                ? >
+                                                                -->                                                
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <?php endif; ?>
                                                 <?php endif; ?>
                                                 <!-- Métricas - Fim -->                                         
 

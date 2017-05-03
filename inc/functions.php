@@ -213,6 +213,81 @@ class paginaSingle {
         //print_r($response);
     }
 
+    public function uploader () {
+        global $_GET;
+        global $_POST;
+        global $_FILES;
+
+
+        if (!is_dir('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'')){
+            mkdir('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'', 0700, true);
+        }
+        
+        $uploaddir = 'upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'/';
+        $count_files = count(glob('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'/*',GLOB_BRACE));
+        $rights = '{"rights":"'.$_POST["rights"].'"},';
+        
+        if (!empty($_POST["embargo_date"])){
+            $embargo_date = '{"embargo_date":"'.$_POST["embargo_date"].'"},';
+        } else {
+            $embargo_date = '{"embargo_date":""},';
+        }
+        
+        if ($_FILES['upload_file']['type'] == 'application/pdf'){
+            $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pdf");
+        } else {
+            $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pptx");
+        }    
+        
+        if ($_FILES['upload_file']['type'] == 'application/pdf'||$_FILES['upload_file']['type'] == 'application/vnd.openxmlformats-officedocument.presentationml.presentation'){
+            //echo '<pre>';
+            if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $uploadfile)) {
+                $query = 
+                '
+                {
+                    "doc":{
+                        "sysno":"'.$_GET['_id'].'",
+                        "file_info" :[ 
+                            {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
+                            {"name_file":"'.$_FILES['upload_file']['name'].'"},
+                            '.$rights.'
+                            '.$embargo_date.'
+                            {"file_type":"'.$_FILES['upload_file']['type'].'"}
+                        ],
+                        "date_file":"'.date("Y-m-d").'"
+                    },                    
+                    "doc_as_upsert" : true
+                }
+                ';
+                            
+                $params = [
+                    'index' => 'sibi',
+                    'type' => 'files',
+                    'id' => $uploadfile,
+                    'parent' => $_GET['_id'],
+                    'body' => $query
+                ];
+                $response_upload = $client->update($params); 
+                
+                
+                $myfile = fopen("$uploadfile.json", "w") or die("Unable to open file!");
+                $txt = $query;
+                fwrite($myfile, $txt);
+                fclose($myfile);
+                
+                
+                
+            } else {
+                echo "Possível ataque de upload de arquivo!\n";
+            }
+        }
+        
+        //echo 'Aqui está mais informações de debug:';
+        //print_r($_FILES);
+    //print "</pre>";  
+
+    }
+
 }
 
 class processaResultados {
@@ -608,6 +683,79 @@ class API {
     
     
     
+}
+
+class exporters {
+    static function RIS($cursor) {
+
+        $record = [];
+        switch ($cursor["_source"]["type"]) {
+        case "ARTIGO DE PERIODICO":
+            $record[] = "TY  - JOUR";
+            break;
+        case "PARTE DE MONOGRAFIA/LIVRO":
+            $record[] = "TY  - CHAP";
+            break;
+        case "TRABALHO DE EVENTO-RESUMO":
+            $record[] = "TY  - CPAPER";
+            break;
+        case "TEXTO NA WEB":
+            $record[] = "TY  - ICOMM";
+            break;
+        }
+
+        $record[] = "TI  - ".$cursor["_source"]['title']."";
+
+        if (!empty($cursor["_source"]['year'])) {
+        $record[] = "PY  - ".$cursor["_source"]['year']."";
+        }
+
+        foreach ($cursor["_source"]['authors'] as $autores) {
+        $record[] = "AU  - ".$autores."";
+        }
+
+        if (!empty($cursor["_source"]['ispartof'])) {
+        $record[] = "T2  - ".$cursor["_source"]['ispartof']."";
+        }
+
+        if (!empty($cursor["_source"]['issn'][0])) {
+        $record[] = "SN  - ".$cursor["_source"]['issn'][0]."";
+        }
+
+        if (!empty($cursor["_source"]["doi"])) {
+        $record[] = "DO  - ".$cursor["_source"]["doi"][0]."";
+        }
+
+        if (!empty($cursor["_source"]["url"])) {
+        $record[] = "UR  - ".$cursor["_source"]["url"][0]."";
+        }
+
+        if (!empty($cursor["_source"]["publisher-place"])) {
+        $record[] = "PP  - ".$cursor["_source"]["publisher-place"]."";
+        }
+
+        if (!empty($cursor["_source"]["publisher"])) {
+        $record[] = "PB  - ".$cursor["_source"]["publisher"]."";
+        }
+
+        if (!empty($cursor["_source"]["ispartof_data"])) {
+        foreach ($cursor["_source"]["ispartof_data"] as $ispartof_data) {
+            if (strpos($ispartof_data, 'v.') !== false) {
+            $record[] = "VL  - ".str_replace("v.","",$ispartof_data)."";
+            } elseif (strpos($ispartof_data, 'n.') !== false) {
+            $record[] = "IS  - ".str_replace("n.","",$ispartof_data)."";
+            } elseif (strpos($ispartof_data, 'p.') !== false) {
+            $record[] = "SP  - ".str_replace("p.","",$ispartof_data)."";
+            }
+        }
+        }
+        $record[] = "ER  - ";
+
+        $record_blob = implode("\\n", $record);
+
+        return $record_blob;
+
+    }
 }
 
 
