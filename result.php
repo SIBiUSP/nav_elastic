@@ -77,7 +77,7 @@
                     <div class="uk-panel">
                         
                         <form method="get" action="result.php">
-                        <fieldset>
+                        <fieldset class="uk-fieldset">
                             <?php if (!empty($_GET["search"])) : ?>
                             <legend uk-form>Filtros ativos</legend>
                                 <div class="uk-form-row">
