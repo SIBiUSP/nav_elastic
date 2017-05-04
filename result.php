@@ -211,6 +211,9 @@
                                 <div class="uk-width-4-5@m">    
                                     <article class="uk-article">
                                         <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?><?php if (!empty($r["_source"]['year'])) { echo ' ('.$r["_source"]['year'].')'; } ?></a></p>
+                                        <?php if (!empty($r["_source"]['title_original'])) : ?>
+                                        <p class="uk-margin-remove">Título original: <?php echo $r["_source"]['title_original'];?></a></p>
+                                        <?php endif; ?>
                                         <?php if (!empty($r["_source"]['authors'])) : ?>
                                             <p class="uk-article-meta">
                                             <?php foreach ($r["_source"]['authors'] as $autores) {
