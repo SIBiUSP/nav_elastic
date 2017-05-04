@@ -230,12 +230,12 @@ class facets {
             echo '<li>';
             echo '<div uk-grid>
                     <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-                    <div class="uk-width-1-3" style="color:#333">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
+                    <div class="uk-width-1-3" style="color:#444">
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 65%">E</a>
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">NÃO</a>
                     ';
             if (isset($get_search)) {
-                echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>';
+                echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" style="color:#0040ff;font-size: 65%">OU</a>';
             } 
             echo '</div></div></li>';
 

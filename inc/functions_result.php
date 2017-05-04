@@ -16,9 +16,8 @@ class processaResultados {
                         <thead>
                           <tr>
                             <th><small>Biblioteca</small></th>
-                            <th><small>Cód. de barras</small></th>
                             <th><small>Status</small></th>
-                            <th><small>Núm. de chamada</small></th>";
+                            <th><small>Localização</small></th>";
                             if ($xml->item->{'loan-status'} == "A"){
                             echo "<th><small>Disponibilidade</small></th>
                             <th><small>Data provável de devolução</small></th>";
@@ -31,8 +30,11 @@ class processaResultados {
               foreach ($xml->item as $item) {
                 echo '<tr>';
                 echo '<td><small>'.$item->{'sub-library'}.'</small></td>';
-                echo '<td><small>'.$item->{'barcode'}.'</small></td>';
-                echo '<td><small>'.$item->{'item-status'}.'</small></td>';
+                if ($item->{'item-status'} == "10"){
+                    echo '<td><small>Circula</small></td>';
+                } else {
+                    echo '<td><small>Não circula</small></td>';
+                }  
                 echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
                 if ($item->{'loan-status'} == "A"){
                 echo '<td><small>Emprestado</small></td>';

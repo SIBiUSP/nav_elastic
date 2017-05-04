@@ -74,11 +74,10 @@
         <div class="uk-container">
             <div class="uk-grid-divider" uk-grid>
                 <div class="uk-width-1-4@s uk-width-2-6@m">
-                    <div class="uk-panel uk-panel-box">
-                        <!--
+                    <div class="uk-panel">
+                        
                         <form method="get" action="result.php">
                         <fieldset>
-
                             <?php if (!empty($_GET["search"])) : ?>
                             <legend uk-form>Filtros ativos</legend>
                                 <div class="uk-form-row">
@@ -90,7 +89,7 @@
                             <?php endif;?> 
                         </fieldset>        
                         </form>
-                        -->
+                        
 
                         <h3 class="uk-panel-title">Refinar meus resultados</h3>
                         <hr>
@@ -103,23 +102,19 @@
                                     $_GET["search"] = null;                                    
                                 }
 
-                                $facets->facet("type",10,"Tipo de material",null,$_GET["search"]);
-                                $facets->facet("authors",120,"Autores",null,$_GET["search"]);
-                                $facets->facet("authors_function",120,"Função dos autores",null,$_GET["search"]);
+                                $facets->facet("authors",120,"Compositores",null,$_GET["search"]);
+                                $facets->facet("authors_function",120,"Editores, arranjadores, autores de texto, etc",null,$_GET["search"]);
                                 $facets->facet("meio_de_expressao",200,"Meio de expressão",null,$_GET["search"]);                            
                                 $facets->facet("year",120,"Ano de publicação","desc",$_GET["search"]);
                                 $facets->facet("genero_e_forma",100,"Gênero e forma",null,$_GET["search"]);
                                 $facets->facet("subject",100,"Assuntos",null,$_GET["search"]);
-                                $facets->facet("language",40,"Idioma",null,$_GET["search"]);
-                                $facets->facet("ispartof",100,"É parte de ...",null,$_GET["search"]);
-                                $facets->facet("publisher",100,"Editora",null,$_GET["search"]);
-                                $facets->facet("country",200,"País de publicação",null,$_GET["search"]);
+                                $facets->facet("publisher",100,"Casa publicadora",null,$_GET["search"]);
                             ?>
                         </ul>
                         <hr>
                         <form class="uk-form">
                             <fieldset>
-                                <legend>Limitar por intervalo de datas</legend>
+                                <legend>Limitar por data de publicação</legend>
                                 <script>
                                     $( function() {
                                     $( "#limitar-data" ).slider({
@@ -243,7 +238,15 @@
                                                 <?php foreach ($r["_source"]['genero_e_forma'] as $genero_e_forma) : ?>
                                                     <a href="result.php?search[]=genero_e_forma.keyword:&quot;<?php echo $genero_e_forma;?>&quot;"><?php echo $genero_e_forma;?></a>
                                                 <?php endforeach;?>
-                                            <?php endif; ?>                                            
+                                            <?php endif; ?>
+                                        </p>
+                                         <p class="uk-text-small uk-margin-remove">   
+                                            <?php if (!empty($r["_source"]['notas'])) : ?>
+                                                Notas:
+                                                <?php foreach ($r["_source"]['notas'] as $notas) : ?>
+                                                    <a href="result.php?search[]=notas.keyword:&quot;<?php echo $notas;?>&quot;"><?php echo $notas;?></a>
+                                                <?php endforeach;?>
+                                            <?php endif; ?>                                                                                         
                                         </p>
                                         <p class="uk-text-small uk-margin-remove">
                                             <?php if (!empty($r["_source"]['meio_de_expressao'])) : ?>
@@ -264,7 +267,7 @@
                                                     <?php if (!empty($r["_source"]['url'])) : ?>
                                                     <?php foreach ($r["_source"]['url'] as $url) : ?>
                                                     <?php if ($url != '') : ?>
-                                                    <a class="uk-button uk-button-primary uk-button-small" href="<?php echo $url;?>" target="_blank">Acesso online</a>
+                                                    <a class="uk-button uk-button-primary uk-button-small" href="<?php echo $url;?>" target="_blank">Visualize a primeira página</a>
                                                     <?php endif; ?>
                                                     <?php endforeach;?>
                                                     <?php endif; ?>
@@ -298,25 +301,10 @@
                                             <div>
                                                 <a class="uk-button uk-button-text" href="single.php?_id=<?php echo  $r['_id'];?>">Ver registro completo</a>
                                             </div>
-                                            <div>
-                                                <a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao<?php echo  $r['_id'];?>; animation: uk-animation-fade">Como citar</a>
-                                            </div>
+  
                                         </div>
                                         
-                                        <div id="citacao<?php echo  $r['_id'];?>" hidden="hidden">
-                                            <li class="uk-h6 uk-margin-top">
-                                                <div class="uk-alert-danger" uk-alert>A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
-                                                <ul>
-                                                    <li class="uk-margin-top">
-                                                        <p><strong>ABNT</strong></p>
-                                                        <?php
-                                                            $data = citation::citation_query($r["_source"]);
-                                                            print_r($citeproc_abnt->render($data, $mode));
-                                                        ?>
-                                                    </li>                                                
-                                                </ul>                                              
-                                            </li>
-                                        </div>                                        
+                                      
                                     </article>
                                 </div>
                             </div>    

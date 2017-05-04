@@ -13,8 +13,11 @@
             <ul class="uk-navbar-nav">
                 <li class="uk-active">
                     <a href="#" class="" aria-expanded="false" style="color:#fff"><?php echo $t->gettext('Contato'); ?></a>
-                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <div class="uk-navbar-dropdown">
+                        <p><b>Biblioteca da ECA</b></p>
+                        <p>Atendimento:</p>
+                        <p>(11) 3091.4071 / 4481</p>
+                        <p>ecabiblioteca@usp.br</p>
                     </div>
                 </li>               
                 <li class="uk-active">

@@ -221,8 +221,7 @@ function load_itens_single ($sysno) {
         echo "<table class=\"uk-table uk-table-hover uk-table-striped uk-table-condensed\">
                     <thead>
                       <tr>
-                        <th>Biblioteca</th>
-                        <th>Código de barras</th>
+                        <th>Biblioteca</th>                        
                         <th>Status</th>
                         <th>Número de chamada</th>";
                         if ($xml->item->{'loan-status'} == "A"){
@@ -237,7 +236,6 @@ function load_itens_single ($sysno) {
           foreach ($xml->item as $item) {
             echo '<tr>';
             echo '<td>'.$item->{'sub-library'}.'</td>';
-            echo '<td>'.$item->{'barcode'}.'</td>';
             echo '<td>'.$item->{'item-status'}.'</td>';
             echo '<td>'.$item->{'call-no-1'}.'</td>';
             if ($item->{'loan-status'} == "A"){
