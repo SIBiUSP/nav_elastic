@@ -459,7 +459,9 @@
                                                     <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
                                                 </li>
                                                 <li>
+                                                    <?php if ($use_api_elsevier == true) : ?>
                                                      <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                                                    <?php endif; ?>
                                                     <!--
                                                     < ?php 
                                                         $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
