@@ -445,7 +445,11 @@
                                             </li>
 
                                             <li class="uk-h6 uk-margin-top">
-                                               <?php load_itens_new($r['_id']); ?>
+                                               <?php 
+                                                if ($dedalus == true) {
+                                                    load_itens_new($r['_id']);
+                                                }
+                                                ?>
                                             </li>
                                         </div> 
                                         <?php if (!empty($r["_source"]['doi'])) : ?>
