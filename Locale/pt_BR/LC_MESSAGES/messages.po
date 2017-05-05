@@ -16,5 +16,41 @@ msgid "Todas as bases"
 msgstr "Todas as bases"
 
 msgid "Buscar"
-msgstr "Buscar"
+msgstr "Todas as bases"
+
+msgid "Início"
+msgstr "Início"
+
+msgid "Busca avançada"
+msgstr "Busca avançada"
+
+msgid "Contato"
+msgstr "Contato"
+
+msgid "Usuário"
+msgstr "Usuário"
+
+msgid "Idioma"
+msgstr "Idioma"
+
+msgid "Português"
+msgstr "Português"
+
+msgid "Inglês"
+msgstr "Inglês"
+
+msgid "Nossos números"
+msgstr "Nossos números"
+
+msgid "Ferramentas"
+msgstr "Ferramentas"
+
+msgid "Número USP"
+msgstr "Número USP"
+
+msgid "Pesquisa"
+msgstr "Pesquisa"
+
+msgid "Pesquise por termo ou autor"
+msgstr "Pesquise por termo ou autor"
 

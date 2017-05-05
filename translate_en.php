@@ -1,7 +1,6 @@
 <?php
 
-/* Load libraries for PHP composer */ 
-require (__DIR__.'/vendor/autoload.php'); 
+include 'inc/config.php';
 
 use Gettext\Translations;
 

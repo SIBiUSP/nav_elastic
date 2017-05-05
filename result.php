@@ -43,7 +43,7 @@
         <?php
             include('inc/meta-header.php'); 
         ?>        
-        <title>BDPI USP - Resultado da busca</title>
+        <title>BDPI USP - <?php echo $t->gettext('Resultado da busca'); ?></title>
         <script src="inc/uikit/js/components/accordion.min.js"></script>
         <script src="inc/uikit/js/components/pagination.min.js"></script>
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
@@ -77,7 +77,7 @@
     <fieldset>
         
         <?php if (!empty($_GET["search"])) : ?>
-        <legend>Filtros ativos</legend>
+        <legend><?php echo $t->gettext('Filtros ativos'); ?></legend>
             <div class="uk-form-row">
                 <?php foreach($_GET["search"] as $filters): ?>
                     <input type="checkbox" name="search[]" value="<?php print_r(str_replace('"','&quot;',$filters)); ?>" checked><?php print_r($filters); ?><br/>
@@ -96,16 +96,16 @@
         $facets->query_aggregate = $query_aggregate;
         
         $facets->facet("base",10,"Base",null);
-        $facets->facet("type",10,"Tipo de material",null);
-        $facets->facet("unidadeUSP",100,"Unidade USP",null);
-        $facets->facet("departamento",100,"Departamento",null);
-        $facets->facet("authors",120,"Autores",null);
+        $facets->facet("type",10,$t->gettext('Tipo de material'),null);
+        $facets->facet("unidadeUSP",100,$t->gettext('Unidades USP'),null);
+        $facets->facet("departamento",100,$t->gettext('Departamentos'),null);
+        $facets->facet("authors",120,$t->gettext('Autores'),null);
         $facets->facet("authorUSP",100,"Autores USP",null);
-        $facets->facet("year",120,"Ano de publicação","desc");
-        $facets->facet("subject",100,"Assuntos",null);
-        $facets->facet("language",40,"Idioma",null);
+        $facets->facet("year",120,$t->gettext('Ano de publicação'),"desc");
+        $facets->facet("subject",100,$t->gettext('Assuntos'),null);
+        $facets->facet("language",40,$t->gettext('Idioma'),null);
         $facets->facet("ispartof",100,"É parte de ...",null);
-        $facets->facet("publisher",100,"Editora",null);
+        $facets->facet("publisher",100,$t->gettext('Editora'),null);
         $facets->facet("evento",100,"Nome do evento",null);
         $facets->facet("country",200,"País de publicação",null);
         $facets->facet("tipotese",30,"Tipo de tese",null);
@@ -254,7 +254,7 @@
                         -->
                             
                         </div>
-                        <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
+                        <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> <?php echo $t->gettext('registros'); ?></p></div>
                         <div class="uk-width-1-3">
                             <ul class="uk-pagination" data-uk-pagination="{items:<?php print_r($total);?>,itemsOnPage:<?php print_r($limit);?>,displayedPages:3,edges:1,currentPage:<?php print_r($page-1);?>}"></ul>                         
                         </div>
@@ -317,7 +317,7 @@
                                             <strong><a href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)</a></strong>
                                         </li>
                                         <li class="uk-h6">
-                                            Autores:
+                                            <?php echo $t->gettext('Autores'); ?>:
                                             <?php if (!empty($r["_source"]['authors'])) : ?>
                                             <?php foreach ($r["_source"]['authors'] as $autores) {
                                                 $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
@@ -334,7 +334,7 @@
                                         <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $r["_source"]['ispartof'];?>&quot;"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>
                                         
                                         <li class="uk-h6">
-                                            Unidades USP:
+                                            <?php echo $t->gettext('Unidades USP'); ?>:
                                             <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
                                             <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
                                             <?php foreach ($unique as $unidadeUSP) : ?>
@@ -344,7 +344,7 @@
                                         </li>
                                         
                                         <li class="uk-h6">
-                                            Assuntos:
+                                            <?php echo $t->gettext('Assuntos'); ?>:
                                             <?php if (!empty($r["_source"]['subject'])) : ?>
                                             <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
                                                 <a href="result.php?assunto=<?php echo $assunto;?>"><?php echo $assunto;?></a>
