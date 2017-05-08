@@ -119,8 +119,8 @@
         $facets->facet("colab",120,"País dos autores externos à USP",null);
         $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null);
         $facets->facet("fomento",100,"Agência de fomento",null);
-        $facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
-        $facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus");
+        //$facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus");
+        //$facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus");
     ?>
     </ul>
         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
