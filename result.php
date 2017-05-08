@@ -104,14 +104,14 @@
                                     $facets->facet("base",10,"Base",null,$_GET["search"]);
                                     $facets->facet("type",10,"Tipo de material",null,$_GET["search"]);
                                     $facets->facet("unidadeUSP",100,"Unidade USP",null,$_GET["search"]);
-                                    $facets->facet("departamento",100,"Departamento",null,$_GET["search"]);
-                                    $facets->facet("authors",120,"Autores",null,$_GET["search"]);
-                                    $facets->facet("authorUSP",100,"Autores USP",null,$_GET["search"]);
-                                    $facets->facet("year",120,"Ano de publicação","desc",$_GET["search"]);
-                                    $facets->facet("subject",100,"Assuntos",null,$_GET["search"]);
+                                    $facets->facet("authorUSP.departament",100,"Departamento",null,$_GET["search"]);
+                                    $facets->facet("author.person.name",120,"Autores",null,$_GET["search"]);
+                                    $facets->facet("authorUSP.name",100,"Autores USP",null,$_GET["search"]);
+                                    $facets->facet("datePublished",120,"Ano de publicação","desc",$_GET["search"]);
+                                    $facets->facet("about",100,"Assuntos",null,$_GET["search"]);
                                     $facets->facet("language",40,"Idioma",null,$_GET["search"]);
                                     $facets->facet("ispartof",100,"É parte de ...",null,$_GET["search"]);
-                                    $facets->facet("publisher",100,"Editora",null,$_GET["search"]);
+                                    $facets->facet("publisher.organization.name",100,"Editora",null,$_GET["search"]);
                                     $facets->facet("evento",100,"Nome do evento",null,$_GET["search"]);
                                     $facets->facet("country",200,"País de publicação",null,$_GET["search"]);
                                     $facets->facet("tipotese",30,"Tipo de tese",null,$_GET["search"]);
@@ -125,8 +125,8 @@
                                     $facets->facet("colab",120,"País dos autores externos à USP",null,$_GET["search"]);
                                     $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null,$_GET["search"]);
                                     $facets->facet("fomento",100,"Agência de fomento",null,$_GET["search"]);
-                                    $facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
-                                    $facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
+                                    //$facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
+                                    //$facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
                                 ?>
                             </ul>
                             <?php if(!empty($_SESSION['oauthuserdata'])): ?>
@@ -236,10 +236,10 @@
                 <!-- Vocabulário controlado - Início -->
                 <?php if(isset($_GET["search"])) : ?>    
                     <?php foreach ($_GET["search"] as $expressao_busca) : ?>    
-                        <?php if (preg_match("/\bsubject.keyword\b/i",$expressao_busca,$matches)) : ?>
+                        <?php if (preg_match("/\babout.keyword\b/i",$expressao_busca,$matches)) : ?>
                             <div class="uk-alert-primary" uk-alert>
                             <a class="uk-alert-close" uk-close></a>
-                            <?php $assunto = str_replace("subject.keyword:","",$expressao_busca); USP::consultar_vcusp(str_replace("\"","",$assunto)); ?>
+                            <?php $assunto = str_replace("about.keyword:","",$expressao_busca); USP::consultar_vcusp(str_replace("\"","",$assunto)); ?>
                             </div>   
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -296,11 +296,11 @@
                                         </div>
                                         <div class="uk-width-4-5@m">    
                                             <article class="uk-article">
-                                                <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?><?php if (!empty($r["_source"]['year'])) { echo ' ('.$r["_source"]['year'].')'; } ?></a></p>
-                                                <?php if (!empty($r["_source"]['authors'])) : ?>
+                                                <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['datePublished'])) { echo ' ('.$r["_source"]['datePublished'].')'; } ?></a></p>
+                                                <?php if (!empty($r["_source"]['author'])) : ?>
                                                     <p class="uk-article-meta">
-                                                    <?php foreach ($r["_source"]['authors'] as $autores) {
-                                                        $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
+                                                    <?php foreach ($r["_source"]['author'] as $authors) {
+                                                        $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
                                                     } 
                                                     $array_aut = implode("; ",$authors_array);
                                                     unset($authors_array);
@@ -308,15 +308,15 @@
                                                     ?>
                                                     </p>        
                                                 <?php endif; ?>                                                       
-                                                <?php if (!empty($r["_source"]['ispartof'])) : ?>
-                                                    <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $r["_source"]['ispartof'];?>&quot;"><?php echo $r["_source"]['ispartof'];?></a>
+                                                <?php if (!empty($r["_source"]['isPartOf'])) : ?>
+                                                    <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=isPartOf.keyword:&quot;<?php echo $r["_source"]['isPartOf'];?>&quot;"><?php echo $r["_source"]['isPartOf'];?></a>
                                                     </p>
                                                 <?php endif; ?> 
                                                 <p class="uk-text-small uk-margin-remove">
                                                     Assuntos:
-                                                    <?php if (!empty($r["_source"]['subject'])) : ?>
-                                                    <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
-                                                        <a href="result.php?search[]=subject.keyword:&quot;<?php echo $assunto;?>&quot;"><?php echo $assunto;?></a>
+                                                    <?php if (!empty($r["_source"]['about'])) : ?>
+                                                    <?php foreach ($r["_source"]['about'] as $subject) : ?>
+                                                        <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a>
                                                     <?php endforeach;?>
                                                     <?php endif; ?>
                                                 </p>
@@ -336,17 +336,17 @@
                                                             <?php endforeach;?>
                                                             <?php endif; ?>
                                                             <?php if (!empty($r["_source"]['doi'])) : ?>
-                                                            <a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                                            <a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank">Resolver DOI</a>
                                                             <?php endif; ?>
 
                                                             <?php
-                                                                $sfx_array[] = 'rft.atitle='.$r["_source"]['title'].'';
-                                                                $sfx_array[] = 'rft.year='.$r["_source"]['year'].'';
-                                                                if (!empty($r["_source"]['ispartof'])) {
-                                                                    $sfx_array[] = 'rft.jtitle='.$r["_source"]['ispartof'].'';
+                                                                $sfx_array[] = 'rft.atitle='.$r["_source"]['name'].'';
+                                                                $sfx_array[] = 'rft.year='.$r["_source"]['datePublished'].'';
+                                                                if (!empty($r["_source"]['isPartOf'])) {
+                                                                    $sfx_array[] = 'rft.jtitle='.$r["_source"]['isPartOf'].'';
                                                                 }
                                                                 if (!empty($r["_source"]['doi'])) {
-                                                                    $sfx_array[] = 'rft_id=info:doi/'.$r["_source"]['doi'][0].'';
+                                                                    $sfx_array[] = 'rft_id=info:doi/'.$r["_source"]['doi'].'';
                                                                 }
                                                                 if (!empty($r["_source"]['issn'][0])) {
                                                                     $sfx_array[] = 'rft.issn='.$r["_source"]['issn'][0].'';
@@ -360,7 +360,7 @@
                                                         <?php endif; ?>
                                                         <?php
                                                             if ($dedalus == true) {
-                                                                processaResultados::load_itens_new($r['_id']);
+                                                                processaResultados::load_itens_aleph($r['_id']);
                                                             } 
                                                         ?>
                                                     

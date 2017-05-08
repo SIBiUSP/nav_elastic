@@ -155,7 +155,7 @@ class get {
         $prev = ($page - 1);
         
         $query['sort'] = [
-            ['year.keyword' => ['order' => 'desc']],
+            ['datePublished.keyword' => ['order' => 'desc']],
         ];
 
         if (!empty($get['search'])){
@@ -343,12 +343,12 @@ class citation {
     static function citation_query($citacao) {        
         $array_citation = [];
         $array_citation["type"] = citation::get_type($citacao["type"]);
-        $array_citation["title"] = $citacao["title"];
+        $array_citation["title"] = $citacao["name"];
         
-        if (!empty($citacao["authors"])) {
+        if (!empty($citacao["author"])) {
             $i = 0;
-            foreach ($citacao["authors"] as $authors){
-                $array_authors = explode(',', $authors);
+            foreach ($citacao["author"] as $authors){
+                $array_authors = explode(',', $authors["person"]["name"]);
                 $array_citation["author"][$i]["family"] = $array_authors[0];
                 $array_citation["author"][$i]["given"] = $array_authors[1];
                 $i++;
@@ -359,19 +359,19 @@ class citation {
             $array_citation["container-title"] = $citacao["ispartof"];
         }
         if (!empty($citacao["doi"])) {
-            $array_citation["DOI"] = $citacao["doi"][0];
+            $array_citation["DOI"] = $citacao["doi"];
         }        
         if (!empty($citacao["url"])) {
             $array_citation["URL"] = $citacao["url"][0];
         }           
-        if (!empty($citacao["publisher"])) {
-            $array_citation["publisher"] = $citacao["publisher"];
+        if (!empty($citacao["publisher"]["organization"]["name"])) {
+            $array_citation["publisher"] = $citacao["publisher"]["organization"]["name"];
         }
-        if (!empty($citacao["publisher_place"])) {
-            $array_citation["publisher_place"] = $citacao["publisher_place"];
+        if (!empty($citacao["publisher"]["organization"]["location"])) {
+            $array_citation["publisher_place"] = $citacao["publisher"]["organization"]["location"];
         }
-        if (!empty($citacao["year"])) {
-            $array_citation["issued"]["date-parts"][] = $citacao["year"];
+        if (!empty($citacao["datePublished"])) {
+            $array_citation["issued"]["date-parts"][] = $citacao["datePublished"];
         }        
         if (!empty($citacao["ispartof_data"])) {
             foreach ($citacao["ispartof_data"] as $ispartof_data) {

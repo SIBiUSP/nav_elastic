@@ -50,7 +50,7 @@ if (!empty($_POST['delete_file'])) {
 <html lang="pt-br" dir="ltr">
     <head>
         <?php include('inc/meta-header.php'); ?>
-        <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['title'];?></title>
+        <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
         <script src="inc/uikit/js/components/slideset.js"></script>
         <script src="inc/uikit/js/components/notify.min.js"></script>
         <script src="inc/uikit/js/components/upload.min.js"></script>
@@ -70,7 +70,7 @@ if (!empty($_POST['delete_file'])) {
         </script>        
 
         <!-- Generate metadata to Google Scholar - START -->
-        <meta name="citation_title" content="<?php echo $cursor["_source"]['title'];?>">
+        <meta name="citation_title" content="<?php echo $cursor["_source"]['name'];?>">
         <?php if (!empty($cursor["_source"]['authors'])): ?>
         <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
         <meta name="citation_author" content="<?php echo $autores;?>">
@@ -109,8 +109,8 @@ if (!empty($_POST['delete_file'])) {
         <!-- Generate JSON-LD - START -->
         <?php 
         
-        foreach ($cursor["_source"]['authors'] as $autores) {
-            $autor_json[] = '"'.$autores.'"';
+        foreach ($cursor["_source"]['author'] as $autores) {
+            $autor_json[] = '"'.$autores["person"]["name"].'"';
         }
         
         
@@ -162,7 +162,7 @@ if (!empty($_POST['delete_file'])) {
         "description": "'.$cursor["_source"]['resumo'][0].'",
         ';
         if (!empty($cursor["_source"]['doi'])) {            
-            echo '"sameAs": "http://dx.doi.org/'.$cursor["_source"]['doi'][0].'",';
+            echo '"sameAs": "http://dx.doi.org/'.$cursor["_source"]['doi'].'",';
         }
         echo '
         "about": [
@@ -272,12 +272,12 @@ if (!empty($_POST['delete_file'])) {
                         <h3 class="uk-panel-title">Métricas</h3>
                         <hr>
                         <!-- 
-                            <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
+                            <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
                         -->
                     
                     <?php
                         if ($use_api_elsevier == true) {
-                            $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi'][0]),$api_elsevier);
+                            $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi']),$api_elsevier);
                             if (!empty($full_citations["abstract-citations-response"])) {
                                 echo '<h4>API SCOPUS</h4>';
                                 echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
@@ -332,19 +332,20 @@ if (!empty($_POST['delete_file'])) {
                                 <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
                             </p>    
                         <?php endif; ?>                            
-                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["title"];?><?php if (!empty($cursor["_source"]['year'])) { echo ' ('.$cursor["_source"]['year'].')'; } ?></a></h1>
+                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
                             
                         <!--List authors -->
-                        <?php if (!empty($cursor["_source"]['authors'])): ?>
-                            <p class="uk-article-meta">
-                            <?php foreach ($cursor["_source"]['authors'] as $autores) {
-                                $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
-                            } 
-                            $array_aut = implode("; ",$authors_array);
-                            unset($authors_array);
-                            print_r($array_aut);
+                        <?php if (!empty($cursor["_source"]['author'])): ?>
+                            <p class="uk-text-small uk-margin-remove">Autores:<ul class="uk-list uk-list-striped uk-article-meta">
+                            <?php foreach ($cursor["_source"]['author'] as $authors) {
+                                if (!empty($authors["person"]["affiliation"]["name"])) {
+                                    echo '<li><a href="result.php?search[]=author.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
+                                } else {
+                                    echo '<li><a href="result.php?search[]=author.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
+                                }                                
+                            }   
                             ?>
-                            </p>
+                            </ul></p>
                         <?php endif; ?>
                             
                         <!--Unidades USP -->
@@ -362,18 +363,18 @@ if (!empty($_POST['delete_file'])) {
                             <p class="uk-text-small uk-margin-remove">
                                 Autor(es) USP:
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-                                <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP;?>&quot;"><?php echo $autoresUSP;?> </a>
+                                <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a>
                                 <?php endforeach;?>
                                 
                             </p>
                         <?php endif; ?>                                
                             
                         <!--Assuntos -->
-                        <?php if (!empty($cursor["_source"]['subject'])): ?>
+                        <?php if (!empty($cursor["_source"]['about'])): ?>
                         <p class="uk-text-small uk-margin-remove">
                             Assuntos:                            
-                            <?php foreach ($cursor["_source"]['subject'] as $assunto) : ?>
-                                <a href="result.php?assunto=<?php echo $assunto;?>"><?php echo $assunto;?></a>
+                            <?php foreach ($cursor["_source"]['about'] as $subject) : ?>
+                                <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>>&quot;"><?php echo $subject;?></a>
                             <?php endforeach;?>
                         </p>
                         <?php endif; ?>                        
@@ -399,14 +400,41 @@ if (!empty($_POST['delete_file'])) {
                         <?php endif; ?>                            
                             
                         <!-- Imprenta -->
-                        <?php if (!empty($cursor["_source"]['publisher-place'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                Imprenta:
-                                <p>Local: <a href="result.php?search[]=publisher-place.keyword:&quot;<?php echo $cursor["_source"]['publisher-place'];?>&quot;"><?php echo $cursor["_source"]['publisher-   place'];?></a></p>
-                                <p>Data de publicação: <a href="result.php?search[]=year.keyword:&quot;<?php echo $cursor["_source"]['year'];?>&quot;"><?php echo $cursor["_source"]['year'];?></a></p>
-                            </p>
+                        <?php if (!empty($cursor["_source"]['publisher'])): ?>
+                            <p class="uk-text-small uk-margin-remove">Imprenta:<ul class="uk-list uk-list-striped uk-article-meta">                                
+                                <?php if (!empty($cursor["_source"]['publisher']["organization"]["name"])): ?>
+                                    <li>Editora: <a href="result.php?search[]=publisher.organization.name.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["name"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["name"];?></a></li>
+                                <?php endif; ?>
+                                <?php if (!empty($cursor["_source"]['publisher']["organization"]["location"])): ?>
+                                    <li>Local: <a href="result.php?search[]=publisher.organization.location.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["location"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["location"];?></a></li>
+                                <?php endif; ?>
+                                <?php if (!empty($cursor["_source"]['datePublished'])): ?>
+                                    <li>Data de publicação: <a href="result.php?search[]=datePublished.keyword:&quot;<?php echo $cursor["_source"]['datePublished'];?>&quot;"><?php echo $cursor["_source"]['datePublished'];?></a></li>
+                                <?php endif; ?>
+                            </ul></p>
                             
-                        <?php endif; ?>    
+                        <?php endif; ?>
+
+                        <!-- Descrição física -->
+                        <?php if (!empty($cursor["_source"]['numberOfPages'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Descrição física: <?php echo $cursor["_source"]['numberOfPages'];?></a>
+                        </p>
+                        <?php endif; ?>                          
+
+                        <!-- ISBN -->
+                        <?php if (!empty($cursor["_source"]['isbn'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            ISBN: <?php echo $cursor["_source"]['isbn'];?></a>
+                        </p>
+                        <?php endif; ?>
+
+                        <!-- DOI -->
+                        <?php if (!empty($cursor["_source"]['doi'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            DOI: <?php echo $cursor["_source"]['doi'];?></a>
+                        </p>
+                        <?php endif; ?>                                                         
                             
                         <!-- Source -->
                         <?php if (!empty($cursor["_source"]['ispartof'])): ?>
@@ -426,7 +454,7 @@ if (!empty($_POST['delete_file'])) {
                                     <p class="uk-text-small uk-margin-remove">Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></p>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['doi'])): ?>
-                                    <p class="uk-text-small uk-margin-remove">DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>"><?php echo $cursor["_source"]['doi'][0];?></a></p>
+                                    <p class="uk-text-small uk-margin-remove">DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'];?>"><?php echo $cursor["_source"]['doi'];?></a></p>
                                     <?php endif; ?>
                                 </p>
                         <?php endif; ?>
@@ -515,13 +543,13 @@ if (!empty($_POST['delete_file'])) {
                                     <?php endforeach;?>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
+                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'];?>" target="_blank">Resolver DOI</a>
                                 <?php endif; ?>
                             </div>
                            <?php if ($use_api_oadoi == true) {
                                     if (!empty($cursor["_source"]['doi'])) {
-                                        $oadoi = API::get_oadoi($cursor["_source"]['doi'][0]);
-                                        echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'][0].' (Fonte: <a href="oadoi.org">oaDOI API</a>)';
+                                        $oadoi = API::get_oadoi($cursor["_source"]['doi']);
+                                        echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="oadoi.org">oaDOI API</a>)';
                                         echo '<ul>';
                                         if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
                                             echo '<li>Este periódico é de assinatura</li>';
@@ -651,8 +679,8 @@ if (!empty($_POST['delete_file'])) {
                         
                         <hr>                            
                         <?php
-                            if ($dedalus == true) {
-                                processaResultados::load_itens_new($cursor["_id"]);
+                            if ($dedalus_single == true) {
+                                processaResultados::load_itens_aleph($cursor["_id"]);
                             }                             
                         ?>                            
   

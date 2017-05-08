@@ -145,17 +145,17 @@ class paginaInicial {
 
             };
             echo '<div class="uk-width-expand">';
-            if (!empty($r["_source"]['title'])){
-                echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].'';
-                if (!empty($r["_source"]['year'])){
-                   echo ' ('.$r["_source"]['year'].')';
+            if (!empty($r["_source"]['name'])){
+                echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['name'].'';
+                if (!empty($r["_source"]['datePublished'])){
+                   echo ' ('.$r["_source"]['datePublished'].')';
                 }         
                 echo '</h4></a>';
             };
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
-            if (!empty($r["_source"]['authors'])) { 
-            foreach ($r["_source"]['authors'] as $autores) {
-            echo '<li><a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a></li>';
+            if (!empty($r["_source"]['author'])) { 
+            foreach ($r["_source"]['author'] as $autores) {
+            echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
             }
             echo '</ul></div>';     
             };
@@ -329,7 +329,7 @@ class processaResultados {
     }
     
     /* Recupera os exemplares do DEDALUS */
-    static function load_itens_new ($sysno) {
+    static function load_itens_aleph ($sysno) {
         $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
         if ($xml->error == "No associated items"){
 
@@ -704,14 +704,14 @@ class exporters {
             break;
         }
 
-        $record[] = "TI  - ".$cursor["_source"]['title']."";
+        $record[] = "TI  - ".$cursor["_source"]['name']."";
 
-        if (!empty($cursor["_source"]['year'])) {
-        $record[] = "PY  - ".$cursor["_source"]['year']."";
+        if (!empty($cursor["_source"]['datePublished'])) {
+        $record[] = "PY  - ".$cursor["_source"]['datePublished']."";
         }
 
-        foreach ($cursor["_source"]['authors'] as $autores) {
-        $record[] = "AU  - ".$autores."";
+        foreach ($cursor["_source"]['author'] as $autores) {
+        $record[] = "AU  - ".$autores["person"]["name"]."";
         }
 
         if (!empty($cursor["_source"]['ispartof'])) {
@@ -735,7 +735,7 @@ class exporters {
         }
 
         if (!empty($cursor["_source"]["publisher"])) {
-        $record[] = "PB  - ".$cursor["_source"]["publisher"]."";
+        $record[] = "PB  - ".$cursor["_source"]["publisher"]["organization"]["name"]."";
         }
 
         if (!empty($cursor["_source"]["ispartof_data"])) {
