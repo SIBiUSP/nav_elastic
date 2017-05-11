@@ -332,16 +332,18 @@ if (!empty($_POST['delete_file'])) {
                                 <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
                             </p>    
                         <?php endif; ?>                            
-                        <h1 class="uk-article-title uk-margin-remove-top"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
+                        <h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
                             
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['author'])): ?>
                             <p class="uk-text-small uk-margin-remove">Autores:<ul class="uk-list uk-list-striped uk-article-meta">
                             <?php foreach ($cursor["_source"]['author'] as $authors) {
                                 if (!empty($authors["person"]["affiliation"]["name"])) {
-                                    echo '<li><a href="result.php?search[]=author.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
+                                    echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
+                                } elseif (!empty($authors["person"]["potentialAction"])) {
+                                    echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["potentialAction"].'</a></li>';
                                 } else {
-                                    echo '<li><a href="result.php?search[]=author.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
+                                    echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
                                 }                                
                             }   
                             ?>
@@ -362,10 +364,11 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
                             <p class="uk-text-small uk-margin-remove">
                                 Autor(es) USP:
+                                <ul class="uk-list uk-list-striped uk-article-meta">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-                                <a href="result.php?search[]=authorUSP.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a>
+                                <li><a href="result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
                                 <?php endforeach;?>
-                                
+                                </ul>
                             </p>
                         <?php endif; ?>                                
                             
@@ -374,10 +377,20 @@ if (!empty($_POST['delete_file'])) {
                         <p class="uk-text-small uk-margin-remove">
                             Assuntos:                            
                             <?php foreach ($cursor["_source"]['about'] as $subject) : ?>
-                                <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>>&quot;"><?php echo $subject;?></a>
+                                <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a>
                             <?php endforeach;?>
                         </p>
-                        <?php endif; ?>                        
+                        <?php endif; ?>
+
+                        <!--Assuntos proveniente da BDTD -->
+                        <?php if (!empty($cursor["_source"]["USP"]['about_BDTD'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Assuntos provenientes das teses:                            
+                            <?php foreach ($cursor["_source"]["USP"]['about_BDTD'] as $subject_BDTD) : ?>
+                                <a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a>
+                            <?php endforeach;?>
+                        </p>
+                        <?php endif; ?>                                                   
 
                         <!-- Idioma -->
                         <?php if (!empty($cursor["_source"]['language'])): ?>
@@ -390,10 +403,10 @@ if (!empty($_POST['delete_file'])) {
                         <?php endif; ?>
                             
                         <!-- Resumo -->
-                        <?php if (!empty($cursor["_source"]['resumo'])): ?>
+                        <?php if (!empty($cursor["_source"]['description'])): ?>
                             <p class="uk-text-small uk-margin-remove">
                                 Resumo:
-                                   <?php foreach ($cursor["_source"]['resumo'] as $resumo): ?>
+                                   <?php foreach ($cursor["_source"]['description'] as $resumo): ?>
                                         <?php echo $resumo;?>
                                    <?php endforeach;?>     
                             </p>
@@ -414,6 +427,13 @@ if (!empty($_POST['delete_file'])) {
                             </ul></p>
                             
                         <?php endif; ?>
+
+                        <!-- Data de defesa -->
+                        <?php if (!empty($cursor["_source"]['dateCreated'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            Data de defesa: <?php echo $cursor["_source"]['dateCreated'];?></a>
+                        </p>
+                        <?php endif; ?>                          
 
                         <!-- Descrição física -->
                         <?php if (!empty($cursor["_source"]['numberOfPages'])): ?>
@@ -684,8 +704,8 @@ if (!empty($_POST['delete_file'])) {
                             }                             
                         ?>                            
   
-                            <div class="extra" style="color:black;">
-                                <h4>Como citar</h4>
+                            <div class="uk-text-small" style="color:black;">
+                                <h5>Como citar</h5>
                                 <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
                                 <p class="uk-text-small uk-margin-remove">
                                 <ul>

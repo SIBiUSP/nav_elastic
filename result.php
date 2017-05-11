@@ -104,27 +104,31 @@
                                     $facets->facet("base",10,"Base",null,$_GET["search"]);
                                     $facets->facet("type",10,"Tipo de material",null,$_GET["search"]);
                                     $facets->facet("unidadeUSP",100,"Unidade USP",null,$_GET["search"]);
-                                    $facets->facet("authorUSP.departament",100,"Departamento",null,$_GET["search"]);
-                                    $facets->facet("author.person.name",120,"Autores",null,$_GET["search"]);
-                                    $facets->facet("authorUSP.name",100,"Autores USP",null,$_GET["search"]);
+                                    $facets->facet("authorUSP.departament",50,"Departamento",null,$_GET["search"]);
+                                    $facets->facet("author.person.name",30,"Autores",null,$_GET["search"]);
+                                    $facets->facet("authorUSP.name",50,"Autores USP",null,$_GET["search"]);
+                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos",null,$_GET["search"]);                                    
+                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,$_GET["search"]);                                    
                                     $facets->facet("datePublished",120,"Ano de publicação","desc",$_GET["search"]);
-                                    $facets->facet("about",100,"Assuntos",null,$_GET["search"]);
+                                    $facets->facet("about",50,"Assuntos",null,$_GET["search"]);
                                     $facets->facet("language",40,"Idioma",null,$_GET["search"]);
-                                    $facets->facet("ispartof",100,"É parte de ...",null,$_GET["search"]);
-                                    $facets->facet("publisher.organization.name",100,"Editora",null,$_GET["search"]);
-                                    $facets->facet("evento",100,"Nome do evento",null,$_GET["search"]);
+                                    $facets->facet("isPartOf",50,"É parte de ...",null,$_GET["search"]);
+                                    $facets->facet("publisher.organization.name",50,"Editora",null,$_GET["search"]);
+                                    $facets->facet("releasedEvent",50,"Nome do evento",null,$_GET["search"]);
                                     $facets->facet("country",200,"País de publicação",null,$_GET["search"]);
-                                    $facets->facet("tipotese",30,"Tipo de tese",null,$_GET["search"]);
-                                    $facets->facet("areaconcentracao",100,"Área de concentração",null,$_GET["search"]);
-                                    $facets->facet("programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,$_GET["search"]);
-                                    $facets->facet("programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,$_GET["search"]);
-                                    $facets->facet("indexado",100,"Indexado em",null,$_GET["search"]);
-                                    $facets->facet("fatorimpacto",1000,"Fator de impacto","desc",$_GET["search"]);         
                                     $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,$_GET["search"]);
-                                    $facets->facet("internacionalizacao",30,"Internacionalização",null,$_GET["search"]);  
-                                    $facets->facet("colab",120,"País dos autores externos à USP",null,$_GET["search"]);
-                                    $facets->facet("colab_instituicao_corrigido",100,"Colaboração institucional",null,$_GET["search"]);
-                                    $facets->facet("fomento",100,"Agência de fomento",null,$_GET["search"]);
+                                    $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,$_GET["search"]);                                    
+                                    $facets->facet("funder",50,"Agência de fomento",null,$_GET["search"]);
+                                    $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc",$_GET["search"]);
+                                    $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc",$_GET["search"]);
+                                ?>
+                                <li class="uk-nav-header">Teses</li>    
+                                <?php
+                                    $facets->facet("inSupportOf",30,"Tipo de tese",null,$_GET["search"]);
+                                    $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,$_GET["search"]);
+                                    $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,$_GET["search"]);
+                                    $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,$_GET["search"]);
+                                    $facets->facet("USP.about_BDTD",50,"Assuntos provenientes das teses",null,$_GET["search"]);
                                     //$facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
                                     //$facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
                                 ?>
@@ -133,7 +137,9 @@
                                 <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                                 <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                                 <hr>
-                                <?php         
+                                <?php
+                                    $facets->facet("indexado",100,"Indexado em",null,$_GET["search"]);
+                                    $facets->facet("fatorimpacto",1000,"Fator de impacto","desc",$_GET["search"]);         
                                     $facets->facet("codpes",100,"Número USP",null,$_GET["search"]);
                                     $facets->facet("codpes_unidade",100,"Número USP / Unidade",null,$_GET["search"]);
                                     $facets->facet("issn",100,"ISSN",null,$_GET["search"]);
@@ -296,11 +302,15 @@
                                         </div>
                                         <div class="uk-width-4-5@m">    
                                             <article class="uk-article">
-                                                <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['datePublished'])) { echo ' ('.$r["_source"]['datePublished'].')'; } ?></a></p>
+                                                <p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['datePublished'])) { echo ' ('.$r["_source"]['datePublished'].')'; } ?></a></p>
                                                 <?php if (!empty($r["_source"]['author'])) : ?>
-                                                    <p class="uk-article-meta">
+                                                    <p class="uk-article-meta uk-margin-remove">Autores: 
                                                     <?php foreach ($r["_source"]['author'] as $authors) {
-                                                        $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                                                        if (!empty($authors["person"]["potentialAction"])) {
+                                                            $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+                                                        } else {
+                                                            $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                                                        }
                                                     } 
                                                     $array_aut = implode("; ",$authors_array);
                                                     unset($authors_array);
@@ -320,13 +330,21 @@
                                                     <?php endforeach;?>
                                                     <?php endif; ?>
                                                 </p>
+                                                <?php if (!empty($r["_source"]["USP"]["about_BDTD"])) : ?>
+                                                <p class="uk-text-small uk-margin-remove">
+                                                    Assuntos provenientes das teses:
+                                                    <?php foreach ($r["_source"]["USP"]["about_BDTD"] as $subject_BDTD) : ?>
+                                                        <a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD; ?>&quot;"><?php echo $subject_BDTD;?></a>
+                                                    <?php endforeach;?>
+                                                </p>
+                                                <?php endif; ?>                                                
                                                 <?php if (!empty($r["_source"]['fatorimpacto'])) : ?>
                                                 <p class="uk-text-small uk-margin-remove">Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
                                                 <?php endif; ?>
                                                 <!-- Acesso ao texto completo - Começo -->
-                                                <div class="uk-alert-primary" uk-alert>
-                                                    <p class="uk-text-small">Acesso ao documento:</p>
                                                         <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
+                                                <div class="uk-alert-primary" uk-alert>
+                                                    <p class="uk-text-small">Acesso ao documento:</p>                                                        
                                                         <p>     
                                                             <?php if (!empty($r["_source"]['url'])) : ?>
                                                             <?php foreach ($r["_source"]['url'] as $url) : ?>
@@ -357,6 +375,7 @@
                                                             ?>
                                                             <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>" target="_blank"> Ou pesquise este registro no <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
                                                         </p>
+                                                </div>
                                                         <?php endif; ?>
                                                         <?php
                                                             if ($dedalus == true) {
@@ -379,7 +398,7 @@
 
                                                         ?> 
                                                     
-                                                </div>
+
                                                 <!-- Acesso ao texto completo - Fim -->
                                                 
                                                 <!-- Métricas - Início -->

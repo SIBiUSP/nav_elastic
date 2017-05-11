@@ -734,8 +734,8 @@ class exporters {
         $record[] = "PP  - ".$cursor["_source"]["publisher-place"]."";
         }
 
-        if (!empty($cursor["_source"]["publisher"])) {
-        $record[] = "PB  - ".$cursor["_source"]["publisher"]["organization"]["name"]."";
+        if (!empty($cursor["_source"]["publisher"]["organization"]["name"])) {
+            $record[] = "PB  - ".$cursor["_source"]["publisher"]["organization"]["name"]."";
         }
 
         if (!empty($cursor["_source"]["ispartof_data"])) {

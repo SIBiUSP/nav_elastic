@@ -57,11 +57,11 @@
                                         <option value="base.keyword:&quot;Produção científica&quot;" style="color:#333">Produção Científica</option>
                                         <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#333">Teses e Dissertações</option>
                                     </select>
-                                <input type="hidden" name="fields[]" value="title">
-                                <input type="hidden" name="fields[]" value="authors">
-                                <input type="hidden" name="fields[]" value="authorUSP">
-                                <input type="hidden" name="fields[]" value="subject">
-                                <input type="hidden" name="fields[]" value="resumo">                                    
+                                <input type="hidden" name="fields[]" value="name">
+                                <input type="hidden" name="fields[]" value="author.person.name">
+                                <input type="hidden" name="fields[]" value="authorUSP.name">
+                                <input type="hidden" name="fields[]" value="about">
+                                <input type="hidden" name="fields[]" value="description">                                    
                                 </div>
                             </div>
                             <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Pesquisar</button>
@@ -97,7 +97,7 @@
                         <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
                         <ul class="uk-list uk-list-divider">
                             <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> registros</li>
-                            <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP"),0,',','.'); ?> autores vinculados à USP</li>
+                            <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP.name"),0,',','.'); ?> autores vinculados à USP</li>
                             <li><?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li>                        
                         </ul>
                     </div>
