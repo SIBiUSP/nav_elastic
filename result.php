@@ -218,10 +218,16 @@
                                         <?php if (!empty($r["_source"]['author'])) : ?>
                                             <p class="uk-article-meta uk-margin-remove"> 
                                             <?php foreach ($r["_source"]['author'] as $authors) {
-                                                if (!empty($authors["person"]["potentialAction"])) {
-                                                    $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+                                                if (!empty($authors["person"]["date"])) {
+                                                    $author_date = ' - ' . $authors["person"]["date"];
                                                 } else {
-                                                    $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                                                    $author_date = "";
+                                                }
+
+                                                if (!empty($authors["person"]["potentialAction"])) {
+                                                    $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].$author_date.' ('.$authors["person"]["potentialAction"].')</a>';
+                                                } else {
+                                                    $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].$author_date.'</a>';
                                                 }
                                             } 
                                             $array_aut = implode("; ",$authors_array);
