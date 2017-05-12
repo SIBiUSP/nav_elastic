@@ -155,7 +155,7 @@ class get {
         $prev = ($page - 1);
         
         $query['sort'] = [
-            ['year.keyword' => ['order' => 'desc']],
+            ['datePublished.keyword' => ['order' => 'desc']],
         ];
 
         if (!empty($get['search'])){
@@ -371,8 +371,8 @@ class citation {
         if (!empty($citacao["publisher_place"])) {
             $array_citation["publisher_place"] = $citacao["publisher_place"];
         }
-        if (!empty($citacao["year"])) {
-            $array_citation["issued"]["date-parts"][] = $citacao["year"];
+        if (!empty($citacao["datePublished"])) {
+            $array_citation["issued"]["date-parts"][] = $citacao["datePublished"];
         }        
         if (!empty($citacao["ispartof_data"])) {
             foreach ($citacao["ispartof_data"] as $ispartof_data) {

@@ -11,11 +11,11 @@ class processaResultados {
 
 
             echo '<div id="exemplares'.$sysno.'" class="uk-text-small">';
-            echo "<table class=\"uk-table uk-table-responsive uk-table-striped\">
+            echo "<table class=\"uk-table uk-table-responsive uk-margin-remove uk-table-striped\">
                         <caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>
                         <thead>
                           <tr>
-                            <th><small>Biblioteca</small></th>
+                            <th class=\"uk-margin-remove\"><small>Biblioteca</small></th>
                             <th><small>Status</small></th>
                             <th><small>Localização</small></th>";
                             if ($xml->item->{'loan-status'} == "A"){

@@ -145,17 +145,17 @@ class paginaInicial {
 
             };
             echo '<div class="uk-width-expand">';
-            if (!empty($r["_source"]['title'])){
-                echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['title'].'';
-                if (!empty($r["_source"]['year'])){
-                   echo ' ('.$r["_source"]['year'].')';
+            if (!empty($r["_source"]['name'])){
+                echo '<a href="http://dedalus.usp.br/F/?func=direct&doc_number='.$r['_id'].'" target="_blank"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['name'].'';
+                if (!empty($r["_source"]['datePublished'])){
+                   echo ' ('.$r["_source"]['datePublished'].')';
                 }         
                 echo '</h4></a>';
             };
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
-            if (!empty($r["_source"]['authors'])) { 
-            foreach ($r["_source"]['authors'] as $autores) {
-            echo '<li><a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a></li>';
+            if (!empty($r["_source"]['author'])) { 
+            foreach ($r["_source"]['author'] as $autores) {
+            echo '<li><a href="result.php?search[]=authors.keyword:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
             }
             echo '</ul></div>';     
             };

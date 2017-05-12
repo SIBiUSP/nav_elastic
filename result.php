@@ -102,13 +102,13 @@
                                     $_GET["search"] = null;                                    
                                 }
 
-                                $facets->facet("authors",120,"Compositores",null,$_GET["search"]);
-                                $facets->facet("authors_function",120,"Editores, arranjadores, autores de texto, etc",null,$_GET["search"]);
-                                $facets->facet("meio_de_expressao",200,"Meio de expressão",null,$_GET["search"]);                            
-                                $facets->facet("year",120,"Ano de publicação","desc",$_GET["search"]);
-                                $facets->facet("genero_e_forma",100,"Gênero e forma",null,$_GET["search"]);
-                                $facets->facet("subject",100,"Assuntos",null,$_GET["search"]);
-                                $facets->facet("publisher",100,"Casa publicadora",null,$_GET["search"]);
+                                $facets->facet("author.person.name",120,"Compositores",null,$_GET["search"]);
+                                $facets->facet("author.person.USP.autor_funcao",120,"Autor/Função",null,$_GET["search"]);
+                                $facets->facet("USP.meio_de_expressao",200,"Meio de expressão",null,$_GET["search"]);                            
+                                $facets->facet("datePublished",120,"Ano de publicação","desc",$_GET["search"]);
+                                $facets->facet("USP.about.genero_e_forma",100,"Gênero e forma",null,$_GET["search"]);
+                                $facets->facet("about",100,"Assuntos",null,$_GET["search"]);
+                                $facets->facet("publisher.organization.name",100,"Casa publicadora",null,$_GET["search"]);
                             ?>
                         </ul>
                         <hr>
@@ -210,30 +210,35 @@
                                 </div>
                                 <div class="uk-width-4-5@m">    
                                     <article class="uk-article">
-                                        <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?><?php if (!empty($r["_source"]['year'])) { echo ' ('.$r["_source"]['year'].')'; } ?></a></p>
-                                        <?php if (!empty($r["_source"]['title_original'])) : ?>
-                                        <p class="uk-margin-remove">Título original: <?php echo $r["_source"]['title_original'];?></a></p>
+                                        <p class="uk-text-lead uk-margin-remove"><a class="uk-link-reset" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo  $r['_id'];?>" target="_blank"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['year'])) { echo ' ('.$r["_source"]['year'].')'; } ?></a></p>
+                                        <?php if (!empty($r["_source"]['alternateName'])) : ?>
+                                        <p class="uk-margin-remove">Título original: <?php echo $r["_source"]['alternateName'];?></a></p>
                                         <?php endif; ?>
-                                        <?php if (!empty($r["_source"]['authors'])) : ?>
-                                            <p class="uk-article-meta">
-                                            <?php foreach ($r["_source"]['authors'] as $autores) {
-                                                $authors_array[]='<a href="result.php?search[]=authors.keyword:&quot;'.$autores.'&quot;">'.$autores.'</a>';
+
+                                        <?php if (!empty($r["_source"]['author'])) : ?>
+                                            <p class="uk-article-meta uk-margin-remove"> 
+                                            <?php foreach ($r["_source"]['author'] as $authors) {
+                                                if (!empty($authors["person"]["potentialAction"])) {
+                                                    $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+                                                } else {
+                                                    $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                                                }
                                             } 
                                             $array_aut = implode("; ",$authors_array);
                                             unset($authors_array);
                                             print_r($array_aut);
                                             ?>
                                             </p>        
-                                        <?php endif; ?>                                                       
-                                        <?php if (!empty($r["_source"]['ispartof'])) : ?>
-                                            <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $r["_source"]['ispartof'];?>&quot;"><?php echo $r["_source"]['ispartof'];?></a>
+                                        <?php endif; ?>                                                     
+                                        <?php if (!empty($r["_source"]['isPartOf'])) : ?>
+                                            <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=isPartOf.keyword:&quot;<?php echo $r["_source"]['isPartOf'];?>&quot;"><?php echo $r["_source"]['isPartOf'];?></a>
                                             </p>
                                         <?php endif; ?> 
                                         <p class="uk-text-small uk-margin-remove">
-                                            <?php if (!empty($r["_source"]['subject'])) : ?>
+                                            <?php if (!empty($r["_source"]['about'])) : ?>
                                                 Assuntos:
-                                                <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
-                                                    <a href="result.php?search[]=subject.keyword:&quot;<?php echo $assunto;?>&quot;"><?php echo $assunto;?></a>
+                                                <?php foreach ($r["_source"]['about'] as $assunto) : ?>
+                                                    <a href="result.php?search[]=about.keyword:&quot;<?php echo $assunto;?>&quot;"><?php echo $assunto;?></a>
                                                 <?php endforeach;?>
                                             <?php endif; ?>
                                             <?php if (!empty($r["_source"]['genero_e_forma'])) : ?>
@@ -244,18 +249,18 @@
                                             <?php endif; ?>
                                         </p>
                                          <p class="uk-text-small uk-margin-remove">   
-                                            <?php if (!empty($r["_source"]['notas'])) : ?>
+                                            <?php if (!empty($r["_source"]["USP"]['notes'])) : ?>
                                                 Notas:
-                                                <?php foreach ($r["_source"]['notas'] as $notas) : ?>
-                                                    <a href="result.php?search[]=notas.keyword:&quot;<?php echo $notas;?>&quot;"><?php echo $notas;?></a>
+                                                <?php foreach ($r["_source"]["USP"]['notes'] as $notas) : ?>
+                                                    <a href="result.php?search[]=USP.notes.keyword:&quot;<?php echo $notas;?>&quot;"><?php echo $notas;?></a>
                                                 <?php endforeach;?>
                                             <?php endif; ?>                                                                                         
                                         </p>
                                         <p class="uk-text-small uk-margin-remove">
-                                            <?php if (!empty($r["_source"]['meio_de_expressao'])) : ?>
+                                            <?php if (!empty($r["_source"]["USP"]['meio_de_expressao'])) : ?>
                                                 Meio de expressão:
-                                                <?php foreach ($r["_source"]['meio_de_expressao'] as $meio_de_expressao) : ?>
-                                                    <a href="result.php?search[]=meio_de_expressao.keyword:&quot;<?php echo $meio_de_expressao;?>&quot;"><?php echo $meio_de_expressao;?></a>
+                                                <?php foreach ($r["_source"]["USP"]['meio_de_expressao'] as $meio_de_expressao) : ?>
+                                                    <a href="result.php?search[]=USP.meio_de_expressao.keyword:&quot;<?php echo $meio_de_expressao;?>&quot;"><?php echo $meio_de_expressao;?></a>
                                                 <?php endforeach;?>
                                             <?php endif; ?>                                            
                                         </p>                                        
@@ -263,19 +268,16 @@
                                         <p class="uk-text-small uk-margin-remove">Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
                                         <?php endif; ?>
                                         <!-- Acesso ao texto completo - Começo -->
-                                        <div class="uk-alert-primary" uk-alert>
-                                            <p class="uk-text-small">Acesso ao documento:</p>
+                                        <div class="uk-alert-primary uk-margin-remove" uk-alert>
+                                            <p class="uk-text-small uk-margin-remove">Acesso ao documento:</p>
                                                 <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
                                                 <p>     
                                                     <?php if (!empty($r["_source"]['url'])) : ?>
                                                     <?php foreach ($r["_source"]['url'] as $url) : ?>
                                                     <?php if ($url != '') : ?>
-                                                    <a class="uk-button uk-button-primary uk-button-small" href="<?php echo $url;?>" target="_blank">Visualize a primeira página</a>
+                                                    <a class="uk-button uk-button-primary uk-button-small uk-margin-remove" href="<?php echo $url;?>" target="_blank">Visualize a primeira página</a>
                                                     <?php endif; ?>
                                                     <?php endforeach;?>
-                                                    <?php endif; ?>
-                                                    <?php if (!empty($r["_source"]['doi'])) : ?>
-                                                    <a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
                                                     <?php endif; ?>
 
                                                 </p>
