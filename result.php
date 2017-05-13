@@ -72,26 +72,74 @@
  
         <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <div class="uk-container">
+	    <div class="uk-width-1-1@s uk-width-1-1@m">
+	    
+	    
+<nav class="uk-navbar-container uk-margin" uk-navbar>
+
+    <div class="nav-overlay uk-navbar-left">
+
+        <a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">Clique na busca para uma nova pesquisa</a>
+ 
+    </div>
+
+    <div class="nav-overlay uk-navbar-right">
+
+        <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+
+    </div>
+
+    <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
+
+        <div class="uk-navbar-item uk-width-expand">
+            <form class="uk-search uk-search-navbar uk-width-1-1">
+                <input type="hidden" name="fields[]" value="name">
+                <input type="hidden" name="fields[]" value="author.person.name">
+                <input type="hidden" name="fields[]" value="authorUSP.name">
+                <input type="hidden" name="fields[]" value="about">
+                <input type="hidden" name="fields[]" value="description"> 	    
+                <input class="uk-search-input" type="search" name="search[]" placeholder="Nova pesquisa..." autofocus>
+            </form>
+        </div>
+
+        <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+
+    </div>
+
+</nav>	    	 
+
+		    
+	    </div>
+	   
+	    <div class="uk-width-1-1@s uk-width-1-1@m">
+	    
+		    <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
+		    				    
+			<p class="uk-margin-top" uk-margin>
+				<a class="uk-button uk-button-default uk-button-small" href="index.php">Começar novamente</a>	
+				<?php 
+				
+						
+					foreach($_GET["search"] as $filters) {
+						$filters_array[] = $filters;
+						$name_field = explode(":",$filters);	
+						$filters = str_replace($name_field[0].":","",$filters);				
+						$diff["search"] = array_diff($_GET["search"],$filters_array);						
+						$url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+						echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+						unset($filters_array); 	
+					}		
+				?>
+				
+			</p>
+		    <?php endif;?> 
+	    
+	    
+	    </div>	
 
             <div class="uk-grid-divider" uk-grid>
                 <div class="uk-width-1-4@s uk-width-2-6@m">
                     <div class="uk-panel uk-panel-box">
-                        <!--
-                        <form method="get" action="result.php">
-                        <fieldset>
-
-                            <?php if (!empty($_GET["search"])) : ?>
-                            <legend uk-form>Filtros ativos</legend>
-                                <div class="uk-form-row">
-                                    <?php foreach($_GET["search"] as $filters): ?>
-                                        <input type="checkbox" name="search[]" value="<?php print_r(str_replace('"','&quot;',$filters)); ?>" checked><?php print_r($filters); ?><br/>
-                                    <?php endforeach; ?>
-                                </div>
-                            <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
-                            <?php endif;?> 
-                        </fieldset>        
-                        </form>
-                        -->
 
                         <!-- Facetas - Início -->
                         <h3 class="uk-panel-title">Refinar meus resultados</h3>
@@ -291,7 +339,7 @@
                         <ul class="uk-list uk-list-divider">   
                             <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
                                 <li>                        
-                                    <div class="uk-grid-divider" uk-grid>
+                                    <div class="uk-grid-divider uk-padding-small" uk-grid>
                                         <div class="uk-width-1-5@m">
                                             <p><a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a></p>
                                             <p>Unidades USP:

@@ -15,6 +15,11 @@ curl -s http://getcomposer.org/installer | php
 
 php composer.phar install --no-dev
 
+git submodule init
+
+git submodule update
+
+
 ## System requirements
 
 php5-curl
@@ -25,6 +30,7 @@ php5-json > 1.3.7
 ## Developers 
 
 Tiago Rodrigo Marçal Murakami
+
 
 Jan Leduc de Lara
 
