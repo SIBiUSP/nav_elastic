@@ -81,7 +81,7 @@
 
 		    <div class="nav-overlay uk-navbar-left">
 
-			<a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">Clique na busca para uma nova pesquisa</a>
+			<a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">Clique para uma nova pesquisa</a>
  
 		    </div>
 
