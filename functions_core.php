@@ -221,25 +221,101 @@ class facets {
         $query["aggs"]["counts"]["terms"]["size"] = $size;
         
         $response = elasticsearch::elastic_search($type,null,0,$query);
+	
+	$result_count = count($response["aggregations"]["counts"]["buckets"]);
+	
+		
+	if ($result_count == 0) {
+		
+	} elseif ($result_count <= 5) {
+	
+		echo '<li class="uk-parent">';    
+		echo '<a href="#" style="color:#333">'.$field_name.'</a>';
+		echo ' <ul class="uk-nav-sub">';
+		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {	    		
+			echo '<li>';
+			echo '<div uk-grid>
+			      <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
+			      <div class="uk-width-1-3" style="color:#333">
+				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
+				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
+			    ';
+			if (isset($get_search)) {
+				echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>';
+			} 
+			echo '</div></div></li>';
+		};
+		echo   '</ul></li>';		
+	
+	
+	
+	} else {
+		$i = 0;
+		echo '<li class="uk-parent">';    
+		echo '<a href="#" style="color:#333">'.$field_name.'</a>';
+		echo ' <ul class="uk-nav-sub">';
+		while ($i <= 5) {
+			echo '<li>';
+			echo '<div uk-grid>
+			      <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</div>
+			      <div class="uk-width-1-3" style="color:#333">
+				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;"  title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
+				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
+			    ';
+			if (isset($get_search)) {
+				echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>';
+			} 
+			echo '</div></div></li>';
+			$i++;
+		}	
+
+		echo '<a href="#'.str_replace(".","_",$field).'" uk-toggle>mais >></a>';
+		echo   '</ul></li>';
+		
+		
+		echo '
+		<div id="'.str_replace(".","_",$field).'" uk-modal="center: true">
+			<div class="uk-modal-dialog">
+				<button class="uk-modal-close-default" type="button" uk-close></button>
+				<div class="uk-modal-header">
+					<h2 class="uk-modal-title">'.$field_name.'</h2>
+				</div>
+				<div class="uk-modal-body">
+				<ul class="uk-list">
+		';
+            
+		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {	    		
+			echo '<li>';
+			echo '<div uk-grid>
+			      <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
+			      <div class="uk-width-1-3" style="color:#333">
+				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">E</a>
+				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Não</a>
+			    ';
+			if (isset($get_search)) {
+				echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Ou</a>';
+			} 
+			echo '</div></div></li>';
+		};
+		echo '</ul>';
+		echo '    
+		</div>
+		<div class="uk-modal-footer uk-text-right">
+			<button class="uk-button uk-button-default uk-modal-close" type="button">Fechar</button>
+		</div>
+		</div>
+		</div>
+		';
+	
+	}	
+	
         
-        echo '<li class="uk-parent">';    
-        echo '<a href="#" style="color:#333">'.$field_name.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        //$count = 1;
-        foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li>';
-            echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-                    <div class="uk-width-1-3" style="color:#333">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" uk-icon="icon: close;ratio: 0.5" style="color:#333"></a>
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" uk-icon="icon: minus;ratio: 0.5" style="color:#333"></a>
-                    ';
-            if (isset($get_search)) {
-                echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" uk-icon="icon: plus;ratio: 0.5" style="color:#333"></a>';
-            } 
-            echo '</div></div></li>';
-        };
-        echo   '</ul></li>';
+
+	
+	
+	
+
+	
 
 
     }
