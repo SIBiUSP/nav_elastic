@@ -254,7 +254,7 @@
                     <ul class="uk-list uk-list-divider">   
                     <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
                         <li>                        
-                            <div class="uk-grid-divider" uk-grid>
+                            <div class="uk-grid-divider uk-padding-small" uk-grid>
                                 <div class="uk-width-1-5@m">
                                     <p>
                                         <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a>
