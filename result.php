@@ -7,7 +7,11 @@
     $query = $result_get['query'];  
     $limit = $result_get['limit'];
     $page = $result_get['page'];
-    $skip = $result_get['skip'];    
+    $skip = $result_get['skip'];
+    
+    $query['sort'] = [
+	['datePublished.keyword' => ['order' => 'desc']],
+    ];    
 
     $params = [];
     $params["index"] = $index;
@@ -15,6 +19,9 @@
     $params["size"] = $limit;
     $params["from"] = $skip;
     $params["body"] = $query;
+    
+    
+    
 
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
@@ -75,38 +82,38 @@
 	    <div class="uk-width-1-1@s uk-width-1-1@m">
 	    
 	    
-<nav class="uk-navbar-container uk-margin" uk-navbar>
+		<nav class="uk-navbar-container uk-margin" uk-navbar>
 
-    <div class="nav-overlay uk-navbar-left">
+		    <div class="nav-overlay uk-navbar-left">
 
-        <a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">Clique na busca para uma nova pesquisa</a>
+			<a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">Clique para uma nova pesquisa</a>
  
-    </div>
+		    </div>
 
-    <div class="nav-overlay uk-navbar-right">
+		    <div class="nav-overlay uk-navbar-right">
 
-        <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+			<a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
 
-    </div>
+		    </div>
 
-    <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
+		    <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
 
-        <div class="uk-navbar-item uk-width-expand">
-            <form class="uk-search uk-search-navbar uk-width-1-1">
-                <input type="hidden" name="fields[]" value="name">
-                <input type="hidden" name="fields[]" value="author.person.name">
-                <input type="hidden" name="fields[]" value="authorUSP.name">
-                <input type="hidden" name="fields[]" value="about">
-                <input type="hidden" name="fields[]" value="description"> 	    
-                <input class="uk-search-input" type="search" name="search[]" placeholder="Nova pesquisa..." autofocus>
-            </form>
-        </div>
+			<div class="uk-navbar-item uk-width-expand">
+			    <form class="uk-search uk-search-navbar uk-width-1-1">
+				<input type="hidden" name="fields[]" value="name">
+				<input type="hidden" name="fields[]" value="author.person.name">
+				<input type="hidden" name="fields[]" value="authorUSP.name">
+				<input type="hidden" name="fields[]" value="about">
+				<input type="hidden" name="fields[]" value="description"> 	    
+				<input class="uk-search-input" type="search" name="search[]" placeholder="Nova pesquisa..." autofocus>
+			    </form>
+			</div>
 
-        <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+			<a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
 
-    </div>
+		    </div>
 
-</nav>	    	 
+		</nav>	    	 
 
 		    
 	    </div>
@@ -153,34 +160,34 @@
                                         $_GET["search"] = null;                                    
                                     }                            
 
-                                    $facets->facet("base",10,"Base",null,$_GET["search"]);
-                                    $facets->facet("type",10,"Tipo de material",null,$_GET["search"]);
-                                    $facets->facet("unidadeUSP",100,"Unidade USP",null,$_GET["search"]);
-                                    $facets->facet("authorUSP.departament",50,"Departamento",null,$_GET["search"]);
-                                    $facets->facet("author.person.name",30,"Autores",null,$_GET["search"]);
-                                    $facets->facet("authorUSP.name",50,"Autores USP",null,$_GET["search"]);
-                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos",null,$_GET["search"]);                                    
-                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,$_GET["search"]);                                    
-                                    $facets->facet("datePublished",120,"Ano de publicação","desc",$_GET["search"]);
-                                    $facets->facet("about",50,"Assuntos",null,$_GET["search"]);
-                                    $facets->facet("language",40,"Idioma",null,$_GET["search"]);
-                                    $facets->facet("isPartOf",50,"É parte de ...",null,$_GET["search"]);
-                                    $facets->facet("publisher.organization.name",50,"Editora",null,$_GET["search"]);
-                                    $facets->facet("releasedEvent",50,"Nome do evento",null,$_GET["search"]);
-                                    $facets->facet("country",200,"País de publicação",null,$_GET["search"]);
-                                    $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,$_GET["search"]);
-                                    $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,$_GET["search"]);                                    
-                                    $facets->facet("funder",50,"Agência de fomento",null,$_GET["search"]);
-                                    $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc",$_GET["search"]);
-                                    $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc",$_GET["search"]);
+                                    $facets->facet("base",10,"Base",null,"_term",$_GET["search"]);
+                                    $facets->facet("type",10,"Tipo de material",null,"_term",$_GET["search"]);
+                                    $facets->facet("unidadeUSP",100,"Unidade USP",null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.departament",50,"Departamento",null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.name",30,"Autores",null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.name",50,"Autores USP",null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("datePublished",120,"Ano de publicação","desc","_term",$_GET["search"]);
+                                    $facets->facet("about",50,"Assuntos",null,"_term",$_GET["search"]);
+                                    $facets->facet("language",40,"Idioma",null,"_term",$_GET["search"]);
+                                    $facets->facet("isPartOf",50,"É parte de ...",null,"_term",$_GET["search"]);
+                                    $facets->facet("publisher.organization.name",50,"Editora",null,"_term",$_GET["search"]);
+                                    $facets->facet("releasedEvent",50,"Nome do evento",null,"_term",$_GET["search"]);
+                                    $facets->facet("country",200,"País de publicação",null,"_term",$_GET["search"]);
+                                    $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("funder",50,"Agência de fomento",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
+                                    $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);
                                 ?>
                                 <li class="uk-nav-header">Teses</li>    
                                 <?php
-                                    $facets->facet("inSupportOf",30,"Tipo de tese",null,$_GET["search"]);
-                                    $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,$_GET["search"]);
-                                    $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,$_GET["search"]);
-                                    $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,$_GET["search"]);
-                                    $facets->facet("USP.about_BDTD",50,"Assuntos provenientes das teses",null,$_GET["search"]);
+                                    $facets->facet("inSupportOf",30,"Tipo de tese",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.about_BDTD",50,"Assuntos provenientes das teses",null,"_term",$_GET["search"]);
                                     //$facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
                                     //$facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
                                 ?>
@@ -190,17 +197,17 @@
                                 <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                                 <hr>
                                 <?php
-                                    $facets->facet("indexado",100,"Indexado em",null,$_GET["search"]);
-                                    $facets->facet("fatorimpacto",1000,"Fator de impacto","desc",$_GET["search"]);         
-                                    $facets->facet("codpes",100,"Número USP",null,$_GET["search"]);
-                                    $facets->facet("codpes_unidade",100,"Número USP / Unidade",null,$_GET["search"]);
-                                    $facets->facet("issn",100,"ISSN",null,$_GET["search"]);
-                                    $facets->facet("colab_int_trab",100,"Colaboração - Internacionalização",null,$_GET["search"]); 
-                                    $facets->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null,$_GET["search"]); 
-                                    $facets->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null,$_GET["search"]); 
+                                    $facets->facet("indexado",100,"Indexado em",null,"_term",$_GET["search"]);
+                                    $facets->facet("fatorimpacto",1000,"Fator de impacto","desc","_term",$_GET["search"]);         
+                                    $facets->facet("codpes",100,"Número USP",null,"_term",$_GET["search"]);
+                                    $facets->facet("codpes_unidade",100,"Número USP / Unidade",null,"_term",$_GET["search"]);
+                                    $facets->facet("issn",100,"ISSN",null,"_term",$_GET["search"]);
+                                    $facets->facet("colab_int_trab",100,"Colaboração - Internacionalização",null,"_term",$_GET["search"]); 
+                                    $facets->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null,"_term",$_GET["search"]); 
+                                    $facets->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null,"_term",$_GET["search"]); 
                                     $facets->rebuild_facet("colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido",$_GET["search"]);
-                                    $facets->facet("dataregistroinicial",100,"Data de registro","desc",$_GET["search"]);
-                                    $facets->facet("dataregistro",100,"Data de registro e alterações","desc",$_GET["search"]);
+                                    $facets->facet("dataregistroinicial",100,"Data de registro","desc","_term",$_GET["search"]);
+                                    $facets->facet("dataregistro",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
                                 ?>
                                 </ul>
                             <?php endif; ?>
@@ -220,10 +227,10 @@
                                         max: 2030,
                                         values: [ 1900, 2030 ],
                                         slide: function( event, ui ) {
-                                            $( "#date" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+                                            $( "#date" ).val( "datePublished:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
                                         }
                                         });
-                                        $( "#date" ).val( "year:[" + $( "#limitar-data" ).slider( "values", 0 ) +
+                                        $( "#date" ).val( "datePublished:[" + $( "#limitar-data" ).slider( "values", 0 ) +
                                         " TO " + $( "#limitar-data" ).slider( "values", 1 ) + "]");
                                         } );
                                     </script>
