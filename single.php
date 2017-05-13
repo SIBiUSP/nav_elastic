@@ -563,7 +563,7 @@ if (!empty($_POST['delete_file'])) {
                                     <?php endforeach;?>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'];?>" target="_blank">Resolver DOI</a>
+                                    <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'];?>" target="_blank">DOI</a>
                                 <?php endif; ?>
                             </div>
                            <?php if ($use_api_oadoi == true) {

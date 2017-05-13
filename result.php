@@ -19,6 +19,10 @@
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
 
+    /*pagination - start*/
+    $get_data = $_GET;    
+    /*pagination - end*/    
+
     /* Citeproc-PHP*/
 
     include 'inc/citeproc-php/CiteProc.php';
@@ -259,8 +263,8 @@
                                 <?php if ($page == 1) :?>
                                     <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php else :?>
-                                    <?php $result_get["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($result_get['query']); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <?php $get_data["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php endif; ?>
                             </ul>    
                         </div>
@@ -270,8 +274,8 @@
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($total/$limit > $page): ?>
-                                    <?php $result_get["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($result_get['query']); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <?php $get_data["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php else :?>
                                     <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php endif; ?>
@@ -354,7 +358,7 @@
                                                             <?php endforeach;?>
                                                             <?php endif; ?>
                                                             <?php if (!empty($r["_source"]['doi'])) : ?>
-                                                            <a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank">Resolver DOI</a>
+                                                            <a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank">DOI</a>
                                                             <?php endif; ?>
 
                                                             <?php
@@ -481,15 +485,16 @@
                         </ul> 
                         
                     <hr class="uk-grid-divider">
-                        
+
+                    <!-- Navegador de resultados - Início -->
                     <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($page == 1) :?>
                                     <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php else :?>
-                                    <?php $result_get["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($result_get); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <?php $get_data["page"] = $page-1 ; ?>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
                                 <?php endif; ?>
                             </ul>    
                         </div>
@@ -499,15 +504,16 @@
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($total/$limit > $page): ?>
-                                    <?php $result_get["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($result_get); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <?php $get_data["page"] = $page+1 ; ?>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php else :?>
                                     <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php endif; ?>
                             </ul>                            
                         </div>
-                    </div> 
-                    
+                    </div>
+                    <!-- Navegador de resultados - Fim -->    
+                   
                 </div>
             </div>
             <hr class="uk-grid-divider">
