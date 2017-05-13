@@ -175,10 +175,10 @@
                                       max: 2030,
                                       values: [ 1700, 2030 ],
                                       slide: function( event, ui ) {
-                                        $( "#date" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+                                        $( "#date" ).val( "datePublished:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
                                       }
                                     });
-                                    $( "#date" ).val( "year:[" + $( "#limitar-data" ).slider( "values", 0 ) +
+                                    $( "#date" ).val( "datePublished:[" + $( "#limitar-data" ).slider( "values", 0 ) +
                                       " TO " + $( "#limitar-data" ).slider( "values", 1 ) + "]");
                                     } );
                                 </script>
