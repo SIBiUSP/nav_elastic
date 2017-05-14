@@ -86,7 +86,7 @@
 
 		    <div class="nav-overlay uk-navbar-left">
 
-			<a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#">Clique para uma nova pesquisa</a>
+			<a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"><?php echo $t->gettext('Clique para uma nova pesquisa'); ?></a>
  
 		    </div>
 
@@ -105,7 +105,7 @@
 				<input type="hidden" name="fields[]" value="authorUSP.name">
 				<input type="hidden" name="fields[]" value="about">
 				<input type="hidden" name="fields[]" value="description"> 	    
-				<input class="uk-search-input" type="search" name="search[]" placeholder="Nova pesquisa..." autofocus>
+				<input class="uk-search-input" type="search" name="search[]" placeholder="<?php echo $t->gettext('Nova pesquisa...'); ?>" autofocus>
 			    </form>
 			</div>
 
@@ -123,7 +123,7 @@
 		    <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
 		    				    
 			<p class="uk-margin-top" uk-margin>
-				<a class="uk-button uk-button-default uk-button-small" href="index.php">Começar novamente</a>	
+				<a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>	
 				<?php 
 				
 						
@@ -149,7 +149,7 @@
                     <div class="uk-panel uk-panel-box">
 
                         <!-- Facetas - Início -->
-                        <h3 class="uk-panel-title">Refinar meus resultados</h3>
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Refinar busca'); ?></h3>
                             <hr>
                             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                                 <?php
@@ -161,15 +161,15 @@
                                     }                            
 
                                     $facets->facet("base",10,"Base",null,"_term",$_GET["search"]);
-                                    $facets->facet("type",10,"Tipo de material",null,"_term",$_GET["search"]);
-                                    $facets->facet("unidadeUSP",100,"Unidade USP",null,"_term",$_GET["search"]);
-                                    $facets->facet("authorUSP.departament",50,"Departamento",null,"_term",$_GET["search"]);
-                                    $facets->facet("author.person.name",30,"Autores",null,"_term",$_GET["search"]);
-                                    $facets->facet("authorUSP.name",50,"Autores USP",null,"_term",$_GET["search"]);
+                                    $facets->facet("type",10,$t->gettext('Tipo de material'),null,"_term",$_GET["search"]);
+                                    $facets->facet("unidadeUSP",100,$t->gettext('Unidades USP'),null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.departament",50,$t->gettext('Departamento'),null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.name",30,$t->gettext('Autores'),null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.name",50,$t->gettext('Autores USP'),null,"_term",$_GET["search"]);
                                     $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("datePublished",120,"Ano de publicação","desc","_term",$_GET["search"]);
-                                    $facets->facet("about",50,"Assuntos",null,"_term",$_GET["search"]);
+                                    $facets->facet("datePublished",120,$t->gettext('Ano de publicação'),"desc","_term",$_GET["search"]);
+                                    $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
                                     $facets->facet("language",40,"Idioma",null,"_term",$_GET["search"]);
                                     $facets->facet("isPartOf",50,"É parte de ...",null,"_term",$_GET["search"]);
                                     $facets->facet("publisher.organization.name",50,"Editora",null,"_term",$_GET["search"]);
@@ -255,7 +255,7 @@
                             <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                                     <fieldset>
                                         <legend>Gerar relatório</legend>                  
-                                        <div class="uk-form-row"><a href="<?php echo 'http://'.$_SERVER["SERVER_NAME"].'/~bdpi/report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
+                                        <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
                                         </div>
                                     </fieldset>        
                             <?php endif; ?>
@@ -316,10 +316,10 @@
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($page == 1) :?>
-                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
                                 <?php else :?>
                                     <?php $get_data["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
                                 <?php endif; ?>
                             </ul>    
                         </div>
@@ -330,9 +330,9 @@
                             <ul class="uk-pagination">
                                 <?php if ($total/$limit > $page): ?>
                                     <?php $get_data["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php else :?>
-                                    <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <li class="uk-margin-auto-left"><a href="#"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php endif; ?>
                             </ul>                            
                         </div>
@@ -348,8 +348,8 @@
                                 <li>                        
                                     <div class="uk-grid-divider uk-padding-small" uk-grid>
                                         <div class="uk-width-1-5@m">
-                                            <p><a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a></p>
-                                            <p>Unidades USP:
+                                            <p><a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($t->gettext($r["_source"]['type'])));?></a></p>
+                                            <p><?php echo $t->gettext('Unidades USP'); ?>:
                                                 <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
                                                 <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
                                                 <?php foreach ($unique as $unidadeUSP) : ?>
@@ -363,7 +363,7 @@
                                             <article class="uk-article">
                                                 <p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['datePublished'])) { echo ' ('.$r["_source"]['datePublished'].')'; } ?></a></p>
                                                 <?php if (!empty($r["_source"]['author'])) : ?>
-                                                    <p class="uk-article-meta uk-margin-remove">Autores: 
+                                                    <p class="uk-article-meta uk-margin-remove"><?php echo $t->gettext('Autores'); ?>: 
                                                     <?php foreach ($r["_source"]['author'] as $authors) {
                                                         if (!empty($authors["person"]["potentialAction"])) {
                                                             $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
@@ -382,7 +382,7 @@
                                                     </p>
                                                 <?php endif; ?> 
                                                 <p class="uk-text-small uk-margin-remove">
-                                                    Assuntos:
+                                                    <?php echo $t->gettext('Assuntos'); ?>:
                                                     <?php if (!empty($r["_source"]['about'])) : ?>
                                                     <?php foreach ($r["_source"]['about'] as $subject) : ?>
                                                         <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a>
@@ -488,10 +488,10 @@
 
                                                 <div class="uk-grid-small uk-child-width-auto" uk-grid>
                                                     <div>
-                                                        <a class="uk-button uk-button-text" href="single.php?_id=<?php echo  $r['_id'];?>">Ver registro completo</a>
+                                                        <a class="uk-button uk-button-text" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $t->gettext('Ver registro completo'); ?></a>
                                                     </div>
                                                     <div>
-                                                        <a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao<?php echo  $r['_id'];?>; animation: uk-animation-fade">Como citar</a>
+                                                        <a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao<?php echo  $r['_id'];?>; animation: uk-animation-fade"><?php echo $t->gettext('Como citar'); ?></a>
                                                     </div>
                                                 </div>
                                                 
@@ -546,10 +546,10 @@
                         <div>
                             <ul class="uk-pagination">
                                 <?php if ($page == 1) :?>
-                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
                                 <?php else :?>
                                     <?php $get_data["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> Anterior</a></li>
+                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
                                 <?php endif; ?>
                             </ul>    
                         </div>
@@ -560,9 +560,9 @@
                             <ul class="uk-pagination">
                                 <?php if ($total/$limit > $page): ?>
                                     <?php $get_data["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php else :?>
-                                    <li class="uk-margin-auto-left"><a href="#">Próxima <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
+                                    <li class="uk-margin-auto-left"><a href="#"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
                                 <?php endif; ?>
                             </ul>                            
                         </div>

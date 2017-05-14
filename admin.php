@@ -28,8 +28,7 @@
 
                 <div class="uk-width-2-4@m">
                     
-                    <p><a href="Locale/translate_en.php">Atualizar tradução para o Inglês</a></p>
-                    <p><a href="Locale/translate_pt_BR.php">Atualizar tradução para o Português</a></p>
+                    <p><a href="translate_en.php">Atualizar tradução para o Inglês</a></p>
                     
                 </div>
             </div>

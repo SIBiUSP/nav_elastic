@@ -5,11 +5,7 @@
             include('inc/config.php');             
             include('inc/meta-header.php');
             include('inc/functions.php');
-            
-            if(!empty($_SESSION['oauthuserdata'])) { 
-                users::store_user($_SESSION['oauthuserdata']);
-            }
-        
+      
             /* Define variables */
             define('authorUSP','authorUSP');
         ?> 
@@ -107,7 +103,7 @@
         
         
         <div class="uk-section uk-container">
-            <h1 class="uk-heading-line uk-text-center"><span>Últimos regístros</span></h1>
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Últimos registros'); ?></span></h1>
             <?php paginaInicial::ultimos_registros();?>
         </div>        
 <!-- BUG - Start

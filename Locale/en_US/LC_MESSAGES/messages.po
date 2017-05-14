@@ -11,38 +11,68 @@ msgstr ""
 "PO-Revision-Date: 2016-11-18\n"
 "Language-Team: SIBiUSP\n"
 
-msgid "Todas as bases"
-msgstr "All types"
+msgid "Ano de publicação"
+msgstr "Date published"
 
-msgid "Buscar"
-msgstr "Search"
+msgid "Anterior"
+msgstr "Previous"
 
-msgid "Início"
-msgstr "Home"
+msgid "ARTIGO DE PERIODICO"
+msgstr "Article"
+
+msgid "Assuntos"
+msgstr "Subjects"
+
+msgid "Autores"
+msgstr "Authors"
+
+msgid "Autores USP"
+msgstr "USP affiliated authors"
 
 msgid "Busca avançada"
 msgstr "Advanced search"
 
+msgid "Buscar"
+msgstr "Search"
+
+msgid "Clique para uma nova pesquisa"
+msgstr "Click here for a new search"
+
+msgid "Começar novamente"
+msgstr "Start over"
+
+msgid "Como citar"
+msgstr "How to cite"
+
 msgid "Contato"
 msgstr "Contact"
 
-msgid "Usuário"
-msgstr "User"
+msgid "Departamento"
+msgstr "Departament"
 
-msgid "Idioma"
-msgstr "Language"
-
-msgid "Português"
-msgstr "Portuguese"
-
-msgid "Inglês"
-msgstr "English"
-
-msgid "Nossos números"
+msgid "Estatísticas da base"
 msgstr "Statistics"
 
 msgid "Ferramentas"
 msgstr "Tools"
+
+msgid "Idioma"
+msgstr "Language"
+
+msgid "Inglês"
+msgstr "English"
+
+msgid "Início"
+msgstr "Home"
+
+msgid "MONOGRAFIA/LIVRO"
+msgstr "Book"
+
+msgid "Nossos números"
+msgstr "Statistics"
+
+msgid "Nova pesquisa..."
+msgstr "New search..."
 
 msgid "Número USP"
 msgstr "USP ID"
@@ -52,3 +82,35 @@ msgstr "Search"
 
 msgid "Pesquise por termo ou autor"
 msgstr "Search for keyword or author"
+
+msgid "Português"
+msgstr "Portuguese"
+
+msgid "Próxima"
+msgstr "Next"
+
+msgid "Refinar busca"
+msgstr "Refine search"
+
+msgid "TESE"
+msgstr "Thesis"
+
+msgid "Tipo de material"
+msgstr "Type"
+
+msgid "Todas as bases"
+msgstr "All types"
+
+msgid "Últimos registros"
+msgstr "Recent submissions"
+
+msgid "Unidades USP"
+msgstr "USP Schools"
+
+msgid "Usuário"
+msgstr "User"
+
+msgid "Ver registro completo"
+msgstr "Full record"
+
+

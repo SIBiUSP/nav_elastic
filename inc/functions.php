@@ -435,26 +435,20 @@ class USP {
 }
 
 /* Function to generate Tables */
-function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
-    if (!empty($sort)){
-        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
-    }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'.keyword",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
+function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+    global $client;
+    
+    //if (!empty($sort)){
+    //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    //}
+    
+    $query["size"] = 0;
+    $query = $consulta;    
+    $query["aggregations"]["counts"]["terms"]["field"] = $campo.'.keyword';
+    $query["aggregations"]["counts"]["terms"]["missing"] = "N/D";
+    $query["aggregations"]["counts"]["terms"]["size"] = $tamanho;  
+    
+
 
     $params = [
         'index' => 'sibi',
@@ -488,27 +482,18 @@ function generateDataTable($client, $consulta, $campo, $sort, $sort_orientation,
 }
 
 /* Function to generate CSV */
-function generateCSV($client, $consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+    global $client;
+	
+    //if (!empty($sort)){
+    //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
+    //}
 
-    if (!empty($sort)){
-        $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
-    }
-    $query = '
-    {
-        "size": 0,
-        '.$consulta.'
-        "aggregations": {
-          "counts": {
-            "terms": {
-              "field": "'.$campo.'.keyword",
-              "missing": "N/D",
-              '.$sort_query.'
-              "size":'.$tamanho.'
-            }
-          }
-        }
-     }
-     ';
+    $query["size"] = 0;
+    $query = $consulta;    
+    $query["aggregations"]["counts"]["terms"]["field"] = $campo.'.keyword';
+    $query["aggregations"]["counts"]["terms"]["missing"] = "N/D";
+    $query["aggregations"]["counts"]["terms"]["size"] = $tamanho; 
     
     $params = [
         'index' => 'sibi',
