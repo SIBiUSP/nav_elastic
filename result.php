@@ -357,16 +357,7 @@
 
                                                 ?> 
                                             
-                                        </div>
-                                        <!-- Acesso ao texto completo - Fim -->
-
-                                        <div class="uk-grid-small uk-child-width-auto" uk-grid>
-                                            <div>
-                                                <a class="uk-button uk-button-text" href="single.php?_id=<?php echo  $r['_id'];?>">Ver registro completo</a>
-                                            </div>
-  
-                                        </div>
-                                        
+                                        </div>                                       
                                       
                                     </article>
                                 </div>
