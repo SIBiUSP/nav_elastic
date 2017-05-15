@@ -138,7 +138,12 @@ class get {
             $query["query"]["query_string"]["fields"] = $get['fields'];
         } else {
             $query["query"]["query_string"]["fields"][] = "_all";
-        }    
+        } 
+
+        /* codpes */
+        if (!empty($get['codpes'])){        
+            $get['search'][] = 'authorUSP.codpes.keyword:'.$get['codpes'].'';
+        }           
 
         /* Pagination */
         if (isset($get['page'])) {
