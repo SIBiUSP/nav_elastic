@@ -160,7 +160,7 @@
                                         $_GET["search"] = null;                                    
                                     }                            
 
-                                    $facets->facet("base",10,"Base",null,"_term",$_GET["search"]);
+                                    $facets->facet("base",10,$t->gettext('Bases'),null,"_term",$_GET["search"]);
                                     $facets->facet("type",10,$t->gettext('Tipo de material'),null,"_term",$_GET["search"]);
                                     $facets->facet("unidadeUSP",100,$t->gettext('Unidades USP'),null,"_term",$_GET["search"]);
                                     $facets->facet("authorUSP.departament",50,$t->gettext('Departamento'),null,"_term",$_GET["search"]);
@@ -170,24 +170,24 @@
                                     $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("datePublished",120,$t->gettext('Ano de publicação'),"desc","_term",$_GET["search"]);
                                     $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
-                                    $facets->facet("language",40,"Idioma",null,"_term",$_GET["search"]);
-                                    $facets->facet("isPartOf",50,"É parte de ...",null,"_term",$_GET["search"]);
-                                    $facets->facet("publisher.organization.name",50,"Editora",null,"_term",$_GET["search"]);
+                                    $facets->facet("language",40,$t->gettext('Idioma'),null,"_term",$_GET["search"]);
+                                    $facets->facet("isPartOf",50,$t->gettext('É parte de ...'),null,"_term",$_GET["search"]);
+                                    $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
                                     $facets->facet("releasedEvent",50,"Nome do evento",null,"_term",$_GET["search"]);
                                     $facets->facet("country",200,"País de publicação",null,"_term",$_GET["search"]);
                                     $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("funder",50,"Agência de fomento",null,"_term",$_GET["search"]);
+                                    $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
                                     $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);
                                 ?>
-                                <li class="uk-nav-header">Teses</li>    
+                                <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
                                     $facets->facet("inSupportOf",30,"Tipo de tese",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.about_BDTD",50,"Assuntos provenientes das teses",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.about_BDTD",50,$t->gettext('Assuntos provenientes das teses'),null,"_term",$_GET["search"]);
                                     //$facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
                                     //$facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
                                 ?>
@@ -218,7 +218,7 @@
                             <!-- Limitar por data - Início -->
                             <form class="uk-form">
                                 <fieldset>
-                                    <legend>Limitar por data</legend>
+                                    <legend><?php echo $t->gettext('Limitar por data'); ?></legend>
                                     <script>
                                         $( function() {
                                         $( "#limitar-data" ).slider({
@@ -235,7 +235,7 @@
                                         } );
                                     </script>
                                     <p>
-                                    <label for="date">Selecionar período de tempo:</label>
+                                    <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                     <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
                                     </p>        
                                     <div id="limitar-data" class="uk-margin-bottom"></div>        
@@ -244,7 +244,7 @@
                                             <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
                                         <?php endforeach; ?>
                                     <?php endif; ?>
-                                    <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
+                                    <div class="uk-form-row"><button class="uk-button-primary"><?php echo $t->gettext('Limitar datas'); ?></button></div>
                                 </fieldset>        
                             </form>
                             <!-- Limitar por data - Fim -->
@@ -324,7 +324,7 @@
                             </ul>    
                         </div>
                         <div>
-                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p>
+                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> <?php echo $t->gettext('registros'); ?></p>
                         </div>
                         <div>
                             <ul class="uk-pagination">
@@ -391,7 +391,7 @@
                                                 </p>
                                                 <?php if (!empty($r["_source"]["USP"]["about_BDTD"])) : ?>
                                                 <p class="uk-text-small uk-margin-remove">
-                                                    Assuntos provenientes das teses:
+                                                    <?php echo $t->gettext('Assuntos provenientes das teses'); ?>:
                                                     <?php foreach ($r["_source"]["USP"]["about_BDTD"] as $subject_BDTD) : ?>
                                                         <a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD; ?>&quot;"><?php echo $subject_BDTD;?></a>
                                                     <?php endforeach;?>
@@ -403,12 +403,12 @@
                                                 <!-- Acesso ao texto completo - Começo -->
                                                         <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
                                                 <div class="uk-alert-primary" uk-alert>
-                                                    <p class="uk-text-small">Acesso ao documento:</p>                                                        
+                                                    <p class="uk-text-small"><?php echo $t->gettext('Acesso ao documento'); ?>:</p>                                                        
                                                         <p>     
                                                             <?php if (!empty($r["_source"]['url'])) : ?>
                                                             <?php foreach ($r["_source"]['url'] as $url) : ?>
                                                             <?php if ($url != '') : ?>
-                                                            <a class="uk-button uk-button-primary uk-button-small" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
+                                                            <a class="uk-button uk-button-primary uk-button-small" href="<?php echo $url;?>" target="_blank"><?php echo $t->gettext('Acesso online à fonte'); ?></a>
                                                             <?php endif; ?>
                                                             <?php endforeach;?>
                                                             <?php endif; ?>
@@ -432,7 +432,7 @@
                                                                     $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';
                                                                 }                                             
                                                             ?>
-                                                            <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>" target="_blank"> Ou pesquise este registro no <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
+                                                            <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?<?php echo implode("&",$sfx_array); unset($sfx_array); ?>" target="_blank"> <?php echo $t->gettext('ou pesquise este registro no'); ?> <img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>
                                                         </p>
                                                 </div>
                                                         <?php endif; ?>
@@ -464,7 +464,7 @@
                                                 <?php if ($show_metrics == true) : ?>
                                                     <?php if (!empty($r["_source"]['doi'])) : ?>
                                                     <div class="uk-alert-warning" uk-alert>
-                                                        <p>Métricas:</p>
+                                                        <p><?php echo $t->gettext('Métricas'); ?>:</p>
                                                         <div uk-grid>
                                                             <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
                                                             <div><a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>

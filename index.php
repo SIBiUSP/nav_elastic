@@ -13,8 +13,8 @@
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
         <meta property="og:url" content="http://bdpi.usp.br">
-        <meta property="og:title" content="<?php echo $branch; ?> - Página Principal">
-        <meta property="og:site_name" content="<?php echo $branch; ?>">
+        <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
+        <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
         <meta property="og:description" content="Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
@@ -35,23 +35,23 @@
                 <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg);">
                     <?php include('inc/navbar.php'); ?>
                     <div class="uk-overlay uk-overlay-primary">
-                    <h2 style="color:#fcb421"><?php echo $branch; ?></h2>                    
+                    <h2 style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>                    
                         <form class="uk-form-stacked" action="result.php">
 
                             <div class="uk-margin">
-                                <label class="uk-form-label" for="form-stacked-text">Termos de busca</label>
+                                <label class="uk-form-label" for="form-stacked-text"><?php echo $t->gettext('Termos de busca'); ?></label>
                                 <div class="uk-form-controls">
                                     <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" data-validation="required">
                                 </div>
                             </div>
 
                             <div class="uk-margin">
-                                <label class="uk-form-label" for="form-stacked-select">Selecione a base</label>
+                                <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="search[]">
                                         <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
-                                        <option value="base.keyword:&quot;Produção científica&quot;" style="color:#333">Produção Científica</option>
-                                        <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#333">Teses e Dissertações</option>
+                                        <option value="base.keyword:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
+                                        <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
                                     </select>
                                 <input type="hidden" name="fields[]" value="name">
                                 <input type="hidden" name="fields[]" value="author.person.name">
@@ -60,7 +60,7 @@
                                 <input type="hidden" name="fields[]" value="description">                                    
                                 </div>
                             </div>
-                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Pesquisar</button>
+                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom"><?php echo $t->gettext('Buscar'); ?></button>
                         </form>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
         </div>        
         
         <div class="uk-section uk-container">
-            <h1 class="uk-heading-line uk-text-center"><span>Mais informações</span></h1>                    
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Mais informações'); ?></span></h1>                    
             <div class="uk-child-width-expand@s uk-text-center" uk-grid>
                 <!-- BUG - Start 
                 <div>
@@ -82,7 +82,7 @@
                 BUG - End -->
                 <div>
                     <div class="uk-card">
-                        <h3 class="uk-card-title">Bases</h3>
+                        <h3 class="uk-card-title"><?php echo $t->gettext('Bases'); ?></h3>
                         <ul class="uk-list uk-list-divider">
                             <?php paginaInicial::base_inicio(); ?>
                         </ul>                      
@@ -92,8 +92,8 @@
                     <div class="uk-card">
                         <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
                         <ul class="uk-list uk-list-divider">
-                            <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> registros</li>
-                            <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP.name"),0,',','.'); ?> autores vinculados à USP</li>
+                            <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> <?php echo $t->gettext('registros'); ?></li>
+                            <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP.name"),0,',','.'); ?> <?php echo $t->gettext('autores vinculados à USP'); ?></li>
                             <li><?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li>                        
                         </ul>
                     </div>

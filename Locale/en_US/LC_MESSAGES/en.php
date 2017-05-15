@@ -14,11 +14,23 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-05-13T21:25:47-03:00
+POT-Creation-Date: 2017-05-15T10:14:40-03:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
 ',
+      ),
+      'Acesso ao documento' => 
+      array (
+        0 => 'Access to work',
+      ),
+      'Acesso online à fonte' => 
+      array (
+        0 => 'Online access',
+      ),
+      'Agência de fomento' => 
+      array (
+        0 => 'Sponsors',
       ),
       'Ano de publicação' => 
       array (
@@ -28,6 +40,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Previous',
       ),
+      'arquivos de texto integral' => 
+      array (
+        0 => 'full-text files',
+      ),
       'ARTIGO DE PERIODICO' => 
       array (
         0 => 'Article',
@@ -36,13 +52,29 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Subjects',
       ),
+      'Assuntos provenientes das teses' => 
+      array (
+        0 => 'Subjects from thesis',
+      ),
       'Autores' => 
       array (
         0 => 'Authors',
       ),
+      'autores vinculados à USP' => 
+      array (
+        0 => 'USP affiliated authors',
+      ),
       'Autores USP' => 
       array (
         0 => 'USP affiliated authors',
+      ),
+      'Bases' => 
+      array (
+        0 => 'Sources',
+      ),
+      'Biblioteca Digital de Produção Intelectual da USP' => 
+      array (
+        0 => 'Digital Library of Intellectual Production of USP',
       ),
       'Busca avançada' => 
       array (
@@ -68,17 +100,33 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Contact',
       ),
+      'Data de publicação' => 
+      array (
+        0 => 'Date published',
+      ),
       'Departamento' => 
       array (
         0 => 'Departament',
+      ),
+      'Editora' => 
+      array (
+        0 => 'Publisher',
       ),
       'Estatísticas da base' => 
       array (
         0 => 'Statistics',
       ),
+      'É parte de ...' => 
+      array (
+        0 => 'Is part of ...',
+      ),
       'Ferramentas' => 
       array (
         0 => 'Tools',
+      ),
+      'Fonte' => 
+      array (
+        0 => 'Source',
       ),
       'Idioma' => 
       array (
@@ -91,6 +139,26 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Início' => 
       array (
         0 => 'Home',
+      ),
+      'Limitar por data' => 
+      array (
+        0 => 'Refine with date range',
+      ),
+      'Limitar datas' => 
+      array (
+        0 => 'Refine with date range',
+      ),
+      'Local' => 
+      array (
+        0 => 'Publisher place',
+      ),
+      'Mais informações' => 
+      array (
+        0 => 'More informations',
+      ),
+      'Métricas' => 
+      array (
+        0 => 'Metrics',
       ),
       'MONOGRAFIA/LIVRO' => 
       array (
@@ -108,6 +176,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'USP ID',
       ),
+      'ou pesquise este registro no' => 
+      array (
+        0 => 'or search this record in',
+      ),
+      'Página Principal' => 
+      array (
+        0 => 'Home',
+      ),
       'Pesquisa' => 
       array (
         0 => 'Search',
@@ -120,6 +196,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Portuguese',
       ),
+      'Produção Científica' => 
+      array (
+        0 => 'Scientific Production',
+      ),
       'Próxima' => 
       array (
         0 => 'Next',
@@ -128,9 +208,33 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Refine search',
       ),
+      'registros' => 
+      array (
+        0 => 'records',
+      ),
+      'Resumo' => 
+      array (
+        0 => 'Abstract',
+      ),
+      'Selecione a base' => 
+      array (
+        0 => 'Source selection',
+      ),
+      'Selecionar período de tempo' => 
+      array (
+        0 => 'Select date range',
+      ),
       'TESE' => 
       array (
         0 => 'Thesis',
+      ),
+      'Teses e Dissertações' => 
+      array (
+        0 => 'Theses and Dissertations',
+      ),
+      'Termos de busca' => 
+      array (
+        0 => 'Search terms',
       ),
       'Tipo de material' => 
       array (
@@ -138,7 +242,11 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Todas as bases' => 
       array (
-        0 => 'All types',
+        0 => 'All sources',
+      ),
+      'TRABALHO DE EVENTO' => 
+      array (
+        0 => 'PROCEEDINGS PAPER',
       ),
       'Últimos registros' => 
       array (

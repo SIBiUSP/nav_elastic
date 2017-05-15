@@ -336,7 +336,7 @@ if (!empty($_POST['delete_file'])) {
                             
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['author'])): ?>
-                            <p class="uk-text-small uk-margin-remove">Autores:<ul class="uk-list uk-list-striped uk-article-meta">
+                            <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Autores'); ?>:<ul class="uk-list uk-list-striped uk-article-meta">
                             <?php foreach ($cursor["_source"]['author'] as $authors) {
                                 if (!empty($authors["person"]["affiliation"]["name"])) {
                                     echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
@@ -353,7 +353,7 @@ if (!empty($_POST['delete_file'])) {
                         <!--Unidades USP -->
                         <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
                             <p class="uk-text-small uk-margin-remove">
-                                Unidades USP:
+                                <?php echo $t->gettext('Unidades USP'); ?>:
                                     <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
                                     <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
                                     <?php endforeach;?>
@@ -363,7 +363,7 @@ if (!empty($_POST['delete_file'])) {
                         <!--Authors USP -->
                         <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
                             <p class="uk-text-small uk-margin-remove">
-                                Autor(es) USP:
+                                <?php echo $t->gettext('Autores USP'); ?>:
                                 <ul class="uk-list uk-list-striped uk-article-meta">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
                                 <li><a href="result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
@@ -375,7 +375,7 @@ if (!empty($_POST['delete_file'])) {
                         <!--Assuntos -->
                         <?php if (!empty($cursor["_source"]['about'])): ?>
                         <p class="uk-text-small uk-margin-remove">
-                            Assuntos:                            
+                            <?php echo $t->gettext('Assuntos'); ?>:                            
                             <?php foreach ($cursor["_source"]['about'] as $subject) : ?>
                                 <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a>
                             <?php endforeach;?>
@@ -385,7 +385,7 @@ if (!empty($_POST['delete_file'])) {
                         <!--Assuntos proveniente da BDTD -->
                         <?php if (!empty($cursor["_source"]["USP"]['about_BDTD'])): ?>
                         <p class="uk-text-small uk-margin-remove">
-                            Assuntos provenientes das teses:                            
+                            <?php echo $t->gettext('Assuntos provenientes das teses'); ?>:                            
                             <?php foreach ($cursor["_source"]["USP"]['about_BDTD'] as $subject_BDTD) : ?>
                                 <a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a>
                             <?php endforeach;?>
@@ -395,7 +395,7 @@ if (!empty($_POST['delete_file'])) {
                         <!-- Idioma -->
                         <?php if (!empty($cursor["_source"]['language'])): ?>
                             <p class="uk-text-small uk-margin-remove">
-                                Idioma:
+                                <?php echo $t->gettext('Idioma'); ?>:
                                    <?php foreach ($cursor["_source"]['language'] as $language): ?>
                                         <a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a>
                                    <?php endforeach;?>  
@@ -405,7 +405,7 @@ if (!empty($_POST['delete_file'])) {
                         <!-- Resumo -->
                         <?php if (!empty($cursor["_source"]['description'])): ?>
                             <p class="uk-text-small uk-margin-remove">
-                                Resumo:
+                                <?php echo $t->gettext('Resumo'); ?>:
                                    <?php foreach ($cursor["_source"]['description'] as $resumo): ?>
                                         <?php echo $resumo;?>
                                    <?php endforeach;?>     
@@ -416,13 +416,13 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]['publisher'])): ?>
                             <p class="uk-text-small uk-margin-remove">Imprenta:<ul class="uk-list uk-list-striped uk-article-meta">                                
                                 <?php if (!empty($cursor["_source"]['publisher']["organization"]["name"])): ?>
-                                    <li>Editora: <a href="result.php?search[]=publisher.organization.name.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["name"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["name"];?></a></li>
+                                    <li><?php echo $t->gettext('Editora'); ?>: <a href="result.php?search[]=publisher.organization.name.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["name"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["name"];?></a></li>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['publisher']["organization"]["location"])): ?>
-                                    <li>Local: <a href="result.php?search[]=publisher.organization.location.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["location"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["location"];?></a></li>
+                                    <li><?php echo $t->gettext('Local'); ?>: <a href="result.php?search[]=publisher.organization.location.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["location"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["location"];?></a></li>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['datePublished'])): ?>
-                                    <li>Data de publicação: <a href="result.php?search[]=datePublished.keyword:&quot;<?php echo $cursor["_source"]['datePublished'];?>&quot;"><?php echo $cursor["_source"]['datePublished'];?></a></li>
+                                    <li><?php echo $t->gettext('Data de publicação'); ?>: <a href="result.php?search[]=datePublished.keyword:&quot;<?php echo $cursor["_source"]['datePublished'];?>&quot;"><?php echo $cursor["_source"]['datePublished'];?></a></li>
                                 <?php endif; ?>
                             </ul></p>
                             
@@ -459,7 +459,7 @@ if (!empty($_POST['delete_file'])) {
                         <!-- Source -->
                         <?php if (!empty($cursor["_source"]['ispartof'])): ?>
                             <p class="uk-text-small uk-margin-remove">
-                                Fonte:
+                                <?php echo $t->gettext('Fonte'); ?>:
                                     <p class="uk-text-small uk-margin-remove">Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></p>
                                     <?php if (!empty($cursor["_source"]['issn'])): ?>
                                     <p class="uk-text-small uk-margin-remove">ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></p>
@@ -705,7 +705,7 @@ if (!empty($_POST['delete_file'])) {
                         ?>                            
   
                             <div class="uk-text-small" style="color:black;">
-                                <h5>Como citar</h5>
+                                <h5><?php echo $t->gettext('Como citar'); ?></h5>
                                 <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
                                 <p class="uk-text-small uk-margin-remove">
                                 <ul>

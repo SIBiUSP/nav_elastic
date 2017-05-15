@@ -29,54 +29,7 @@
                     </div>
                 </li>
                 <li class="uk-active">
-                    <a href="#"><?php echo $t->gettext('Busca avançada'); ?></a>
-                    <div class="uk-navbar-dropdown">
-                        <div class="uk-width-1-1@m">
-                            <div class="uk-alert uk-alert-large">
-                                <form class="uk-form" role="form" action="result.php" method="get">
-                                    <fieldset data-uk-margin>
-                                        <legend>String de busca avançada</legend>
-                                        <p>Selecionar campos para realizar a busca: </p>
-                                        <label><input type="checkbox" name="fields[]" value="title" checked> Título</label>
-                                        <label><input type="checkbox" name="fields[]" value="authors_index" checked> Autores</label>
-                                        <label><input type="checkbox" name="fields[]" value="authorUSP" checked> Autores USP</label>
-                                        <label><input type="checkbox" name="fields[]" value="unidadeUSPtrabalhos"> Unidade USP</label>
-                                        <label><input type="checkbox" name="fields[]" value="departamentotrabalhos"> Departamento</label>
-                                        <label><input type="checkbox" name="fields[]" value="subject" checked> Assuntos</label>
-                                        <label><input type="checkbox" name="fields[]" value="colab_instituicao_corrigido"> Colaboração institucional</label>
-                                        <label><input type="checkbox" name="fields[]" value="fomento"> Agência de Fomento</label>
-                                        <label><input type="checkbox" name="fields[]" value="sysno"> Sysno</label>
-                                        <br/>
-                                        <script>
-                                            $( function() {
-                                            $( "#slider-range" ).slider({
-                                              range: true,
-                                              min: 1900,
-                                              max: 2030,
-                                              values: [ 1900, 2030 ],
-                                              slide: function( event, ui ) {
-                                                $( "#amount" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
-                                              }
-                                            });
-                                            $( "#amount" ).val( "year:[" + $( "#slider-range" ).slider( "values", 0 ) +
-                                              " TO " + $( "#slider-range" ).slider( "values", 1 ) + "]");
-                                            } );
-                                        </script>
-                                        <p>
-                                          <label for="amount">Selecionar período de tempo:</label>
-                                          <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
-                                        </p>
-
-                                        <div id="slider-range"></div>                                
-                                        <br/>
-                                        <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="search[]" data-validation="required"></textarea>
-                                        <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
-                                        <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="advanced_search.php"><?php echo $t->gettext('Busca avançada'); ?></a>
                 </li>
              </ul>
         </div>
@@ -86,10 +39,7 @@
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
                 <li class="uk-active">
-                    <a href="#" class="" aria-expanded="false"><?php echo $t->gettext('Contato'); ?></a>
-                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 1000.5px;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </div>
+                    <a href="contact.php"><?php echo $t->gettext('Contato'); ?></a>
                 </li>               
                 <li class="uk-active">
                     <a href="sobre.php"><?php echo $t->gettext('Sobre'); ?></a>     
@@ -131,17 +81,31 @@
             </a>
         </div>
     </nav>
-    <div id="offcanvas" uk-offcanvas>
-        <div class="uk-offcanvas-bar">
 
-            <h3>Title</h3>
-
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-            <button class="uk-button uk-button-default uk-offcanvas-close uk-width-1-1 uk-margin" type="button">Close</button>
-
-        </div>
-    </div>                            
+<div id="offcanvas" class="uk-offcanvas">
+    <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-offcanvas">
+            <li class="uk-active">
+                <a href="index.php">Início</a>
+            </li>
+            <li>
+                <a href="advanced_search.php">Busca avançada</a>
+            </li>
+            <li>
+                <a href="contato.php">Contato</a>
+            </li>
+            <?php if(empty($_SESSION['oauthuserdata'])){ ?>
+                <li><a href="aut/oauth.php">Login</a></li>
+            <?php } else { ?>
+                <li><a href="aut/logout.php">Logout</a></li>
+            <?php } ?>
+            <li>
+                <a href="about.php">Sobre</a>
+            </li>
+        </ul>
+    </div>
+</div>   
+                            
 </div>
 
 </div> 

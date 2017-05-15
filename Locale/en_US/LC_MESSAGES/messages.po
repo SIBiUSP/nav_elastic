@@ -11,11 +11,24 @@ msgstr ""
 "PO-Revision-Date: 2016-11-18\n"
 "Language-Team: SIBiUSP\n"
 
+
+msgid "Acesso ao documento"
+msgstr "Access to work"
+
+msgid "Acesso online à fonte"
+msgstr "Online access"
+
+msgid "Agência de fomento"
+msgstr "Sponsors"
+
 msgid "Ano de publicação"
 msgstr "Date published"
 
 msgid "Anterior"
 msgstr "Previous"
+
+msgid "arquivos de texto integral"
+msgstr "full-text files"
 
 msgid "ARTIGO DE PERIODICO"
 msgstr "Article"
@@ -23,11 +36,23 @@ msgstr "Article"
 msgid "Assuntos"
 msgstr "Subjects"
 
+msgid "Assuntos provenientes das teses"
+msgstr "Subjects from thesis"
+
 msgid "Autores"
 msgstr "Authors"
 
+msgid "autores vinculados à USP"
+msgstr "USP affiliated authors"
+
 msgid "Autores USP"
 msgstr "USP affiliated authors"
+
+msgid "Bases"
+msgstr "Sources"
+
+msgid "Biblioteca Digital de Produção Intelectual da USP"
+msgstr "Digital Library of Intellectual Production of USP"
 
 msgid "Busca avançada"
 msgstr "Advanced search"
@@ -47,14 +72,26 @@ msgstr "How to cite"
 msgid "Contato"
 msgstr "Contact"
 
+msgid "Data de publicação"
+msgstr "Date published"
+
 msgid "Departamento"
 msgstr "Departament"
+
+msgid "Editora"
+msgstr "Publisher"
 
 msgid "Estatísticas da base"
 msgstr "Statistics"
 
+msgid "É parte de ..."
+msgstr "Is part of ..."
+
 msgid "Ferramentas"
 msgstr "Tools"
+
+msgid "Fonte"
+msgstr "Source"
 
 msgid "Idioma"
 msgstr "Language"
@@ -64,6 +101,21 @@ msgstr "English"
 
 msgid "Início"
 msgstr "Home"
+
+msgid "Limitar por data"
+msgstr "Refine with date range"
+
+msgid "Limitar datas"
+msgstr "Refine with date range"
+
+msgid "Local"
+msgstr "Publisher place"
+
+msgid "Mais informações"
+msgstr "More informations"
+
+msgid "Métricas"
+msgstr "Metrics"
 
 msgid "MONOGRAFIA/LIVRO"
 msgstr "Book"
@@ -77,6 +129,12 @@ msgstr "New search..."
 msgid "Número USP"
 msgstr "USP ID"
 
+msgid "ou pesquise este registro no"
+msgstr "or search this record in"
+
+msgid "Página Principal"
+msgstr "Home"
+
 msgid "Pesquisa"
 msgstr "Search"
 
@@ -86,20 +144,44 @@ msgstr "Search for keyword or author"
 msgid "Português"
 msgstr "Portuguese"
 
+msgid "Produção Científica"
+msgstr "Scientific Production"
+
 msgid "Próxima"
 msgstr "Next"
 
 msgid "Refinar busca"
 msgstr "Refine search"
 
+msgid "registros"
+msgstr "records"
+
+msgid "Resumo"
+msgstr "Abstract"
+
+msgid "Selecione a base"
+msgstr "Source selection"
+
+msgid "Selecionar período de tempo"
+msgstr "Select date range"
+
 msgid "TESE"
 msgstr "Thesis"
+
+msgid "Teses e Dissertações"
+msgstr "Theses and Dissertations"
+
+msgid "Termos de busca"
+msgstr "Search terms"
 
 msgid "Tipo de material"
 msgstr "Type"
 
 msgid "Todas as bases"
-msgstr "All types"
+msgstr "All sources"
+
+msgid "TRABALHO DE EVENTO"
+msgstr "PROCEEDINGS PAPER"
 
 msgid "Últimos registros"
 msgstr "Recent submissions"
@@ -112,5 +194,3 @@ msgstr "User"
 
 msgid "Ver registro completo"
 msgstr "Full record"
-
-
