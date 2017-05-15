@@ -131,16 +131,18 @@
 				<a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>	
 				<?php 
 				
-						
-					foreach($_GET["search"] as $filters) {
-						$filters_array[] = $filters;
-						$name_field = explode(":",$filters);	
-						$filters = str_replace($name_field[0].":","",$filters);				
-						$diff["search"] = array_diff($_GET["search"],$filters_array);						
-						$url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-						echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
-						unset($filters_array); 	
-					}		
+					if (!empty($_GET["search"])){
+                        foreach($_GET["search"] as $filters) {
+                            $filters_array[] = $filters;
+                            $name_field = explode(":",$filters);	
+                            $filters = str_replace($name_field[0].":","",$filters);				
+                            $diff["search"] = array_diff($_GET["search"],$filters_array);						
+                            $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                            echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                            unset($filters_array); 	
+                        }
+                    }	
+	
 				?>
 				
 			</p>
@@ -274,7 +276,7 @@
                 <?php if ($year_result_graph == true) : ?>
                     <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
-                        <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'year', "_term", 'desc', 'Ano', 10); ?>
+                        <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 10); ?>
                         <div id="ano_chart" class="uk-visible@l"></div>
                         <script type="application/javascript">
                             var graphdef = {

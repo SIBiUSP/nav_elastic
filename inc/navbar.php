@@ -13,7 +13,7 @@
                                     <fieldset data-uk-margin>
                                         <legend><?php echo $t->gettext('Número USP'); ?></legend>
                                         <input id='searchCodpes' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
-                                        <button class="uk-button" type="submit" onclick="document.getElementById('searchCodpes').value = 'codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                                        <button class="uk-button" type="submit" onclick="document.getElementById('searchCodpes').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                                     </fieldset>
                                 </form>
                                 <form class="uk-form" role="form" action="result.php" method="get" name="searchIBox">
@@ -61,9 +61,9 @@
                 </li>
                 
                 <?php if ($_SESSION['localeToUse'] == 'en_US') : ?>
-                    <li><a href="?locale=pt_BR"><img src="inc/images/br.jpg" width="25px"></a></li>
+                    <li><a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=pt_BR"><img src="inc/images/br.jpg" width="25px"></a></li>
                 <?php else : ?>
-                    <li><a href="?locale=en_US"><img src="inc/images/en.png" width="25px"></a></li>
+                    <li><a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=en_US"><img src="inc/images/en.png" width="25px"></a></li>
                 <?php endif ; ?>                
                 
                 

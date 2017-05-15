@@ -39,59 +39,70 @@ PUT /sibi/files/_mapping
     }
 }
 
-
 PUT /sibi/producao/_mapping
 {
          "producao": {
             "properties": {
-               "areaconcentracao": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
+              "about": {
+                "type": "text",
+                "analyzer": "portuguese",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                   }
-               },
-               "authorUSP": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
+                }
+              },              
+              "author": {
+                "properties": {
+                  "person": {
+                    "properties": {
+                      "affiliation": {
+                        "properties": {
+                          "location": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "text",
+                            "analyzer": "portuguese",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "name": {
+                        "type": "text",
+                        "analyzer": "portuguese",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "potentialAction": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      }
+                    }
                   }
-               },
-               "authors": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword"
-                     }
-                  }
-               },
-               "authors_complete": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "authors_index": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
+                }
+              },
                "base": {
                   "type": "text",
                   "fields": {
@@ -101,319 +112,26 @@ PUT /sibi/producao/_mapping
                      }
                   }
                },
-               "cat": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "codpes": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "codpes_unidade": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "colab": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "colab_instituicao": {
+                "description": {
                   "type": "text",
                   "analyzer": "portuguese",
                   "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
                   }
-               },
-               "colab_instituicao_trab": {
+                },               
+                "name": {
                   "type": "text",
                   "analyzer": "portuguese",
                   "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
                   }
-               },
-               "colab_int": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "colab_int_trab": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "country": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "dataregistro": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "dataregistrocompleta": {
-                  "type": "date"
-               },
-               "dataregistroinicial": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "date": {
-                  "type": "date"
-               },
-               "datestamp": {
-                  "type": "date"
-               },
-               "departamento": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "departamentotrabalhos": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "descricaofisica": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "doi": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword"
-                     }
-                  }
-               },
-               "evento": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "fatorimpacto": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "fomento": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "grupopesquisa": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "indexado": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "internacionalizacao": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "ispartof": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword"
-                     }
-                  }
-               },
-               "ispartof_capitulo": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "ispartof_data": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword"
-                     }
-                  }
-               },
-               "issn": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "language": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "metrics": {
-                  "properties": {
-                     "oadoi_is_free_to_read": {
-                        "type": "long"
-                     },
-                     "oadoi_oa_color": {
-                        "type": "text",
-                        "fields": {
-                           "keyword": {
-                              "type": "keyword",
-                              "ignore_above": 256
-                           }
-                        }
-                     }
-                  }
-               },
-               "orientador_complete": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "programa_pos_nome": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "programa_pos_sigla": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "publisher": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "publisher_place": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "resumo": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
+                },               
                "sibi_id": {
                   "type": "text",
                   "fields": {
@@ -423,89 +141,15 @@ PUT /sibi/producao/_mapping
                      }
                   }
                },
-               "subject": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
+              "unidadeUSP": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                   }
-               },
-               "subject_index": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "tipotese": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "title": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword"
-                     }
-                  }
-               },
-               "type": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "unidadeUSP": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "unidadeUSPtrabalhos": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "url": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
-               "year": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               }
+                }
+              }               
             }
          }
     }
