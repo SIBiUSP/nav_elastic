@@ -210,7 +210,12 @@ if (!empty($_POST['delete_file'])) {
                 <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo excluído com sucesso", {status:'danger'})</script>
             <?php endif; ?> 
         <?php endif; ?>
-        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
+
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>
 
         <?php include('inc/navbar.php'); ?>
         <br/><br/><br/>
@@ -232,7 +237,7 @@ if (!empty($_POST['delete_file'])) {
             ?>            
             
             
-            <div class="uk-width-1-3@m">
+            <div class="uk-width-1-4@m">
                 <div class="uk-panel uk-panel-box">
                     
                    <?php
@@ -249,18 +254,18 @@ if (!empty($_POST['delete_file'])) {
                         } 
                     ?>
                     
-                    <h3 class="uk-panel-title">Ver registro no DEDALUS</h3>
+                    <h5 class="uk-panel-title">Ver registro no DEDALUS</h5>
                     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
                         <hr>
-                        <li>                    
-                            <button class="uk-button-small uk-button-primary" onclick="window.location.href='http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>'">Ver no Dedalus</button>
+                        <li>
+                            <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank">Ver no Dedalus</a>                    
                         </li>
                     </ul>
-                    <h3 class="uk-panel-title">Exportar registro bibliográfico</h3>
+                    <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
                     <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
                         <hr>                   
                         <li>
-                            <button class="uk-button-small uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
+                            <button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
                         </li>
                         <li>
                     <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
@@ -269,7 +274,7 @@ if (!empty($_POST['delete_file'])) {
                         </li>
                     </ul>
                     <?php if (!empty($cursor["_source"]['doi'])): ?>
-                        <h3 class="uk-panel-title">Métricas</h3>
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>
                         <hr>
                         <!-- 
                             <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
@@ -323,7 +328,7 @@ if (!empty($_POST['delete_file'])) {
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="uk-width-2-3@m">
+            <div class="uk-width-3-4@m">
                 
                         <article class="uk-article">
                         <!--Type -->

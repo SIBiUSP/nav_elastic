@@ -27,8 +27,11 @@
 
     <body>     
         
-        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
-        
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>        
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
             <div class="uk-container">
@@ -94,7 +97,7 @@
                         <ul class="uk-list uk-list-divider">
                             <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> <?php echo $t->gettext('registros'); ?></li>
                             <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP.name"),0,',','.'); ?> <?php echo $t->gettext('autores vinculados à USP'); ?></li>
-                            <li><?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li>                        
+                            <!-- <li>< ?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li> -->                        
                         </ul>
                     </div>
                 </div>

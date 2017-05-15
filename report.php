@@ -62,7 +62,11 @@
         
     </head>
     <body>
-        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>
         <?php include('inc/navbar.php'); ?>
  
      <div class="uk-container">

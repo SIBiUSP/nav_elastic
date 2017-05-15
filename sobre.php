@@ -9,8 +9,12 @@
         <title>BDPI USP - Sobre</title>
     </head>
 
-    <body> 
-        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
+    <body>
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>
 
 		<?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-large-top">

@@ -76,8 +76,13 @@
     <body>
         <?php include('inc/navbar.php'); ?>
         <br/><br/><br/>
+
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>        
  
-        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <div class="uk-container">
 	    <div class="uk-width-1-1@s uk-width-1-1@m">
 	    
