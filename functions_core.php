@@ -173,6 +173,8 @@ class get {
 class users {
     
     static function store_user ($userdata){
+	global $index;
+	
         $query["doc"]["nomeUsuario"] = $userdata->{'nomeUsuario'};
         $query["doc"]["tipoUsuario"] = $userdata->{'tipoUsuario'};
         $query["doc"]["emailPrincipalUsuario"] = $userdata->{'emailPrincipalUsuario'};
