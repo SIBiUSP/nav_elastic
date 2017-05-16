@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-05-15T10:14:40-03:00
+POT-Creation-Date: 2017-05-15T15:40:02-03:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
@@ -31,6 +31,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Agência de fomento' => 
       array (
         0 => 'Sponsors',
+      ),
+      'Ano' => 
+      array (
+        0 => 'Year',
       ),
       'Ano de publicação' => 
       array (

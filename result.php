@@ -173,7 +173,8 @@
                                     $facets->facet("authorUSP.departament",50,$t->gettext('Departamento'),null,"_term",$_GET["search"]);
                                     $facets->facet("author.person.name",30,$t->gettext('Autores'),null,"_term",$_GET["search"]);
                                     $facets->facet("authorUSP.name",50,$t->gettext('Autores USP'),null,"_term",$_GET["search"]);
-                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos",null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.affiliation.name_not_found",50,"Afiliação não normalizada",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("datePublished",120,$t->gettext('Ano de publicação'),"desc","_term",$_GET["search"]);
                                     $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
@@ -280,17 +281,17 @@
                         <div id="ano_chart" class="uk-visible@l"></div>
                         <script type="application/javascript">
                             var graphdef = {
-                                categories : ['Ano'],
+                                categories : ['<?= $t->gettext('Ano') ?>'],
                                 dataset : {
-                                    'Ano' : [<?= $ano_bar; ?>]
+                                    '<?= $t->gettext('Ano') ?>' : [<?= $ano_bar; ?>]
                                 }
                             }
                             var chart = uv.chart ('Bar', graphdef, {
                                 meta : {
                                     position: '#ano_chart',
-                                    caption : 'Ano de publicação',
-                                    hlabel : 'Ano',
-                                    vlabel : 'Registros'
+                                    caption : '<?= $t->gettext('Ano de publicação') ?>',
+                                    hlabel : '<?= $t->gettext('Ano') ?>',
+                                    vlabel : '<?= $t->gettext('registros') ?>'
                                 },
                                 graph : {
                                     orientation : "Vertical"

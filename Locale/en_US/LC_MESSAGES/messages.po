@@ -21,6 +21,9 @@ msgstr "Online access"
 msgid "Agência de fomento"
 msgstr "Sponsors"
 
+msgid "Ano"
+msgstr "Year"
+
 msgid "Ano de publicação"
 msgstr "Date published"
 
