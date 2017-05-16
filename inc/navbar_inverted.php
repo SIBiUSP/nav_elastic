@@ -48,7 +48,7 @@
                 <?php endif ; ?>                
                 
                 
-                
+                <li class="uk-active"><a href="http://www3.eca.usp.br/biblioteca" style="color:#fff">Biblioteca da ECA</a></li>
                 <li class="uk-active"><a href="http://sibi.usp.br" style="color:#fff">SIBiUSP</a></li>
             </ul>
         </div>            
