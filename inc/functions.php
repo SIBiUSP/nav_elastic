@@ -7,54 +7,6 @@ include('functions_core/functions_core.php');
  */
 class paginaInicial {
     
-    static function contar_registros () {
-        global $type;
-        $query_all = '
-            {
-                "query": {
-                    "match_all": {}
-                }
-            }        
-        ';
-        $response = elasticsearch::elastic_search($type,null,0,$query_all);
-        return $response['hits']['total'];
-        print_r($response);
-
-    }
-    
-    static function contar_arquivos () {
-        $query_all = '
-            {
-                "query": {
-                    "match_all": {}
-                }
-            }        
-        ';
-        $response = elasticsearch::elastic_search("files",null,0,$query_all);
-        return $response['hits']['total'];
-        print_r($response);
-
-    } 
-
-    static function contar_unicos ($field) {
-        global $type;
-        $count_distinct_query = '
-        {
-            "aggs" : {
-                "distinct_authors" : {
-                    "cardinality" : {
-                      "field" : "'.$field.'.keyword"
-                    }
-                }
-            }
-        }
-        ';
-        $response = elasticsearch::elastic_search($type,null,0,$count_distinct_query);
-        return $response["aggregations"]["distinct_authors"]["value"];
-
-    }
-
-    
     static function unidadeUSP_inicio() {
         global $type;
         $query = '{

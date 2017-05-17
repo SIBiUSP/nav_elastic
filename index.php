@@ -91,16 +91,6 @@
                         </ul>                      
                     </div>
                 </div>
-                <div>
-                    <div class="uk-card">
-                        <h3 class="uk-card-title"><?php echo $t->gettext('Estatísticas da base'); ?></h3>
-                        <ul class="uk-list uk-list-divider">
-                            <li><?php echo number_format(paginaInicial::contar_registros(),0,',','.'); ?> <?php echo $t->gettext('registros'); ?></li>
-                            <li><?php echo number_format(paginaInicial::contar_unicos("authorUSP.name"),0,',','.'); ?> <?php echo $t->gettext('autores vinculados à USP'); ?></li>
-                            <!-- <li>< ?php echo number_format(paginaInicial::contar_arquivos(),0,',','.'); ?> arquivos de texto integral</li> -->                        
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>  
         
