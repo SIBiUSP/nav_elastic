@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-05-15T15:40:02-03:00
+POT-Creation-Date: 2017-05-19T09:29:26-03:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
@@ -22,7 +22,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Acesso ao documento' => 
       array (
-        0 => 'Access to work',
+        0 => 'Online access',
       ),
       'Acesso online à fonte' => 
       array (
@@ -84,9 +84,17 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Advanced search',
       ),
+      'Busca institucional' => 
+      array (
+        0 => 'Context search',
+      ),
       'Buscar' => 
       array (
         0 => 'Search',
+      ),
+      'Centros, Hospitais, Institutos especializados e Museus' => 
+      array (
+        0 => 'Centers, Hospitals, Institutes and Museums',
       ),
       'Clique para uma nova pesquisa' => 
       array (
@@ -228,6 +236,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Select date range',
       ),
+      'Sobre' => 
+      array (
+        0 => 'About',
+      ),
       'TESE' => 
       array (
         0 => 'Thesis',
@@ -247,6 +259,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Todas as bases' => 
       array (
         0 => 'All sources',
+      ),
+      'Todas as Unidades USP' => 
+      array (
+        0 => 'All USP Schools',
       ),
       'TRABALHO DE EVENTO' => 
       array (

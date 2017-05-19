@@ -457,7 +457,7 @@ if (!empty($_POST['delete_file'])) {
                         <!-- DOI -->
                         <?php if (!empty($cursor["_source"]['doi'])): ?>
                         <p class="uk-text-small uk-margin-remove">
-                            DOI: <?php echo $cursor["_source"]['doi'];?></a>
+                            DOI: <a href="https://dx.doi.org/<?php echo $cursor["_source"]['doi'];?>"><?php echo $cursor["_source"]['doi'];?></a>
                         </p>
                         <?php endif; ?>                                                         
                             

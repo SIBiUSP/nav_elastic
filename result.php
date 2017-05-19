@@ -189,8 +189,6 @@
                                     $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
-                                    $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
@@ -208,6 +206,8 @@
                                 <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
                                 <hr>
                                 <?php
+                                    $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
+                                    $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);                                
                                     $facets->facet("indexado",100,"Indexado em",null,"_term",$_GET["search"]);
                                     $facets->facet("fatorimpacto",1000,"Fator de impacto","desc","_term",$_GET["search"]);         
                                     $facets->facet("codpes",100,"Número USP",null,"_term",$_GET["search"]);
@@ -389,7 +389,7 @@
                                                     </p>        
                                                 <?php endif; ?>                                                       
                                                 <?php if (!empty($r["_source"]['isPartOf'])) : ?>
-                                                    <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=isPartOf.keyword:&quot;<?php echo $r["_source"]['isPartOf']["name"];?>&quot;"><?php echo $r["_source"]['isPartOf']["name"];?></a>
+                                                    <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php echo $r["_source"]['isPartOf']["name"];?>&quot;"><?php echo $r["_source"]['isPartOf']["name"];?></a>
                                                     </p>
                                                 <?php endif; ?> 
                                                 <p class="uk-text-small uk-margin-remove">
@@ -565,7 +565,7 @@
                             </ul>    
                         </div>
                         <div>
-                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p>
+                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> <?php echo $t->gettext('registros'); ?></p>
                         </div>
                         <div>
                             <ul class="uk-pagination">

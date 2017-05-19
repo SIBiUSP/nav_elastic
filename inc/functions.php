@@ -92,7 +92,7 @@ class paginaInicial {
                 $file = "";
             }
             if (file_exists($file)) {
-            echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="80" height="80" alt=""></div>';
+            echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="60" height="60" alt=""></div>';
             } else {
 
             };

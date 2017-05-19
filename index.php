@@ -139,16 +139,6 @@
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Mais informações'); ?></span></h1>                    
             <div class="uk-child-width-expand@s uk-text-center" uk-grid>
-                <!-- BUG - Start 
-                <div>
-                    <div class="uk-card">
-                        <h3 class="uk-card-title">Unidades USP e Programas de Pós-Graduação Interunidades</h3>
-                        <ul class="uk-list uk-list-divider">
-                            < ?php paginaInicial::unidadeUSP_inicio(); ?>
-                        </ul>
-                    </div>
-                </div>
-                BUG - End -->
                 <div>
                     <div class="uk-card">
                         <h3 class="uk-card-title"><?php echo $t->gettext('Bases'); ?></h3>
