@@ -37,7 +37,7 @@
             <div class="uk-container">
                 <?php 
                     $background_1 = "http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg";
-                    $background_2 = "http://www.imagens.usp.br/wp-content/uploads/Foto-Marcos-Santos-USP-Imagens-63.jpg";
+                    $background_2 = "http://www.imagens.usp.br/wp-content/uploads/9072_09082011caph038.jpg";
                     $background_3 = "http://www.imagens.usp.br/wp-content/uploads/IMG_2239.jpg"; 
                     $background_number = mt_rand(1, 3);
                     $prefix = "background_";
