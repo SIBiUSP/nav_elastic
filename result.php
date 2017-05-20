@@ -180,9 +180,9 @@
                                     $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
                                     $facets->facet("language",40,$t->gettext('Idioma'),null,"_term",$_GET["search"]);
                                     $facets->facet("isPartOf.name",50,$t->gettext('É parte de ...'),null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
+                                    //$facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
+                                    //$facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
+                                    //$facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
                                     $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
                                     $facets->facet("releasedEvent",50,"Nome do evento",null,"_term",$_GET["search"]);
                                     $facets->facet("country",200,"País de publicação",null,"_term",$_GET["search"]);
