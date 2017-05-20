@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-05-19T09:29:26-03:00
+POT-Creation-Date: 2017-05-20T16:11:42-03:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
@@ -76,9 +76,9 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Sources',
       ),
-      'Biblioteca Digital de Produção Intelectual da USP' => 
+      'Biblioteca Digital de Produção Intelectual da Universidade de São Paulo' => 
       array (
-        0 => 'Digital Library of Intellectual Production of USP',
+        0 => 'Digital Library of Intellectual Production of Universidade de São Paulo',
       ),
       'Busca avançada' => 
       array (

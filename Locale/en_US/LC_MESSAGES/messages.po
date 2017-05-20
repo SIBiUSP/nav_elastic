@@ -54,8 +54,8 @@ msgstr "USP affiliated authors"
 msgid "Bases"
 msgstr "Sources"
 
-msgid "Biblioteca Digital de Produção Intelectual da USP"
-msgstr "Digital Library of Intellectual Production of USP"
+msgid "Biblioteca Digital de Produção Intelectual da Universidade de São Paulo"
+msgstr "Digital Library of Intellectual Production of Universidade de São Paulo"
 
 msgid "Busca avançada"
 msgstr "Advanced search"
