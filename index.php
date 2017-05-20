@@ -35,7 +35,15 @@
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
             <div class="uk-container">
-                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg);">
+                <?php 
+                    $background_1 = "http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg";
+                    $background_2 = "http://www.imagens.usp.br/wp-content/uploads/Foto-Marcos-Santos-USP-Imagens-63.jpg";
+                    $background_3 = "http://www.imagens.usp.br/wp-content/uploads/IMG_2239.jpg"; 
+                    $background_number = mt_rand(1, 3);
+                    $prefix = "background_";
+
+                ?>    
+                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(<?php echo ${$prefix . $background_number}; ?>);">
                     <?php include('inc/navbar.php'); ?>
                     <div class="uk-overlay uk-overlay-primary">
                     <h2 style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>                    
