@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-05-20T16:11:42-03:00
+POT-Creation-Date: 2017-05-22T13:26:01-03:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
@@ -30,7 +30,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Agência de fomento' => 
       array (
-        0 => 'Sponsors',
+        0 => 'Funding Agencies',
       ),
       'Ano' => 
       array (
@@ -47,6 +47,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'arquivos de texto integral' => 
       array (
         0 => 'full-text files',
+      ),
+      'ARTIGO DE JORNAL' => 
+      array (
+        0 => 'NEWS ITEM',
+      ),
+      'ARTIGO DE JORNAL-DEP/ENTR' => 
+      array (
+        0 => 'NEWS ITEM',
       ),
       'ARTIGO DE PERIODICO' => 
       array (
@@ -176,6 +184,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Book',
       ),
+      'Nome do evento' => 
+      array (
+        0 => 'Conference titles',
+      ),
       'Nossos números' => 
       array (
         0 => 'Statistics',
@@ -192,9 +204,17 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'or search this record in',
       ),
+      'País de publicação' => 
+      array (
+        0 => 'Countries/Territories',
+      ),
       'Página Principal' => 
       array (
         0 => 'Home',
+      ),
+      'PARTE DE MONOGRAFIA/LIVRO' => 
+      array (
+        0 => 'BOOK CHAPTER',
       ),
       'Pesquisa' => 
       array (
@@ -254,7 +274,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Tipo de material' => 
       array (
-        0 => 'Type',
+        0 => 'Document Types',
       ),
       'Todas as bases' => 
       array (
@@ -267,6 +287,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'TRABALHO DE EVENTO' => 
       array (
         0 => 'PROCEEDINGS PAPER',
+      ),
+      'TRABALHO DE EVENTO-RESUMO' => 
+      array (
+        0 => 'MEETING ABSTRACT',
       ),
       'Últimos registros' => 
       array (

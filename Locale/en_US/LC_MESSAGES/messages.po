@@ -19,7 +19,7 @@ msgid "Acesso online à fonte"
 msgstr "Online access"
 
 msgid "Agência de fomento"
-msgstr "Sponsors"
+msgstr "Funding Agencies"
 
 msgid "Ano"
 msgstr "Year"
@@ -32,6 +32,12 @@ msgstr "Previous"
 
 msgid "arquivos de texto integral"
 msgstr "full-text files"
+
+msgid "ARTIGO DE JORNAL"
+msgstr "NEWS ITEM"
+
+msgid "ARTIGO DE JORNAL-DEP/ENTR"
+msgstr "NEWS ITEM"
 
 msgid "ARTIGO DE PERIODICO"
 msgstr "Article"
@@ -129,6 +135,9 @@ msgstr "Metrics"
 msgid "MONOGRAFIA/LIVRO"
 msgstr "Book"
 
+msgid "Nome do evento"
+msgstr "Conference titles"
+
 msgid "Nossos números"
 msgstr "Statistics"
 
@@ -141,8 +150,14 @@ msgstr "USP ID"
 msgid "ou pesquise este registro no"
 msgstr "or search this record in"
 
+msgid "País de publicação"
+msgstr "Countries/Territories"
+
 msgid "Página Principal"
 msgstr "Home"
+
+msgid "PARTE DE MONOGRAFIA/LIVRO"
+msgstr "BOOK CHAPTER"
 
 msgid "Pesquisa"
 msgstr "Search"
@@ -187,7 +202,7 @@ msgid "Termos de busca"
 msgstr "Search terms"
 
 msgid "Tipo de material"
-msgstr "Type"
+msgstr "Document Types"
 
 msgid "Todas as bases"
 msgstr "All sources"
@@ -197,6 +212,9 @@ msgstr "All USP Schools"
 
 msgid "TRABALHO DE EVENTO"
 msgstr "PROCEEDINGS PAPER"
+
+msgid "TRABALHO DE EVENTO-RESUMO"
+msgstr "MEETING ABSTRACT"
 
 msgid "Últimos registros"
 msgstr "Recent submissions"
