@@ -430,20 +430,20 @@ class citation {
             }
         }
         
-        if (!empty($citacao["ispartof"])) {
-            $array_citation["container-title"] = $citacao["ispartof"];
+        if (!empty($citacao["isPartOf"]["name"])) {
+            $array_citation["container-title"] = $citacao["isPartOf"]["name"];
         }
         if (!empty($citacao["doi"])) {
             $array_citation["DOI"] = $citacao["doi"];
         }        
-        if (!empty($citacao["url"])) {
+        if (!empty($citacao["url"][0])) {
             $array_citation["URL"] = $citacao["url"][0];
         }           
         if (!empty($citacao["publisher"]["organization"]["name"])) {
             $array_citation["publisher"] = $citacao["publisher"]["organization"]["name"];
         }
         if (!empty($citacao["publisher"]["organization"]["location"])) {
-            $array_citation["publisher_place"] = $citacao["publisher"]["organization"]["location"];
+            $array_citation["publisher-place"] = $citacao["publisher"]["organization"]["location"];
         }
         if (!empty($citacao["datePublished"])) {
             $array_citation["issued"]["date-parts"][] = $citacao["datePublished"];
