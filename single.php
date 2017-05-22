@@ -420,10 +420,10 @@ if (!empty($_POST['delete_file'])) {
                         <!-- Imprenta -->
                         <?php if (!empty($cursor["_source"]['publisher'])): ?>
                             <p class="uk-text-small uk-margin-remove">Imprenta:<ul class="uk-list uk-list-striped uk-article-meta">                                
-                                <?php if (!empty($cursor["_source"]['publisher']["organization"]["name"])): ?>
+                                <?php if (!empty($cursor["_source"]["publisher"]["organization"]["name"])): ?>
                                     <li><?php echo $t->gettext('Editora'); ?>: <a href="result.php?search[]=publisher.organization.name.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["name"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["name"];?></a></li>
                                 <?php endif; ?>
-                                <?php if (!empty($cursor["_source"]['publisher']["organization"]["location"])): ?>
+                                <?php if (!empty($cursor["_source"]["publisher"]["organization"]["location"])): ?>
                                     <li><?php echo $t->gettext('Local'); ?>: <a href="result.php?search[]=publisher.organization.location.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["location"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["location"];?></a></li>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['datePublished'])): ?>

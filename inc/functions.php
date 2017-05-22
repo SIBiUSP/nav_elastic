@@ -651,24 +651,24 @@ class exporters {
         $record[] = "AU  - ".$autores["person"]["name"]."";
         }
 
-        if (!empty($cursor["_source"]['ispartof'])) {
-        $record[] = "T2  - ".$cursor["_source"]['ispartof']."";
+        if (!empty($cursor["_source"]["isPartOf"]["name"])) {
+        $record[] = "T2  - ".$cursor["_source"]["isPartOf"]["name"]."";
         }
 
-        if (!empty($cursor["_source"]['issn'][0])) {
-        $record[] = "SN  - ".$cursor["_source"]['issn'][0]."";
+        if (!empty($cursor["_source"]['isPartOf']['issn'])) {
+        $record[] = "SN  - ".$cursor["_source"]['isPartOf']['issn']."";
         }
 
         if (!empty($cursor["_source"]["doi"])) {
-        $record[] = "DO  - ".$cursor["_source"]["doi"][0]."";
+        $record[] = "DO  - ".$cursor["_source"]["doi"]."";
         }
 
         if (!empty($cursor["_source"]["url"])) {
         $record[] = "UR  - ".$cursor["_source"]["url"][0]."";
         }
 
-        if (!empty($cursor["_source"]["publisher-place"])) {
-        $record[] = "PP  - ".$cursor["_source"]["publisher-place"]."";
+        if (!empty($cursor["_source"]["publisher"]["organization"]["location"])) {
+        $record[] = "PP  - ".$cursor["_source"]["publisher"]["organization"]["location"]."";
         }
 
         if (!empty($cursor["_source"]["publisher"]["organization"]["name"])) {
