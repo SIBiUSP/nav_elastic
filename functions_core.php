@@ -448,15 +448,13 @@ class citation {
         if (!empty($citacao["datePublished"])) {
             $array_citation["issued"]["date-parts"][] = $citacao["datePublished"];
         }        
-        if (!empty($citacao["ispartof_data"])) {
-            foreach ($citacao["ispartof_data"] as $ispartof_data) {
-                if (strpos($ispartof_data, 'v.') !== false) {
-                    $array_citation["volume"] = str_replace("v.","",$ispartof_data);
-                } elseif (strpos($ispartof_data, 'n.') !== false) {
-                    $array_citation["issue"] = str_replace("n.","",$ispartof_data);
-                } elseif (strpos($ispartof_data, 'p.') !== false) {
-                    $array_citation["page"] = str_replace("p.","",$ispartof_data);
-                }
+        if (!empty($citacao["isPartOf"]["USP"]["dados_do_periodico"])) {
+            if (strpos($citacao["isPartOf"]["USP"]["dados_do_periodico"], 'v.') !== false) {
+                $array_citation["volume"] = str_replace("v.","",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
+            } elseif (strpos($citacao["isPartOf"]["USP"]["dados_do_periodico"], 'n.') !== false) {
+                $array_citation["issue"] = str_replace("n.","",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
+            } elseif (strpos($citacao["isPartOf"]["USP"]["dados_do_periodico"], 'p.') !== false) {
+                $array_citation["page"] = str_replace("p.","",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
             }
         }
         
