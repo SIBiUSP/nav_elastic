@@ -462,28 +462,41 @@ if (!empty($_POST['delete_file'])) {
                         <?php endif; ?>                                                         
                             
                         <!-- Source -->
-                        <?php if (!empty($cursor["_source"]['ispartof'])): ?>
+                        <?php if (!empty($cursor["_source"]['isPartOf'])): ?>
                             <p class="uk-text-small uk-margin-remove">
-                                <?php echo $t->gettext('Fonte'); ?>:
-                                    <p class="uk-text-small uk-margin-remove">Título: <a href="result.php?search[]=ispartof.keyword:&quot;<?php echo $cursor["_source"]['ispartof'];?>&quot;"><?php echo $cursor["_source"]['ispartof'];?></a></p>
-                                    <?php if (!empty($cursor["_source"]['issn'])): ?>
-                                    <p class="uk-text-small uk-margin-remove">ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['issn'][0];?>&quot;"><?php echo $cursor["_source"]['issn'][0];?></a></p>
+                                <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Fonte'); ?>:<ul class="uk-list uk-list-striped uk-article-meta">
+                                    <li>Título do periódico: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php echo $cursor["_source"]["isPartOf"]["name"];?>&quot;"><?php echo $cursor["_source"]["isPartOf"]["name"];?></a></li>
+                                    <?php if (!empty($cursor["_source"]['isPartOf']['issn'])): ?>
+                                    <li>ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['isPartOf']['issn'];?>&quot;"><?php echo $cursor["_source"]['isPartOf']['issn'];?></a></li>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
-                                    <p class="uk-text-small uk-margin-remove">Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?><br/></p>
+                                    <li>Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?></li>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
-                                    <p class="uk-text-small uk-margin-remove">Número: <?php echo $cursor["_source"]['ispartof_data'][1];?><br/></p>
+                                    <li>Número: <?php echo $cursor["_source"]['ispartof_data'][1];?></li>
                                     <?php endif; ?>
                                     <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
-                                    <p class="uk-text-small uk-margin-remove">Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?><br/></p>
+                                    <li>Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?></li>
                                     <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['doi'])): ?>
-                                    <p class="uk-text-small uk-margin-remove">DOI: <a href="http://dx.doi.org/<?php echo $cursor["_source"]['doi'];?>"><?php echo $cursor["_source"]['doi'];?></a></p>
-                                    <?php endif; ?>
-                                </p>
+                                </ul></p>
                         <?php endif; ?>
-                        
+
+                        <!-- Qualis 2015 -->
+                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2014 ): ?>
+                            <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
+                            <div class="uk-alert-primary" uk-alert>
+                                <a class="uk-alert-close" uk-close></a>
+                                <h5>Informações sobre o Qualis 2015 do periódico</h5>
+                                <li class="uk-h6">
+                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
+                                <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
+                                    <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
+                                <?php endforeach; ?>                                
+                                </li>
+                            </div>
+                            <?php endif; ?>                           
+                        <?php endif; ?> 
 
                         <?php if (isset($issn_info["serial-metadata-response"])): ?>
                             <div class="uk-alert">
