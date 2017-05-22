@@ -180,12 +180,12 @@
                                     $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
                                     $facets->facet("language",40,$t->gettext('Idioma'),null,"_term",$_GET["search"]);
                                     $facets->facet("isPartOf.name",50,$t->gettext('É parte de ...'),null,"_term",$_GET["search"]);
-                                    //$facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
-                                    //$facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
-                                    //$facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
                                     $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
-                                    $facets->facet("releasedEvent",50,"Nome do evento",null,"_term",$_GET["search"]);
-                                    $facets->facet("country",200,"País de publicação",null,"_term",$_GET["search"]);
+                                    $facets->facet("releasedEvent",50,$t->gettext('Nome do evento'),null,"_term",$_GET["search"]);
+                                    $facets->facet("country",200,$t->gettext('País de publicação'),null,"_term",$_GET["search"]);
                                     $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
@@ -477,8 +477,8 @@
                                                     <div class="uk-alert-warning" uk-alert>
                                                         <p><?php echo $t->gettext('Métricas'); ?>:</p>
                                                         <div uk-grid>
-                                                            <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                                            <div><a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
+                                                            <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                                            <div><a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
                                                             <div><object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></div>
                                                             <div>
                                                                 <!--
