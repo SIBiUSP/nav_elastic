@@ -468,15 +468,9 @@ if (!empty($_POST['delete_file'])) {
                                     <li>Título do periódico: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php echo $cursor["_source"]["isPartOf"]["name"];?>&quot;"><?php echo $cursor["_source"]["isPartOf"]["name"];?></a></li>
                                     <?php if (!empty($cursor["_source"]['isPartOf']['issn'])): ?>
                                     <li>ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor["_source"]['isPartOf']['issn'];?>&quot;"><?php echo $cursor["_source"]['isPartOf']['issn'];?></a></li>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
-                                    <li>Volume: <?php echo $cursor["_source"]['ispartof_data'][0];?></li>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
-                                    <li>Número: <?php echo $cursor["_source"]['ispartof_data'][1];?></li>
-                                    <?php endif; ?>
-                                    <?php if (!empty($cursor["_source"]['ispartof_data'][2])): ?>
-                                    <li>Paginação: <?php echo $cursor["_source"]['ispartof_data'][2];?></li>
+                                    <?php endif; ?>                                    
+                                    <?php if (!empty($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])): ?>
+                                    <li>Volume/Número/Paginação/Ano: <?php print_r($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"]);?></li>
                                     <?php endif; ?>
                                 </ul></p>
                         <?php endif; ?>

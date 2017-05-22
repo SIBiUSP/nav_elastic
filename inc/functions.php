@@ -675,17 +675,15 @@ class exporters {
             $record[] = "PB  - ".$cursor["_source"]["publisher"]["organization"]["name"]."";
         }
 
-        if (!empty($cursor["_source"]["ispartof_data"])) {
-        foreach ($cursor["_source"]["ispartof_data"] as $ispartof_data) {
-            if (strpos($ispartof_data, 'v.') !== false) {
-            $record[] = "VL  - ".str_replace("v.","",$ispartof_data)."";
-            } elseif (strpos($ispartof_data, 'n.') !== false) {
-            $record[] = "IS  - ".str_replace("n.","",$ispartof_data)."";
-            } elseif (strpos($ispartof_data, 'p.') !== false) {
-            $record[] = "SP  - ".str_replace("p.","",$ispartof_data)."";
+        if (!empty($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])) {
+            if (strpos($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"], 'v.') !== false) {
+            $record[] = "VL  - ".str_replace("v.","",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])."";
+            } elseif (strpos($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"], 'n.') !== false) {
+            $record[] = "IS  - ".str_replace("n.","",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])."";
+            } elseif (strpos($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"], 'p.') !== false) {
+            $record[] = "SP  - ".str_replace("p.","",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])."";
             }
-        }
-        }
+        }        
         $record[] = "ER  - ";
 
         $record_blob = implode("\\n", $record);
