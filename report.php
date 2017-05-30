@@ -187,8 +187,8 @@
 
 
                 <h3>Obra da qual a produção faz parte (10 primeiros)</h3>      
-                <?php generateDataTable($query, 'isPartOf', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
-                <?php $csv_ispartof = generateCSV($query, 'isPartOf', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
+                <?php generateDataTable($query, 'isPartOf.name', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
+                <?php $csv_ispartof = generateCSV($query, 'isPartOf.name', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
                 <?php $csv_ispartof = str_replace('"', '', $csv_ispartof); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_ispartof); ?>','obras.csv','text/plain;charset=utf-8')">
                     Exportar todos as obras em csv
