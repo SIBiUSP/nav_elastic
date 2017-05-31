@@ -240,6 +240,131 @@ class paginaSingle {
 
     }
 
+    public static function metadataGoogleScholar($record) {
+        echo '<meta name="citation_title" content="'.$record["name"].'">';
+        if (!empty($record['author'])) {
+            foreach ($record['author'] as $autores) {
+                echo '<meta name="citation_author" content="'.$autores["person"]["name"].'">';
+            }
+        } 
+        echo '
+        <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
+        if (!empty($record["isPartOf"])) {
+            echo '<meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
+        }
+        
+       if (!empty($record['ispartof_data'][0])) {
+            echo '<meta name="citation_volume" content="'.$record['ispartof_data'][0].'">';
+       }
+        
+        if (!empty($record['ispartof_data'][1])) {
+            echo '<meta name="citation_issue" content="'.$record['ispartof_data'][1].'">';
+        }
+        $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);    
+        $links_upload = "";
+        if (!empty($files_upload)){       
+            foreach($files_upload as $file) {        
+                echo '<meta name="citation_pdf_url" content="http://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
+            ';
+            }
+        }
+        echo '        
+        <meta name="citation_firstpage" content="">
+        <meta name="citation_lastpage" content="">
+        ';    
+
+    }
+
+    public static function jsonLD ($record) {
+
+        foreach ($record['author'] as $autores) {
+            $autor_json[] = '"'.$autores["person"]["name"].'"';
+        }
+        
+        
+        echo '<script type="application/ld+json">';
+        echo '
+            {
+            "@context":"http://schema.org",
+            "@graph": [
+              {
+                "@id": "http://bdpi.usp.br",
+                "@type": "Library",
+                "name": "Base de Produção Intelectual da USP"
+              },
+              ';
+            
+        
+            switch ($record["type"]) {
+                case "ARTIGO DE PERIODICO":
+                    
+                    echo '
+
+            {
+                "@id": "#periodical", 
+                "@type": [
+                    "Periodical"
+                ], 
+                "name": "'.$record["isPartOf"]["name"].'", 
+                "issn": [
+                    "'.$record["isPartOf"]["issn"].'"
+                ],  
+                "publisher": "'.$record["publisher"]["organization"]["name"].'"
+            },
+            {
+                "@id": "#volume", 
+                "@type": "PublicationVolume", 
+                "volumeNumber": "'.str_replace("v. ","",$record['ispartof_data'][0]).'", 
+                "isPartOf": "#periodical"
+            },     
+            {
+                "@id": "#issue", 
+                "@type": "PublicationIssue", 
+                "issueNumber": "'.str_replace(" n. ","",$record['ispartof_data'][1]).'", 
+                "datePublished": "'.$record['datePublished'].'", 
+                "isPartOf": "#volume"
+            }, 
+            {
+                "@type": "ScholarlyArticle", 
+                "isPartOf": "#issue", 
+                "description": "'.$record['resumo'][0].'",
+                ';
+                if (!empty($record['doi'])) {            
+                    echo '"sameAs": "http://dx.doi.org/'.$record['doi'].'",';
+                }
+                echo '
+                "about": [
+                    "Works", 
+                    "Catalog"
+                ], 
+                "pageEnd": "'.str_replace(" p. ","",$record['ispartof_data'][2]).'", 
+                "pageStart": "'.str_replace(" p. ","",$record['ispartof_data'][2]).'", 
+                "name": "'.$record["name"].'", 
+                "author": ['.implode(",",$autor_json).']
+            }
+                            
+                            ';                   
+                            
+                            break;
+                        case "PARTE DE MONOGRAFIA/LIVRO":
+                            
+                            break;
+                        case "TRABALHO DE EVENTO-RESUMO":
+                            
+                            break;
+                        case "TEXTO NA WEB":
+                            
+                            break;
+                        }
+                
+                    echo '
+
+                    ]
+                    }
+            </script>';
+
+    }
+
 }
 
 class processaResultados {

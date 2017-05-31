@@ -67,136 +67,12 @@ if (!empty($_POST['delete_file'])) {
                     }
                 }
 
-        </script>        
+        </script>       
 
-        <!-- Generate metadata to Google Scholar - START -->
-        <meta name="citation_title" content="<?php echo $cursor["_source"]['name'];?>">
-        <?php if (!empty($cursor["_source"]['authors'])): ?>
-        <?php foreach ($cursor["_source"]['authors'] as $autores): ?>
-        <meta name="citation_author" content="<?php echo $autores;?>">
-        <?php endforeach;?>
-        <?php endif; ?>
-        <meta name="citation_publication_date" content="<?php echo $cursor["_source"]['year']; ?>">
-        <?php if (!empty($cursor["_source"]['ispartof'])): ?>
-        <meta name="citation_journal_title" content="<?php echo $cursor["_source"]['ispartof'];?>">
-        <?php endif; ?>
-        <?php if (!empty($cursor["_source"]['ispartof_data'][0])): ?>
-        <meta name="citation_volume" content="<?php echo $cursor["_source"]['ispartof_data'][0];?>">
-        <?php endif; ?>
+        <?php paginaSingle::metadataGoogleScholar($cursor["_source"]); ?>
 
-        <?php if (!empty($cursor["_source"]['ispartof_data'][1])): ?>
-        <meta name="citation_issue" content="<?php echo $cursor["_source"]['ispartof_data'][1];?>">
-        <?php endif; ?>
-        
-        <?php 
-        
-        $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);    
-        $links_upload = "";
-        if (!empty($files_upload)){       
-            foreach($files_upload as $file) {        
-                echo '<meta name="citation_pdf_url" content="http://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
-            ';
-            }
-        }
-        ?>
-        <!--
-        <meta name="citation_firstpage" content="11761">
-        <meta name="citation_lastpage" content="11766">
-        <meta name="citation_pdf_url" content="http://www.example.com/content/271/20/11761.full.pdf">
-        -->
-        <!-- Generate metadata to Google Scholar - END -->
-        
-        <!-- Generate JSON-LD - START -->
-        <?php 
-        
-        foreach ($cursor["_source"]['author'] as $autores) {
-            $autor_json[] = '"'.$autores["person"]["name"].'"';
-        }
-        
-        
-        echo '<script type="application/ld+json">';
-        echo '
-            {
-            "@context":"http://schema.org",
-            "@graph": [
-              {
-                "@id": "http://bdpi.usp.br",
-                "@type": "Library",
-                "name": "Base de Produção Intelectual da USP"
-              },
-              ';
-            
-        
-            switch ($cursor["_source"]["type"]) {
-                case "ARTIGO DE PERIODICO":
-                    
-                    echo '
+        <?php paginaSingle::jsonLD($cursor["_source"]); ?>
 
-    {
-        "@id": "#periodical", 
-        "@type": [
-            "Periodical"
-        ], 
-        "name": "'.$cursor["_source"]['ispartof'].'", 
-        "issn": [
-            "'.$cursor["_source"]['issn'][0].'"
-        ],  
-        "publisher": "'.$cursor["_source"]['publisher'].'"
-    },
-    {
-        "@id": "#volume", 
-        "@type": "PublicationVolume", 
-        "volumeNumber": "'.str_replace("v. ","",$cursor["_source"]['ispartof_data'][0]).'", 
-        "isPartOf": "#periodical"
-    },     
-    {
-        "@id": "#issue", 
-        "@type": "PublicationIssue", 
-        "issueNumber": "'.str_replace(" n. ","",$cursor["_source"]['ispartof_data'][1]).'", 
-        "datePublished": "'.$cursor["_source"]['year'].'", 
-        "isPartOf": "#volume"
-    }, 
-    {
-        "@type": "ScholarlyArticle", 
-        "isPartOf": "#issue", 
-        "description": "'.$cursor["_source"]['resumo'][0].'",
-        ';
-        if (!empty($cursor["_source"]['doi'])) {            
-            echo '"sameAs": "http://dx.doi.org/'.$cursor["_source"]['doi'].'",';
-        }
-        echo '
-        "about": [
-            "Works", 
-            "Catalog"
-        ], 
-        "pageEnd": "'.str_replace(" p. ","",$cursor["_source"]['ispartof_data'][2]).'", 
-        "pageStart": "'.str_replace(" p. ","",$cursor["_source"]['ispartof_data'][2]).'", 
-        "name": "'.$cursor["_source"]['title'].'", 
-        "author": ['.implode(",",$autor_json).']
-    }
-                    
-                    ';                   
-                    
-                    break;
-                case "PARTE DE MONOGRAFIA/LIVRO":
-                    
-                    break;
-                case "TRABALHO DE EVENTO-RESUMO":
-                    
-                    break;
-                case "TEXTO NA WEB":
-                    
-                    break;
-                }
-        
-            echo '
-
-            ]
-            }
-    </script>';
-        
-        ?>
-        <!-- Generate JSON-LD - END -->
         
     </head>
     <body>
@@ -227,10 +103,10 @@ if (!empty($_POST['delete_file'])) {
             <!-- Obtem informações da API da Elsevier -->
             <?php
                 if ($use_api_elsevier == true) {
-                    if (!empty($cursor["_source"]['issn'][0])) {
-                        $issn_info = API::get_title_elsevier(str_replace("-","",$cursor["_source"]['issn'][0]),$api_elsevier);
+                    if (!empty($cursor["_source"]["isPartOf"]["issn"])) {
+                        $issn_info = API::get_title_elsevier(str_replace("-","",$cursor["_source"]["isPartOf"]["issn"]),$api_elsevier);
                         if (!empty($issn_info)) {
-                            API::store_issn_info($client,$cursor["_source"]['issn'][0],json_encode($issn_info));
+                            API::store_issn_info($client,$cursor["_source"]["isPartOf"]["issn"],json_encode($issn_info));
                         }
                     }
                 }
