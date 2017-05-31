@@ -415,7 +415,8 @@ class citation {
         }
     }    
     
-    static function citation_query($citacao) {        
+    static function citation_query($citacao) {
+
         $array_citation = [];
         $array_citation["type"] = citation::get_type($citacao["type"]);
         $array_citation["title"] = $citacao["name"];
@@ -446,18 +447,24 @@ class citation {
             $array_citation["publisher-place"] = $citacao["publisher"]["organization"]["location"];
         }
         if (!empty($citacao["datePublished"])) {
-            $array_citation["issued"]["date-parts"][] = $citacao["datePublished"];
-        }        
-        if (!empty($citacao["isPartOf"]["USP"]["dados_do_periodico"])) {
-            if (strpos($citacao["isPartOf"]["USP"]["dados_do_periodico"], 'v.') !== false) {
-                $array_citation["volume"] = str_replace("v.","",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
-            } elseif (strpos($citacao["isPartOf"]["USP"]["dados_do_periodico"], 'n.') !== false) {
-                $array_citation["issue"] = str_replace("n.","",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
-            } elseif (strpos($citacao["isPartOf"]["USP"]["dados_do_periodico"], 'p.') !== false) {
-                $array_citation["page"] = str_replace("p.","",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
-            }
+            $array_citation["issued"]["date-parts"][0][] = intval($citacao["datePublished"]);
         }
-        
+
+        if (!empty($citacao["isPartOf"]["USP"]["dados_do_periodico"])) {
+            $periodicos_array = explode(",",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
+            foreach ($periodicos_array as $periodicos_array_new) {
+                if (strpos($periodicos_array_new, 'v.') !== false) {
+                    $array_citation["volume"] = str_replace("v.","",$periodicos_array_new);
+                } elseif (strpos($periodicos_array_new, 'n.') !== false) {
+                    $array_citation["issue"] = str_replace("n.","",$periodicos_array_new);
+                } elseif (strpos($periodicos_array_new, 'p.') !== false) {
+                    $array_citation["page"] = str_replace("p.","",$periodicos_array_new);
+                }
+
+            }
+        }         
+
+       
         $json = json_encode($array_citation);
         $data = json_decode($json);
         return $data;    
