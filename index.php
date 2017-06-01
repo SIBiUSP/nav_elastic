@@ -5,685 +5,165 @@
             include('inc/config.php');             
             include('inc/meta-header.php');
             include('inc/functions.php');
-            
-            if(!empty($_SESSION['oauthuserdata'])) { 
-                store_user($_SESSION['oauthuserdata'],$client);
-            }
-        
+      
             /* Define variables */
             define('authorUSP','authorUSP');
         ?> 
-        <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
+        <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
         <meta property="og:url" content="http://bdpi.usp.br">
-        <meta property="og:title" content="Base de Produção Intelectual da USP - Página Principal">
-        <meta property="og:site_name" content="Base de Produção Intelectual da USP">
+        <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
+        <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
         <meta property="og:description" content="Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
         <meta property="og:image:width" content="800"> 
         <meta property="og:image:height" content="600"> 
         <meta property="og:type" content="website">
-        <!-- Facebook Tags - END -->
+        <!-- Facebook Tags - END -->        
         
     </head>
 
     <body>     
         
-        <?php include_once("inc/analyticstracking.php") ?>
-        <?php include('inc/navbar.php'); ?>
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>        
         
-        
-        
-        <div class="uk-grid uk-margin-large-bottom" data-uk-grid-margin>
-            <div class="uk-width-medium-1-1">
-                <div class="uk-vertical-align uk-text-center uk-responsive-width" style="background: url('') 50% 0 no-repeat; height: 350px;">
-                    <div class="uk-vertical-align-middle uk-width-1-2">
-                        <h1>Base de Produção Intelectual da USP</h1>
-                        <p>Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.</p>
-                        <form class="uk-form" action="result.php" method="get">
-                            <fieldset data-uk-margin>
-                                <legend><?php echo $t->gettext('Pesquisa'); ?></legend>
-                                <input type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" class="uk-form-width-large" name="search[]" data-validation="required">                                        
-                                <select name="search[]">
-                                    <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
-                                    <option value="base.keyword:&quot;Produção científica&quot;">Produção científica</option>
-                                    <option value="base.keyword:&quot;Teses e dissertações&quot;">Teses e dissertações</option>
-                                </select>
-                                <input type="hidden" name="fields[]" value="title">
-                                <input type="hidden" name="fields[]" value="authors">
-                                <input type="hidden" name="fields[]" value="authorUSP">
-                                <input type="hidden" name="fields[]" value="subject">
-                                <input type="hidden" name="fields[]" value="resumo">
-                                <button class="uk-button-primary"><?php echo $t->gettext('Buscar'); ?></button><br/>                                    
-                            </fieldset>
+        <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
+            <div class="uk-container">
+                <?php 
+                    $background_1 = "http://www.imagens.usp.br/wp-content/uploads/Cientificamente_Oficina-CSI_020-16_foto-Cec%C3%ADlia-Bastos-37.jpg";
+                    $background_2 = "http://www.imagens.usp.br/wp-content/uploads/9072_09082011caph038.jpg";
+                    $background_3 = "http://www.imagens.usp.br/wp-content/uploads/IMG_2239.jpg"; 
+                    $background_number = mt_rand(1, 3);
+                    $prefix = "background_";
+
+                ?>    
+                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(<?php echo ${$prefix . $background_number}; ?>);">
+                    <?php include('inc/navbar.php'); ?>
+                    <div class="uk-overlay uk-overlay-primary">
+                    <h2 style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>                    
+                        <form class="uk-form-stacked" action="result.php">
+
+                            <div class="uk-margin">
+                                <label class="uk-form-label" for="form-stacked-text"><?php echo $t->gettext('Termos de busca'); ?></label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" data-validation="required">
+                                </div>
+                            </div>
+
+                            <div class="uk-margin">
+                                <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" id="form-stacked-select" name="search[]">
+                                        <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
+                                        <option value="base.keyword:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
+                                        <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
+                                    </select>
+                                <input type="hidden" name="fields[]" value="name">
+                                <input type="hidden" name="fields[]" value="author.person.name">
+                                <input type="hidden" name="fields[]" value="authorUSP.name">
+                                <input type="hidden" name="fields[]" value="about">
+                                <input type="hidden" name="fields[]" value="description">
+                                <input type="hidden" name="fields[]" value="unidadeUSP">                                                                 
+                                </div>
+                            </div>
+                             <div class="uk-margin">
+                                <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
+                                <div class="uk-form-controls">
+                                    <select class="uk-select" id="form-stacked-select" name="search[]">
+                                        <option disabled selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EACH&quot;" style="color:#333"><?php echo $t->gettext('Escola de Artes, Ciências e Humanidades (EACH)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ECA&quot;" style="color:#333"><?php echo $t->gettext('Escola de Comunicações e Artes (ECA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EE&quot;" style="color:#333"><?php echo $t->gettext('Escola de Enfermagem (EE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EERP&quot;" style="color:#333"><?php echo $t->gettext('Escola de Enfermagem de Ribeirão Preto (EERP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EEFE&quot;" style="color:#333"><?php echo $t->gettext('Escola de Educação Física e Esporte (EEFE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EEFERP&quot;" style="color:#333"><?php echo $t->gettext('Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EEL&quot;" style="color:#333"><?php echo $t->gettext('Escola de Engenharia de Lorena (EEL)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EESC&quot;" style="color:#333"><?php echo $t->gettext('Escola de Engenharia de São Carlos (EESC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EP&quot;" style="color:#333"><?php echo $t->gettext('Escola Politécnica (EP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ESALQ&quot;" style="color:#333"><?php echo $t->gettext('Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FAU&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Arquitetura e Urbanismo (FAU)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FCF&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas (FCF)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FCFRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FD&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Direito (FD)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FDRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Direito de Ribeirão Preto (FDRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FEA&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade (FEA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FEARP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FE&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Educação (FE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FFCLRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FFLCH&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FM&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina (FM)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FMRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina de Ribeirão Preto (FMRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FMVZ&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina Veterinária e Zootecnia (FMVZ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FO&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia (FO)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FOB&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia de Bauru (FOB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FORP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia de Ribeirão Preto (FORP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FSP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Saúde Pública (FSP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FZEA&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IAU&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Arquitetura e Urbanismo (IAU)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IAG&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Biociências (IB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ICB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Ciências Biomédicas (ICB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ICMC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Ciências Matemáticas e de Computação (ICMC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IF&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Física (IF)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IFSC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Física de São Carlos (IFSC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IGC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Geociências (IGc)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IME&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Matemática e Estatística (IME)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IMT&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Medicina Tropical de São Paulo (IMT)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IP&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Psicologia (IP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IQ&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Química (IQ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IQSC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Química de São Carlos (IQSC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IRI&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Relações Internacionais (IRI)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IO&quot;" style="color:#333"><?php echo $t->gettext('Instituto Oceanográfico (IO)'); ?></option>
+                                        <option disabled value><?php echo $t->gettext('Centros, Hospitais, Institutos especializados e Museus'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;CEBIMAR&quot;" style="color:#333"><?php echo $t->gettext('Centro de Biologia Marinha (CEBIMAR)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;CDCC&quot;" style="color:#333"><?php echo $t->gettext('Centro de Divulgação Científica e Cultural (CDCC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;CENA&quot;" style="color:#333"><?php echo $t->gettext('Centro de Energia Nuclear na Agricultura (CENA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;HRAC&quot;" style="color:#333"><?php echo $t->gettext('Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;HU&quot;" style="color:#333"><?php echo $t->gettext('Hospital Universitário (HU)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IEE&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Energia e Ambiente (IEE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IEB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Estudos Brasileiros (IEB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MAE&quot;" style="color:#333"><?php echo $t->gettext('Museu de Arqueologia e Etnologia (MAE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MAC&quot;" style="color:#333"><?php echo $t->gettext('Museu de Arte Contemporânea (MAC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MZ&quot;" style="color:#333"><?php echo $t->gettext('Museu de Zoologia (MZ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MP&quot;" style="color:#333"><?php echo $t->gettext('Museu Paulista (MP)'); ?></option>
+
+                                    </select>                                   
+                                </div>                             
+                             </div>
+
+                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom"><?php echo $t->gettext('Buscar'); ?></button>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="uk-container uk-container-center uk-margin-large-bottom">
+        </div>        
         
-        <hr class="uk-grid-divider">
-            
-        <div class="uk-grid" data-uk-grid-margin>
-            <div class="uk-width-medium-1-3">
-                <div class="uk-grid">
-                    <div class="uk-width-1-6">
-                        <i class="uk-icon-university uk-icon-large uk-text-primary"></i>
-                    </div>
-                    <div class="uk-width-5-6">
-                        <h2 class="uk-h3">Unidades USP e Programas de Pós-Graduação Interunidades</h2>
-                        <ul class="uk-list uk-list-striped">
-                            <?php unidadeUSP_inicio($client); ?>
-                        </ul>                            
+        <div class="uk-section uk-container">
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Mais informações'); ?></span></h1>                    
+            <div class="uk-child-width-expand@s uk-text-center" uk-grid>
+                <div>
+                    <div class="uk-card">
+                        <h3 class="uk-card-title"><?php echo $t->gettext('Bases'); ?></h3>
+                        <ul class="uk-list uk-list-divider">
+                            <?php paginaInicial::base_inicio(); ?>
+                        </ul>                      
                     </div>
                 </div>
             </div>
-            <div class="uk-width-medium-1-3">
-                <div class="uk-grid">
-                    <div class="uk-width-1-6">
-                        <i class="uk-icon-file uk-icon-large uk-text-primary"></i>
-                    </div>
-                    <div class="uk-width-5-6">
-                        <h2 class="uk-h3">Base</h2>
-                        <ul class="uk-list uk-list-striped">
-                            <?php base_inicio($client); ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-width-medium-1-3">
-                <div class="uk-grid">
-                    <div class="uk-width-1-6">
-                        <i class="uk-icon-bar-chart uk-icon-large uk-text-primary"></i>
-                    </div>
-                    <div class="uk-width-5-6">
-                        <h2 class="uk-h3"><?php echo $t->gettext('Nossos números'); ?></h2>
-                        <ul class="uk-list uk-list-striped">
-                            <li><?php echo number_format(contar_registros($client),0,',','.'); ?> registros</li>
-                            <li><?php echo number_format(contar_unicos("authorUSP",$client),0,',','.'); ?> autores vinculados à USP</li>
-                            <li><?php echo number_format(contar_arquivos($client),0,',','.'); ?> arquivos de texto integral</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>                
+        </div>  
+        
+        
+        <div class="uk-section uk-container">
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Últimos registros'); ?></span></h1>
+            <?php paginaInicial::ultimos_registros();?>
         </div>
 
-
-        <div id="unidades" class="uk-grid" data-uk-grid-margin>
-            <div class="uk-width-medium-1-1">
-                <h2 class="uk-h3">Navegar pelas Unidades USP</h2>           
-
-                <ul id="filter" class="uk-subnav uk-subnav-pill">
-                    <li class="uk-active" data-uk-filter=""><a href="">Todas</a></li>
-                    <li data-uk-filter="filter-h" class=""><a href="">Humanas</a></li>
-                    <li data-uk-filter="filter-e" class=""><a href="">Exatas</a></li>
-                    <li data-uk-filter="filter-b" class=""><a href="">Biológicas</a></li>
-                    <li data-uk-filter="filter-i" class=""><a href="">Centros, Hospitais, Institutos Especializados e Museus</a></li>
-                    <li data-uk-sort="filter"><a href="">Siglas (A -> Z)</a></li>
-                    <li data-uk-sort="filter:desc"><a href="">Siglas (Z -> A)</a></li>
-                </ul>
-
-                        <div class="uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-10 tm-grid-heights" data-uk-grid="{controls: '#filter'}" style="position: relative; margin-left: -20px; height: 394px;">
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 0px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cebimar">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:CEBIMAR">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/CEBIMAR.jpg" alt="CEBIMAR">
-                                        </div>
-                                        <small><p class="uk-text-center">Centro de Biologia Marinha (CEBIMAR)</p></small>
-                                    </div>
-                                </a>
-                            </div>
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cdcc">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:CDCC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/CDCC.jpg" alt="CDCC">
-                                        </div>
-                                        <small><p class="uk-text-center">Centro de Divulgação Científica e Cultural (CDCC)</p></small>
-                                    </div>
-                                </a>
-                            </div>                                
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" class="uk-flex" data-filter="cena">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:CENA">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/CENA.jpg" alt="CENA">
-                                        </div>
-                                        <small><p class="uk-text-center">Centro de Energia Nuclear na Agricultura (CENA)</p></small>
-                                    </div>
-                                </a>
-                            </div>
-                            <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="each">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EACH">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EACH.jpg" alt="EACH">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Artes, Ciências e Humanidades (EACH)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 0px; left: 632.049px; opacity: 1; display: block;" aria-hidden="false" data-filter="eca">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:ECA">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/ECA.jpg" alt="ECA">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Comunicações e Artes (ECA)</p></small>
-                                    </div>
-                                </a>
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 132px; left: 0px; opacity: 1; display: block;" aria-hidden="false" data-filter="ee">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EE">
-                                    <div class="uk-panel uk-panel-hover uk-text-center" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser">
-                                            <img src="inc/images/logosusp/EE.jpg" alt="EE">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Enfermagem (EE)</p></small>
-                                    </div>
-                                </a>                                    
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 152px; left: 210.683px; opacity: 1; display: block;" aria-hidden="false" data-filter="eerp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EERP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EERP.jpg" alt="EERP">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Enfermagem de Ribeirão Preto (EERP)</p></small>
-                                    </div>
-                                </a>
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eefe">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EEFE">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EEFE.jpg" alt="EEFE">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Educação Física e Esporte (EEFE)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 212px; left: 421.366px; opacity: 1; display: block;" aria-hidden="false" data-filter="eeferp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EEFERP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EEFERP.jpg" alt="EEFERP">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="eel">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EEL">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EEL.jpg" alt="EEL">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Engenharia de Lorena (EEL)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="eesc">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EESC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EESC.jpg" alt="EESC">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola de Engenharia de São Carlos (EESC)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ep">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:EP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/EP.jpg" alt="EP">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola Politécnica (EP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b,filter-e,filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="esalq">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:ESALQ">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/ESALQ.jpg" alt="ESALQ">
-                                        </div>
-                                        <small><p class="uk-text-center">Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fau">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FAU">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FAU.jpg" alt="FAU">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Arquitetura e Urbanismo (FAU)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fcf">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FCF">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FCF.jpg" alt="FCF">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Ciências Farmacêuticas (FCF)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fcfrp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FCFRP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FCFRP.jpg" alt="FCFRP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fd">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FD">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FD.jpg" alt="FD">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Direito (FD)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fdrp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FDRP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FDRP.jpg" alt="FDRP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Direito de Ribeirão Preto (FDRP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fea">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FEA">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FEA.jpg" alt="FEA">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Economia, Administração e Contabilidade (FEA)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fearp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FEARP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FEARP.jpg" alt="FEARP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fe">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FE">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FE.jpg" alt="FE">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Educação (FE)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-h,filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ffclrp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FFCLRP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FFCLRP.jpg" alt="FFCLRP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fflch">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FFLCH">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FFLCH.jpg" alt="FFLCH">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fm">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FM">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FM.jpg" alt="FM">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Medicina (FM)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fmrp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FMRP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FMRP.jpg" alt="FMRP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Medicina de Ribeirão Preto (FMRP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fmvz">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FMVZ">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FMVZ.jpg" alt="FMVZ">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Medicina Veterinária e Zootecnia (FMVZ)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                 
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fo">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FO" style="padding:15px 0 0 0">
-                                    <div class="uk-panel uk-panel-hover">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FO.jpg" alt="FO">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Odontologia (FO)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fob">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FOB" style="padding:15px 0 0 0">
-                                    <div class="uk-panel uk-panel-hover" style="padding:0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FOB.jpg" alt="FOB">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Odontologia de Bauru (FOB)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="forp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FORP" style="padding:15px 0 0 0">
-                                    <div class="uk-panel uk-panel-hover" style="padding:0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FORP.jpg" alt="FORP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Odontologia de Ribeirão Preto (FORP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fsp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FSP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FSP.jpg" alt="FSP">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Saúde Pública (FSP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b,filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="fzea">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:FZEA">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/FZEA.jpg" alt="FZEA">
-                                        </div>
-                                        <small><p class="uk-text-center">Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="hrac">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:HRAC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/HRAC.jpg" alt="HRAC">
-                                        </div>
-                                        <small><p class="uk-text-center">Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                  
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="hu">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:HU">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/HU.jpg" alt="HU">
-                                        </div>
-                                        <small><p class="uk-text-center">Hospital Universitário (HU)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                 
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iau">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IAU">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IAU.jpg" alt="IAU">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Arquitetura e Urbanismo (IAU)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iag">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IAG">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IAG.jpg" alt="IAG">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ib">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IB">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IB.jpg" alt="IB">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Biociências (IB)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="icb">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:ICB">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/ICB.jpg" alt="ICB">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Ciências Biomédicas (ICB)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="icmc">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:ICMC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/ICMC.jpg" alt="ICMC">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Ciências Matemáticas e de Computação (ICMC)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iee">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IEE">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IEE.jpg" alt="IEE">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Energia e Ambiente (IEE)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ieb">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IEB">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IEB.jpg" alt="IEB">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Estudos Brasileiros (IEB)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="if">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IF">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IF.jpg" alt="IF">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Física (IF)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ifsc">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IFSC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IFSC.jpg" alt="IFSC">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Física de São Carlos (IFSC)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="igc">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IGC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IGC.jpg" alt="IGC">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Geociências (IGc)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-e" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ime">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IME">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IME.jpg" alt="IME">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Matemática e Estatística (IME)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="imt">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IMT">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IMT.jpg" alt="IMT">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Medicina Tropical de São Paulo (IMT)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="ip">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IP.jpg" alt="IP">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Psicologia (IP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iq">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IQ">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IQ.jpg" alt="IQ">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Química (IQ)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iqsc">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IQSC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IQSC.jpg" alt="IQSC">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Química de São Carlos (IQSC)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-h" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="iri">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IRI">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IRI.jpg" alt="IRI">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto de Relações Internacionais (IRI)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-b" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="io">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:IO">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/IO.jpg" alt="IO">
-                                        </div>
-                                        <small><p class="uk-text-center">Instituto Oceanográfico (IO)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mae">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:MAE">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/MAE.jpg" alt="MAE">
-                                        </div>
-                                        <small><p class="uk-text-center">Museu de Arqueologia e Etnologia (MAE)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mac">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:MAC">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/MAC.jpg" alt="MAC">
-                                        </div>
-                                        <small><p class="uk-text-center">Museu de Arte Contemporânea (MAC)</p></small>
-                                    </div>
-                                </a> 
-                            </div>
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mz">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:MZ">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/MZ.jpg" alt="MZ">
-                                        </div>
-                                        <small><p class="uk-text-center">Museu de Zoologia (MZ)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                                  
-                            <div data-uk-filter="filter-i" data-grid-prepared="true" style="position: absolute; box-sizing: border-box; padding-left: 20px; padding-bottom: 20px; top: 172px; left: 632.049px; opacity: 1;" aria-hidden="false" data-filter="mp">
-                                <a href="result.php?search[]=unidadeUSPtrabalhos:MP">
-                                    <div class="uk-panel uk-panel-hover" style="padding:15px 0 0 0">
-                                        <div class="uk-panel-teaser uk-text-center">
-                                            <img src="inc/images/logosusp/MP.jpg" alt="MP">
-                                        </div>
-                                        <small><p class="uk-text-center">Museu Paulista (MP)</p></small>
-                                    </div>
-                                </a> 
-                            </div>                               
-                </div>                
-            </div>
-        </div> 
-
-            <hr class="uk-grid-divider">
-            
-            <div class="uk-grid" data-uk-grid-margin>
-                <div class="uk-width-medium-1-1">
-                    <h2 class="uk-h3">Últimos registros</h2>
-                    <?php ultimos_registros($client);?>       
-                     
-                </div>
-            </div>               
-            
-            <hr class="uk-grid-divider">
-            
 <?php include('inc/footer.php'); ?>
 
         </div>

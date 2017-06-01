@@ -66,7 +66,7 @@ echo 'Total de registros faltantes: '.$response['hits']['total'].'';
     </head>
     <body> 
         <?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-container-center uk-margin-large-bottom">
+        <div class="uk-container uk-margin-large-bottom">
             
 
                 

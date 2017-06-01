@@ -165,6 +165,44 @@ msgstr "Search"
 msgid "Pesquise por termo ou autor"
 msgstr "Search for keyword or author"
 
+<<<<<<< HEAD
+msgid "Resultado da busca"
+msgstr "Search results"
+
+msgid "Tipo de material"
+msgstr "Type"
+
+msgid "Ano de publicação"
+msgstr "Year"
+
+msgid "Assuntos"
+msgstr "Subject"
+
+msgid "Editora"
+msgstr "Publisher"
+
+msgid "Autores"
+msgstr "Authors"
+
+msgid "Unidades USP"
+msgstr "USP Schools"
+
+msgid "Departamentos"
+msgstr "Departments"
+
+
+msgid "registros"
+msgstr "records"
+
+msgid "Filtros ativos"
+msgstr "Filters"
+
+
+
+
+
+
+=======
 msgid "Português"
 msgstr "Portuguese"
 
@@ -227,3 +265,4 @@ msgstr "User"
 
 msgid "Ver registro completo"
 msgstr "Full record"
+>>>>>>> uikit3

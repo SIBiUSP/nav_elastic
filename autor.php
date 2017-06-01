@@ -7,7 +7,7 @@
             include('inc/meta-header.php');
         
                 if (array_key_exists("codpes", $_GET)) { 
-                    $result_get = analisa_get($_GET);
+                    $result_get = get::analisa_get($_GET);
                     //$query_complete = $result_get['query_complete'];
                     $query_aggregate = $result_get['query_aggregate'];
                     $query_complete = '
@@ -15,11 +15,9 @@
                     '.$result_get['query_aggregate'].'
                     "size" : 10000
                     }            
-                    ';
-                    //$escaped_url = $result_get['escaped_url'];
+                    ';                    
                     $limit = $result_get['limit'];
-                    $page = $result_get['page'];
-                    //$new_get = $result_get['new_get'];
+                    $page = $result_get['page'];                   
                     
                     $params = [
                         'index' => 'sibi',
@@ -87,12 +85,16 @@
     </head>
 
     <body>
-        <?php include_once("inc/analyticstracking.php") ?>
+        <?php
+            if (file_exists("inc/analyticstracking.php")){
+                include_once("inc/analyticstracking.php");
+            }
+        ?>
         <?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-container-center uk-margin-large-top">
+        <div class="uk-container uk-margin-large-top">
 
             <div class="uk-grid" data-uk-grid>                        
-                <div class="uk-width-small-1-2 uk-width-medium-2-6"> 
+                <div class="uk-width-small-1-2 uk-width-2-6@m"> 
                     <div class="uk-panel uk-panel-box">
                         <form class="uk-form" method="get" action="result.php">
                         <fieldset>
@@ -197,7 +199,7 @@
                     
                 </div>            
             
-                <div class="uk-width-small-1-2 uk-width-medium-4-6">
+                <div class="uk-width-small-1-2 uk-width-4-6@m">
                     
                 <div class="uk-alert" data-uk-alert>
                     <a href="" class="uk-alert-close uk-close"></a>
@@ -251,12 +253,12 @@
                     <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
                         <li>                        
                             <div class="uk-grid uk-flex-middle" data-uk-grid-   margin="">
-                                <div class="uk-width-medium-2-10 uk-row-first">
+                                <div class="uk-width-2-10@m uk-row-first">
                                     <div class="uk-panel uk-h6 uk-text-break">
                                         <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a>
                                     </div>
                                 </div>
-                                <div class="uk-width-medium-8-10 uk-flex-middle">
+                                <div class="uk-width-8-10@m uk-flex-middle">
                                     
                                     <ul class="uk-list">
                                         <li class="uk-margin-top uk-h4">

@@ -1,5 +1,11 @@
 <?php
+<<<<<<< HEAD
+
 include 'inc/config.php';
+
+=======
+include 'inc/config.php';
+>>>>>>> uikit3
 use Gettext\Translations;
 //import from a .po file:
 $translations = Translations::fromPoFile('Locale/en_US/LC_MESSAGES/messages.po');
