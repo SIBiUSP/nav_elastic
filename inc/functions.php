@@ -201,7 +201,6 @@ class paginaSingle {
                     "doc":{
                         "sysno":"'.$_GET['_id'].'",
                         "file_info" :[ 
-                            {"num_usp":"'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'"},
                             {"name_file":"'.$_FILES['upload_file']['name'].'"},
                             '.$rights.'
                             '.$embargo_date.'
@@ -213,14 +212,14 @@ class paginaSingle {
                 }
                 ';
                             
-                $params = [
-                    'index' => 'sibi',
-                    'type' => 'files',
-                    'id' => $uploadfile,
-                    'parent' => $_GET['_id'],
-                    'body' => $query
-                ];
-                $response_upload = $client->update($params); 
+                // $params = [
+                //     'index' => 'sibi',
+                //     'type' => 'files',
+                //     'id' => $uploadfile,
+                //     'parent' => $_GET['_id'],
+                //     'body' => $query
+                // ];
+                // $response_upload = $client->update($params); 
                 
                 
                 $myfile = fopen("$uploadfile.json", "w") or die("Unable to open file!");
@@ -498,8 +497,8 @@ class processaResultados {
                 $delete = "";    
                 if (!empty($session)){
                     $delete = '<form method="POST" action="single.php?_id='.$id.'">
-                                   <input name="delete_file" value="'.$file.'"  type="hidden">
-                                   <button class="uk-close uk-close-alt uk-alert-danger" alt="Deletar arquivo"></button>
+                                   <input type="hidden" name="delete_file" value="'.$file.'">
+                                   <button type="submit" uk-close></button>
                                </form>';
                 }
 

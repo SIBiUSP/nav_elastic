@@ -36,12 +36,12 @@ if (!empty($_POST['delete_file'])) {
     unlink($_POST['delete_file']);
     $delete_json = ''.$_POST['delete_file'].'.json';
     unlink($delete_json);
-    $params = [
-        'index' => 'sibi',
-        'type' => 'files',
-        'id' => $_POST['delete_file']
-    ];
-    $response_delete = $client->delete($params);
+//    $params = [
+//        'index' => 'sibi',
+//        'type' => 'files',
+//        'id' => $_POST['delete_file']
+//    ];
+//    $response_delete = $client->delete($params);
 }
 
 ?>
@@ -457,7 +457,7 @@ if (!empty($_POST['delete_file'])) {
                            <?php if ($use_api_oadoi == true) {
                                     if (!empty($cursor["_source"]['doi'])) {
                                         $oadoi = API::get_oadoi($cursor["_source"]['doi']);
-                                        echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="oadoi.org">oaDOI API</a>)';
+                                        echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org">oaDOI API</a>)';
                                         echo '<ul>';
                                         if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
                                             echo '<li>Este periódico é de assinatura</li>';
@@ -493,7 +493,7 @@ if (!empty($_POST['delete_file'])) {
                             ?>                            
                             <?php endif; ?>
                         
-                        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
                         <div class="uk-alert-warning">
                             <h4 class="uk-margin-top">Upload do texto completo:</h4>
                             <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>" name="upload"> 
@@ -564,14 +564,14 @@ if (!empty($_POST['delete_file'])) {
                                 <br/><br/><button class="uk-button">Enviar</button>
                             </form> 
                         </div>    
-                        <?php endif; ?>
+                        <!-- < ?php endif; ?> -->
                         
                         
                         
                         
                         <?php 
                             if(empty($_SESSION['oauthuserdata'])){
-                                $_SESSION['oauthuserdata']="";
+                                $_SESSION['oauthuserdata']="teste";
                             } 
                             $full_links = processaResultados::get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
                             if (!empty($full_links)){
