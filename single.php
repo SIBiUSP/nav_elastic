@@ -493,7 +493,7 @@ if (!empty($_POST['delete_file'])) {
                             ?>                            
                             <?php endif; ?>
                         
-                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
+                        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                         <div class="uk-alert-warning">
                             <h4 class="uk-margin-top">Upload do texto completo:</h4>
                             <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>" name="upload"> 
@@ -564,14 +564,14 @@ if (!empty($_POST['delete_file'])) {
                                 <br/><br/><button class="uk-button">Enviar</button>
                             </form> 
                         </div>    
-                        <!-- < ?php endif; ?> -->
+                        <?php endif; ?>
                         
                         
                         
                         
                         <?php 
                             if(empty($_SESSION['oauthuserdata'])){
-                                $_SESSION['oauthuserdata']="teste";
+                                $_SESSION['oauthuserdata']="";
                             } 
                             $full_links = processaResultados::get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
                             if (!empty($full_links)){
