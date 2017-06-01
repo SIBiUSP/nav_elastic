@@ -252,14 +252,26 @@ class paginaSingle {
         if (!empty($record["isPartOf"])) {
             echo '<meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
         }
-        
-       if (!empty($record['ispartof_data'][0])) {
-            echo '<meta name="citation_volume" content="'.$record['ispartof_data'][0].'">';
-       }
-        
-        if (!empty($record['ispartof_data'][1])) {
-            echo '<meta name="citation_issue" content="'.$record['ispartof_data'][1].'">';
-        }
+
+        if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
+            $periodicos_array = explode(",",$record["isPartOf"]["USP"]["dados_do_periodico"]);
+            foreach ($periodicos_array as $periodicos_array_new) {
+                if (strpos($periodicos_array_new, 'v.') !== false) {
+                    echo '
+                    <meta name="citation_volume" content="'.trim(str_replace("v.","",$periodicos_array_new)).'">';
+                } elseif (strpos($periodicos_array_new, 'n.') !== false) {
+                    echo '
+                    <meta name="citation_issue" content="'.trim(str_replace("n.","",$periodicos_array_new)).'">';
+                } elseif (strpos($periodicos_array_new, 'p.') !== false) {
+                    $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
+                    echo '
+                    <meta name="citation_firstpage" content="'.trim($pages_array[0]).'">
+                    <meta name="citation_lastpage" content="'.trim($pages_array[1]).'">'; 
+                }
+
+            }
+        } 
+
         $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);    
         $links_upload = "";
         if (!empty($files_upload)){       
@@ -268,10 +280,7 @@ class paginaSingle {
             ';
             }
         }
-        echo '        
-        <meta name="citation_firstpage" content="">
-        <meta name="citation_lastpage" content="">
-        ';    
+           
 
     }
 
@@ -280,7 +289,35 @@ class paginaSingle {
         foreach ($record['author'] as $autores) {
             $autor_json[] = '"'.$autores["person"]["name"].'"';
         }
-        
+
+        if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
+            $periodicos_array = explode(",",$record["isPartOf"]["USP"]["dados_do_periodico"]);
+            foreach ($periodicos_array as $periodicos_array_new) {
+                if (strpos($periodicos_array_new, 'v.') !== false) {
+                    $volume = trim(str_replace("v.","",$periodicos_array_new));
+                } elseif (strpos($periodicos_array_new, 'n.') !== false) {
+                    $numero = trim(str_replace("n.","",$periodicos_array_new));
+                } elseif (strpos($periodicos_array_new, 'p.') !== false) {
+                    $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
+                    $first_page = trim($pages_array[0]);
+                    $end_page = trim($pages_array[1]); 
+                }
+
+            }
+        }
+        if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
+            if (!empty($record["publisher"]["organization"]["name"])) { 
+                $publisher = '"publisher": "'.$record["publisher"]["organization"]["name"].'",';
+            } else {
+                $publisher = "";
+            }             
+        }
+
+        if (!empty($record['description'])) { 
+            $description = '"description": "'.$record['description'].'",';         
+        } else {
+            $description = "";
+        }       
         
         echo '<script type="application/ld+json">';
         echo '
@@ -309,25 +346,25 @@ class paginaSingle {
                 "issn": [
                     "'.$record["isPartOf"]["issn"].'"
                 ],  
-                "publisher": "'.$record["publisher"]["organization"]["name"].'"
+                '.$publisher.'
             },
             {
                 "@id": "#volume", 
                 "@type": "PublicationVolume", 
-                "volumeNumber": "'.str_replace("v. ","",$record['ispartof_data'][0]).'", 
+                "volumeNumber": "'.$volume.'", 
                 "isPartOf": "#periodical"
             },     
             {
                 "@id": "#issue", 
                 "@type": "PublicationIssue", 
-                "issueNumber": "'.str_replace(" n. ","",$record['ispartof_data'][1]).'", 
+                "issueNumber": "'.$numero.'", 
                 "datePublished": "'.$record['datePublished'].'", 
                 "isPartOf": "#volume"
             }, 
             {
                 "@type": "ScholarlyArticle", 
-                "isPartOf": "#issue", 
-                "description": "'.$record['resumo'][0].'",
+                "isPartOf": "#issue",
+                '.$description.'                 
                 ';
                 if (!empty($record['doi'])) {            
                     echo '"sameAs": "http://dx.doi.org/'.$record['doi'].'",';
@@ -337,8 +374,8 @@ class paginaSingle {
                     "Works", 
                     "Catalog"
                 ], 
-                "pageEnd": "'.str_replace(" p. ","",$record['ispartof_data'][2]).'", 
-                "pageStart": "'.str_replace(" p. ","",$record['ispartof_data'][2]).'", 
+                "pageEnd": "'.$end_page.'", 
+                "pageStart": "'.$first_page.'", 
                 "name": "'.$record["name"].'", 
                 "author": ['.implode(",",$autor_json).']
             }
@@ -801,14 +838,19 @@ class exporters {
         }
 
         if (!empty($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])) {
-            if (strpos($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"], 'v.') !== false) {
-            $record[] = "VL  - ".str_replace("v.","",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])."";
-            } elseif (strpos($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"], 'n.') !== false) {
-            $record[] = "IS  - ".str_replace("n.","",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])."";
-            } elseif (strpos($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"], 'p.') !== false) {
-            $record[] = "SP  - ".str_replace("p.","",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])."";
+            $periodicos_array = explode(",",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"]);
+            foreach ($periodicos_array as $periodicos_array_new) {
+                if (strpos($periodicos_array_new, 'v.') !== false) {
+                    $record[] = "VL  - ".trim(str_replace("v.","",$periodicos_array_new))."";
+                } elseif (strpos($periodicos_array_new, 'n.') !== false) {
+                    $record[] = "IS  - ".str_replace("n.","",trim(str_replace("n.","",$periodicos_array_new)))."";
+                } elseif (strpos($periodicos_array_new, 'p.') !== false) {
+                    $record[] = "SP  - ".str_replace("p.","",trim(str_replace("p.","",$periodicos_array_new)))."";
+                }
+
             }
-        }        
+        } 
+    
         $record[] = "ER  - ";
 
         $record_blob = implode("\\n", $record);
