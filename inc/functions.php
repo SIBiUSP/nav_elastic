@@ -165,10 +165,11 @@ class paginaSingle {
         //print_r($response);
     }
 
-    public function uploader () {
+    public static function uploader () {
         global $_GET;
         global $_POST;
         global $_FILES;
+        global $client;
 
 
         if (!is_dir('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'')){
