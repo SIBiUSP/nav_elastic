@@ -314,7 +314,7 @@ class paginaSingle {
         }
 
         if (!empty($record['description'])) { 
-            $description = '"description": "'.$record['description'].'",';         
+            $description = '"description": "'.$record['description'][0].'",';         
         } else {
             $description = "";
         }       
@@ -678,22 +678,6 @@ class API {
         // Close request to clear up some resources
         curl_close($curl);    
     }
-
-    static function get_articlefull_elsevier($doi,$api_elsevier) {
-        // Get cURL resource
-        $curl = curl_init();
-        // Set some options - we are passing in a useragent too here
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'https://api.elsevier.com/content/article/doi/'.$doi.'?apiKey='.$api_elsevier.'&httpAccept=text%2Fhtml',
-            CURLOPT_USERAGENT => 'Codular Sample cURL Request'
-        ));
-        // Send the request & save response to $resp
-        $resp = curl_exec($curl);    
-        return $resp;
-        // Close request to clear up some resources
-        curl_close($curl);    
-    } 
 
     static function get_citations_elsevier($doi,$api_elsevier) {
         // Get cURL resource
