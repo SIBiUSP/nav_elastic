@@ -173,22 +173,28 @@
                                     $facets->facet("authorUSP.departament",50,$t->gettext('Departamento'),null,"_term",$_GET["search"]);
                                     $facets->facet("author.person.name",30,$t->gettext('Autores'),null,"_term",$_GET["search"]);
                                     $facets->facet("authorUSP.name",50,$t->gettext('Autores USP'),null,"_term",$_GET["search"]);
-                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos normalizada",null,"_term",$_GET["search"]);
-                                    $facets->facet("author.person.affiliation.name_not_found",50,"Afiliação dos autores externos não normalizada",null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("datePublished",120,$t->gettext('Ano de publicação'),"desc","_term",$_GET["search"]);
                                     $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
                                     $facets->facet("language",40,$t->gettext('Idioma'),null,"_term",$_GET["search"]);
                                     $facets->facet("isPartOf.name",50,$t->gettext('É parte de ...'),null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
                                     $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
                                     $facets->facet("releasedEvent",50,$t->gettext('Nome do evento'),null,"_term",$_GET["search"]);
                                     $facets->facet("country",200,$t->gettext('País de publicação'),null,"_term",$_GET["search"]);
                                     $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
+                                ?>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
+                                <?php 
+                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos normalizada",null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.affiliation.name_not_found",50,"Afiliação dos autores externos não normalizada",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);   
+                                ?>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Métricas'); ?></li>
+                                <?php 
+                                    $facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
@@ -213,10 +219,6 @@
                                     $facets->facet("codpes",100,"Número USP",null,"_term",$_GET["search"]);
                                     $facets->facet("codpes_unidade",100,"Número USP / Unidade",null,"_term",$_GET["search"]);
                                     $facets->facet("issn",100,"ISSN",null,"_term",$_GET["search"]);
-                                    $facets->facet("colab_int_trab",100,"Colaboração - Internacionalização",null,"_term",$_GET["search"]); 
-                                    $facets->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null,"_term",$_GET["search"]); 
-                                    $facets->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null,"_term",$_GET["search"]); 
-                                    $facets->rebuild_facet("colab_instituicao_naocorrigido",10,"Colaboração - Instituição - Não corrigido",$_GET["search"]);
                                     $facets->facet("dataregistroinicial",100,"Data de registro","desc","_term",$_GET["search"]);
                                     $facets->facet("dataregistro",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
                                 ?>
