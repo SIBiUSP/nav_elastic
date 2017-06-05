@@ -56,11 +56,6 @@ if (!empty($_POST['delete_file'])) {
     <head>
         <?php include('inc/meta-header.php'); ?>
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
-        <script src="inc/uikit/js/components/slideset.js"></script>
-        <script src="inc/uikit/js/components/notify.min.js"></script>
-        <script src="inc/uikit/js/components/upload.min.js"></script>
-        <script src="inc/uikit/js/components/form-select.min.js"></script>
-        <script src="inc/uikit/js/components/datepicker.min.js"></script>
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
               function SaveAsFile(t,f,m) {
@@ -119,7 +114,7 @@ if (!empty($_POST['delete_file'])) {
             
             
             <div class="uk-width-1-4@m">
-                <div class="uk-panel uk-panel-box">
+                <div class="uk-card uk-card-body">
                     
                    <?php
                         if (isset($issn_info["serial-metadata-response"])) {
@@ -136,14 +131,14 @@ if (!empty($_POST['delete_file'])) {
                     ?>
                     
                     <h5 class="uk-panel-title">Ver registro no DEDALUS</h5>
-                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
+                    <ul class="uk-nav uk-margin-top uk-margin-bottom">
                         <hr>
                         <li>
                             <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank">Ver no Dedalus</a>                    
                         </li>
                     </ul>
                     <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
-                    <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top uk-margin-bottom" data-uk-nav="{multiple:true}">
+                    <ul class="uk-nav uk-margin-top uk-margin-bottom">
                         <hr>                   
                         <li>
                             <button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
@@ -252,7 +247,7 @@ if (!empty($_POST['delete_file'])) {
                                 <?php echo $t->gettext('Autores USP'); ?>:
                                 <ul class="uk-list uk-list-striped uk-article-meta">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-                                <li><a href="result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
+					<li><a href="result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
                                 <?php endforeach;?>
                                 </ul>
                             </p>
