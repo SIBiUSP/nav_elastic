@@ -62,6 +62,21 @@
                                 <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
                             </fieldset>
                         </form>
+                        <form role="form" action="result.php" method="get">
+                            <fieldset>
+                                <legend class="uk-legend"><?php echo $t->gettext('Número USP'); ?></legend>
+                                <input class="uk-input" id='searchCodpes' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpes').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                            </fieldset>
+                        </form>
+                        <form role="form" action="result.php" method="get" name="searchIBox">
+                            <fieldset>
+                                <legend class="uk-legend">Assunto do Vocabulário Controlado</legend>
+                                <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=searchIBox&f=searchIBox&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
+                                <input class="uk-input" id='searchIBox' type="text" name="search[]" data-validation="required">
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchIBox').value = 'subject.keyword:' + String.fromCharCode(34) + document.getElementById('searchIBox').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>                          
+                            </fieldset>
+                        </form>                            
                     </div>
                 </div>
             <hr class="uk-grid-divider">
