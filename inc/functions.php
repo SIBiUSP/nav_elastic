@@ -431,7 +431,7 @@ class processaResultados {
             array_push($data_array,'{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
         };
 
-        if ($field == "year" ) {
+        if ($field == "datePublished" ) {
             $data_array_inverse = array_reverse($data_array);
             $comma_separated = implode(",", $data_array_inverse);
         } else {
