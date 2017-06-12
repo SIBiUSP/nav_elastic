@@ -352,17 +352,36 @@ if (!empty($_POST['delete_file'])) {
                         <?php endif; ?>
 
                         <!-- Qualis 2015 -->
-                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2014 ): ?>
+                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
                             <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
-                                <h5>Informações sobre o Qualis 2015 do periódico</h5>
+                                <h5>Informações sobre o Qualis do periódico</h5>
                                 <li class="uk-h6">
                                     <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
-                                <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
-                                    <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
-                                <?php endforeach; ?>                                
+
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])): ?>
+                                        <p>Qualis 2010-2012</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>  
+
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])): ?>
+                                        <p>Qualis 2015</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])): ?>
+                                        <p>Qualis 2013-2016</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?> 
+
                                 </li>
                             </div>
                             <?php endif; ?>                           
