@@ -7,8 +7,89 @@
                 <li class="uk-active">
                     <a href="advanced_search.php"><?php echo $t->gettext('Busca avançada'); ?></a>
                 </li>
+                <li class="uk-active">
+
+<a href="#modal-full" uk-toggle>Unidades USP</a>
+
+<div id="modal-full" class="uk-modal-full" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+        <div class="uk-grid-collapse uk-child-width-1-4@s uk-flex-middle" uk-grid>
+            <div class="uk-background-cover" style="background-image: url('http://www.imagens.usp.br/wp-content/uploads/Pra%C3%A7a-do-rel%C3%B3gio-Foto-Marcos-Santos-USP-Imagens-5.jpg');" uk-height-viewport></div>
+            <div class="uk-padding-large">
+                <h3>Unidades USP</h3>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EACH&quot;" style="color:#333"><?php echo $t->gettext('Escola de Artes, Ciências e Humanidades (EACH)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;ECA&quot;" style="color:#333"><?php echo $t->gettext('Escola de Comunicações e Artes (ECA)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EE&quot;" style="color:#333"><?php echo $t->gettext('Escola de Enfermagem (EE)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EERP&quot;" style="color:#333"><?php echo $t->gettext('Escola de Enfermagem de Ribeirão Preto (EERP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EEFE&quot;" style="color:#333"><?php echo $t->gettext('Escola de Educação Física e Esporte (EEFE)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EEFERP&quot;" style="color:#333"><?php echo $t->gettext('Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EEL&quot;" style="color:#333"><?php echo $t->gettext('Escola de Engenharia de Lorena (EEL)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EESC&quot;" style="color:#333"><?php echo $t->gettext('Escola de Engenharia de São Carlos (EESC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;EP&quot;" style="color:#333"><?php echo $t->gettext('Escola Politécnica (EP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;ESALQ&quot;" style="color:#333"><?php echo $t->gettext('Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FAU&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Arquitetura e Urbanismo (FAU)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FCF&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas (FCF)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FCFRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FD&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Direito (FD)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FDRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Direito de Ribeirão Preto (FDRP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FEA&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade (FEA)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FEARP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)'); ?></a><br/>
+            </div>
+            <div class="uk-padding-large">
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FE&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Educação (FE)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FFCLRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FFLCH&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FM&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina (FM)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FMRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina de Ribeirão Preto (FMRP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FMVZ&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina Veterinária e Zootecnia (FMVZ)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FO&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia (FO)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FOB&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia de Bauru (FOB)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FORP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia de Ribeirão Preto (FORP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FSP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Saúde Pública (FSP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;FZEA&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IAU&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Arquitetura e Urbanismo (IAU)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IAG&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Biociências (IB)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;ICB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Ciências Biomédicas (ICB)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;ICMC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Ciências Matemáticas e de Computação (ICMC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IF&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Física (IF)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IFSC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Física de São Carlos (IFSC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IGC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Geociências (IGc)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IME&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Matemática e Estatística (IME)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IMT&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Medicina Tropical de São Paulo (IMT)'); ?></a><br/>
+            </div>
+            <div class="uk-padding-large">
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IP&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Psicologia (IP)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IQ&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Química (IQ)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IQSC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Química de São Carlos (IQSC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IRI&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Relações Internacionais (IRI)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IO&quot;" style="color:#333"><?php echo $t->gettext('Instituto Oceanográfico (IO)'); ?></a><br/>
+                <h3>Centros, Hospitais, Institutos especializados e Museus</h3>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;CEBIMAR&quot;" style="color:#333"><?php echo $t->gettext('Centro de Biologia Marinha (CEBIMAR)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;CDCC&quot;" style="color:#333"><?php echo $t->gettext('Centro de Divulgação Científica e Cultural (CDCC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;CENA&quot;" style="color:#333"><?php echo $t->gettext('Centro de Energia Nuclear na Agricultura (CENA)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;HRAC&quot;" style="color:#333"><?php echo $t->gettext('Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;HU&quot;" style="color:#333"><?php echo $t->gettext('Hospital Universitário (HU)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IEE&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Energia e Ambiente (IEE)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;IEB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Estudos Brasileiros (IEB)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;MAE&quot;" style="color:#333"><?php echo $t->gettext('Museu de Arqueologia e Etnologia (MAE)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;MAC&quot;" style="color:#333"><?php echo $t->gettext('Museu de Arte Contemporânea (MAC)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;MZ&quot;" style="color:#333"><?php echo $t->gettext('Museu de Zoologia (MZ)'); ?></a><br/>
+<a href="result.php?search[]=+unidadeUSP.keyword:&quot;MP&quot;" style="color:#333"><?php echo $t->gettext('Museu Paulista (MP)'); ?></a>
+            
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+
+
+                </li>
              </ul>
         </div>
+
         <div class="uk-navbar-center">
             <a class="uk-navbar-item uk-logo" href="index.php"><img src="http://www.scs.usp.br/identidadevisual/wp-content/uploads/2013/08/usp-logo-png.png" width="110px"></a>
         </div>
