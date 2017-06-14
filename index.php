@@ -61,8 +61,8 @@
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="search[]">
                                         <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
-                                        <option value="base.keyword:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
-                                        <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
+                                        <option value="base.keyword:&quot;Produção científica&quot;" style="color:#eee"><?php echo $t->gettext('Produção Científica'); ?></option>
+                                        <option value="base.keyword:&quot;Teses e dissertações&quot;" style="color:#eee"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
                                     </select>
                                 <input type="hidden" name="fields[]" value="name">
                                 <input type="hidden" name="fields[]" value="author.person.name">
@@ -77,61 +77,61 @@
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="search[]">
                                         <option disabled selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EACH&quot;" style="color:#333"><?php echo $t->gettext('Escola de Artes, Ciências e Humanidades (EACH)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;ECA&quot;" style="color:#333"><?php echo $t->gettext('Escola de Comunicações e Artes (ECA)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EE&quot;" style="color:#333"><?php echo $t->gettext('Escola de Enfermagem (EE)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EERP&quot;" style="color:#333"><?php echo $t->gettext('Escola de Enfermagem de Ribeirão Preto (EERP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EEFE&quot;" style="color:#333"><?php echo $t->gettext('Escola de Educação Física e Esporte (EEFE)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EEFERP&quot;" style="color:#333"><?php echo $t->gettext('Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EEL&quot;" style="color:#333"><?php echo $t->gettext('Escola de Engenharia de Lorena (EEL)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EESC&quot;" style="color:#333"><?php echo $t->gettext('Escola de Engenharia de São Carlos (EESC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;EP&quot;" style="color:#333"><?php echo $t->gettext('Escola Politécnica (EP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;ESALQ&quot;" style="color:#333"><?php echo $t->gettext('Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FAU&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Arquitetura e Urbanismo (FAU)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FCF&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas (FCF)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FCFRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FD&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Direito (FD)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FDRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Direito de Ribeirão Preto (FDRP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FEA&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade (FEA)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FEARP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FE&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Educação (FE)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FFCLRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FFLCH&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FM&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina (FM)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FMRP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina de Ribeirão Preto (FMRP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FMVZ&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Medicina Veterinária e Zootecnia (FMVZ)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FO&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia (FO)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FOB&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia de Bauru (FOB)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FORP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Odontologia de Ribeirão Preto (FORP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FSP&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Saúde Pública (FSP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;FZEA&quot;" style="color:#333"><?php echo $t->gettext('Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IAU&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Arquitetura e Urbanismo (IAU)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IAG&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Biociências (IB)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;ICB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Ciências Biomédicas (ICB)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;ICMC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Ciências Matemáticas e de Computação (ICMC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IF&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Física (IF)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IFSC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Física de São Carlos (IFSC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IGC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Geociências (IGc)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IME&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Matemática e Estatística (IME)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IMT&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Medicina Tropical de São Paulo (IMT)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IP&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Psicologia (IP)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IQ&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Química (IQ)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IQSC&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Química de São Carlos (IQSC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IRI&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Relações Internacionais (IRI)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IO&quot;" style="color:#333"><?php echo $t->gettext('Instituto Oceanográfico (IO)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EACH&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Artes, Ciências e Humanidades (EACH)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ECA&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Comunicações e Artes (ECA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EE&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Enfermagem (EE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EERP&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Enfermagem de Ribeirão Preto (EERP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EEFE&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Educação Física e Esporte (EEFE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EEFERP&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Educação Física e Esporte de Ribeirão Preto (EEFERP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EEL&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Engenharia de Lorena (EEL)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EESC&quot;" style="color:#eee"><?php echo $t->gettext('Escola de Engenharia de São Carlos (EESC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;EP&quot;" style="color:#eee"><?php echo $t->gettext('Escola Politécnica (EP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ESALQ&quot;" style="color:#eee"><?php echo $t->gettext('Escola Superior de Agricultura “Luiz de Queiroz” (ESALQ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FAU&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Arquitetura e Urbanismo (FAU)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FCF&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas (FCF)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FCFRP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Ciências Farmacêuticas de Ribeirão Preto (FCFRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FD&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Direito (FD)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FDRP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Direito de Ribeirão Preto (FDRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FEA&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade (FEA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FEARP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Economia, Administração e Contabilidade de Ribeirão Preto (FEARP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FE&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Educação (FE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FFCLRP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto (FFCLRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FFLCH&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Filosofia, Letras e Ciências Humanas (FFLCH)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FM&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Medicina (FM)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FMRP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Medicina de Ribeirão Preto (FMRP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FMVZ&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Medicina Veterinária e Zootecnia (FMVZ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FO&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Odontologia (FO)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FOB&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Odontologia de Bauru (FOB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FORP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Odontologia de Ribeirão Preto (FORP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FSP&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Saúde Pública (FSP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;FZEA&quot;" style="color:#eee"><?php echo $t->gettext('Faculdade de Zootecnia e Engenharia de Alimentos (FZEA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IAU&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Arquitetura e Urbanismo (IAU)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IAG&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Astronomia, Geofísica e Ciências Atmosféricas (IAG)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IB&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Biociências (IB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ICB&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Ciências Biomédicas (ICB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;ICMC&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Ciências Matemáticas e de Computação (ICMC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IF&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Física (IF)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IFSC&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Física de São Carlos (IFSC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IGC&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Geociências (IGc)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IME&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Matemática e Estatística (IME)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IMT&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Medicina Tropical de São Paulo (IMT)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IP&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Psicologia (IP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IQ&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Química (IQ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IQSC&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Química de São Carlos (IQSC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IRI&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Relações Internacionais (IRI)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IO&quot;" style="color:#eee"><?php echo $t->gettext('Instituto Oceanográfico (IO)'); ?></option>
                                         <option disabled value><?php echo $t->gettext('Centros, Hospitais, Institutos especializados e Museus'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;CEBIMAR&quot;" style="color:#333"><?php echo $t->gettext('Centro de Biologia Marinha (CEBIMAR)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;CDCC&quot;" style="color:#333"><?php echo $t->gettext('Centro de Divulgação Científica e Cultural (CDCC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;CENA&quot;" style="color:#333"><?php echo $t->gettext('Centro de Energia Nuclear na Agricultura (CENA)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;HRAC&quot;" style="color:#333"><?php echo $t->gettext('Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;HU&quot;" style="color:#333"><?php echo $t->gettext('Hospital Universitário (HU)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IEE&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Energia e Ambiente (IEE)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;IEB&quot;" style="color:#333"><?php echo $t->gettext('Instituto de Estudos Brasileiros (IEB)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;MAE&quot;" style="color:#333"><?php echo $t->gettext('Museu de Arqueologia e Etnologia (MAE)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;MAC&quot;" style="color:#333"><?php echo $t->gettext('Museu de Arte Contemporânea (MAC)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;MZ&quot;" style="color:#333"><?php echo $t->gettext('Museu de Zoologia (MZ)'); ?></option>
-                                        <option value="+unidadeUSP.keyword:&quot;MP&quot;" style="color:#333"><?php echo $t->gettext('Museu Paulista (MP)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;CEBIMAR&quot;" style="color:#eee"><?php echo $t->gettext('Centro de Biologia Marinha (CEBIMAR)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;CDCC&quot;" style="color:#eee"><?php echo $t->gettext('Centro de Divulgação Científica e Cultural (CDCC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;CENA&quot;" style="color:#eee"><?php echo $t->gettext('Centro de Energia Nuclear na Agricultura (CENA)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;HRAC&quot;" style="color:#eee"><?php echo $t->gettext('Hospital de Reabilitação de Anomalias Craniofaciais (HRAC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;HU&quot;" style="color:#eee"><?php echo $t->gettext('Hospital Universitário (HU)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IEE&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Energia e Ambiente (IEE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;IEB&quot;" style="color:#eee"><?php echo $t->gettext('Instituto de Estudos Brasileiros (IEB)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MAE&quot;" style="color:#eee"><?php echo $t->gettext('Museu de Arqueologia e Etnologia (MAE)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MAC&quot;" style="color:#eee"><?php echo $t->gettext('Museu de Arte Contemporânea (MAC)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MZ&quot;" style="color:#eee"><?php echo $t->gettext('Museu de Zoologia (MZ)'); ?></option>
+                                        <option value="+unidadeUSP.keyword:&quot;MP&quot;" style="color:#eee"><?php echo $t->gettext('Museu Paulista (MP)'); ?></option>
 
                                     </select>                                   
                                 </div>                             
