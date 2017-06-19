@@ -74,7 +74,7 @@
                                 <legend class="uk-legend">Assunto do Vocabulário Controlado</legend>
                                 <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=searchIBox&f=searchIBox&v=http://143.107.154.55/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
                                 <input class="uk-input" id='searchIBox' type="text" name="search[]" data-validation="required">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchIBox').value = 'subject.keyword:' + String.fromCharCode(34) + document.getElementById('searchIBox').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>                          
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchIBox').value = 'about.keyword:' + String.fromCharCode(34) + document.getElementById('searchIBox').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>                          
                             </fieldset>
                         </form>                            
                     </div>
