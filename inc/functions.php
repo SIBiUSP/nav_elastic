@@ -532,7 +532,7 @@ class USP {
 
             $termo_xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchUp&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
             foreach (($termo_xml->{'result'}->{'term'}) as $string_up) {
-                $string_up_array[] = '<a href="result.php?search[]=subject.keyword:&quot;'.$string_up->{'string'}.'&quot;">'.$string_up->{'string'}.'</a>';    
+                $string_up_array[] = '<a href="result.php?search[]=about.keyword:&quot;'.$string_up->{'string'}.'&quot;">'.$string_up->{'string'}.'</a>';    
             };
             echo 'Você também pode pesquisar pelos termos mais genéricos: ';
             print_r(implode(" -> ",$string_up_array));
@@ -540,7 +540,7 @@ class USP {
             $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
             if (!empty($termo_xml_down->{'result'}->{'term'})){
                 foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
-                    $string_down_array[] = '<a href="result.php?search[]=subject.keyword:&quot;'.$string_down->{'string'}.'&quot;">'.$string_down->{'string'}.'</a>';     
+                    $string_down_array[] = '<a href="result.php?search[]=about.keyword:&quot;'.$string_down->{'string'}.'&quot;">'.$string_down->{'string'}.'</a>';     
                 };
                 echo 'Ou pesquisar pelo assuntos mais específicos: ';
                 print_r(implode(" - ",$string_down_array));            
