@@ -37,8 +37,8 @@ $lang_tematres = "pt_BR" ;
 $CFG_VOCABS[1]["URL_BASE"]="http://www.vocab.sibi.usp.br/pt-br/services.php";
 $CFG_VOCABS[1]["ALPHA"]=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 
-$CFG_VOCABS[2]["URL_BASE"]="http://www.vocab.sibi.usp.br/enservices.php";
-$CFG_VOCABS[2]["ALPHA"]=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+//$CFG_VOCABS[2]["URL_BASE"]="http://www.vocab.sibi.usp.br/enservices.php";
+//$CFG_VOCABS[2]["ALPHA"]=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 
 /*
 
