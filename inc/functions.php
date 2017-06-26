@@ -264,9 +264,10 @@ class paginaSingle {
                     <meta name="citation_issue" content="'.trim(str_replace("n.","",$periodicos_array_new)).'">';
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
                     $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
-                    echo '
-                    <meta name="citation_firstpage" content="'.trim($pages_array[0]).'">
-                    <meta name="citation_lastpage" content="'.trim($pages_array[1]).'">'; 
+                    echo '<meta name="citation_firstpage" content="'.trim($pages_array[0]).'">';
+                    if (!empty($pages_array[1])) {
+                        echo '<meta name="citation_lastpage" content="'.trim($pages_array[1]).'">'; 
+                    }                    
                 }
 
             }
@@ -300,7 +301,12 @@ class paginaSingle {
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
                     $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
                     $first_page = trim($pages_array[0]);
-                    $end_page = trim($pages_array[1]); 
+                    if (!empty($pages_array[1])){
+                        $end_page = trim($pages_array[1]);
+                    } else {
+                        $end_page = "N/D";
+                    }
+
                 }
 
             }
