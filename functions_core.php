@@ -330,9 +330,9 @@ class facets {
         
         $response = elasticsearch::elastic_search($type,null,0,$query);
 
-        echo '<li class="uk-parent">';
+        echo '<li">';
         echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-nav-sub">';
+        echo ' <ul class="uk-list">';
         foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
             echo '<li class="uk-h6">';        
             echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
@@ -346,7 +346,7 @@ class facets {
     public function facet_range($field,$size,$nome_do_campo) {
         global $type;
         $query = $this->query;
-        $query["aggs"]["ranges"]["range"]["field"] = "metrics.$field";
+        $query["aggs"]["ranges"]["range"]["field"] = "$field";
         $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 1;
         $query["aggs"]["ranges"]["range"]["ranges"][1]["from"] = 1;
         $query["aggs"]["ranges"]["range"]["ranges"][1]["to"] = 2;
@@ -359,23 +359,24 @@ class facets {
         
         $response = elasticsearch::elastic_search($type,null,0,$query);
 
-        echo '<li class="uk-parent">';    
-        echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-nav-sub">';
-        echo '<form>';
-        foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
-            echo '<li class="uk-h6 uk-form-controls uk-form-controls-text">';
-            echo '<p class="uk-form-controls-condensed">';
-            echo '<input type="checkbox" name="'.$field.'[]" value="'.$facets['key'].'"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+metrics.'.$field.':&quot;'.$facets['key'].'&quot;">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
-            echo '</p>';
-            echo '</li>';
-
-        };
-
-        echo '<input type="hidden" checked="checked" name="operator" value="AND">';
-        echo '<button type="submit" class="uk-button-primary">Limitar facetas</button>';
-        echo '</form>';
-        echo   '</ul></li>';    
+        $result_count = count($response["aggregations"]["ranges"]["buckets"]);       
+            
+        if ($result_count > 0) {
+            echo '<li class="uk-parent">';    
+            echo '<a href="#" style="color:#333">'.$nome_do_campo.'</a>';
+            echo ' <ul class="uk-nav-sub">';
+            foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
+                $facets_array = explode("-",$facets['key']);
+                echo '<li>
+                    <div uk-grid>
+                    <div class="uk-width-3-3 uk-text-small" style="color:#333">';
+                    echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.':['.$facets_array[0].' TO '.$facets_array[1].']">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+                    echo '</div>';
+                
+                echo '</div></li>';
+            };
+            echo   '</ul></li>';
+        }    
 
 
     }
