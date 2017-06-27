@@ -183,6 +183,7 @@
                                     $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.indexacao",50,$t->gettext('Indexado em'),null,"_term",$_GET["search"]);
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
                                 <?php 
@@ -205,6 +206,12 @@
                                     $facets->facet("USP.serial_metrics.qualis.2016.area",50,$t->gettext('Qualis 2013/2016 - Área'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.serial_metrics.qualis.2016.nota",50,$t->gettext('Qualis 2013/2016 - Nota'),null,"_term",$_GET["search"]);                                    
                                     $facets->facet("USP.serial_metrics.qualis.2016.area_nota",50,$t->gettext('Qualis 2013/2016 - Área / Nota'),null,"_term",$_GET["search"]);
+                                ?>
+                                <?php
+                                    $facets->facet("USP.WOS.coverage",50,$t->gettext('Cobertura na Web of Science'),null,"_term",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor",100,"JCR - Journal Impact Factor - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites",100,"JCR - Journal Impact Factor without Journal Self Cites - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score",100,"JCR - Eigenfactor Score - 2016",$_GET["search"]);
                                 ?>                                    
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
@@ -213,8 +220,6 @@
                                     $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.about_BDTD",50,$t->gettext('Assuntos provenientes das teses'),null,"_term",$_GET["search"]);
-                                    //$facets->facet_range("three_years_citations_scopus",100,"Citações nos últimos 3 anos na Scopus",$_GET["search"]);
-                                    //$facets->facet_range("full_citations_scopus",100,"Total de citações na Scopus",$_GET["search"]);
                                 ?>
                             </ul>
                             <?php if(!empty($_SESSION['oauthuserdata'])): ?>
