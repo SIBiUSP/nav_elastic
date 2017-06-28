@@ -347,14 +347,16 @@ class facets {
         global $type;
         $query = $this->query;
         $query["aggs"]["ranges"]["range"]["field"] = "$field";
-        $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 1;
-        $query["aggs"]["ranges"]["range"]["ranges"][1]["from"] = 1;
-        $query["aggs"]["ranges"]["range"]["ranges"][1]["to"] = 2;
-        $query["aggs"]["ranges"]["range"]["ranges"][2]["from"] = 2;
-        $query["aggs"]["ranges"]["range"]["ranges"][2]["to"] = 5;
-        $query["aggs"]["ranges"]["range"]["ranges"][3]["from"] = 5;
+        $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 0.5;
+        $query["aggs"]["ranges"]["range"]["ranges"][1]["from"] = 0.5;
+        $query["aggs"]["ranges"]["range"]["ranges"][1]["to"] = 1;
+        $query["aggs"]["ranges"]["range"]["ranges"][2]["from"] = 1;
+        $query["aggs"]["ranges"]["range"]["ranges"][2]["to"] = 2;
+        $query["aggs"]["ranges"]["range"]["ranges"][3]["from"] = 2;
+        $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 5;
+        $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 5;
         $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 10;
-        $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;
+        $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;        
         //$query["aggs"]["counts"]["terms"]["size"] = $size;               
         
         $response = elasticsearch::elastic_search($type,null,0,$query);
@@ -380,6 +382,30 @@ class facets {
 
 
     }
+
+    public function facet_missing($field,$nome_do_campo) {
+        global $type;
+        $query = $this->query;
+        $query["aggs"]["facet_missing"]["missing"]["field"] = "$field.keyword";    
+        
+        $response = elasticsearch::elastic_search($type,null,0,$query);
+
+        if ($response["aggregations"]["facet_missing"]["doc_count"] > 0) {
+            echo '<li class="uk-parent">';    
+            echo '<a href="#" style="color:#333">'.$nome_do_campo.'</a>';
+            echo ' <ul class="uk-nav-sub">';
+            echo '<li>
+            <div uk-grid>
+            <div class="uk-width-3-3 uk-text-small" style="color:#333">';
+            echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+_exists_:'.$field.'">'.$nome_do_campo.' ('.number_format($response["aggregations"]["facet_missing"]["doc_count"],0,',','.').')</a>';
+            echo '</div>';
+        
+        echo '</div></li>';
+            echo   '</ul></li>';
+        }    
+
+
+    }    
     
     
 }
