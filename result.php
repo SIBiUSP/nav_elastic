@@ -225,18 +225,14 @@
                             </ul>
                             <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                                 <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
-                                <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+                                <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                                 <hr>
                                 <?php
+                                    $facets->facet("authorUSP.regime_de_trabalho",50,$t->gettext('Regime de trabalho'),null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.funcao",50,$t->gettext('Função'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
                                     $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);                                
-                                    $facets->facet("indexado",100,"Indexado em",null,"_term",$_GET["search"]);
-                                    $facets->facet("fatorimpacto",1000,"Fator de impacto","desc","_term",$_GET["search"]);         
-                                    $facets->facet("codpes",100,"Número USP",null,"_term",$_GET["search"]);
-                                    $facets->facet("codpes_unidade",100,"Número USP / Unidade",null,"_term",$_GET["search"]);
-                                    $facets->facet("issn",100,"ISSN",null,"_term",$_GET["search"]);
-                                    $facets->facet("dataregistroinicial",100,"Data de registro","desc","_term",$_GET["search"]);
-                                    $facets->facet("dataregistro",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.codpes",100,"Número USP",null,"_term",$_GET["search"]);
                                 ?>
                                 </ul>
                             <?php endif; ?>
