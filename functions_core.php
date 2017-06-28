@@ -218,6 +218,7 @@ class facets {
         global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
+        $query["aggs"]["counts"]["terms"]["missing"] = "Não preenchido";
         if (isset($sort)) {
             $query["aggs"]["counts"]["terms"]["order"][$sort_type] = $sort;
         }
@@ -235,22 +236,32 @@ class facets {
 		echo '<li class="uk-parent">';    
 		echo '<a href="#" style="color:#333">'.$field_name.'</a>';
 		echo ' <ul class="uk-nav-sub">';
-		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {	    		
-			echo '<li>';
-			echo '<div uk-grid>
-			      <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-			      <div class="uk-width-1-3" style="color:#333">
-				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 65%">E</a>
-				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
-			    ';
-			if (isset($get_search)) {
-				echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" style="color:#0040ff;font-size: 65%">Ou</a>';
-			} 
-			echo '</div></div></li>';
+		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {            
+            if ($facets['key'] == "Não preenchido") {
+                if(!empty($_SESSION['oauthuserdata'])){
+                    echo '<li>';
+                    echo '<div uk-grid>
+                        <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>';
+                    echo '</div></li>';                   
+                }
+            } else {
+
+                echo '<li>';
+                echo '<div uk-grid>
+                    <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
+                    <div class="uk-width-1-3" style="color:#333">
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 65%">E</a>
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
+                    ';
+                if (isset($get_search)) {
+                    echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="OU" style="color:#0040ff;font-size: 65%">Ou</a>';
+                } 
+                echo '</div></div></li>';                
+
+            }    		
+
 		};
-		echo   '</ul></li>';		
-	
-	
+		echo   '</ul></li>';
 	
 	} else {
 		$i = 0;
@@ -258,17 +269,28 @@ class facets {
 		echo '<a href="#" style="color:#333">'.$field_name.'</a>';
 		echo ' <ul class="uk-nav-sub">';
 		while ($i <= 5) {
-			echo '<li>';
-			echo '<div uk-grid>
-			      <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</div>
-			      <div class="uk-width-1-3" style="color:#333">
-				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 65%">E</a>
-				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
-			    ';
-			if (isset($get_search)) {
-				echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Ou</a>';
-			} 
-			echo '</div></div></li>';
+            if ($response["aggregations"]["counts"]["buckets"][$i]['key'] == "Não preenchido") {
+                if(!empty($_SESSION['oauthuserdata'])){
+                    echo '<li>';
+                    echo '<div uk-grid>
+                        <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>';
+                    echo '</div></li>';
+                }
+            } else {
+                echo '<li>';
+                echo '<div uk-grid>
+                    <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</div>
+                    <div class="uk-width-1-3" style="color:#333">
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 65%">E</a>
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
+                    ';
+                if (isset($get_search)) {
+                    echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Ou</a>';
+                } 
+                echo '</div></div></li>';                
+
+            }
+
 			$i++;
 		}	
 
@@ -287,18 +309,28 @@ class facets {
 				<ul class="uk-list">
 		';
             
-		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {	    		
-			echo '<li>';
-			echo '<div uk-grid>
-			      <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
-			      <div class="uk-width-1-3" style="color:#333">
-				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">E</a>
-				<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Não</a>
-			    ';
-			if (isset($get_search)) {
-				echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Ou</a>';
-			} 
-			echo '</div></div></li>';
+		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+            if ($facets['key'] == "Não preenchido") {
+                if(!empty($_SESSION['oauthuserdata'])){
+                    echo '<li>';
+                    echo '<div uk-grid>
+                        <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>';
+                    echo '</div></li>';
+                }                   
+
+            } else {            	    		
+                echo '<li>';
+                echo '<div uk-grid>
+                    <div class="uk-width-2-3 uk-text-small" style="color:#333">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</div>
+                    <div class="uk-width-1-3" style="color:#333">
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">E</a>
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Não</a>
+                    ';
+                if (isset($get_search)) {
+                    echo '<a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=OR '.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Ou</a>';
+                } 
+                echo '</div></div></li>';
+            }    
 		};
 		echo '</ul>';
 		echo '    
@@ -382,32 +414,6 @@ class facets {
 
 
     }
-
-    public function facet_missing($field,$nome_do_campo) {
-        global $type;
-        $query = $this->query;
-        $query["aggs"]["facet_missing"]["missing"]["field"] = "$field.keyword";    
-        
-        $response = elasticsearch::elastic_search($type,null,0,$query);
-
-        if ($response["aggregations"]["facet_missing"]["doc_count"] > 0) {
-            echo '<li class="uk-parent">';    
-            echo '<a href="#" style="color:#333">'.$nome_do_campo.'</a>';
-            echo ' <ul class="uk-nav-sub">';
-            echo '<li>
-            <div uk-grid>
-            <div class="uk-width-3-3 uk-text-small" style="color:#333">';
-            echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+_exists_:'.$field.'">'.$nome_do_campo.' ('.number_format($response["aggregations"]["facet_missing"]["doc_count"],0,',','.').')</a>';
-            echo '</div>';
-        
-        echo '</div></li>';
-            echo   '</ul></li>';
-        }    
-
-
-    }    
-    
-    
 }
 
 class citation {
