@@ -198,11 +198,6 @@
                                     $facets->facet("USP.serial_metrics.qualis.2012.area_nota",50,$t->gettext('Qualis 2010/2012 - Área / Nota'),null,"_term",$_GET["search"]);
                                 ?>                                
                                 <?php 
-                                    $facets->facet("USP.serial_metrics.qualis.2015.area",50,$t->gettext('Qualis 2015 - Área'),null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2015.nota",50,$t->gettext('Qualis 2015 - Nota'),null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("USP.serial_metrics.qualis.2015.area_nota",50,$t->gettext('Qualis 2015 - Área / Nota'),null,"_term",$_GET["search"]);
-                                ?>
-                                <?php 
                                     $facets->facet("USP.serial_metrics.qualis.2016.area",50,$t->gettext('Qualis 2013/2016 - Área'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.serial_metrics.qualis.2016.nota",50,$t->gettext('Qualis 2013/2016 - Nota'),null,"_term",$_GET["search"]);                                    
                                     $facets->facet("USP.serial_metrics.qualis.2016.area_nota",50,$t->gettext('Qualis 2013/2016 - Área / Nota'),null,"_term",$_GET["search"]);
