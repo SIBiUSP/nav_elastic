@@ -808,7 +808,7 @@ class exporters {
         }
 
         if (!empty($cursor["_source"]['isPartOf']['issn'])) {
-        $record[] = "SN  - ".$cursor["_source"]['isPartOf']['issn']."";
+        $record[] = "SN  - ".$cursor["_source"]['isPartOf']['issn'][0]."";
         }
 
         if (!empty($cursor["_source"]["doi"])) {
