@@ -28,11 +28,6 @@ $record_blob = exporters::RIS($cursor);
 
 /* Upload de PDF */
 
-if(!empty($_SESSION['oauthuserdata'])){
-    print_r($_POST);
-    print_r($_FILES);
-}
-
 if (!empty($_FILES)) {
     paginaSingle::uploader();    
 }
