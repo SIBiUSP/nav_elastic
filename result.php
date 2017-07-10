@@ -236,7 +236,7 @@
                             <hr>
 
                             <!-- Limitar por data - Início -->
-                            <form class="uk-form">
+                            <form class="uk-form uk-text-small">
                                 <fieldset>
                                     <legend><?php echo $t->gettext('Limitar por data'); ?></legend>
                                     <script>
@@ -256,7 +256,7 @@
                                     </script>
                                     <p>
                                     <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
-                                    <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
+                                    <input type="text" class="uk-form-width-medium" id="date" readonly style="border:0; color:#f6931f; font-size:bold;" name="search[]">
                                     </p>        
                                     <div id="limitar-data" class="uk-margin-bottom"></div>        
                                     <?php if(!empty($_GET["search"])): ?>
