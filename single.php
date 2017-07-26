@@ -401,6 +401,25 @@ if (!empty($_POST['delete_file'])) {
                         <!-- < ?php endif; ?> -->
                         <!-- JCR - Fim --> 
 
+                        <!-- Citescore - Início -->
+                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
+                            <?php if (!empty($cursor["_source"]["USP"]["citescore"])): ?>
+                                <div class="uk-alert-primary" uk-alert>
+                                    <a class="uk-alert-close" uk-close></a>
+                                    <h5>Informações sobre o Citescore</h5>
+                                    <li class="uk-h6">
+                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["citescore"]["title"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">Citescore - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["citescore"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">SJR - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SJR"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">SNIP - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SNIP"]); ?></p>                               
+                                        <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["open_access"]); ?></p> 
+                                    </li>
+                                </div>
+                            <?php endif; ?>  
+                        <!-- < ?php endif; ?> -->
+                        <!-- Citescore - Fim -->                         
+
                         <?php if (isset($issn_info["serial-metadata-response"])): ?>
                             <div class="uk-alert">
                                 <li class="uk-h6">
