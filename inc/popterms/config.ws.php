@@ -102,6 +102,7 @@ $_PARAMS["_STRING_SEPARATOR"]='; ';
 	$CFG_URL_PARAM["URIfetchTerm"]='fetchTerm/';
 	$CFG_URL_PARAM["search"]='index.php?task=search&amp;arg=';
 	$CFG_URL_PARAM["letter"]='index.php?task=letter&amp;arg=';
+	$CFG_URL_PARAM["url_site"]='http://bdpi.usp.br/inc/popterms/';
 	
 	//search strings with more than x chars
 	$CFG["MIN_CHAR_SEARCH"]=2;
