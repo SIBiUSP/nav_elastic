@@ -112,7 +112,7 @@ function data2html4Letter($data,$param=array()){
 					//Controlar que no sea un resultado unico
 						$rows.='<li><span about="'.$URL_BASE.'?task=fetchtTerm&amp;arg='.$value->term_id.'" typeof="skos:Concept">';
 						$rows.=(strlen($value->no_term_string)>0) ? $value->no_term_string." ".USE_termino." " : "";
-						$rows.='<a resource="'.$URL_BASE.'?task=fetchtTerm&amp;arg='.$value->term_id.'" property="skos:prefLabel" href="'.$PHP_SELF.'?task=fetchTerm&amp;arg='.$value->term_id.'" title="'.FixEncoding($value->string).'">'.FixEncoding($value->string).'</a>';
+						$rows.='<a resource="'.$URL_BASE.'?task=fetchtTerm&amp;arg='.$value->term_id.'" property="skos:prefLabel" href="'.$_SERVER['PHP_SELF'].'?task=fetchTerm&amp;arg='.$value->term_id.'" title="'.FixEncoding($value->string).'">'.FixEncoding($value->string).'</a>';
 						$rows.='</span>';
 						$rows.='</li>';
 					}
@@ -146,7 +146,7 @@ function data2html4LastTerms($data,$param=array()){
  						
  						$rows.='<li><span about="'.$URL_BASE.'?task=fetch tTerm&amp;arg='.$value->term_id.'" typeof="skos:Concept">';
 						$rows.=(strlen($value->no_term_string)>0) ? $value->no_term_string." ".USE_termino." " : "";
-						$rows.='<a resource="'.$URL_BASE.'?task=fetchtTerm&amp;arg='.$value->term_id.'" property="skos:prefLabel" href="'.$PHP_SELF.'?task=fetchTerm&amp;arg='.$value->term_id.'" title="'.FixEncoding($value->string).'">'.FixEncoding($value->string).'</a>';
+						$rows.='<a resource="'.$URL_BASE.'?task=fetchtTerm&amp;arg='.$value->term_id.'" property="skos:prefLabel" href="'.$_SERVER['PHP_SELF'].'?task=fetchTerm&amp;arg='.$value->term_id.'" title="'.FixEncoding($value->string).'">'.FixEncoding($value->string).'</a>';
 						$rows.='  ('.$term_date["ano"].'/'.$term_date["mes"].'/'.$term_date["dia"].')</span>';
 						$rows.='</li>';
 					}
