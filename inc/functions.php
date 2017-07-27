@@ -350,7 +350,7 @@ class paginaSingle {
                 ], 
                 "name": "'.$record["isPartOf"]["name"].'", 
                 "issn": [
-                    "'.$record["isPartOf"]["issn"].'"
+                    "'.$record["isPartOf"]["issn"][0].'"
                 ],  
                 '.$publisher.'
             },
