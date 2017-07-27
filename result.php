@@ -402,7 +402,7 @@
                                                     </p>        
                                                 <?php endif; ?>                                                       
                                                 <?php if (!empty($r["_source"]['isPartOf'])) : ?>
-                                                    <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php echo $r["_source"]['isPartOf']["name"];?>&quot;"><?php echo $r["_source"]['isPartOf']["name"];?></a>
+                                                    <p class="uk-text-small uk-margin-remove">In: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"]; } ?>&quot;"><?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"];} ?></a>
                                                     </p>
                                                 <?php endif; ?> 
                                                 <p class="uk-text-small uk-margin-remove">
