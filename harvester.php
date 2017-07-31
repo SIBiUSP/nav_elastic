@@ -124,31 +124,78 @@ if (isset($_GET["oai"])) {
             }
         }
 
-    } elseif ($_GET["metadataFormat"] == "dim") {
+    } elseif ($_GET["metadataFormat"] == "oai_dc") {
 
         if (isset($_GET["set"])){
-            $recs = $myEndpoint->listRecords('dim',null,null,$_GET["set"]);
+            $recs = $myEndpoint->listRecords('oai_dc',null,null,$_GET["set"]);
         } else {
-            $recs = $myEndpoint->listRecords('dim');
+            $recs = $myEndpoint->listRecords('oai_dc');           
         }
 
         foreach($recs as $rec) {
+
+            $data = $rec->metadata->children( 'http://www.openarchives.org/OAI/2.0/oai_dc/' );
+            $rows = $data->children( 'http://purl.org/dc/elements/1.1/' );
+            var_dump ($rows);
+
+            //$data = $rec->metadata->children( 'http://www.dspace.org/xmlns/dspace/dim' );
+            //$rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );
+            //var_dump ($data);
             
-            $json = json_encode($rec);
-            $array = json_decode($json,TRUE);
-            print_r($array);            
+            //$json = json_encode($rec);
+            //$array = json_decode($json,TRUE);
+            //var_dump($array);            
 
             //$id = $rec->{'header'}->{'identifier'};
             //print_r($id);
 
-            print_r($rec->{'metadata'}->{'metadata'});
-
             $body["doc"]["base"][] = "Livros";
-            $body["doc"]["name"] = "Título";
+            $body["doc"]["name"] = (string)$rows->title[0];
             $body["doc_as_upsert"] = true;
+
+            print_r($body);
 
             //break; 
         }
+
+    } elseif ($_GET["metadataFormat"] == "dim") {
+
+        if (isset($_GET["set"])){
+            $recs = $myEndpoint->listRecords('dim',null,null,$_GET["set"]);
+            
+                     
+            //var_dump($recs);
+
+        } else {
+            $recs = $myEndpoint->listRecords('dim');           
+        }
+
+
+
+           foreach($recs as $rec) {
+
+            $data = $rec->metadata->children( 'http://www.dspace.org/xmlns/dspace/dim' );
+            $rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );
+            var_dump ($data);
+
+            foreach($rec->metadata->children('http://www.dspace.org/xmlns/dspace/dim') as $test) {
+                foreach ($test->field as $field) {
+                    if ($field->attributes()->element == "title" && empty($field->attributes()->qualifier)) {
+                        $title = $field;
+                    }
+                        
+                }
+            }         
+              
+
+            $body["doc"]["base"][] = "Livros";
+            $body["doc"]["name"] = (string)$title;
+            $body["doc_as_upsert"] = true;
+
+                print_r($body);
+
+            //break; 
+        }        
 
     } else {
         
