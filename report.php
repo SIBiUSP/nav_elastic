@@ -157,12 +157,14 @@
                 <?php $csv_unidadeUSPtrabalhos = generateCSV($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Trabalhos', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_unidadeUSPtrabalhos; ?>','unidadeUSP_trabalhos.csv','text/plain;charset=utf-8')">
                     Exportar todas os trabalhos por unidades em csv
-                </button>      
+                </button>
+
+                <!--      
 
                 <h3>Unidade USP - Participações (10 primeiros)</h3>
-                <?php generateDataTable($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
-                <?php $csv_unidadeUSP = generateCSV($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 10000); ?>
-                <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">
+                < ?php generateDataTable($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
+                < ?php $csv_unidadeUSP = generateCSV($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 10000); ?>
+                <button  class="uk-button-primary" onclick="SaveAsFile('< ?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">
                     Exportar todas participações por Unidade em csv
                 </button>
 
@@ -170,12 +172,12 @@
 
 
                 <h3>Departamento - Participações</h3>
-                <?php generateDataTable($query, 'authorUSP.departament', "_count", 'desc', 'Departamento - Participações', 9); ?>
-                <?php $csv_departamento = generateCSV($query, 'authorUSP.departament', "_count", 'desc', 'Departamento - Participações', 10000); ?>
-                <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_departamento); ?>','departamento_part.csv','text/plain;charset=utf-8')">
+                < ?php generateDataTable($query, 'authorUSP.departament', "_count", 'desc', 'Departamento - Participações', 9); ?>
+                < ?php $csv_departamento = generateCSV($query, 'authorUSP.departament', "_count", 'desc', 'Departamento - Participações', 10000); ?>
+                <button  class="uk-button-primary" onclick="SaveAsFile('< ?php echo str_replace("'", "", $csv_departamento); ?>','departamento_part.csv','text/plain;charset=utf-8')">
                     Exportar todos as participações dos departamentos em csv
                 </button>
-
+                -->
 
 
                 <h3>Autores USP (10 primeiros)</h3>
