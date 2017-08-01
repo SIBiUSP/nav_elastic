@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                              <div class="uk-margin">
-                                <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
+                                <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione uma Unidade USP para filtrar a busca'); ?></label>
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="search[]">
                                         <option disabled selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
