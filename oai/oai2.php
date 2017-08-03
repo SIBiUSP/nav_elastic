@@ -17,7 +17,7 @@ require_once('oai2server.php');
  */
 $identifyResponse = array();
 $identifyResponse["repositoryName"] = 'BDPI OAI2 PMH';
-$identifyResponse["baseURL"] = 'http://bdpife2.sibi.usp.br/~bdpi/oai/oai2.php';
+$identifyResponse["baseURL"] = 'http://bdpife2.sibi.usp.br/bdpi/oai/oai2.php';
 $identifyResponse["protocolVersion"] = '2.0';
 $identifyResponse['adminEmail'] = 'tiago.murakami@dt.sibi.usp.br';
 $identifyResponse["earliestDatestamp"] = '2016-01-01T12:00:00Z';
@@ -36,7 +36,7 @@ if (!isset($args)) {
     $args = $_GET;
 }
 if (!isset($uri)) {
-    $uri = 'test.oai_pmh';
+    $uri = 'http://bdpife2.sibi.usp.br/bdpi/oai/oai2.php';
 }
 $oai2 = new OAI2Server($uri, $args, $identifyResponse,
     array(
