@@ -127,17 +127,17 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             $now = date('Y-m-d-H:s');
     
             foreach ($record["hits"]["hits"] as $hit) {
-                $fields['dc:title'] = $hit['_source']['title'];
+                $fields['dc:title'] = $hit['_source']['name'];
 
                 $fields['dc:type'] = $hit['_source']['type'];
 
                 $fields['dc:language'] = $hit['_source']['language'][0];    
 
-                foreach ($hit['_source']['authors'] as $k => $authors){
-                    $fields['dc:creator_'.$k] = $authors;
-                }
+                //foreach ($hit['_source']['authors'] as $k => $authors){
+                //    $fields['dc:creator_'.$k] = $authors;
+                //}
 
-                foreach ($hit['_source']['subject'] as $k => $subject){
+                foreach ($hit['_source']['about'] as $k => $subject){
                     $fields['dc:subject_'.$k] = $subject;
                 }                
                 $records[] = array('identifier' => $hit['_id'],
@@ -174,17 +174,17 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             ];
             $record = $client->get($params);
             
-            $fields['dc:title'] = $record['_source']['title'];
+            $fields['dc:title'] = $record['_source']['name'];
     
             $fields['dc:type'] = $record['_source']['type'];
     
             $fields['dc:language'] = $record['_source']['language'][0];    
             
-            foreach ($record['_source']['authors'] as $k => $authors){
-                $fields['dc:creator_'.$k] = $authors;
-            }
+            //foreach ($record['_source']['authors'] as $k => $authors){
+            //    $fields['dc:creator_'.$k] = $authors;
+            //}
     
-            foreach ($record['_source']['subject'] as $k => $subject){
+            foreach ($record['_source']['about'] as $k => $subject){
                 $fields['dc:subject_'.$k] = $subject;
             }
 
