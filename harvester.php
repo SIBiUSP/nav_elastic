@@ -158,41 +158,81 @@ if (isset($_GET["oai"])) {
             //break; 
         }
 
-    } elseif ($_GET["metadataFormat"] == "dim") {
+    } elseif ($_GET["metadataFormat"] == "dim") {        
 
         if (isset($_GET["set"])){
-            $recs = $myEndpoint->listRecords('dim',null,null,$_GET["set"]);
-            
-                     
-            //var_dump($recs);
+
+            $recs = $myEndpoint->listRecords('dim',null,null,$_GET["set"]);          
 
         } else {
+
             $recs = $myEndpoint->listRecords('dim');           
         }
 
-
-
            foreach($recs as $rec) {
 
+            var_dump($rec);   
+
             $data = $rec->metadata->children( 'http://www.dspace.org/xmlns/dspace/dim' );
-            $rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );
-            var_dump ($data);
+            $rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );            
 
             foreach($rec->metadata->children('http://www.dspace.org/xmlns/dspace/dim') as $test) {
                 foreach ($test->field as $field) {
                     if ($field->attributes()->element == "title" && empty($field->attributes()->qualifier)) {
-                        $title = $field;
+                        $body["doc"]["name"] = (string)$field;
                     }
-                        
+                    if ($field->attributes()->element == "subject") {
+                        $body["doc"]["about"][] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "date" && $field->attributes()->qualifier == "issued") {
+                        $body["doc"]["datePublished"] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "identifier" && $field->attributes()->qualifier == "doi") {
+                        $body["doc"]["doi"] = (string)$field;
+                    }                                                                
+                    if ($field->attributes()->element == "relation" && $field->attributes()->qualifier == "ispartof") {
+                        $body["doc"]["isPartOf"]["name"] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "jtitle") {
+                        $body["doc"]["isPartOf"]["name"] = (string)$field;
+                    }                    
+                    if ($field->attributes()->element == "description" && $field->attributes()->qualifier == "abstract") {
+                        $body["doc"]["description"][] = (string)$field;
+                    }                    
+                    if ($field->attributes()->element == "contributor" && $field->attributes()->qualifier == "author") {
+                        $author["person"]["name"] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "type") {
+                        $body["doc"]["type"] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "publisher" && empty($field->attributes()->qualifier)) {
+                        $body["doc"]["publisher"]["organization"]["name"] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "publisher" && $field->attributes()->qualifier == "place") {
+                        $body["doc"]["publisher"]["organization"]["location"] = (string)$field;
+                    }
+                    if ($field->attributes()->element == "language" && $field->attributes()->qualifier == "iso") {
+                        $body["doc"]["language"][] = (string)$field;
+                    }                                                                                  
+                    
+                                                               
                 }
             }         
               
-
-            $body["doc"]["base"][] = "Livros";
-            $body["doc"]["name"] = (string)$title;
+            $id = (string)$rec->header->identifier;
+            $body["doc"]["base"][] = "Coleta OAI";
+            $body["doc"]["unidadeUSP"] = (array)$rec->header->setSpec;
+            $body["doc"]["identifier"] = (string)$rec->header->identifier;
+            $body["doc"]["author"][] = $author;            
             $body["doc_as_upsert"] = true;
+            unset($author);
 
-                print_r($body);
+            $resultado = elasticsearch::elastic_update($id,$type,$body);
+            print_r($resultado);            
+
+            //print_r($body);
+
+            unset($body);    
 
             //break; 
         }        
