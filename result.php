@@ -18,10 +18,7 @@
     $params["type"] = $type;
     $params["size"] = $limit;
     $params["from"] = $skip;
-    $params["body"] = $query;
-    
-    
-    
+    $params["body"] = $query; 
 
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
