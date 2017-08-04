@@ -304,10 +304,10 @@ if (!empty($_POST['delete_file'])) {
                             
                         <?php endif; ?>
 
-                        <!-- Data de defesa -->
+                        <!-- Data da defesa -->
                         <?php if (!empty($cursor["_source"]['dateCreated'])): ?>
                         <p class="uk-text-small uk-margin-remove">
-                            Data de defesa: <?php echo $cursor["_source"]['dateCreated'];?></a>
+                            Data da defesa: <?php echo $cursor["_source"]['dateCreated'];?></a>
                         </p>
                         <?php endif; ?>                          
 
