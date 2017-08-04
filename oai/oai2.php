@@ -57,30 +57,23 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         function($resumptionToken = '') {
             return
                 array (
-                    array('setSpec'=>'prod', 'setName'=>'Produção Científica') ,
-                    array('setSpec'=>'phys', 'setName'=>'Physics'),
-                    array('setSpec'=>'phdthesis', 'setName'=>'PHD Thesis',
+                    array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes',
                           'setDescription'=>
-                              '<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" '.
-                              ' xmlns:dc="http://purl.org/dc/elements/1.1/" '.
-                              ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-                              ' xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ '.
-                              ' http://www.openarchives.org/OAI/2.0/oai_dc.xsd"> '.
-                              ' <dc:description>This set contains metadata describing '.
-                              ' electronic music recordings made during the 1950ies</dc:description> '.
-                              ' </oai_dc:dc>'));
+                              'Conjunto de Teses e Produção Científica da Escola de Comunicações e Artes'));
         },
 
         'ListRecords' =>
         function($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {
             global $client;
         
-//            if ($metadataPrefix != 'oai_dc') {
-//                throw new OAI2Exception('noRecordsMatch');
-//            }
+            if ($metadataPrefix != 'oai_dc') {
+                throw new OAI2Exception('noRecordsMatch');
+            }
             if (!empty($set)) {
+
+                $query["query"]["query_string"]["query"] = '+unidadeUSP.keyword:"'.$set.'"';
                 
-                $filter[] = '{"term":{"base.keyword":"Produção científica"}}';                 
+                $filter[] = '{"term":{"unidadeUSP.keyword":"'.$set.'"}}';                 
             } 
     
             if (!empty($from)||!empty($until)){
@@ -93,30 +86,33 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 $filter_query = "";
             }
             
-            $query = '{
+            $query["query"]["query_string"]["query"] = "*";
+
+
+            // $query = '{
             
-            "query": {    
-                "bool": {
-                  "must": {
-                    "match_all": {}
-                  },
-                  "filter":[
-                    '.$filter_query.'        
-                    ]
-                  }
-            },
-                "sort" : [
-                    {"_uid" : {"order" : "desc"}}
-                    ]
-                }';               
+            // "query": {    
+            //     "bool": {
+            //       "must": {
+            //         "match_all": {}
+            //       },
+            //       "filter":[
+            //         '.$filter_query.'        
+            //         ]
+            //       }
+            // },
+            //     "sort" : [
+            //         {"_uid" : {"order" : "desc"}}
+            //         ]
+            //     }';               
             
-            $params = [
-                'index' => 'sibi',
-                'type' => 'producao',
-                'size' => $maxItems,
-                'from' => $deliveredRecords,    
-                'body' => $query
-            ];
+            $params = [];
+            $params["index"] = 'sibi';
+            $params["type"] = 'producao';
+            $params["size"] = $maxItems;
+            $params["from"] = $deliveredRecords;
+            $params["body"] = $query;
+
             $record = $client->search($params);
      
             if ($count) {
@@ -125,37 +121,53 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
     
             $records = array();
             $now = date('Y-m-d-H:s');
-    
+            $i = 0;
             foreach ($record["hits"]["hits"] as $hit) {
-                $fields['dc:title'] = $hit['_source']['name'];
 
-                $fields['dc:type'] = $hit['_source']['type'];
+                if (!empty($hit['_source']['name'])) {
+                    $fields['dc:title'] = $hit['_source']['name'];
+                } 
 
-                $fields['dc:language'] = $hit['_source']['language'][0];    
+                if (!empty($hit['_source']['type'])) {    
+                    $fields['dc:type'] = $hit['_source']['type'];
+                }
 
-                //foreach ($hit['_source']['authors'] as $k => $authors){
-                //    $fields['dc:creator_'.$k] = $authors;
-                //}
+                if (!empty($hit['_source']['language'][0])) {
+                    $fields['dc:language'] = $hit['_source']['language'][0];
+                }    
 
-                foreach ($hit['_source']['about'] as $k => $subject){
-                    $fields['dc:subject_'.$k] = $subject;
-                }                
-                $records[] = array('identifier' => $hit['_id'],
-                                   'datestamp' => $now,
-                                   'set' => 'all',
-                                   'metadata' => array(
-                                        'container_name' => 'oai_dc:dc',
-                                        'container_attributes' => array(
-                                            'xmlns:oai_dc' => "http://www.openarchives.org/OAI/2.0/oai_dc/",
-                                            'xmlns:dc' => "http://purl.org/dc/elements/1.1/",
-                                            'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-                                            'xsi:schemaLocation' =>
-                                            'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd'
-                                        ),
-                                        'fields' => $fields
-                                   ));
+                if (!empty($hit['_source']['author'])) {    
+                    foreach ($hit['_source']['author'] as $k => $authors){
+                        $fields['dc:creator_'.$k] = $authors["person"]["name"];
+                    }
+                }
+
+                if (!empty($hit['_source']['about'])) {
+                    foreach ($hit['_source']['about'] as $k => $subject){
+                        $fields['dc:subject_'.$k] = $subject;
+                    }  
+                }
+
+                $records[$i]["identifier"] = $hit['_id'];
+                $records[$i]["datestamp"] = $now;
+                $records[$i]["set"] = 'all';
+                $records[$i]["metadata"]["container_name"] = 'oai_dc:dc';
+                $records[$i]["metadata"]["container_attributes"]["xmlns:oai_dc"] = "http://www.openarchives.org/OAI/2.0/oai_dc/";
+                $records[$i]["metadata"]["container_attributes"]["xmlns:dc"] = "http://purl.org/dc/elements/1.1/";
+                $records[$i]["metadata"]["container_attributes"]["xmlns:xsi"] = "http://www.w3.org/2001/XMLSchema-instance";
+                $records[$i]["metadata"]["container_attributes"]["xsi:schemaLocation"] = 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd';                
+                if (!empty($fields)) {
+                    $records[$i]["metadata"]["fields"] = $fields;
+                } else {
+                    $records[$i]["metadata"]["fields"]['dc:title'] = "";
+                    $records[$i]["metadata"]["fields"]['dc:type'] = "";
+                    $records[$i]["metadata"]["fields"]['dc:language'] = "";
+                    $records[$i]["metadata"]["fields"]['dc:creator'] = "";
+                }
+                $i++;
+                unset($fields);
             }
-            return $records;       
+            return $records;                              
 
         },
 
@@ -173,8 +185,10 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 'id' => ''.$identifier.''
             ];
             $record = $client->get($params);
-            
-            $fields['dc:title'] = $record['_source']['name'];
+
+            if (!empty($record['_source']['name'])) {
+                $fields['dc:title'] = $record['_source']['name'];
+            }
     
             $fields['dc:type'] = $record['_source']['type'];
     
