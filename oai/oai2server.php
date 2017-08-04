@@ -207,24 +207,23 @@ class OAI2Server {
         
         
         if (isset($this->args['resumptionToken'])) {  
-//            if (count($this->args['resumptionToken']) > 1) {                
-//                $this->errors[] = new OAI2Exception('badArgument');
-//            } else {
-//                if ((int)$val+$this->token_valid < time()) {
-//                    $this->errors[] = new OAI2Exception('badResumptionToken');
-//                } else {
-//                    if (!file_exists($this->token_prefix.$this->args['resumptionToken'])) {
-//                        $this->errors[] = new OAI2Exception('badResumptionToken');
-//                    } else {
-//                        if (
-                            $readings = $this->readResumptionToken($this->token_prefix.$this->args['resumptionToken']);
+            if (count($this->args['resumptionToken']) > 1) {                
+                $this->errors[] = new OAI2Exception('badArgument');
+            } else {
+                if ((int)$val+$this->token_valid < time()) {
+                    $this->errors[] = new OAI2Exception('badResumptionToken');
+                } else {
+                    if (!file_exists($this->token_prefix.$this->args['resumptionToken'])) {
+                        $this->errors[] = new OAI2Exception('badResumptionToken');
+                    } else {
+                        if ( $readings = $this->readResumptionToken($this->token_prefix.$this->args['resumptionToken'])) {
                             list($deliveredRecords, $metadataPrefix, $from, $until, $set) = $readings;
-//                        } else {
-//                            $this->errors[] = new OAI2Exception('badResumptionToken');
-//                        }
-//                    }
-//                }
-//            }
+                        } else {
+                            $this->errors[] = new OAI2Exception('badResumptionToken');
+                        }
+                    }
+                }
+            }
         } else {
             if (!isset($this->args['metadataPrefix'])) {
                 $this->errors[] = new OAI2Exception('badArgument');
