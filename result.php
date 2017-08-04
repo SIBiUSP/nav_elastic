@@ -372,7 +372,7 @@
                                 <li>                        
                                     <div class="uk-grid-divider uk-padding-small" uk-grid>
                                         <div class="uk-width-1-5@m">
-                                            <p><a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($t->gettext($r["_source"]['type'])));?></a></p>
+                                            <p><a href="http://<?php echo $_SERVER['SERVER_NAME']; ?><?php echo $_SERVER['SCRIPT_NAME']; ?>?<?php echo $_SERVER['QUERY_STRING']; ?>&search[]=type.keyword:&quot;<?php echo $r["_source"]['type'];?>&quot;"><?php echo ucfirst(strtolower($t->gettext($r["_source"]['type'])));?></a></p>
                                             <p><?php echo $t->gettext('Unidades USP'); ?>:
                                                 <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
                                                 <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
