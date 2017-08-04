@@ -171,8 +171,6 @@ if (isset($_GET["oai"])) {
 
            foreach($recs as $rec) {
 
-            var_dump($rec);   
-
             $data = $rec->metadata->children( 'http://www.dspace.org/xmlns/dspace/dim' );
             $rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );            
 
@@ -195,7 +193,10 @@ if (isset($_GET["oai"])) {
                     }
                     if ($field->attributes()->element == "jtitle") {
                         $body["doc"]["isPartOf"]["name"] = (string)$field;
-                    }                    
+                    }
+                    if ($field->attributes()->element == "identifier" && $field->attributes()->qualifier == "issn") {
+                        $body["doc"]["isPartOf"]["issn"] = (string)$field;
+                    }                                         
                     if ($field->attributes()->element == "description" && $field->attributes()->qualifier == "abstract") {
                         $body["doc"]["description"][] = (string)$field;
                     }                    
