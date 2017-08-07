@@ -245,10 +245,9 @@ class facets {
                     echo '</div></li>';                   
                 }
             } else {
-
                 echo '<li>';
                 echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
+                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.str_replace('&','%26',$facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
                     <div class="uk-width-1-3" style="color:#333">                    
                     <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
                     ';
@@ -278,7 +277,7 @@ class facets {
             } else {
                 echo '<li>';
                 echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
+                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.str_replace('&','%26',$response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
                     <div class="uk-width-1-3" style="color:#333">                    
                     <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
                     ';
@@ -316,10 +315,10 @@ class facets {
                     echo '</div></li>';
                 }                   
 
-            } else {            	    		
+            } else {
                 echo '<li>';
                 echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
+                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=+'.$field.'.keyword:&quot;'.str_replace('&','%26',$facets['key']).'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
                     <div class="uk-width-1-3" style="color:#333">
                     <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-'.$field.'.keyword:&quot;'.$facets['key'].'&quot;">Não</a>
                     ';
