@@ -548,7 +548,7 @@ class USP {
 
 
         } else {
-            $termo_naocorrigido[] = $termo_limpo;
+            $termo_naocorrigido[] = $termo;
         }
     }      
     
