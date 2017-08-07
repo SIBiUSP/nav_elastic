@@ -345,7 +345,13 @@ class paginaSingle {
                 }
                 if (empty($numero)){
                     $numero = "";
-                }                
+                }
+                if (empty($end_page)){
+                    $end_page = "";
+                }
+                if (empty($first_page)){
+                    $first_page = "";
+                }                                                 
                     
                     echo '
 
