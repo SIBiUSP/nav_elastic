@@ -541,6 +541,7 @@ function HTMLalphaNav($arrayLetras=array(),$select_letra="",$param=array())
 //div to copy term
 function HTMLcopyTerm($term,$param=array()){
 
+$rows = [];	
 $_PARAMS=$_SESSION['_PARAMS'];
 
 if(count($_PARAMS)<2) return;
