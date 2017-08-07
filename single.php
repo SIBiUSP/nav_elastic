@@ -338,7 +338,7 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]['isPartOf'])): ?>
                             <p class="uk-text-small uk-margin-remove">
                                 <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Fonte'); ?>:<ul class="uk-list uk-list-striped uk-article-meta">
-                                    <li>Título do periódico: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php echo $cursor["_source"]["isPartOf"]["name"];?>&quot;"><?php echo $cursor["_source"]["isPartOf"]["name"];?></a></li>
+                                    <li>Título do periódico: <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php if (!empty($cursor["_source"]["isPartOf"]["name"])) { echo $cursor["_source"]["isPartOf"]["name"]; } ?>&quot;"><?php if (!empty($cursor["_source"]["isPartOf"]["name"])) { echo $cursor["_source"]["isPartOf"]["name"];} ?></a></li>
                                     <?php if (!empty($cursor["_source"]['isPartOf']['issn'][0])): ?>
                                     <li>ISSN: <a href="result.php?search[]=issn.keyword:&quot;<?php echo $cursor['_source']['isPartOf']['issn'][0];?>&quot;"><?php echo $cursor["_source"]['isPartOf']['issn'][0];?></a></li>
                                     <?php endif; ?>                                    
