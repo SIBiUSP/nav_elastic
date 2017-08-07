@@ -212,7 +212,7 @@ if (!empty($_POST['delete_file'])) {
                             
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['author'])): ?>
-                            <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Autores'); ?>:<ul class="uk-list uk-list-striped uk-article-meta">
+                            <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Autores'); ?>:<ul class="uk-list uk-list-striped uk-text-small">
                             <?php foreach ($cursor["_source"]['author'] as $authors) {
                                 if (!empty($authors["person"]["affiliation"]["name"])) {
                                     echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
@@ -240,9 +240,9 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
                             <p class="uk-text-small uk-margin-remove">
                                 <?php echo $t->gettext('Autores USP'); ?>:
-                                <ul class="uk-list uk-list-striped uk-article-meta">
+                                <ul class="uk-list uk-list-striped uk-text-small">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-					<li><a href="result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
+					                <li><a href="result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
                                 <?php endforeach;?>
                                 </ul>
                             </p>
@@ -251,10 +251,12 @@ if (!empty($_POST['delete_file'])) {
                         <!--Assuntos -->
                         <?php if (!empty($cursor["_source"]['about'])): ?>
                         <p class="uk-text-small uk-margin-remove">
-                            <?php echo $t->gettext('Assuntos'); ?>:                            
+                            <?php echo $t->gettext('Assuntos'); ?>:
+                            <ul class="uk-list uk-list-striped uk-text-small">                            
                             <?php foreach ($cursor["_source"]['about'] as $subject) : ?>
-                                <a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a>
+                                <li><a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a></li>
                             <?php endforeach;?>
+                            </ul>
                         </p>
                         <?php endif; ?>
 
