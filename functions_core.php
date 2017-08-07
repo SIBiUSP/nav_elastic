@@ -456,7 +456,9 @@ class citation {
             foreach ($citacao["author"] as $authors){
                 $array_authors = explode(',', $authors["person"]["name"]);
                 $array_citation["author"][$i]["family"] = $array_authors[0];
-                $array_citation["author"][$i]["given"] = $array_authors[1];
+                if (!empty($array_authors[1])){
+                    $array_citation["author"][$i]["given"] = $array_authors[1];
+                }                
                 $i++;
             }
         }
