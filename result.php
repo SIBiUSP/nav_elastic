@@ -440,7 +440,7 @@
                                                             <?php
                                                                 $sfx_array[] = 'rft.atitle='.$r["_source"]['name'].'';
                                                                 $sfx_array[] = 'rft.year='.$r["_source"]['datePublished'].'';
-                                                                if (!empty($r["_source"]['isPartOf'])) {
+                                                                if (!empty($r["_source"]['isPartOf']["name"])) {
                                                                     $sfx_array[] = 'rft.jtitle='.$r["_source"]['isPartOf']["name"].'';
                                                                 }
                                                                 if (!empty($r["_source"]['doi'])) {
