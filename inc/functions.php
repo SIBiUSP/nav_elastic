@@ -343,6 +343,9 @@ class paginaSingle {
                 if (empty($record["isPartOf"]["issn"][0])){
                     $record["isPartOf"]["issn"][0] = "";
                 }
+                if (empty($numero)){
+                    $numero = "";
+                }                
                     
                     echo '
 
