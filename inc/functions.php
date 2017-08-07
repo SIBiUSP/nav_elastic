@@ -340,6 +340,9 @@ class paginaSingle {
         
             switch ($record["type"]) {
                 case "ARTIGO DE PERIODICO":
+                if (empty($record["isPartOf"]["issn"][0])){
+                    $record["isPartOf"]["issn"][0] = "";
+                }
                     
                     echo '
 
