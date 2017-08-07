@@ -346,6 +346,9 @@ class paginaSingle {
                 if (empty($numero)){
                     $numero = "";
                 }
+                if (empty($volume)){
+                    $volume = "";
+                }                
                 if (empty($end_page)){
                     $end_page = "";
                 }
