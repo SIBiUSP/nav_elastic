@@ -38,6 +38,7 @@ if (!isset($args)) {
 if (!isset($uri)) {
     $uri = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].'';
 }
+
 $oai2 = new OAI2Server($uri, $args, $identifyResponse,
     array(
         'ListMetadataFormats' =>
@@ -63,17 +64,17 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         },
 
         'ListRecords' =>
-        function($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {
-            global $client;
+        function($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {            
+            global $client;         
         
-            if ($metadataPrefix != 'oai_dc') {
-                throw new OAI2Exception('noRecordsMatch');
-            }
-            if (!empty($set)) {
+            //if ($metadataPrefix != 'oai_dc') {
+            //    throw new OAI2Exception('noRecordsMatch');
+            //}
 
+            if (!empty($set)) {                
                 $query["query"]["query_string"]["query"] = '+unidadeUSP.keyword:"'.$set.'"';
-                
-                $filter[] = '{"term":{"unidadeUSP.keyword":"'.$set.'"}}';                 
+            } else {
+                $query["query"]["query_string"]["query"] = "*";
             } 
     
             if (!empty($from)||!empty($until)){
@@ -86,30 +87,12 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 $filter_query = "";
             }
             
-            $query["query"]["query_string"]["query"] = "*";
+            $query["sort"]["_uid"]["order"] = 'desc';            
 
-
-            // $query = '{
-            
-            // "query": {    
-            //     "bool": {
-            //       "must": {
-            //         "match_all": {}
-            //       },
-            //       "filter":[
-            //         '.$filter_query.'        
-            //         ]
-            //       }
-            // },
-            //     "sort" : [
-            //         {"_uid" : {"order" : "desc"}}
-            //         ]
-            //     }';               
-            
             $params = [];
             $params["index"] = 'sibi';
             $params["type"] = 'producao';
-            $params["size"] = $maxItems;
+            $params["size"] = 50;            
             $params["from"] = $deliveredRecords;
             $params["body"] = $query;
 
@@ -125,7 +108,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             foreach ($record["hits"]["hits"] as $hit) {
 
                 if (!empty($hit['_source']['name'])) {
-                    $fields['dc:title'] = $hit['_source']['name'];
+                    $fields['dc:title'] = str_replace("&","", $hit['_source']['name']);
                 } 
 
                 if (!empty($hit['_source']['type'])) {    
@@ -167,7 +150,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 $i++;
                 unset($fields);
             }
-            return $records;                              
+            return $records;                          
 
         },
 
