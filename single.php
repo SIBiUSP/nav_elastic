@@ -567,7 +567,9 @@ if (!empty($_POST['delete_file'])) {
                                             echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$gscholar_response['num_citations'].'</p>';
                                             echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$gscholar_response['num_versions'].'</p>';
                                             echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_versions'].'">Link para as versões</a></p>';
-                                            echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
+                                            if ($gscholar_response['url_citations'] != "None") {
+                                                echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
+                                            }
                                             echo '</li>';
                                             echo '</div>';
                                             $body_gscholar["doc"]["USP"]["google_scholar"] = $gscholar_response;
@@ -598,7 +600,9 @@ if (!empty($_POST['delete_file'])) {
                                             echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$cursor["_source"]["USP"]["google_scholar"]['num_citations'].'</p>';
                                             echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$cursor["_source"]["USP"]["google_scholar"]['num_versions'].'</p>';
                                             echo '<p class="uk-text-small uk-margin-remove"><a href="'.$cursor["_source"]["USP"]["google_scholar"]['url_versions'].'">Link para as versões</a></p>';
-                                            echo '<p class="uk-text-small uk-margin-remove"><a href="'.$cursor["_source"]["USP"]["google_scholar"]['url_citations'].'">Link para as citações</a></p>';
+                                            if ($gscholar_response['url_citations'] != "None") {
+                                                echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
+                                            }
                                             echo '</li>';
                                             echo '</div>';
 
