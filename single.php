@@ -603,6 +603,37 @@ if (!empty($_POST['delete_file'])) {
                                             echo '</div>';
 
                                     }
+                                } else {
+                                    $gscholar_response = API::google_scholar_py($cursor["_source"]);
+                                    if (!empty($gscholar_response)){
+                                        echo '
+                                            <div class="uk-alert-primary" uk-alert>
+                                                <a class="uk-alert-close" uk-close></a>
+                                                <h5>Informações coletadas no Google Scholar</h5>
+                                                <li class="uk-h6">                                    
+                                        ';
+                                        echo '<p class="uk-text-small uk-margin-remove">Título: '.$gscholar_response['title'].'</p>';
+                                        echo '<p class="uk-text-small uk-margin-remove">Ano: '.$gscholar_response['year'].'</p>';
+                                        echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$gscholar_response['num_citations'].'</p>';
+                                        echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$gscholar_response['num_versions'].'</p>';
+                                        echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_versions'].'">Link para as versões</a></p>';
+                                        echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
+                                        echo '</li>';
+                                        echo '</div>';
+                                        $body_gscholar["doc"]["USP"]["google_scholar"] = $gscholar_response;
+                                        if ($body_gscholar["doc"]["USP"]["google_scholar"]["title"] == $cursor["_source"]["name"]) {
+                                            $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Sim";
+                                        } else {
+                                            $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Não";
+                                        }
+
+                                        $date = date_create(date("Y-m-d"));
+                                        date_add($date, date_interval_create_from_date_string('30 days'));
+                                        $body_gscholar["doc"]["USP"]["google_scholar"]["valid"]= $date;
+
+                                        $body_gscholar["doc_as_upsert"] = true;
+                                        elasticsearch::elastic_update($_GET['_id'],"producao",$body_gscholar);
+                                    }                                    
                                 }
 
 
