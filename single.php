@@ -348,80 +348,6 @@ if (!empty($_POST['delete_file'])) {
                                 </ul></p>
                         <?php endif; ?>
 
-                        <!-- Qualis 2015 -->
-                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
-                            <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
-                            <div class="uk-alert-primary" uk-alert>
-                                <a class="uk-alert-close" uk-close></a>
-                                <h5>Informações sobre o Qualis do periódico</h5>
-                                <li class="uk-h6">
-                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
-
-                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])): ?>
-                                        <p>Qualis 2010-2012</p>
-                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
-                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>  
-
-                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])): ?>
-                                        <p>Qualis 2015</p>
-                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
-                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-
-                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])): ?>
-                                        <p>Qualis 2013-2016</p>
-                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
-                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?> 
-
-                                </li>
-                            </div>
-                            <?php endif; ?>                           
-                        <?php endif; ?>
-
-                        <!-- JCR - Início -->
-                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
-                            <?php if (!empty($cursor["_source"]["USP"]["JCR"])): ?>
-                                <div class="uk-alert-primary" uk-alert>
-                                    <a class="uk-alert-close" uk-close></a>
-                                    <h5>Informações sobre o JCR</h5>
-                                    <li class="uk-h6">
-                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Journal_Impact_Factor"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["IF_without_Journal_Self_Cites"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Eigenfactor_Score"]); ?></p>                               
-                                        <p class="uk-text-small uk-margin-remove">JCR Rank - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["JCR_Rank"]); ?></p> 
-                                    </li>
-                                </div>
-                            <?php endif; ?>  
-                        <!-- < ?php endif; ?> -->
-                        <!-- JCR - Fim --> 
-
-                        <!-- Citescore - Início -->
-                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
-                            <?php if (!empty($cursor["_source"]["USP"]["citescore"])): ?>
-                                <div class="uk-alert-primary" uk-alert>
-                                    <a class="uk-alert-close" uk-close></a>
-                                    <h5>Informações sobre o Citescore</h5>
-                                    <li class="uk-h6">
-                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["citescore"]["title"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Citescore - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["citescore"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">SJR - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SJR"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">SNIP - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SNIP"]); ?></p>                               
-                                        <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["open_access"]); ?></p> 
-                                    </li>
-                                </div>
-                            <?php endif; ?>  
-                        <!-- < ?php endif; ?> -->
-                        <!-- Citescore - Fim -->                         
-
                         <?php if (isset($issn_info["serial-metadata-response"])): ?>
                             <div class="uk-alert">
                                 <li class="uk-h6">
@@ -546,6 +472,112 @@ if (!empty($_POST['delete_file'])) {
                                 }
                             ?>                            
                             <?php endif; ?>
+
+                        <!-- Qualis 2015 - Início -->
+                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
+                            <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
+                            <div class="uk-alert-primary" uk-alert>
+                                <a class="uk-alert-close" uk-close></a>
+                                <h5>Informações sobre o Qualis do periódico</h5>
+                                <li class="uk-h6">
+                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
+
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])): ?>
+                                        <p>Qualis 2010-2012</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>  
+
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])): ?>
+                                        <p>Qualis 2015</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])): ?>
+                                        <p>Qualis 2013-2016</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?> 
+
+                                </li>
+                            </div>
+                            <?php endif; ?>                           
+                        <?php endif; ?>
+                        <!-- Qualis 2015 - Fim -->
+                        
+                        <!-- JCR - Início -->
+                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
+                            <?php if (!empty($cursor["_source"]["USP"]["JCR"])): ?>
+                                <div class="uk-alert-primary" uk-alert>
+                                    <a class="uk-alert-close" uk-close></a>
+                                    <h5>Informações sobre o JCR</h5>
+                                    <li class="uk-h6">
+                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Journal_Impact_Factor"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["IF_without_Journal_Self_Cites"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Eigenfactor_Score"]); ?></p>                               
+                                        <p class="uk-text-small uk-margin-remove">JCR Rank - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["JCR_Rank"]); ?></p> 
+                                    </li>
+                                </div>
+                            <?php endif; ?>  
+                        <!-- < ?php endif; ?> -->
+                        <!-- JCR - Fim --> 
+
+                        <!-- Citescore - Início -->
+                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
+                            <?php if (!empty($cursor["_source"]["USP"]["citescore"])): ?>
+                                <div class="uk-alert-primary" uk-alert>
+                                    <a class="uk-alert-close" uk-close></a>
+                                    <h5>Informações sobre o Citescore</h5>
+                                    <li class="uk-h6">
+                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["citescore"]["title"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">Citescore - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["citescore"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">SJR - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SJR"]); ?></p>
+                                        <p class="uk-text-small uk-margin-remove">SNIP - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SNIP"]); ?></p>                               
+                                        <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["open_access"]); ?></p> 
+                                    </li>
+                                </div>
+                            <?php endif; ?>  
+                        <!-- < ?php endif; ?> -->
+                        <!-- Citescore - Fim -->                                                     
+
+                            <!-- Google Scholar - Início -->
+                            <?php
+                                $gscholar_response = API::google_scholar_py($cursor["_source"]);
+                                if (!empty($gscholar_response)){
+                                    echo '
+                                        <div class="uk-alert-primary" uk-alert>
+                                            <a class="uk-alert-close" uk-close></a>
+                                            <h5>Informações coletadas no Google Scholar</h5>
+                                            <li class="uk-h6">                                    
+                                    ';
+                                    echo '<p class="uk-text-small uk-margin-remove">Título: '.$gscholar_response['title'].'</p>';
+                                    echo '<p class="uk-text-small uk-margin-remove">Ano: '.$gscholar_response['year'].'</p>';
+                                    echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$gscholar_response['num_citations'].'</p>';
+                                    echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$gscholar_response['num_versions'].'</p>';
+                                    echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_versions'].'">Link para as versões</a></p>';
+                                    echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
+                                    echo '</li>';
+                                    echo '</div>';
+                                    $body_gscholar["doc"]["USP"]["google_scholar"] = $gscholar_response;
+                                    if ($body_gscholar["doc"]["USP"]["google_scholar"]["title"] == $cursor["_source"]["name"]) {
+                                        $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Sim";
+                                    } else {
+                                        $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Não";
+                                    }
+                                    $body_gscholar["doc_as_upsert"] = true;
+                                    elasticsearch::elastic_update($_GET['_id'],"producao",$body_gscholar);
+                                }
+                            ?>                            
+
+                            <!-- Google Scholar - Fim -->
                         
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                         <div class="uk-alert-warning">

@@ -782,7 +782,44 @@ class API {
         ];
         $response = $client->update($params);
 
-    }    
+    }
+
+    /*
+    * Obtem dados do Google Scholar  *
+    */
+    static function google_scholar_py($record) {
+
+        if (!empty($record["doi"])) {
+            $command_string = 'google_scholar_py/scholar.py -c 1 --all "'.$record["doi"].'" --csv';		
+            $command = escapeshellcmd($command_string);
+            $output = shell_exec($command);
+        } 
+        else {
+            $array_name = explode(',',$record["author"][0]["person"]["name"]);
+            $command_string = 'google_scholar_py/scholar.py -c 1 -p "'.htmlentities($record["name"]).'" -a "'.htmlentities($array_name[0]).'"  --csv';	
+            $command = escapeshellcmd($command_string);
+            $output = shell_exec($command);	
+        }	
+        
+        if (!empty($output)) {
+            $output_array = explode("|", $output);
+            $g_output = [];
+            $g_output["title"] = $output_array[0];
+            $g_output["url"] = $output_array[1];
+            $g_output["year"] = (int)$output_array[2];
+            $g_output["num_citations"] = (int)$output_array[3];
+            $g_output["num_versions"] = (int)$output_array[4];
+            $g_output["cluster_id"] = $output_array[5];
+            $g_output["url_pdf"] = $output_array[6];
+            $g_output["url_citations"] = $output_array[7];
+            $g_output["url_versions"] = $output_array[8];
+            $g_output["url_citation"] = $output_array[9];
+            $g_output["excerpt"] = $output_array[10];
+            return $g_output;
+            unset($g_output);			
+        }	
+
+    }        
     
     
     
@@ -864,6 +901,8 @@ class exporters {
 
     }
 }
+
+
 
 
 ?>
