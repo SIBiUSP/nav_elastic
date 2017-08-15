@@ -549,7 +549,7 @@ if (!empty($_POST['delete_file'])) {
                         <!-- Citescore - Fim -->                                                     
 
                             <!-- Google Scholar - Início -->
-                            <?php
+                            <!-- < ?php
 
                                 if (!empty($cursor["_source"]["USP"]["google_scholar"]["valid"])) {
                                     if ($cursor["_source"]["USP"]["google_scholar"]["valid"] < date("Y-m-d")) {
@@ -642,7 +642,7 @@ if (!empty($_POST['delete_file'])) {
 
 
 
-                            ?>                            
+                            ?>                             -->
 
                             <!-- Google Scholar - Fim -->
                         
