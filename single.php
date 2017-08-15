@@ -201,17 +201,20 @@ if (!empty($_POST['delete_file'])) {
             </div>
             <div class="uk-width-3-4@m">
                 
-                        <article class="uk-article">
-                        <!--Type -->
-                        <?php if (!empty($cursor["_source"]['type'])): ?>
-                            <p class="uk-article-meta">    
-                                <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
-                            </p>    
-                        <?php endif; ?>                            
-                        <h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
-                            
+                <article class="uk-article">
+                    <!--Type -->
+                    <?php if (!empty($cursor["_source"]['type'])): ?>
+                        <p class="uk-article-meta">    
+                            <a href="result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
+                        </p>    
+                    <?php endif; ?>                            
+                    <h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
+
+                    <div uk-grid>
+
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['author'])): ?>
+                            <div>
                             <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Autores'); ?>:<ul class="uk-list uk-list-striped uk-text-small">
                             <?php foreach ($cursor["_source"]['author'] as $authors) {
                                 if (!empty($authors["person"]["affiliation"]["name"])) {
@@ -224,20 +227,12 @@ if (!empty($_POST['delete_file'])) {
                             }   
                             ?>
                             </ul></p>
+                            </div>
                         <?php endif; ?>
-                            
-                        <!--Unidades USP -->
-                        <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                <?php echo $t->gettext('Unidades USP'); ?>:
-                                    <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
-                                    <a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a>
-                                    <?php endforeach;?>
-                            </p>
-                         <?php endif; ?>                             
-                            
+
                         <!--Authors USP -->
                         <?php if (!empty($cursor["_source"]['authorUSP'])): ?>
+                            <div>
                             <p class="uk-text-small uk-margin-remove">
                                 <?php echo $t->gettext('Autores USP'); ?>:
                                 <ul class="uk-list uk-list-striped uk-text-small">
@@ -246,49 +241,86 @@ if (!empty($_POST['delete_file'])) {
                                 <?php endforeach;?>
                                 </ul>
                             </p>
-                        <?php endif; ?>                                
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+
+                    <hr>
+
+                    <div uk-grid>                                                
+                            
+                        <!--Unidades USP -->
+                        <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
+                            <div>
+                            <p class="uk-text-small uk-margin-remove">
+                                <?php echo $t->gettext('Unidades USP'); ?>:
+                                    <ul class="uk-list uk-list-striped uk-text-small">
+                                    <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
+                                    <li><a href="result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a></li>
+                                    <?php endforeach;?>
+                                    </ul>
+                            </p>
+                            </div>
+                         <?php endif; ?>                
                             
                         <!--Assuntos -->
                         <?php if (!empty($cursor["_source"]['about'])): ?>
-                        <p class="uk-text-small uk-margin-remove">
+                            <div>
+                            <p class="uk-text-small uk-margin-remove">
                             <?php echo $t->gettext('Assuntos'); ?>:
                             <ul class="uk-list uk-list-striped uk-text-small">                            
                             <?php foreach ($cursor["_source"]['about'] as $subject) : ?>
                                 <li><a href="result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a></li>
                             <?php endforeach;?>
                             </ul>
-                        </p>
+                            </p>
+                            </div>
                         <?php endif; ?>
 
                         <!--Assuntos proveniente da BDTD -->
                         <?php if (!empty($cursor["_source"]["USP"]['about_BDTD'])): ?>
+                        <div>
                         <p class="uk-text-small uk-margin-remove">
                             <?php echo $t->gettext('Assuntos provenientes das teses'); ?>:                            
                             <?php foreach ($cursor["_source"]["USP"]['about_BDTD'] as $subject_BDTD) : ?>
                                 <a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a>
                             <?php endforeach;?>
                         </p>
+                        </div>
                         <?php endif; ?>                                                   
 
                         <!-- Idioma -->
                         <?php if (!empty($cursor["_source"]['language'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
+                            <div>
+                            <p class="uk-text-small uk-margin-remove">                                
                                 <?php echo $t->gettext('Idioma'); ?>:
+                                <ul class="uk-list uk-list-striped uk-text-small">
                                    <?php foreach ($cursor["_source"]['language'] as $language): ?>
-                                        <a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a>
-                                   <?php endforeach;?>  
+                                        <li><a href="result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a></li>
+                                   <?php endforeach;?>
+                                </ul>     
                             </p>
+                            </div>
                         <?php endif; ?>
+
+                    </div>
+                    
+                    <hr>
                             
-                        <!-- Resumo -->
-                        <?php if (!empty($cursor["_source"]['description'])): ?>
-                            <p class="uk-text-small uk-margin-remove">
-                                <?php echo $t->gettext('Resumo'); ?>:
-                                   <?php foreach ($cursor["_source"]['description'] as $resumo): ?>
-                                        <?php echo $resumo;?>
-                                   <?php endforeach;?>     
-                            </p>
-                        <?php endif; ?>                            
+                    <!-- Resumo -->
+                    <?php if (!empty($cursor["_source"]['description'])): ?>
+                        <p class="uk-text-small uk-margin-remove">
+                            <?php echo $t->gettext('Resumo'); ?>:
+                                <?php foreach ($cursor["_source"]['description'] as $resumo): ?>
+                                    <?php echo $resumo;?>
+                                <?php endforeach;?>     
+                        </p>
+                    <?php endif; ?>
+
+                    <hr>
+
+                    <div class="uk-column-1-2">                            
                             
                         <!-- Imprenta -->
                         <?php if (!empty($cursor["_source"]['publisher'])): ?>
@@ -347,6 +379,9 @@ if (!empty($_POST['delete_file'])) {
                                     <?php endif; ?>
                                 </ul></p>
                         <?php endif; ?>
+
+
+                    </div>
 
                         <?php if (isset($issn_info["serial-metadata-response"])): ?>
                             <div class="uk-alert">
@@ -789,11 +824,11 @@ if (!empty($_POST['delete_file'])) {
         
         <hr class="uk-grid-divider">
         
-<?php include('inc/footer.php'); ?>    
-    </div>
-<?php include('inc/offcanvas.php'); ?>
+        <?php include('inc/footer.php'); ?>   
 
-             
+        </div>
+
+        <?php include('inc/offcanvas.php'); ?>
         
     </body>
 </html>
