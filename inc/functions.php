@@ -790,13 +790,13 @@ class API {
     static function google_scholar_py($record) {
 
         if (!empty($record["doi"])) {
-            $command_string = 'google_scholar_py/scholar.py -c 1 --all "'.$record["doi"].'" --csv';		
+            $command_string = 'google_scholar_py/scholar.py -c 1 --all "'.$record["doi"].'" --cookie-file=cookies.txt --csv';		
             $command = escapeshellcmd($command_string);
             $output = shell_exec($command);
         } 
         else {
             $array_name = explode(',',$record["author"][0]["person"]["name"]);
-            $command_string = 'google_scholar_py/scholar.py -c 1 -p "'.htmlentities($record["name"]).'" -a "'.htmlentities($array_name[0]).'"  --csv';	
+            $command_string = 'google_scholar_py/scholar.py -c 1 -p "'.htmlentities($record["name"]).'" -a "'.htmlentities($array_name[0]).'" --cookie-file=cookies.txt --csv';	
             $command = escapeshellcmd($command_string);
             $output = shell_exec($command);
         }	
