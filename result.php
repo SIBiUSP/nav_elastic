@@ -8,10 +8,18 @@
     $limit = $result_get['limit'];
     $page = $result_get['page'];
     $skip = $result_get['skip'];
+
+    if (isset($_GET["sort"])) {
+        $query['sort'] = [
+            ['name.keyword' => ['order' => 'asc']],
+        ];
+    } else {
+        $query['sort'] = [
+            ['datePublished.keyword' => ['order' => 'desc']],
+        ];
+    }
     
-    $query['sort'] = [
-	['datePublished.keyword' => ['order' => 'desc']],
-    ];    
+
 
     $params = [];
     $params["index"] = $index;
@@ -346,6 +354,13 @@
                         </div>
                         <div>
                             <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> <?php echo $t->gettext('registros'); ?></p>
+                        </div>
+                        <div>
+                            <?php if (isset($_GET["sort"])) :?>
+                                <a href="http://<?php echo $_SERVER['SERVER_NAME']; ?><?php echo $_SERVER['SCRIPT_NAME']; ?>?<?php echo str_replace("&sort=title_az","",$_SERVER['QUERY_STRING']); ?>">Ordenar por Data</a>                            
+                            <?php else :?>
+                                <a href="http://<?php echo $_SERVER['SERVER_NAME']; ?><?php echo $_SERVER['SCRIPT_NAME']; ?>?<?php echo $_SERVER['QUERY_STRING']; ?>&sort=title_az">Ordenar por Título</a>
+                            <?php endif; ?> 
                         </div>
                         <div>
                             <ul class="uk-pagination">
