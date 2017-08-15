@@ -282,10 +282,12 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]["USP"]['about_BDTD'])): ?>
                         <div>
                         <p class="uk-text-small uk-margin-remove">
-                            <?php echo $t->gettext('Assuntos provenientes das teses'); ?>:                            
+                            <?php echo $t->gettext('Assuntos provenientes das teses'); ?>:
+                            <ul class="uk-list uk-list-striped uk-text-small">                            
                             <?php foreach ($cursor["_source"]["USP"]['about_BDTD'] as $subject_BDTD) : ?>
-                                <a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a>
+                                <li><a href="result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a></li>
                             <?php endforeach;?>
+                            </ul>
                         </p>
                         </div>
                         <?php endif; ?>                                                   
