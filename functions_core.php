@@ -503,4 +503,46 @@ class citation {
     
 }
 
+class ui {
+    
+    /* Montar a barra de paginação */
+    static function pagination ($page, $total, $limit, $t){
+
+        echo '<div class="uk-child-width-expand@s uk-grid-divider" uk-grid>';
+            echo '<div>';
+                echo '<ul class="uk-pagination">';
+                if ($page == 1) {
+                    echo '<li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
+                } else {
+                    print_r($page);
+                    $_GET["page"] = $page-1 ;
+                    echo '<li><a href="result.php?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
+                }
+                echo '</ul>';
+            echo '</div>';
+            echo '<div>';
+                echo '<p class="uk-text-center">'.number_format($total,0,',','.') .'&nbsp;'. $t->gettext('registros').'</p>'; 
+            echo '</div>';
+            echo '<div>';
+                if (isset($_GET["sort"])) {
+                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace("&sort=title_az","",$_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
+                } else {
+                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=title_az">'.$t->gettext('Ordenar por Título').'</a>';
+                }
+            echo '</div>';
+            echo '<div>';
+                echo '<ul class="uk-pagination">';
+                    if ($total/$limit > $page){
+                        $_GET["page"] = $page+1;
+                        echo '<li class="uk-margin-auto-left"><a href="result.php?'.http_build_query($_GET).'">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
+                    } else {
+                        echo '<li class="uk-margin-auto-left"><a href="#">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
+                    }
+                echo '</ul>';    
+            echo '</div>';
+        echo '</div>';      
+
+    }    
+}
+
 ?>
