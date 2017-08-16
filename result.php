@@ -18,8 +18,6 @@
             ['datePublished.keyword' => ['order' => 'desc']],
         ];
     }
-    
-
 
     $params = [];
     $params["index"] = $index;
@@ -29,11 +27,7 @@
     $params["body"] = $query; 
 
     $cursor = $client->search($params);
-    $total = $cursor["hits"]["total"];
-
-    /*pagination - start*/
-    $get_data = $_GET;    
-    /*pagination - end*/    
+    $total = $cursor["hits"]["total"];   
 
     /* Citeproc-PHP*/
 
@@ -341,38 +335,7 @@
                 <!-- Vocabulário controlado - Fim -->
                     
                     <!-- Navegador de resultados - Início -->
-                    <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
-                        <div>
-                            <ul class="uk-pagination">
-                                <?php if ($page == 1) :?>
-                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
-                                <?php else :?>
-                                    <?php $get_data["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
-                                <?php endif; ?>
-                            </ul>    
-                        </div>
-                        <div>
-                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> <?php echo $t->gettext('registros'); ?></p>
-                        </div>
-                        <div>
-                            <?php if (isset($_GET["sort"])) :?>
-                                <a href="http://<?php echo $_SERVER['SERVER_NAME']; ?><?php echo $_SERVER['SCRIPT_NAME']; ?>?<?php echo str_replace("&sort=title_az","",$_SERVER['QUERY_STRING']); ?>">Ordenar por Data</a>                            
-                            <?php else :?>
-                                <a href="http://<?php echo $_SERVER['SERVER_NAME']; ?><?php echo $_SERVER['SCRIPT_NAME']; ?>?<?php echo $_SERVER['QUERY_STRING']; ?>&sort=title_az">Ordenar por Título</a>
-                            <?php endif; ?> 
-                        </div>
-                        <div>
-                            <ul class="uk-pagination">
-                                <?php if ($total/$limit > $page): ?>
-                                    <?php $get_data["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
-                                <?php else :?>
-                                    <li class="uk-margin-auto-left"><a href="#"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
-                                <?php endif; ?>
-                            </ul>                            
-                        </div>
-                    </div>
+                        <?php ui::pagination ($page, $total, $limit, $t); ?>
                     <!-- Navegador de resultados - Fim -->                    
                     
                     <hr class="uk-grid-divider">
@@ -578,32 +541,8 @@
                     <hr class="uk-grid-divider">
 
                     <!-- Navegador de resultados - Início -->
-                    <div class="uk-child-width-expand@s uk-grid-divider" uk-grid>
-                        <div>
-                            <ul class="uk-pagination">
-                                <?php if ($page == 1) :?>
-                                    <li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
-                                <?php else :?>
-                                    <?php $get_data["page"] = $page-1 ; ?>
-                                    <li><a href="result.php?<?php echo http_build_query($get_data); ?>"><span class="uk-margin-small-right" uk-pagination-previous></span> <?php echo $t->gettext('Anterior'); ?></a></li>
-                                <?php endif; ?>
-                            </ul>    
-                        </div>
-                        <div>
-                            <p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> <?php echo $t->gettext('registros'); ?></p>
-                        </div>
-                        <div>
-                            <ul class="uk-pagination">
-                                <?php if ($total/$limit > $page): ?>
-                                    <?php $get_data["page"] = $page+1 ; ?>
-                                    <li class="uk-margin-auto-left"><a href="result.php?<?php echo http_build_query($get_data); ?>"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
-                                <?php else :?>
-                                    <li class="uk-margin-auto-left"><a href="#"><?php echo $t->gettext('Próxima'); ?> <span class="uk-margin-small-left" uk-pagination-next></span></a></li>
-                                <?php endif; ?>
-                            </ul>                            
-                        </div>
-                    </div>
-                    <!-- Navegador de resultados - Fim -->    
+                    <?php ui::pagination ($page, $total, $limit, $t); ?>
+                    <!-- Navegador de resultados - Fim --> 
                    
                 </div>
             </div>
