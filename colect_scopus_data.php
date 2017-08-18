@@ -12,7 +12,7 @@
     $params["index"] = $index;
     $params["type"] = $type;
     $params["size"] = 10;
-    $params["body"] = $query; 
+    $params["body"] = $query;
 
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
