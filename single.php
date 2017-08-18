@@ -145,12 +145,9 @@ if (!empty($_POST['delete_file'])) {
                         </li>
                     </ul>
                     <?php if (!empty($cursor["_source"]['doi'])): ?>
-                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
                         <hr>
-                        <!-- 
-                            <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
-                        -->
-                    
+                        <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
                     <?php
                         if ($use_api_elsevier == true) {
                             $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi']),$api_elsevier);
@@ -585,104 +582,6 @@ if (!empty($_POST['delete_file'])) {
                         <!-- < ?php endif; ?> -->
                         <!-- Citescore - Fim -->                                                     
 
-                            <!-- Google Scholar - Início -->
-                            <!-- < ?php
-
-                                if (!empty($cursor["_source"]["USP"]["google_scholar"]["valid"])) {
-                                    if ($cursor["_source"]["USP"]["google_scholar"]["valid"] < date("Y-m-d")) {
-
-                                        $gscholar_response = API::google_scholar_py($cursor["_source"]);
-                                        if (!empty($gscholar_response)){
-                                            echo '
-                                                <div class="uk-alert-primary" uk-alert>
-                                                    <a class="uk-alert-close" uk-close></a>
-                                                    <h5>Informações coletadas no Google Scholar</h5>
-                                                    <li class="uk-h6">                                    
-                                            ';
-                                            echo '<p class="uk-text-small uk-margin-remove">Título: '.$gscholar_response['title'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove">Ano: '.$gscholar_response['year'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$gscholar_response['num_citations'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$gscholar_response['num_versions'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_versions'].'">Link para as versões</a></p>';
-                                            if ($gscholar_response['url_citations'] != "None") {
-                                                echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
-                                            }
-                                            echo '</li>';
-                                            echo '</div>';
-                                            $body_gscholar["doc"]["USP"]["google_scholar"] = $gscholar_response;
-                                            if ($body_gscholar["doc"]["USP"]["google_scholar"]["title"] == $cursor["_source"]["name"]) {
-                                                $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Sim";
-                                            } else {
-                                                $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Não";
-                                            }
-
-                                            $date = date_create(date("Y-m-d"));
-                                            date_add($date, date_interval_create_from_date_string('30 days'));
-                                            $body_gscholar["doc"]["USP"]["google_scholar"]["valid"]= $date;
-
-                                            $body_gscholar["doc_as_upsert"] = true;
-                                            elasticsearch::elastic_update($_GET['_id'],"producao",$body_gscholar);
-                                        }
-
-                                    } else {
-
-                                            echo '
-                                                <div class="uk-alert-primary" uk-alert>
-                                                    <a class="uk-alert-close" uk-close></a>
-                                                    <h5>Informações coletadas no Google Scholar</h5>
-                                                    <li class="uk-h6">                                    
-                                            ';
-                                            echo '<p class="uk-text-small uk-margin-remove">Título: '.$cursor["_source"]["USP"]["google_scholar"]['title'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove">Ano: '.$cursor["_source"]["USP"]["google_scholar"]['year'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$cursor["_source"]["USP"]["google_scholar"]['num_citations'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$cursor["_source"]["USP"]["google_scholar"]['num_versions'].'</p>';
-                                            echo '<p class="uk-text-small uk-margin-remove"><a href="'.$cursor["_source"]["USP"]["google_scholar"]['url_versions'].'">Link para as versões</a></p>';
-                                            if ($cursor["_source"]["USP"]["google_scholar"]['url_citations'] != "None") {
-                                                echo '<p class="uk-text-small uk-margin-remove"><a href="'.$cursor["_source"]["USP"]["google_scholar"]['url_citations'].'">Link para as citações</a></p>';
-                                            }
-                                            echo '</li>';
-                                            echo '</div>';
-
-                                    }
-                                } else {
-                                    $gscholar_response = API::google_scholar_py($cursor["_source"]);
-                                    if (!empty($gscholar_response)){
-                                        echo '
-                                            <div class="uk-alert-primary" uk-alert>
-                                                <a class="uk-alert-close" uk-close></a>
-                                                <h5>Informações coletadas no Google Scholar</h5>
-                                                <li class="uk-h6">                                    
-                                        ';
-                                        echo '<p class="uk-text-small uk-margin-remove">Título: '.$gscholar_response['title'].'</p>';
-                                        echo '<p class="uk-text-small uk-margin-remove">Ano: '.$gscholar_response['year'].'</p>';
-                                        echo '<p class="uk-text-small uk-margin-remove">Número de citações: '.$gscholar_response['num_citations'].'</p>';
-                                        echo '<p class="uk-text-small uk-margin-remove">Número de versões: '.$gscholar_response['num_versions'].'</p>';
-                                        echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_versions'].'">Link para as versões</a></p>';
-                                        echo '<p class="uk-text-small uk-margin-remove"><a href="'.$gscholar_response['url_citations'].'">Link para as citações</a></p>';
-                                        echo '</li>';
-                                        echo '</div>';
-                                        $body_gscholar["doc"]["USP"]["google_scholar"] = $gscholar_response;
-                                        if ($body_gscholar["doc"]["USP"]["google_scholar"]["title"] == $cursor["_source"]["name"]) {
-                                            $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Sim";
-                                        } else {
-                                            $body_gscholar["doc"]["USP"]["google_scholar"]["match"] = "Não";
-                                        }
-
-                                        $date = date_create(date("Y-m-d"));
-                                        date_add($date, date_interval_create_from_date_string('30 days'));
-                                        $body_gscholar["doc"]["USP"]["google_scholar"]["valid"]= $date;
-
-                                        $body_gscholar["doc_as_upsert"] = true;
-                                        elasticsearch::elastic_update($_GET['_id'],"producao",$body_gscholar);
-                                    }                                    
-                                }
-
-
-
-                            ?>                             -->
-
-                            <!-- Google Scholar - Fim -->
-                        
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                         <div class="uk-alert-warning">
                             <h4 class="uk-margin-top">Upload do texto completo:</h4>
