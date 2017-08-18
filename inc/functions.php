@@ -706,8 +706,8 @@ class API {
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'https://api.elsevier.com/content/abstract/citations?doi='.$doi.'&apiKey='.$api_elsevier.'&httpAccept=application%2Fjson',
-            CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+            CURLOPT_URL => 'https://api.elsevier.com/content/abstract/citation-count?doi='.$doi.'&apiKey='.$api_elsevier.'&httpAccept=application%2Fjson',
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A'
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
