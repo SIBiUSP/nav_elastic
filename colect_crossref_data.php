@@ -22,7 +22,7 @@
 
         $doi_data = query_doi($r["_source"]["doi"]);
         
-        $body["doc"]["crossref"] = $doi_data;
+        $body["doc"]["USP"]["crossref"] = $doi_data;
         $body["doc_as_upsert"] = true;
         $resultado_crossref = elasticsearch::store_record($r["_id"],$type,$body);
         print_r($resultado_crossref);
