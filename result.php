@@ -179,7 +179,7 @@
                                     $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
                                     $facets->facet("releasedEvent",50,$t->gettext('Nome do evento'),null,"_term",$_GET["search"]);
                                     $facets->facet("country",200,$t->gettext('País de publicação'),null,"_term",$_GET["search"]);
-                                    $facets->facet("grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.indexacao",50,$t->gettext('Indexado em'),null,"_term",$_GET["search"]);

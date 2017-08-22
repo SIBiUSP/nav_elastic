@@ -207,7 +207,7 @@ if (!empty($_POST['delete_file'])) {
                     <?php endif; ?>                            
                     <h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
 
-                    <div uk-grid>
+                    <div class="uk-flex" uk-grid>
 
                         <!--List authors -->
                         <?php if (!empty($cursor["_source"]['author'])): ?>
@@ -241,12 +241,6 @@ if (!empty($_POST['delete_file'])) {
                             </div>
                         <?php endif; ?>
 
-                    </div>
-
-                    <hr>
-
-                    <div uk-grid>                                                
-                            
                         <!--Unidades USP -->
                         <?php if (!empty($cursor["_source"]['unidadeUSP'])): ?>
                             <div>
@@ -259,8 +253,8 @@ if (!empty($_POST['delete_file'])) {
                                     </ul>
                             </p>
                             </div>
-                         <?php endif; ?>                
-                            
+                         <?php endif; ?>                           
+
                         <!--Assuntos -->
                         <?php if (!empty($cursor["_source"]['about'])): ?>
                             <div>
@@ -287,7 +281,21 @@ if (!empty($_POST['delete_file'])) {
                             </ul>
                         </p>
                         </div>
-                        <?php endif; ?>                                                   
+                        <?php endif; ?>
+
+                        <!-- Agências de fomento -->
+                        <?php if (!empty($cursor["_source"]['funder'])): ?>
+                            <div>
+                            <p class="uk-text-small uk-margin-remove">
+                            <?php echo $t->gettext('Agências de fomento'); ?>:
+                            <ul class="uk-list uk-list-striped uk-text-small">                            
+                            <?php foreach ($cursor["_source"]['funder'] as $funder) : ?>
+                                <li><a href="result.php?search[]=funder.keyword:&quot;<?php echo $funder;?>&quot;"><?php echo $funder;?></a></li>
+                            <?php endforeach;?>
+                            </ul>
+                            </p>
+                            </div>
+                        <?php endif; ?>                                                                           
 
                         <!-- Idioma -->
                         <?php if (!empty($cursor["_source"]['language'])): ?>
