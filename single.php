@@ -26,7 +26,7 @@ $cursor_metrics = elasticsearch::elastic_get($_GET['_id'],"metrics",null);
 
 /* Atualizar métricas para exibição */
 $update_counter["doc"]["USP"]["views_counter"] = $cursor_metrics["_source"]["counter"];
-$update_counter["doc"]["doc_as_upsert"] = true;
+$update_counter["doc_as_upsert"] = true;
 elasticsearch::elastic_update($_GET['_id'],$type,$update_counter);
 
 /* Exportador RIS */
