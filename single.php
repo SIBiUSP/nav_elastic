@@ -16,15 +16,23 @@ $citeproc_nlm = new citeproc($csl_nlm,$lang);
 $citeproc_vancouver = new citeproc($csl_nlm,$lang);
 $mode = "reference";
 
+/* Contador */
+paginaSingle::counter($_GET['_id'],$client);
+
 /* Montar a consulta */
 $cursor = elasticsearch::elastic_get($_GET['_id'],$type,null);
+$cursor_metrics = elasticsearch::elastic_get($_GET['_id'],"metrics",null);
 
+
+/* Atualizar métricas para exibição */
+$update_counter["doc"]["USP"]["views_counter"] = $cursor_metrics["_source"]["counter"];
+$update_counter["doc"]["doc_as_upsert"] = true;
+elasticsearch::elastic_update($_GET['_id'],$type,$update_counter);
 
 /* Exportador RIS */
 $record_blob = exporters::RIS($cursor);
 
-/* Contador */
-paginaSingle::counter($_GET['_id'],$client); 
+
 
 /* Upload de PDF */
 
