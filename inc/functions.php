@@ -138,7 +138,10 @@ class paginaInicial {
 
 class paginaSingle {
 
-    public function counter ($_id,$client) {
+    public static function counter ($_id,$client) {
+
+        global $index;
+
         $query = 
         '
         {
@@ -155,12 +158,12 @@ class paginaSingle {
         }
         ';  
         
-        $params = [
-            'index' => 'sibi',
-            'type' => 'producao_metrics',
-            'id' => $_id,
-            'body' => $query
-        ];
+        $params = [];
+        $params['index'] = $index;
+        $params['type'] = 'metrics';
+        $params['id'] = $_id;
+        $params['body'] = $query;
+
         $response = $client->update($params);        
         //print_r($response);
     }

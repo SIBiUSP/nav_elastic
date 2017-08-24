@@ -24,7 +24,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'],$type,null);
 $record_blob = exporters::RIS($cursor);
 
 /* Contador */
-//counter($_GET['_id'],$client); (Necessário melhorar)
+paginaSingle::counter($_GET['_id'],$client); 
 
 /* Upload de PDF */
 
