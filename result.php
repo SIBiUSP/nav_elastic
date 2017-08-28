@@ -221,7 +221,7 @@
                                     $facets->facet("USP.about_BDTD",50,$t->gettext('Assuntos provenientes das teses'),null,"_term",$_GET["search"]);
                                 ?>
                             </ul>
-                            <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                            <?php if(!empty($_SESSION['oauthuserdata'])): ?> 
                                 <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                                 <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                                 <hr>
@@ -231,6 +231,8 @@
                                     $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
                                     $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);                                
                                     $facets->facet("authorUSP.codpes",100,"Número USP",null,"_term",$_GET["search"]);
+                                    $facets->facet("isPartOf.issn",100,"ISSN",null,"_term",$_GET["search"]);
+                                    $facets->facet("doi",100,"DOI",null,"_term",$_GET["search"]);
                                 ?>
                                 </ul>
                             <?php endif; ?>
