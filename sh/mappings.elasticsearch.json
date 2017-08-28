@@ -52,6 +52,17 @@ PUT /sibi/producao/_mapping
                     "ignore_above": 256
                   }
                 }
+              },
+              "USP":{
+                "properties":{
+                  "scopus_api_data":{
+                    "properties":{
+                      "valid_date":{
+                        "type": "date"
+                      }
+                    }
+                  }
+                }
               },              
               "author": {
                 "properties": {
