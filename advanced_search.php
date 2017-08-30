@@ -72,9 +72,16 @@
                         <form role="form" action="result.php" method="get" name="searchIBox">
                             <fieldset>
                                 <legend class="uk-legend">Assunto do Vocabulário Controlado</legend>
-                                <label><a href="#" onclick="creaPopup('inc/popterms/index.php?t=searchIBox&f=searchIBox&v=http://vocab.sibi.usp.br/pt-br/services.php&loadConfig=1'); return false;">Consultar o Vocabulário Controlado USP</a></label><br/>
-                                <input class="uk-input" id='searchIBox' type="text" name="search[]" data-validation="required">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchIBox').value = 'about.keyword:' + String.fromCharCode(34) + document.getElementById('searchIBox').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>                          
+
+
+                                <label><a href="#" data-popterms-server="inc/popterms/server/"
+                                            data-popterms-vocabulary="VOCAB"
+                                            data-popterms-target="#vocab"> Selecione um termo do Vocabulário Controlado da USP</a>
+                                </label>            
+                                <br/>
+                                <input id="vocab" class="uk-input" type="text" name="search[]" data-validation="required">
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('vocab').value = 'about.keyword:' + String.fromCharCode(34) + document.getElementById('vocab').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>
+                                                                            
                             </fieldset>
                         </form>                            
                     </div>
@@ -86,6 +93,13 @@
         </div>
         
     <?php include('inc/offcanvas.php'); ?>
+
+    <!-- PopTerms Client JavaScript -->
+    <script src="inc/popterms/client/js/popterms.js"></script>
+    <script>
+        PopTerms.size(400, 500);
+        PopTerms.separator = " - ";
+    </script>    
         
     </body>
 </html>

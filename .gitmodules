@@ -4,3 +4,6 @@
 [submodule "google_scholar_py"]
 	path = google_scholar_py
 	url = https://github.com/ckreibich/scholar.py.git
+[submodule "inc/popterms"]
+	path = inc/popterms
+	url = https://github.com/tematres/popterms.git
