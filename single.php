@@ -661,6 +661,7 @@ if (!empty($_POST['delete_file'])) {
                                     <select name="rights" data-validation="required">
                                         <option value="">Informe o tipo de acesso <span uk-icon="icon: caret-down"></span></option>
                                         <option value="Acesso aberto">Acesso aberto</option>
+                                        <option value="Pré-print">Pré-print</option>
                                         <option value="Embargado">Embargado</option>
                                     </select>
                                 </div><br/><br/>
