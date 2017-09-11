@@ -513,8 +513,7 @@ class ui {
                 echo '<ul class="uk-pagination">';
                 if ($page == 1) {
                     echo '<li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
-                } else {
-                    print_r($page);
+                } else {                    
                     $_GET["page"] = $page-1 ;
                     echo '<li><a href="result.php?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
                 }
