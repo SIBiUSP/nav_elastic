@@ -175,7 +175,7 @@
                                     $facets->facet("datePublished",120,$t->gettext('Ano de publicação'),"desc","_term",$_GET["search"]);
                                     $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
                                     $facets->facet("language",40,$t->gettext('Idioma'),null,"_term",$_GET["search"]);
-                                    $facets->facet("isPartOf.name",50,$t->gettext('É parte de ...'),null,"_term",$_GET["search"]);
+                                    $facets->facet("isPartOf.name",50,$t->gettext('Título da fonte'),null,"_term",$_GET["search"]);
                                     $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
                                     $facets->facet("releasedEvent",50,$t->gettext('Nome do evento'),null,"_term",$_GET["search"]);
                                     $facets->facet("country",200,$t->gettext('País de publicação'),null,"_term",$_GET["search"]);
