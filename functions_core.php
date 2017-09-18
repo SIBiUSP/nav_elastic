@@ -16,7 +16,7 @@ class elasticsearch {
      * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
      * 
      */
-    public static function elastic_get ($_id,$type,$fields,$alternative_index = '') {
+    public static function elastic_get ($_id,$type,$fields,$alternative_index = "") {
         global $index;
         global $client;
         $params = [];
@@ -45,7 +45,7 @@ class elasticsearch {
      * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
      * 
      */    
-    public static function elastic_search ($type,$fields,$size,$body,$alternative_index = '') {
+    public static function elastic_search ($type,$fields,$size,$body,$alternative_index = "") {
         global $index;
         global $client;
         $params = [];
@@ -74,7 +74,7 @@ class elasticsearch {
      * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
      * 
      */     
-    public static function elastic_update ($_id,$type,$body,$alternative_index = '') {
+    public static function elastic_update ($_id,$type,$body,$alternative_index = "") {
         global $index;
         global $client;
         $params = [];
@@ -101,7 +101,7 @@ class elasticsearch {
      * @param string $type Tipo de documento no índice do Elasticsearch     
      * 
      */     
-    public static function elastic_delete ($_id,$type,$body,$alternative_index = '') {
+    public static function elastic_delete ($_id,$type,$body,$alternative_index = "") {
         global $index;
         global $client;
         $params = [];
@@ -128,7 +128,7 @@ class elasticsearch {
      * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
      * 
      */     
-    public static function elastic_delete_by_query ($_id,$type,$body,$alternative_index = '') {
+    public static function elastic_delete_by_query ($_id,$type,$body,$alternative_index = "") {
         global $index;
         global $client;
         $params = [];
