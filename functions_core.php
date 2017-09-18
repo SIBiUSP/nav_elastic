@@ -16,11 +16,18 @@ class elasticsearch {
      * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
      * 
      */
-    public static function elastic_get ($_id,$type,$fields) {
+    public static function elastic_get ($_id,$type,$fields,$alternative_index = '') {
         global $index;
         global $client;
         $params = [];
-        $params["index"] = $index;
+
+        if( strlen($alternative_index) > 0 ){
+            $params["index"] = $alternative_index;
+        }
+        else {
+            $params["index"] = $index;
+        }
+                
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["_source"] = $fields;
@@ -38,11 +45,18 @@ class elasticsearch {
      * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
      * 
      */    
-    public static function elastic_search ($type,$fields,$size,$body) {
+    public static function elastic_search ($type,$fields,$size,$body,$alternative_index = '') {
         global $index;
         global $client;
         $params = [];
-        $params["index"] = $index;
+
+        if( strlen($alternative_index) > 0 ){
+            $params["index"] = $alternative_index;
+        }
+        else {
+            $params["index"] = $index;
+        }
+
         $params["type"] = $type;
         $params["_source"] = $fields;
         $params["size"] = $size;
@@ -60,11 +74,18 @@ class elasticsearch {
      * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
      * 
      */     
-    public static function elastic_update ($_id,$type,$body) {
+    public static function elastic_update ($_id,$type,$body,$alternative_index = '') {
         global $index;
         global $client;
         $params = [];
-        $params["index"] = $index;
+
+        if( strlen($alternative_index) > 0 ){
+            $params["index"] = $alternative_index;
+        }
+        else {
+            $params["index"] = $index;
+        }
+
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["body"] = $body;
@@ -80,11 +101,18 @@ class elasticsearch {
      * @param string $type Tipo de documento no índice do Elasticsearch     
      * 
      */     
-    public static function elastic_delete ($_id,$type,$body) {
+    public static function elastic_delete ($_id,$type,$body,$alternative_index = '') {
         global $index;
         global $client;
         $params = [];
-        $params["index"] = $index;
+
+        if( strlen($alternative_index) > 0 ){
+            $params["index"] = $alternative_index;
+        }
+        else {
+            $params["index"] = $index;
+        }  
+        
         $params["type"] = $type;
         $params["id"] = $_id;
         
@@ -100,11 +128,18 @@ class elasticsearch {
      * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
      * 
      */     
-    public static function elastic_delete_by_query ($_id,$type,$body) {
+    public static function elastic_delete_by_query ($_id,$type,$body,$alternative_index = '') {
         global $index;
         global $client;
         $params = [];
-        $params["index"] = $index;
+
+        if( strlen($alternative_index) > 0 ){
+            $params["index"] = $alternative_index;
+        }
+        else {
+            $params["index"] = $index;
+        }    
+
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["body"] = $body;
