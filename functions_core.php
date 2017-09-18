@@ -101,7 +101,7 @@ class elasticsearch {
      * @param string $type Tipo de documento no índice do Elasticsearch     
      * 
      */     
-    public static function elastic_delete ($_id,$type,$body,$alternative_index = "") {
+    public static function elastic_delete ($_id,$type,$alternative_index = "") {
         global $index;
         global $client;
         $params = [];
