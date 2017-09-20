@@ -358,6 +358,14 @@
                                                 <?php endforeach;?>
                                                 <?php endif; ?>                                   
                                             </p>
+                                            <p>
+                                            <?php                                             
+                                                if (!empty($r["_source"]['isbn'])) {
+                                                    $cover_link = 'http://covers.openlibrary.org/b/isbn/'.$r["_source"]["isbn"].'-M.jpg';
+                                                    echo  '<img src="'.$cover_link.'">';
+                                                } 
+                                            ?>
+                                            </p>
                                             
                                         </div>
                                         <div class="uk-width-4-5@m">    
