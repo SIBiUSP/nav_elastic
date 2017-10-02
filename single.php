@@ -532,9 +532,18 @@ if (!empty($_POST['delete_file'])) {
                                         echo '<p>API AMiner</p>';
                                         echo 'Título: '.$aminer["result"][0]["title"].'<br/>';
                                         echo 'Número de citações: '.$aminer["result"][0]["num_citation"].'<br/>';
-                                        echo 'Título do periódico: '.$aminer["result"][0]["venue"]["name"].'<br/>';
-                                        echo 'Volume: '.$aminer["result"][0]["venue"]["volume"].'<br/>';
-                                        echo 'Fascículo: '.$aminer["result"][0]["venue"]["issue"].'<br/>';
+                                        if (!empty($aminer["result"][0]["doi"])) {
+                                            echo 'DOI: '.$aminer["result"][0]["doi"].'<br/>';
+                                        }                                           
+                                        if (!empty($aminer["result"][0]["venue"]["name"])){
+                                            echo 'Título do periódico: '.$aminer["result"][0]["venue"]["name"].'<br/>';
+                                        }
+                                        if (!empty($aminer["result"][0]["venue"]["volume"])){
+                                            echo 'Volume: '.$aminer["result"][0]["venue"]["volume"].'<br/>';
+                                        }                                        
+                                        if (!empty($aminer["result"][0]["venue"]["issue"])) {
+                                            echo 'Fascículo: '.$aminer["result"][0]["venue"]["issue"].'<br/>';
+                                        }                                        
                                         //print_r($aminer["result"][0]);
                                         $update_aminer["doc"]["USP"]["aminer"] = $aminer["result"];
                                         $update_aminer["doc_as_upsert"] = true;
