@@ -1,502 +1,446 @@
 <!DOCTYPE html>
-<html lang="pt-br" dir="ltr">
-    <head>
-        <?php 
-            include('inc/config.php'); 
-            include('inc/functions.php');
-            include('inc/meta-header.php');
-        
-                if (array_key_exists("codpes", $_GET)) { 
-                    $result_get = get::analisa_get($_GET);
-                    //$query_complete = $result_get['query_complete'];
-                    $query_aggregate = $result_get['query_aggregate'];
-                    $query_complete = '
-                    {
-                    '.$result_get['query_aggregate'].'
-                    "size" : 10000
-                    }            
-                    ';                    
-                    $limit = $result_get['limit'];
-                    $page = $result_get['page'];                   
-                    
-                    $params = [
-                        'index' => 'sibi',
-                        'type' => 'producao',
-                        'size'=> $limit, 
-                        'body' => $query_complete
-                    ];  
+<?php
+    include('inc/config.php'); 
+    include('inc/functions.php');
 
-                    $cursor = $client->search($params);                        
-                    //print_r($cursor);    
-                    //$cursor = query_elastic($query_complete,$server);
-                    $total = $cursor["hits"]["total"];
-        
-                } 
-                    
-            /* Citeproc-PHP*/
-            include 'inc/citeproc-php/CiteProc.php';
-            $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
-            $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
-            $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
-            $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
-            $lang = "br";
-            $citeproc_abnt = new citeproc($csl_abnt,$lang);
-            $citeproc_apa = new citeproc($csl_apa,$lang);
-            $citeproc_nlm = new citeproc($csl_nlm,$lang);
-            $citeproc_vancouver = new citeproc($csl_nlm,$lang);
-            $mode = "reference"; 
-        
-            $ref_abnt[] = "";
-            $record = [];
-        
-        ?>
-        <title>BDPI USP - Autor USP</title>
-        <script src="inc/uikit/js/components/slideset.js"></script>
+    if (!empty($_GET)) {
+        $result_get = get::analisa_get($_GET);
+        $query = $result_get['query'];  
+        $limit = $result_get['limit'];
+        $page = $result_get['page'];
+        $skip = $result_get['skip'];
+
+        if (isset($_GET["sort"])) {
+            $query['sort'] = [
+                ['name.keyword' => ['order' => 'asc']],
+            ];
+        } else {
+            $query['sort'] = [
+                ['datePublished.keyword' => ['order' => 'desc']],
+            ];
+        }
+    
+        $params = [];
+        $params["index"] = $index;
+        $params["type"] = $type;
+        $params["size"] = 10000;
+        $params["from"] = $skip;
+        $params["body"] = $query; 
+    
+        $cursor = $client->search($params);
+        $total = $cursor["hits"]["total"];   
+                
+
+    /* Citeproc-PHP*/
+
+    include 'inc/citeproc-php/CiteProc.php';
+    $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
+    $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
+    $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
+    $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
+    $lang = "br";
+    $citeproc_abnt = new citeproc($csl_abnt,$lang);
+    $citeproc_apa = new citeproc($csl_apa,$lang);
+    $citeproc_nlm = new citeproc($csl_nlm,$lang);
+    $citeproc_vancouver = new citeproc($csl_nlm,$lang);
+    $mode = "reference";
+
+
+} else {
+    echo '<div class="uk-alert-danger" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    <p>Não foi informado nenhum parametro.</p>
+</div>';
+}    
+
+?>
+<html>
+    <head>
+        <?php
+            include('inc/meta-header.php'); 
+        ?>        
+        <title><?php echo $branch_abrev; ?> - Resultado da busca</title>
         <script src="inc/uikit/js/components/accordion.min.js"></script>
         <script src="inc/uikit/js/components/pagination.min.js"></script>
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
+        <script src="inc/uikit/js/components/tooltip.min.js"></script>
         
-        <!-- D3.js Libraries and CSS -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
 
-        <!-- UV Charts -->
-        <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
-        <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
-        <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-        <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
-        <script type="text/javascript" src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.js"></script>        
-        
+        <?php if ($year_result_graph == true) : ?>
+            <!-- D3.js Libraries and CSS -->
+            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
+
+            <!-- UV Charts -->
+            <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
+        <?php endif; ?>
+
         <!-- Altmetric Script -->
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+        
+        <!-- PlumX Script -->
+        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
 
-        <!-- Save as javascript -->
-        <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
-        <script>
-              function SaveAsFile(t,f,m) {
-                    try {
-                        var b = new Blob([t],{type:m});
-                        saveAs(b, f);
-                    } catch (e) {
-                        window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
-                    }
-                }
-        </script>         
         
     </head>
-
     <body>
+        <?php include('inc/navbar.php'); ?>
+        <br/><br/><br/>
+
         <?php
             if (file_exists("inc/analyticstracking.php")){
                 include_once("inc/analyticstracking.php");
             }
-        ?>
-        <?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-margin-large-top">
+        ?>        
+ 
+        <div class="uk-container">
+	    <div class="uk-width-1-1@s uk-width-1-1@m">
+	    
+	    
+		<nav class="uk-navbar-container uk-margin" uk-navbar>
 
-            <div class="uk-grid" data-uk-grid>                        
-                <div class="uk-width-small-1-2 uk-width-2-6@m"> 
+		    <div class="nav-overlay uk-navbar-left">
+
+			<a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"><?php echo $t->gettext('Clique para uma nova pesquisa'); ?></a>
+ 
+		    </div>
+
+		    <div class="nav-overlay uk-navbar-right">
+
+			<a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+
+		    </div>
+
+		    <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
+
+			<div class="uk-navbar-item uk-width-expand">
+			    <form class="uk-search uk-search-navbar uk-width-1-1">
+				<input type="hidden" name="fields[]" value="name">
+				<input type="hidden" name="fields[]" value="author.person.name">
+				<input type="hidden" name="fields[]" value="authorUSP.name">
+				<input type="hidden" name="fields[]" value="about">
+				<input type="hidden" name="fields[]" value="description"> 	    
+				<input class="uk-search-input" type="search" name="search[]" placeholder="<?php echo $t->gettext('Nova pesquisa...'); ?>" autofocus>
+			    </form>
+			</div>
+
+			<a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+
+		    </div>
+
+		</nav>	    	 
+
+		    
+	    </div>
+	   
+	    <div class="uk-width-1-1@s uk-width-1-1@m">
+	    
+		    <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
+		    				    
+			<p class="uk-margin-top" uk-margin>
+				<a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>	
+				<?php 
+				
+					if (!empty($_GET["search"])){
+                        foreach($_GET["search"] as $filters) {
+                            $filters_array[] = $filters;
+                            $name_field = explode(":",$filters);	
+                            $filters = str_replace($name_field[0].":","",$filters);				
+                            $diff["search"] = array_diff($_GET["search"],$filters_array);						
+                            $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                            echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                            unset($filters_array); 	
+                        }
+                    }	
+	
+				?>
+				
+			</p>
+		    <?php endif;?> 
+	    
+	    
+	    </div>	
+
+            <div class="uk-grid-divider" uk-grid>
+                <div class="uk-width-1-4@s uk-width-2-6@m">
                     <div class="uk-panel uk-panel-box">
-                        <form class="uk-form" method="get" action="result.php">
-                        <fieldset>
 
-                            <?php if (!empty($_GET["codpes"])) : ?>
-                            <legend>Filtros ativos</legend>
-                                <div class="uk-form-row">
-                                    <p><?php print_r($_GET["codpes"]); ?></p><br/>
-                                </div>
-                            <div class="uk-form-row"><button type="submit" class="uk-button-primary">Retirar filtros</button></div>
-                            <?php endif;?> 
-                        </fieldset>        
-                        </form>   
-                        <hr>
-                        <h3 class="uk-panel-title">Resumo</h3>    
-                        <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
+                        <!-- Facetas - Início -->
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Refinar busca'); ?></h3>
                             <hr>
-                        <?php
-                            $facets_author = new facets();
-                            $facets_author->query_aggregate = $query_aggregate;
-                            
-                            $facets_author->facet("base",10,"Base",null);
-                            $facets_author->facet("type",10,"Tipo de material",null);
-                            $facets_author->facet("unidadeUSPtrabalhos",100,"Unidade USP",null);             
-                            $facets_author->facet("departamentotrabalhos",100,"Departamento",null);             
-                            $facets_author->facet("authors",120,"Autores",null);
-                            $facets_author->facet("year",120,"Ano de publicação","desc");
-                            $facets_author->facet("subject",100,"Assuntos",null);
-                            $facets_author->facet("language",40,"Idioma",null);
-                            $facets_author->facet("ispartof",100,"É parte de ...",null);
-                            $facets_author->facet("evento",100,"Nome do evento",null);
-                            $facets_author->facet("country",200,"País de publicação",null);    
-                        ?>
-                        </ul>
-                        <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
-                        <ul class="uk-nav uk-nav-side uk-nav-parent-icon uk-margin-top" data-uk-nav="{multiple:true}">
-                            <hr>
-                        <?php 
-                            $facets_author->facet("authorUSP",100,"Autores USP",null);
-                            $facets_author->facet("codpes",100,"Número USP",null);
-                            $facets_author->facet("codpes_unidade",100,"Número USP / Unidade",null); 
-                            $facets_author->facet("internacionalizacao",30,"Internacionalização",null);                           
-                            $facets_author->facet("tipotese",30,"Tipo de tese",null);
-                            $facets_author->facet("fomento",100,"Agência de fomento",null);
-                            $facets_author->facet("indexado",100,"Indexado em",null);
-                            $facets_author->facet("issn_part",100,"ISSN",null);
-                            $facets_author->facet("areaconcentracao",100,"Área de concentração",null);
-                            $facets_author->facet("fatorimpacto",1000,"Fator de impacto","desc");
-                            $facets_author->facet("grupopesquisa",100,"Grupo de pesquisa",null);
-                            $facets_author->facet("colab",120,"País dos autores externos à USP",null);
-                            $facets_author->facet("colab_int_trab",100,"Colaboração - Internacionalização",null); 
-                            $facets_author->facet("colab_instituicao_trab",100,"Colaboração - Instituição",null); 
-                            $facets_author->facet("colab_instituicao_corrigido",100,"Colaboração - Instituição - Corrigido",null); 
-                            $facets_author->facet("dataregistroinicial",100,"Data de registro","desc");
-                            $facets_author->facet("dataregistro",100,"Data de registro e alterações","desc");
-                        ?>
-                        </ul>
+                            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
+                                <?php
+                                    $facets = new facets();
+                                    $facets->query = $query;
+                                
+                                    if (!isset($_GET["search"])) {
+                                        $_GET["search"] = null;                                    
+                                    }                            
 
-                        <hr>
-                        <form class="uk-form">
-                        <fieldset>
-                            <legend>Limitar datas</legend>
-
-                            <script>
-                                $( function() {
-                                $( "#limitar-data" ).slider({
-                                  range: true,
-                                  min: 1900,
-                                  max: 2030,
-                                  values: [ 1900, 2030 ],
-                                  slide: function( event, ui ) {
-                                    $( "#date" ).val( "year:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
-                                  }
-                                });
-                                $( "#date" ).val( "year:[" + $( "#limitar-data" ).slider( "values", 0 ) +
-                                  " TO " + $( "#limitar-data" ).slider( "values", 1 ) + "]");
-                                } );
-                            </script>
-                            <p>
-                              <label for="date">Selecionar período de tempo:</label>
-                              <input type="text" id="date" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
-                            </p>        
-                            <div id="limitar-data" class="uk-margin-bottom"></div>        
-                            <?php if(!empty($_GET["search"])): ?>
-                                <?php foreach($_GET["search"] as $search_expression): ?>
-                                    <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                            <div class="uk-form-row"><button class="uk-button-primary">Limitar datas</button></div>
-                        </fieldset>        
-                        </form>
-                        <hr>
-                        <?php if(!empty($_SESSION['oauthuserdata'])): ?>
-                                <fieldset>
-                                    <legend>Gerar relatório</legend>                  
-                                    <div class="uk-form-row"><a href="<?php echo 'http://'.$_SERVER["SERVER_NAME"].'/~bdpi/report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
-                                    </div>
-                                </fieldset>        
-                        <?php endif; ?>  
-                        
-                    </div>
-                    
-                </div>            
-            
-                <div class="uk-width-small-1-2 uk-width-4-6@m">
-                    
-                <div class="uk-alert" data-uk-alert>
-                    <a href="" class="uk-alert-close uk-close"></a>
-                
-                    
-                <?php $ano_bar = generateDataGraphBar($client, $query_aggregate, 'year', "_term", 'desc', 'Ano', 10); ?>
-
-                <div id="ano_chart" class="uk-visible-large"></div>
-                <script type="application/javascript">
-                    var graphdef = {
-                        categories : ['Ano'],
-                        dataset : {
-                            'Ano' : [<?= $ano_bar; ?>]
-                        }
-                    }
-                    var chart = uv.chart ('Bar', graphdef, {
-                        meta : {
-                            position: '#ano_chart',
-                            caption : 'Ano de publicação',
-                            hlabel : 'Ano',
-                            vlabel : 'Registros'
-                        },
-                        graph : {
-                            orientation : "Vertical"
-                        },
-                        dimension : {
-                            width: 600,
-                            height: 140
-                        }
-                    })
-                </script>                        
-                    </div>
-                    
-                    
-                    <div class="uk-grid uk-margin-top">
-                        <div class="uk-width-1-3"></div>
-                        <div class="uk-width-1-3"><p class="uk-text-center"><?php print_r(number_format($total,0,',','.'));?> registros</p></div>
-                        <div class="uk-width-1-3"></div>
-                    </div>
-                    
-                                    <ul class="uk-tab" data-uk-tab="{connect:'#tab-content'}">
-                                        <li class="uk-active" aria-expanded="true"><a href="#">Obras</a></li>
-                                        <li aria-expanded="false" class=""><a href="#">Ver em formato referência</a></li>
-                                    </ul>
-
-                                    <ul id="tab-content" class="uk-switcher uk-margin">
-                                        <li class="uk-active" aria-hidden="false">
-
-                    <div class="uk-width-1-1 uk-margin-top uk-description-list-line">
-                    <ul class="uk-list uk-list-line">   
-                    <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
-                        <li>                        
-                            <div class="uk-grid uk-flex-middle" data-uk-grid-   margin="">
-                                <div class="uk-width-2-10@m uk-row-first">
-                                    <div class="uk-panel uk-h6 uk-text-break">
-                                        <a href="result.php?type[]=<?php echo $r["_source"]['type'];?>"><?php echo ucfirst(strtolower($r["_source"]['type']));?></a>
-                                    </div>
-                                </div>
-                                <div class="uk-width-8-10@m uk-flex-middle">
+                                    $facets->facet("base",10,$t->gettext('Bases'),null,"_term",$_GET["search"]);
+                                    $facets->facet("type",100,$t->gettext('Tipo de material'),null,"_term",$_GET["search"]);
+                                    $facets->facet("unidadeUSP",100,$t->gettext('Unidades USP'),null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.departament",50,$t->gettext('Departamento'),null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.name",30,$t->gettext('Autores'),null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.name",50,$t->gettext('Autores USP'),null,"_term",$_GET["search"]);
+                                    $facets->facet("datePublished",120,$t->gettext('Ano de publicação'),"desc","_term",$_GET["search"]);
+                                    $facets->facet("about",50,$t->gettext('Assuntos'),null,"_term",$_GET["search"]);
+                                    $facets->facet("language",40,$t->gettext('Idioma'),null,"_term",$_GET["search"]);
+                                    $facets->facet("isPartOf.name",50,$t->gettext('Título da fonte'),null,"_term",$_GET["search"]);
+                                    $facets->facet("publisher.organization.name",50,$t->gettext('Editora'),null,"_term",$_GET["search"]);
+                                    $facets->facet("releasedEvent",50,$t->gettext('Nome do evento'),null,"_term",$_GET["search"]);
+                                    $facets->facet("country",200,$t->gettext('País de publicação'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.grupopesquisa",100,"Grupo de pesquisa",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.internacionalizacao",10,"Internacionalização",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("funder",50,$t->gettext('Agência de fomento'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.indexacao",50,$t->gettext('Indexado em'),null,"_term",$_GET["search"]);
+                                ?>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
+                                <?php 
+                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos normalizada",null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.affiliation.name_not_found",50,"Afiliação dos autores externos não normalizada",null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);   
+                                ?>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Métricas'); ?></li>
+                                <?php 
+                                    $facets->facet("USP.serial_metrics.qualis.2012.area",50,$t->gettext('Qualis 2010/2012 - Área'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.serial_metrics.qualis.2012.nota",50,$t->gettext('Qualis 2010/2012 - Nota'),null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("USP.serial_metrics.qualis.2012.area_nota",50,$t->gettext('Qualis 2010/2012 - Área / Nota'),null,"_term",$_GET["search"]);
+                                ?>                                
+                                <?php 
+                                    $facets->facet("USP.serial_metrics.qualis.2016.area",50,$t->gettext('Qualis 2013/2016 - Área'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.serial_metrics.qualis.2016.nota",50,$t->gettext('Qualis 2013/2016 - Nota'),null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("USP.serial_metrics.qualis.2016.area_nota",50,$t->gettext('Qualis 2013/2016 - Área / Nota'),null,"_term",$_GET["search"]);
+                                ?>
+                                <?php
+                                    $facets->facet("USP.WOS.coverage",50,$t->gettext('Cobertura na Web of Science'),null,"_term",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor",100,"JCR - Journal Impact Factor - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites",100,"JCR - Journal Impact Factor without Journal Self Cites - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score",100,"JCR - Eigenfactor Score - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.citescore.citescore.2016.citescore",100,"Citescore - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.citescore.citescore.2016.SJR",100,"SJR - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.citescore.citescore.2016.SNIP",100,"SNIP - 2016",$_GET["search"]);
+                                    $facets->facet("USP.citescore.citescore.2016.open_access",50,$t->gettext('Acesso aberto'),null,"_term",$_GET["search"]);
                                     
-                                    <ul class="uk-list">
-                                        <li class="uk-margin-top uk-h4">
-                                            <strong><a href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['title'];?> (<?php echo $r["_source"]['year']; ?>)</a></strong>
-                                        </li>
-                                        <li class="uk-h6">
-                                            Autores:
-                                            <?php if (!empty($r["_source"]['authors'])) : ?>
-                                            <?php foreach ($r["_source"]['authors'] as $autores) {
-                                                $authors_array[]='<a href="result.php?authors[]='.$autores.'">'.$autores.'</a>';
-                                            } 
-                                           $array_aut = implode(", ",$authors_array);
-                                            unset($authors_array);
-                                            print_r($array_aut);
-                                            ?>
-                                            
-                                           
-                                            <?php endif; ?>                           
-                                        </li>
-                                        
-                                        <?php if (!empty($r["_source"]['ispartof'])) : ?><li class="uk-h6">In: <a href="result.php?ispartof[]=<?php echo $r["_source"]['ispartof'];?>"><?php echo $r["_source"]['ispartof'];?></a></li><?php endif; ?>                                        
-                                        <li class="uk-h6">
-                                            Unidades USP:
-                                            <?php if (!empty($r["_source"]['unidadeUSP'])) : ?>
-                                            <?php $unique =  array_unique($r["_source"]['unidadeUSP']); ?>
-                                            <?php foreach ($unique as $unidadeUSP) : ?>
-                                                <a href="result.php?unidadeUSP[]=<?php echo $unidadeUSP;?>"><?php echo $unidadeUSP;?></a>
-                                            <?php endforeach;?>
-                                            <?php endif; ?>
-                                        </li>
-                                        
-                                        <li class="uk-h6">
-                                            Assuntos:
-                                            <?php if (!empty($r["_source"]['subject'])) : ?>
-                                            <?php foreach ($r["_source"]['subject'] as $assunto) : ?>
-                                                <a href="result.php?subject[]=<?php echo $assunto;?>"><?php echo $assunto;?></a>
-                                            <?php endforeach;?>
-                                            <?php endif; ?>
-                                        </li>
-                                        <?php if (!empty($r["_source"]['fatorimpacto'])) : ?>
-                                        <li class="uk-h6">
-                                            <p>Fator de impacto da publicação: <?php echo $r["_source"]['fatorimpacto'][0]; ?></p>
-                                        </li>
-                                        <?php endif; ?>
-                                        <li>
-                                            <?php if (!empty($r["_source"]['url'])||!empty($r["_source"]['doi'])) : ?>
-                                            <div class="uk-button-group" style="padding:15px 15px 15px 0;">     
-                                                <?php if (!empty($r["_source"]['url'])) : ?>
-                                                <?php foreach ($r["_source"]['url'] as $url) : ?>
-                                                <?php if ($url != '') : ?>
-                                                <a class="uk-button-small uk-button-primary" href="<?php echo $url;?>" target="_blank">Acesso online à fonte</a>
-                                                <?php endif; ?>
-                                                <?php endforeach;?>
-                                                <?php endif; ?>
-                                                <?php if (!empty($r["_source"]['doi'])) : ?>
-                                                <a class="uk-button-small uk-button-primary" href="http://dx.doi.org/<?php echo $r["_source"]['doi'][0];?>" target="_blank">Resolver DOI</a>
-                                                <?php endif; ?>
-                                            </div>
-                                            <?php endif; ?>
-                                        </li>
-                                        <li class="uk-h6 uk-margin-top">
-                                           <?php load_itens_new($r['_id']); ?>
-                                        </li>
-                                        <?php if (!empty($r["_source"]['doi'])) : ?>
-                                            <li class="uk-h6 uk-margin-top">
-                                                <p>Métricas:</p>
-                                                <ul>
-                                                    <li>
-                                                        <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'][0];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                                    </li>
-                                                    <li>
-                                                        <a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'][0];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a>
-                                                    </li>
-                                                    <li>
-                                                         <object height="50" data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'][0];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object>
-                                                        <!--
-                                                        < ?php 
-                                                            $citations_scopus = get_citations_elsevier($r["_source"]['doi'][0],$api_elsevier);
-                                                            if (!empty($citations_scopus['abstract-citations-response'])) {
-                                                                echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
-                                                                echo '<br/><br/>';
-                                                            } 
-                                                        ? >
-                                                        -->
-                                                    </li>
-                                                </ul>  
-                                            </li>
-                                        <?php endif; ?>
-                                        <a href="#" data-uk-toggle="{target:'#citacao<?php echo  $r['_id'];?>'}">Citar</a>
-                                        <div id="citacao<?php echo  $r['_id'];?>" class="uk-hidden">
-                                        <li class="uk-h6 uk-margin-top">
-                                            <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
-                                            <ul>
-                                                <li class="uk-margin-top">
-                                                    <p><strong>ABNT</strong></p>
-                                                    <?php
-                                                        $data = gera_consulta_citacao($r["_source"]);
-                                                        print_r($citeproc_abnt->render($data, $mode));
-                                                        $ref_abnt[] = $citeproc_abnt->render($data, $mode);
-                                                    ?>
-                                                </li>
-                                                <li class="uk-margin-top">
-                                                    <p><strong>APA</strong></p>
-                                                    <?php
-                                                        $data = gera_consulta_citacao($r["_source"]);
-                                                        print_r($citeproc_apa->render($data, $mode));
-                                                    ?>
-                                                </li>
-                                                <li class="uk-margin-top">
-                                                    <p><strong>NLM</strong></p>
-                                                    <?php
-                                                        $data = gera_consulta_citacao($r["_source"]);
-                                                        print_r($citeproc_nlm->render($data, $mode));
-                                                    ?>
-                                                </li>
-                                                <li class="uk-margin-top">
-                                                    <p><strong>Vancouver</strong></p>
-                                                    <?php
-                                                        $data = gera_consulta_citacao($r["_source"]);
-                                                        print_r($citeproc_vancouver->render($data, $mode));
-                                                    ?>
-                                                </li>                                                 
-                                            </ul>                                              
-                                        </li>
+                                ?>                                    
+                                <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
+                                <?php
+                                    $facets->facet("inSupportOf",30,"Tipo de tese",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.about_BDTD",50,$t->gettext('Assuntos provenientes das teses'),null,"_term",$_GET["search"]);
+                                ?>
+                            </ul>
+                            <?php if(!empty($_SESSION['oauthuserdata'])): ?> 
+                                <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
+                                <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
+                                <hr>
+                                <?php
+                                    $facets->facet("authorUSP.regime_de_trabalho",50,$t->gettext('Regime de trabalho'),null,"_term",$_GET["search"]);
+                                    $facets->facet("authorUSP.funcao",50,$t->gettext('Função'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.CAT.date",100,"Data de registro e alterações","desc","_term",$_GET["search"]);
+                                    $facets->facet("USP.CAT.cataloger",100,"Catalogador","desc","_count",$_GET["search"]);                                
+                                    $facets->facet("authorUSP.codpes",100,"Número USP",null,"_term",$_GET["search"]);
+                                    $facets->facet("isPartOf.issn",100,"ISSN",null,"_term",$_GET["search"]);
+                                    $facets->facet("doi",100,"DOI",null,"_term",$_GET["search"]);
+                                ?>
+                                </ul>
+                            <?php endif; ?>
+                            <!-- Facetas - Fim -->
+
+                            <hr>
+
+                            <!-- Limitar por data - Início -->
+                            <form class="uk-form uk-text-small">
+                                <fieldset>
+                                    <legend><?php echo $t->gettext('Limitar por data'); ?></legend>
+                                    <script>
+                                        $( function() {
+                                        $( "#limitar-data" ).slider({
+                                        range: true,
+                                        min: 1900,
+                                        max: 2030,
+                                        values: [ 1900, 2030 ],
+                                        slide: function( event, ui ) {
+                                            $( "#date" ).val( "datePublished:[" + ui.values[ 0 ] + " TO " + ui.values[ 1 ] + "]" );
+                                        }
+                                        });
+                                        $( "#date" ).val( "datePublished:[" + $( "#limitar-data" ).slider( "values", 0 ) +
+                                        " TO " + $( "#limitar-data" ).slider( "values", 1 ) + "]");
+                                        } );
+                                    </script>
+                                    <p>
+                                    <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
+                                    <input type="text" class="uk-form-width-medium" id="date" readonly style="border:0; color:#f6931f; font-size:bold;" name="search[]">
+                                    </p>        
+                                    <div id="limitar-data" class="uk-margin-bottom"></div>        
+                                    <?php if(!empty($_GET["search"])): ?>
+                                        <?php foreach($_GET["search"] as $search_expression): ?>
+                                            <input type="hidden" name="search[]" value="<?php echo str_replace('"','&quot;',$search_expression); ?>">
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                    <div class="uk-form-row"><button class="uk-button-primary"><?php echo $t->gettext('Limitar datas'); ?></button></div>
+                                </fieldset>        
+                            </form>
+                            <!-- Limitar por data - Fim -->
+
+                            <hr>
+
+                            <!-- Gerar relatório - Início -->
+                            <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                                    <fieldset>
+                                        <legend>Gerar relatório</legend>                  
+                                        <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
                                         </div>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-<?php
-
-switch ($r["_source"]["type"]) {
-case "ARTIGO DE PERIODICO":
-    $record[] = "TY  - JOUR";
-    break;
-case "PARTE DE MONOGRAFIA/LIVRO":
-    $record[] = "TY  - CHAP";
-    break;
-case "TRABALHO DE EVENTO-RESUMO":
-    $record[] = "TY  - CPAPER";
-    break;
-case "TEXTO NA WEB":
-    $record[] = "TY  - ICOMM";
-    break;
-}
-
-$record[] = "TI  - ".$r["_source"]['title']."";
-
-if (!empty($r["_source"]['year'])) {
-$record[] = "PY  - ".$r["_source"]['year']."";
-}
-
-foreach ($r["_source"]['authors'] as $autores) {
-  $record[] = "AU  - ".$autores."";
-}
-
-if (!empty($r["_source"]['ispartof'])) {
-$record[] = "T2  - ".$r["_source"]['ispartof']."";
-}
-
-if (!empty($r["_source"]['issn_part'][0])) {
-$record[] = "SN  - ".$r["_source"]['issn_part'][0]."";
-}
-
-if (!empty($r["_source"]["doi"])) {
-$record[] = "DO  - ".$r["_source"]["doi"][0]."";
-}
-
-if (!empty($r["_source"]["url"])) {
-  $record[] = "UR  - ".$r["_source"]["url"][0]."";
-}
-
-if (!empty($r["_source"]["publisher-place"])) {
-  $record[] = "PP  - ".$r["_source"]["publisher-place"]."";
-}
-
-if (!empty($r["_source"]["publisher"])) {
-  $record[] = "PB  - ".$r["_source"]["publisher"]."";
-}
-
-if (!empty($r["_source"]["ispartof_data"])) {
-  foreach ($r["_source"]["ispartof_data"] as $ispartof_data) {
-    if (strpos($ispartof_data, 'v.') !== false) {
-      $record[] = "VL  - ".str_replace("v.","",$ispartof_data)."";
-    } elseif (strpos($ispartof_data, 'n.') !== false) {
-      $record[] = "IS  - ".str_replace("n.","",$ispartof_data)."";
-    } elseif (strpos($ispartof_data, 'p.') !== false) {
-      $record[] = "SP  - ".str_replace("p.","",$ispartof_data)."";
-    }
-  }
-}
-$record[] = "ER  - ";
-
-?>
-                        <?php
-                            ob_flush();
-                            flush(); 
-                        ?>
-                        <?php 
-                        endforeach;
-                        ob_end_flush();
-                    ?>
-                        
-                    </ul>
-                    </div>                                            
-                                        
-                                        </li>
-                                        <li aria-hidden="true" class=""><?php echo implode("<br/>",$ref_abnt); ?></li>
-                                    </ul>
-                    
-                    <hr class="uk-grid-divider">
-
-                    <hr class="uk-grid-divider">
-                    <div class="uk-grid uk-margin-top">
-                        <div class="uk-width-1-2"><p class="uk-text-center"><?php print_r($total);?> registros</p></div>
-                        <div class="uk-width-1-2">
-                            <?php $record = str_replace("'","",$record); ?>
-                            <?php $record = str_replace('"','',$record); ?>
-                            <?php $record_blob = implode("\\n", $record); ?>                        
-                            <button class="uk-button-small uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">Exportar registros em formato RIS (EndNote)</button>
-                            
-                        </div>
-                    </div>                   
-                                        
+                                    </fieldset>        
+                            <?php endif; ?>
+                            <!-- Gerar relatório - Fim -->                
+                    </div>
                 </div>
-            </div>           
-    
+                
+                <div class="uk-width-3-4@s uk-width-4-6@m">
+                
+                <!-- Gráfico do ano - Início -->
+                <?php if ($year_result_graph == true) : ?>
+                    <div class="uk-alert-primary" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 10); ?>
+                        <div id="ano_chart" class="uk-visible@l"></div>
+                        <script type="application/javascript">
+                            var graphdef = {
+                                categories : ['<?= $t->gettext('Ano') ?>'],
+                                dataset : {
+                                    '<?= $t->gettext('Ano') ?>' : [<?= $ano_bar; ?>]
+                                }
+                            }
+                            var chart = uv.chart ('Bar', graphdef, {
+                                meta : {
+                                    position: '#ano_chart',
+                                    caption : '<?= $t->gettext('Ano de publicação') ?>',
+                                    hlabel : '<?= $t->gettext('Ano') ?>',
+                                    vlabel : '<?= $t->gettext('registros') ?>'
+                                },
+                                graph : {
+                                    orientation : "Vertical"
+                                },
+                                dimension : {
+                                    width: 650,
+                                    height: 110
+                                }
+                            })
+                        </script>                        
+                        </div>
+                <?php endif; ?>
+                 <!-- Gráfico do ano - Fim -->    
 
-        
+           
+
+<!-- Resultados por formato -->
+
+<hr class="uk-grid-divider">
+<div class="uk-width-1-1 uk-margin-top uk-description-list-line">       
+
+<?php if(isset($_GET["format"])) : ?>
+
+    <?php if($_GET["format"] == "table") : ?>
+
+    <div class="uk-overflow-auto">
+        <table class="uk-table">
+            <caption>Trabalhos</caption>
+            <thead>
+                <tr>
+                    <th>Sysno</th>
+                    <th>Ano</th>
+                    <th>Título</th>
+                    <th>Autores</th>
+                    <th>In:</th>
+                    <th>DOI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
+                <tr>
+                    <td><a href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo  $r['_id'];?></a></td>
+                    <td><?php if (!empty($r["_source"]['datePublished'])) { echo $r["_source"]['datePublished']; } ?></td>
+                    <td><?php echo $r["_source"]['name'];?></td>
+                    <td>
+                        <?php foreach ($r["_source"]['author'] as $authors) {
+                            if (!empty($authors["person"]["potentialAction"])) {
+                                $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+                            } else {
+                                $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                            }
+                        } 
+                        $array_aut = implode("; ",$authors_array);
+                        unset($authors_array);
+                        print_r($array_aut);
+                        ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['isPartOf'])) : ?>
+                            <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"]; } ?>&quot;"><?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"];} ?></a>
+                        <?php endif; ?>     
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['doi'])) : ?>
+                            <a href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank"><?php echo $r["_source"]['doi'];?></a>
+                        <?php endif; ?>    
+                    </td>                                        
+                </tr>
+                <?php endforeach;?>
+            </tbody>
+        </table>
+
+    </div>   
+
+    <?php elseif($_GET["format"] == "abnt") : ?>
+  
+        <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
+            <li class="uk-h6 uk-margin-top">
+                <ul>
+                    <li class="uk-margin-top">
+                        <?php
+                            $data = citation::citation_query($r["_source"]);
+                            print_r($citeproc_abnt->render($data, $mode));
+                        ?>
+                    </li>                                               
+                </ul>                                              
+            </li>
+        <?php endforeach;?>    
+  
+
+    <?php else: ?>
+    Não definido
+
+    <?php endif; ?>
+
+<?php else: ?>
+<p>Formato não definido</p>
+
+<?php endif; ?>                   
+                 
+
+                        
+                    <hr class="uk-grid-divider">
+
+                   
+                </div>
+            </div>
             <hr class="uk-grid-divider">
-            
-                    
-            <?php include('inc/footer.php'); ?>
-
+            </div>
+            <?php include('inc/footer.php'); ?>          
         </div>
-        
-        
-        <?php include('inc/offcanvas.php'); ?>
+                
+
+
+        <script>
+        $('[data-uk-pagination]').on('select.uk.pagination', function(e, pageIndex){
+            var url = window.location.href.split('&page')[0];
+            window.location=url +'&page='+ (pageIndex+1);
+        });
+        </script>    
+
+<?php include('inc/offcanvas.php'); ?>         
         
     </body>
 </html>
