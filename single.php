@@ -517,11 +517,34 @@ if (!empty($_POST['delete_file'])) {
                                         if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
                                             $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
                                         }
-                                        API::metrics_update($client,$_GET['_id'],$metrics);      
+                                        API::metrics_update($_GET['_id'],$metrics);      
                                     }
                                 }
                             ?>                            
                             <?php endif; ?>
+
+                            <!-- API AMINER - Início -->
+                                
+                                <?php 
+                                    $aminer = API::get_aminer($cursor["_source"]["name"]);
+                                    if(count($aminer["result"]) > 0 ){
+                                        echo '<div class="uk-alert uk-h6">';
+                                        echo '<p>API AMiner</p>';
+                                        echo 'Título: '.$aminer["result"][0]["title"].'<br/>';
+                                        echo 'Número de citações: '.$aminer["result"][0]["num_citation"].'<br/>';
+                                        echo 'Título do periódico: '.$aminer["result"][0]["venue"]["name"].'<br/>';
+                                        echo 'Volume: '.$aminer["result"][0]["venue"]["volume"].'<br/>';
+                                        echo 'Fascículo: '.$aminer["result"][0]["venue"]["issue"].'<br/>';
+                                        //print_r($aminer["result"][0]);
+                                        $update_aminer["doc"]["USP"]["aminer"] = $aminer["result"];
+                                        $update_aminer["doc_as_upsert"] = true;
+                                        echo '</div>';
+                                        //print_r($update_aminer);
+                                        $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
+                                        //print_r($result_aminer);
+                                    }
+                                ?>
+                            <!-- API AMINER - Fim -->
 
                         <!-- Qualis 2015 - Início -->
                         <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>

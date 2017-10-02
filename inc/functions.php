@@ -737,8 +737,8 @@ class API {
         curl_close($curl);    
     }
 
-    static function metrics_update($client,$_id,$metrics_array){    
-
+    static function metrics_update($_id,$metrics_array){    
+        global $client;    
         $query = 
         '
         {
@@ -822,7 +822,42 @@ class API {
             unset($g_output);			
         }	
 
-    }        
+    }
+    
+    static function get_aminer($title){
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'https://api.aminer.org/api/search/pub?query='.urlencode($title).'',
+            //CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $data = json_decode($resp, TRUE);
+        return $data;
+        // Close request to clear up some resources
+        curl_close($curl);
+    }
+
+    static function get_wikipedia($url){
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'https://pt.wikipedia.org/w/api.php?action=query&list=exturlusage&format=json&euquery='.$url.'',
+            CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $data = json_decode($resp, TRUE);
+        print_r($data);
+        return $data;
+        // Close request to clear up some resources
+        curl_close($curl);
+    }    
     
     
     
