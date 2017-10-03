@@ -41,6 +41,8 @@
       echo '<br/>';      
       $resultado_opencitation = elasticsearch::store_record($r["_id"],$type,$body);
       print_r($resultado_opencitation);
+      unset($body);
+      unset($result);
       echo '<br/><br/>';
 
       flush();
