@@ -555,6 +555,24 @@ if (!empty($_POST['delete_file'])) {
                                 ?>
                             <!-- API AMINER - Fim -->
 
+                            <!-- Opencitation - Início -->
+                            <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["citation"])){
+                                echo '<div class="uk-alert uk-h6">';
+                                echo "<p>Citações recebidas (Fonte: OpenCitation)</p>";
+                                echo '<ul class="uk-list uk-list-bullet">';                                
+                                foreach ($cursor["_source"]["USP"]["opencitation"]["citation"] as $opencitation) {
+                                    echo '<li><a href="'.$opencitation["citing"].'">'.$opencitation["title"].'</a></li>';
+                                }
+                                echo '</ul>';
+                                echo '</div>';
+                            } 
+                            
+                            
+                            ?>
+
+                            <!-- Opencitation - Fim -->
+
+
                         <!-- Qualis 2015 - Início -->
                         <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
                             <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
