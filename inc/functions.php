@@ -859,6 +859,26 @@ class API {
         curl_close($curl);
     }    
     
+    static function get_opencitation($doi) {
+        $sparql = new EasyRdf_Sparql_Client('http://opencitations.net/sparql');
+        $result = $sparql->query(
+            'PREFIX cito: <http://purl.org/spar/cito/>
+            PREFIX dcterms: <http://purl.org/dc/terms/>
+            PREFIX datacite: <http://purl.org/spar/datacite/>
+            PREFIX literal: <http://www.essepuntato.it/2010/06/literalreification/>
+            SELECT ?citing ?title WHERE {
+              ?id a datacite:Identifier ;
+                datacite:usesIdentifierScheme datacite:doi ;
+                literal:hasLiteralValue "'.$doi.'" .
+              ?br 
+                datacite:hasIdentifier ?id ;
+                ^cito:cites ?citing .
+              ?citing dcterms:title ?title
+            }'
+        );        
+        return $result;
+
+    }
     
     
     

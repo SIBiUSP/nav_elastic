@@ -5,6 +5,7 @@
         "caseyamcl/phpoaipmh": "~2.0",
         "guzzlehttp/guzzle": "~5.0",
         "setasign/fpdf": "1.8",
-        "mpdf/mpdf": "~6.0"      
+        "mpdf/mpdf": "~6.0",
+        "easyrdf/easyrdf": "*"      
     }
 }
