@@ -29,8 +29,8 @@
       $i = 0;
       if (!empty($result)) {
         foreach ($result as $record) {
-          $body["doc"]["USP"]["opencitation"][$i]["citing"] = (string)$record->citing;
-          $body["doc"]["USP"]["opencitation"][$i]["title"] = (string)$record->title;
+          $body["doc"]["USP"]["opencitation"]["citation"][$i]["citing"] = (string)$record->citing;
+          $body["doc"]["USP"]["opencitation"]["citation"][$i]["title"] = (string)$record->title;
           $i++;
         }
       }    
