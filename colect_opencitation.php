@@ -33,6 +33,7 @@
           $body["doc"]["USP"]["opencitation"]["citation"][$i]["title"] = (string)$record->title;
           $i++;
         }
+        $body["doc"]["USP"]["opencitation"]["num_citations"] = count($result);
       }    
 
       $body["doc"]["USP"]["opencitation"]["date"] = date("Ymd");
