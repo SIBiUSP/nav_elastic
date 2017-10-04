@@ -559,9 +559,9 @@ class ui {
             echo '</div>';
             echo '<div>';
                 if (isset($_GET["sort"])) {
-                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace("&sort=title_az","",$_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
+                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace('&sort='.$_GET["sort"].'',"",$_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
                 } else {
-                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=title_az">'.$t->gettext('Ordenar por Título').'</a>';
+                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=name.keyword">'.$t->gettext('Ordenar por Título').'</a>';
                 }
             echo '</div>';
             echo '<div>';
