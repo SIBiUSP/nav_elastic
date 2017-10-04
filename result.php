@@ -9,14 +9,14 @@
     $page = $result_get['page'];
     $skip = $result_get['skip'];
 
-    if (isset($_GET["sort"])) {
-        $query['sort'] = [
-            ['name.keyword' => ['order' => 'asc']],
-        ];
+    if (isset($_GET["sort"])) {        
+        $query["sort"][$_GET["sort"]]["unmapped_type"] = "long";
+        $query["sort"][$_GET["sort"]]["missing"] = "_last";
+        $query["sort"][$_GET["sort"]]["order"] = "desc";
+        $query["sort"][$_GET["sort"]]["mode"] = "max";
     } else {
-        $query['sort'] = [
-            ['datePublished.keyword' => ['order' => 'desc']],
-        ];
+
+        $query['sort']['datePublished.keyword']['order'] = "desc";
     }
 
     $params = [];
