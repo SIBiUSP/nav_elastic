@@ -529,8 +529,8 @@ if (!empty($_POST['delete_file'])) {
                                     $aminer = API::get_aminer($cursor["_source"]["name"]);
                                     if(count($aminer["result"]) > 0 ){
                                         echo '<div class="uk-alert uk-h6">';
-                                        echo '<p>API AMiner</p>';
-                                        echo 'Título: '.$aminer["result"][0]["title"].'<br/>';
+                                        echo '<h5>API AMiner</h5>';
+                                        echo 'Título: <a href="https://aminer.org/archive/'.$aminer["result"][0]["id"].'">'.$aminer["result"][0]["title"].'</a><br/>';
                                         echo 'Número de citações: '.$aminer["result"][0]["num_citation"].'<br/>';
                                         if (!empty($aminer["result"][0]["doi"])) {
                                             echo 'DOI: '.$aminer["result"][0]["doi"].'<br/>';
