@@ -952,6 +952,8 @@ class exporters {
         } 
     
         $record[] = "ER  - ";
+        $record[] = "";
+        $record[] = "";
 
         $record_blob = implode("\\n", $record);
 

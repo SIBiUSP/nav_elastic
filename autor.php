@@ -64,6 +64,19 @@
         <script src="inc/uikit/js/components/pagination.min.js"></script>
         <script src="inc/uikit/js/components/datepicker.min.js"></script>
         <script src="inc/uikit/js/components/tooltip.min.js"></script>
+
+        <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+        <script>
+              function SaveAsFile(t,f,m) {
+                    try {
+                        var b = new Blob([t],{type:m});
+                        saveAs(b, f);
+                    } catch (e) {
+                        window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
+                    }
+                }
+
+        </script>               
         
 
         <?php if ($year_result_graph == true) : ?>
@@ -407,8 +420,19 @@
                 </ul>                                              
             </li>
         <?php endforeach;?>    
-  
 
+    <?php elseif($_GET["format"] == "RIS") : ?>
+
+       <?php
+
+            foreach ($cursor["hits"]["hits"] as $r) { 
+                /* Exportador RIS */
+                $record_blob[] = exporters::RIS($r);
+            }
+       ?> 
+    <h2>Exportar RIS</h2> 
+    <p><button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo implode("",$record_blob); ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button></p>
+           
     <?php else: ?>
     Não definido
 

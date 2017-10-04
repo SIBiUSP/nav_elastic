@@ -84,7 +84,15 @@
                                 <input type="hidden" name="format" value="table">
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesTable').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpesTable').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
-                        </form>                                                   
+                        </form>
+                        <form role="form" action="autor.php" method="get">
+                            <fieldset>
+                                <legend class="uk-legend"><?php echo $t->gettext('Resultados em Formato RIS por autor USP'); ?></legend>
+                                <input class="uk-input" id='searchCodpesRIS' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                <input type="hidden" name="format" value="RIS">
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesRIS').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpesRIS').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                            </fieldset>
+                        </form>                                                                                 
                         <form role="form" action="result.php" method="get" name="searchIBox">
                             <fieldset>
                                 <legend class="uk-legend">Assunto do Vocabulário Controlado</legend>
