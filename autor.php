@@ -60,10 +60,6 @@
             include('inc/meta-header.php'); 
         ?>        
         <title><?php echo $branch_abrev; ?> - Resultado da busca</title>
-        <script src="inc/uikit/js/components/accordion.min.js"></script>
-        <script src="inc/uikit/js/components/pagination.min.js"></script>
-        <script src="inc/uikit/js/components/datepicker.min.js"></script>
-        <script src="inc/uikit/js/components/tooltip.min.js"></script>
 
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
@@ -428,10 +424,11 @@
             foreach ($cursor["hits"]["hits"] as $r) { 
                 /* Exportador RIS */
                 $record_blob[] = exporters::RIS($r);
+                $record_blob = str_replace("'","",$record_blob);
             }
        ?> 
     <h2>Exportar RIS</h2> 
-    <p><button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo implode("",$record_blob); ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button></p>
+    <p><button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo implode("",str_replace('"','',$record_blob)); ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button></p>
            
     <?php else: ?>
     Não definido
