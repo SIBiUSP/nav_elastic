@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Tutorial da Biblioteca Digital da Produção Intelectual da Universidade de São Paulo</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="http://www.imagens.usp.br/wp-content/uploads/9072_09082011caph038.jpg">
+						<h3>Tutorial BDPI</h3>
+						<p style="font-size: 60%">Biblioteca Digital da Produção Intelectual</p>
+						<p style="font-size: 50%">
+							Universidade de São Paulo<br/>
+							Sistema Integrado de Bibliotecas<br/>
+							Divisão de Gestão de Tratamento da Informação							
+						</p>
+				</section>
+				<section>
+					<h4>O que você encontra na BDPI USP?</h4>
+					<ul>
+						<li style="font-size: 50%">Registros da Base de Produção Intelectual (Produção Científica, Técnica e Artística)</li>
+						<li style="font-size: 50%">Registros da Base de Teses e Dissertações</li>
+					</ul>
+				</section>
+				<section>
+					<img src="images/bdpi.usp.br.jpeg" height="650px">
+				</section>
+				<section>
+						<h4>Busca simples</h4>
+						<a href="http://bdpi.usp.br"><img src="images/bdpi_busca_simples.png" height="250px"></a>
+						<ul>
+								<li style="font-size: 50%">Operador padrão: E</li>
+								<li style="font-size: 50%">Ignora maiúsculas e minúsculas</li>
+								<li style="font-size: 50%">Busca nos campos: Título, Autor, Assunto, Resumo e Unidade USP</li>
+								<li style="font-size: 50%">Possibilidade de limitar a busca por base (Produção Intelectual ou Teses e Dissertações) e Unidade USP</li>
+								<li style="font-size: 50%">Dica: Você pode substituir uma letra por (?) ou usar o * para buscar as variações. Ex: 199? (Para pesquisar em todos os anos da década de 90) e Biblio* (Para pesquisar palabras como Biblioteca, Biblioteconomia, Bibiografia, etc..) </li>
+						</ul>						
+
+				</section>
+				<section>
+						<h4>Busca avançada</h4>
+						<ul>
+								<li style="font-size: 50%">Ver produções por autor nos formatos: Tabela, ABNT e RIS</li>
+						</ul>						
+
+				</section>
+				<section>
+						<h4>Todos os registros por Unidade USP</h4>
+						<img src="images/bdpi_unidadesUSP.png" height="250px">
+						<ul>
+								<li style="font-size: 50%">Acesso pelo link: UNIDADES USP, na menu superior</li>
+								<li style="font-size: 50%">Lista todas os registros em todas as bases por Unidade</li>
+						</ul>						
+
+				</section>
+				<section>
+						<h4>Resultado da Busca</h4>
+						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_resultado_busca.png" height="500px"></a>
+						<ul>
+								<li style="font-size: 50%">Ordenação por data</li>
+								<li style="font-size: 50%">Facetas são filtros para novas buscas</li>
+						</ul>						
+				
+				</section>
+				<section>
+						<h4>Facetas</h4>
+						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_resultado_busca.png" height="500px"></a>
+						<ul>
+								<li style="font-size: 50%">Ordenação por data</li>
+								<li style="font-size: 50%">Facetas são filtros para novas buscas</li>
+						</ul>						
+				
+				</section>																										
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
