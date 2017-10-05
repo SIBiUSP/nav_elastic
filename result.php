@@ -478,6 +478,12 @@
                                                             <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $r["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
                                                             <div><a href="https://plu.mx/plum/a/?doi=<?php echo $r["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
                                                             <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $r["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
+                                                            <?php if(!empty($r["_source"]["USP"]["opencitation"]["num_citations"])) :?>
+                                                            <div>Citações no OpenCitations: <?php echo $r["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
+                                                            <?php endif; ?>
+                                                            <?php if(isset($r["_source"]["USP"]["aminer"][0]["num_citation"])) :?>
+                                                            <div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"][0]["num_citation"]; ?></div>
+                                                            <?php endif; ?>                                                            
                                                             <div>
                                                                 <!--
                                                                 < ?php 
@@ -491,6 +497,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <?php else : ?>
+                                                    <?php if(isset($r["_source"]["USP"]["aminer"][0]["num_citation"])) :?>
+                                                    <?php if($r["_source"]["USP"]["aminer"][0]["num_citation"] > 0) :?>
+                                                    <div class="uk-alert-warning" uk-alert>
+                                                        <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                                                        <div uk-grid>                                                    
+                                                            <div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"][0]["num_citation"]; ?></div>
+                                                        </div>
+                                                    </div>
+                                                    <?php endif; ?>                                                      
+                                                    <?php endif; ?>                                                        
+
                                                     <?php endif; ?>
                                                 <?php endif; ?>
                                                 <!-- Métricas - Fim -->                                         
