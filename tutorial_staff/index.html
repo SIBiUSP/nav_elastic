@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Tutorial da Biblioteca Digital da Produção Intelectual da Universidade de São Paulo para as Equipes das Bibliotecas</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="http://www.imagens.usp.br/wp-content/uploads/9072_09082011caph038.jpg">
+						<h3>Tutorial BDPI para as Equipes de Bibliotecas</h3>
+						<p style="font-size: 60%"><a href="http://bdpi.usp.br">Biblioteca Digital da Produção Intelectual</a></p>
+						<p style="font-size: 50%">
+							Universidade de São Paulo<br/>
+							Sistema Integrado de Bibliotecas<br/>
+							Divisão de Gestão de Tratamento da Informação							
+						</p>
+				</section>
+				<section>
+					<h4>Como funciona a bdpi.usp.br?</h4>
+					<ul>
+						<li style="font-size: 50%">Registros das Bases de Produção Intelectual (Base 04) e Teses e Dissertações (Base 03) do DEDALUS</li>
+						<li style="font-size: 50%">Sistema de sincronização roda de 5 em 5 minutos</li>
+						<li style="font-size: 50%">O Registro é convertido de MARC para <a href="http://schema.org">Schema.org</a></li>
+						<li style="font-size: 50%">O Registro é enriquecido com fontes externas via APIs (Application Programming Interface)</a></li>
+					</ul>
+				</section>
+				<section>
+					<h4>Login</h4>
+					<img src="images/bdpi_login.png" height="500px">
+					<li style="font-size: 50%">Para utilizar todas as funcionalidades, é essencial fazer o login utilizando a senha única do Sistemas USP</li>
+				</section>
+				<section>
+						<h4>Login</h4>
+						<img src="images/bdpi_login_sucess.png" height="500px">
+						<li style="font-size: 50%">Se apareceu o nome, o login foi feito com sucesso</li>
+				</section>				
+
+																								
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
