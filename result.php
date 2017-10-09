@@ -498,12 +498,12 @@
                                                         </div>
                                                     </div>
                                                     <?php else : ?>
-                                                    <?php if(isset($r["_source"]["USP"]["aminer"][0]["num_citation"])) :?>
-                                                    <?php if($r["_source"]["USP"]["aminer"][0]["num_citation"] > 0) :?>
+                                                    <?php if(isset($r["_source"]["USP"]["aminer"]["num_citation"])) :?>
+                                                    <?php if($r["_source"]["USP"]["aminer"]["num_citation"] > 0) :?>
                                                     <div class="uk-alert-warning" uk-alert>
                                                         <p><?php echo $t->gettext('Métricas'); ?>:</p>
                                                         <div uk-grid>                                                    
-                                                            <div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"][0]["num_citation"]; ?></div>
+                                                            <div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
                                                         </div>
                                                     </div>
                                                     <?php endif; ?>                                                      
