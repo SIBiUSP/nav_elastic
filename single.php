@@ -523,11 +523,12 @@ if (!empty($_POST['delete_file'])) {
                             ?>                            
                             <?php endif; ?>
 
-                            <!-- API AMINER - Início -->
-                                
-                                <?php 
-                                    $aminer = API::get_aminer($cursor["_source"]["name"]);
-                                    if(count($aminer["result"]) > 0 ){
+                            <!-- API AMINER - Início -->                                
+                            <?php 
+                                $aminer = API::get_aminer($cursor["_source"]["name"]);
+                                if(count($aminer["result"]) > 0 ){
+                                    similar_text($cursor["_source"]["name"], $aminer["result"][0]["title"], $percent);
+                                    if ($percent > 90) {
                                         echo '<div class="uk-alert uk-h6">';
                                         echo '<h5>API AMiner</h5>';
                                         echo 'Título: <a href="https://aminer.org/archive/'.$aminer["result"][0]["id"].'">'.$aminer["result"][0]["title"].'</a><br/>';
@@ -544,15 +545,14 @@ if (!empty($_POST['delete_file'])) {
                                         if (!empty($aminer["result"][0]["venue"]["issue"])) {
                                             echo 'Fascículo: '.$aminer["result"][0]["venue"]["issue"].'<br/>';
                                         }                                        
-                                        //print_r($aminer["result"][0]);
                                         $update_aminer["doc"]["USP"]["aminer"] = $aminer["result"];
                                         $update_aminer["doc_as_upsert"] = true;
                                         echo '</div>';
-                                        //print_r($update_aminer);
+
                                         $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
-                                        //print_r($result_aminer);
                                     }
-                                ?>
+                                }
+                            ?>
                             <!-- API AMINER - Fim -->
 
                             <!-- Opencitation - Início -->
