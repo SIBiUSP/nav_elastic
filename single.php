@@ -546,6 +546,7 @@ if (!empty($_POST['delete_file'])) {
                                             echo 'Fascículo: '.$aminer["result"][0]["venue"]["issue"].'<br/>';
                                         }                                        
                                         $update_aminer["doc"]["USP"]["aminer"] = $aminer["result"][0];
+                                        $update_aminer["doc"]["USP"]["aminer"]["date"] = date("Ymd");
                                         $update_aminer["doc_as_upsert"] = true;
                                         echo '</div>';
 
