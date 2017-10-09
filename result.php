@@ -481,8 +481,8 @@
                                                             <?php if(!empty($r["_source"]["USP"]["opencitation"]["num_citations"])) :?>
                                                             <div>Citações no OpenCitations: <?php echo $r["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
                                                             <?php endif; ?>
-                                                            <?php if(isset($r["_source"]["USP"]["aminer"][0]["num_citation"])) :?>
-                                                            <div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"][0]["num_citation"]; ?></div>
+                                                            <?php if(isset($r["_source"]["USP"]["aminer"]["num_citation"])) :?>
+                                                            <div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
                                                             <?php endif; ?>                                                            
                                                             <div>
                                                                 <!--
