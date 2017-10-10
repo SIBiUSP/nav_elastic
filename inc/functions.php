@@ -805,7 +805,27 @@ class API {
             unset($g_output);			
         }	
 
-    }   
+    }
+    
+    static function get_microsoft_academic($title) {
+        global $api_microsoft;
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HTTPHEADER => array('Ocp-Apim-Subscription-Key:'.$api_microsoft.''), 
+            //CURLOPT_URL => 'https://westus.api.cognitive.microsoft.com/academic/v1.0/evaluate?expr=Composite(AA%2EAuN%3D%3D%27tiago%20murakami%27)&model=latest&count=10&offset=0&attributes=Id,Y,Ti,CC,AA.AuN,AA.AuId,AA.AfN,AA.AfId,L,F.FN,F.FId,J.JN,J.JId,C.CN,C.CId,RId,W,D,ECC,E',
+            CURLOPT_URL => 'https://westus.api.cognitive.microsoft.com/academic/v1.0/evaluate?expr=Ti=\''.$title.'\'&model=latest&count=1&offset=0&attributes=Id,Y,Ti,CC,AA.AuN,AA.AuId,AA.AfN,AA.AfId,L,F.FN,F.FId,J.JN,J.JId,C.CN,C.CId,RId,W,D,ECC,E',
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $data = json_decode($resp, TRUE);
+        return $data;
+        // Close request to clear up some resources
+        curl_close($curl);    
+    }     
 
     
 }
