@@ -593,42 +593,43 @@ if (!empty($_POST['delete_file'])) {
     
                                     } else {
                                         $ma_result = API::get_microsoft_academic(rawurlencode(strtolower($cursor["_source"]['name'])));
-                                        
-                                        if (count($ma_result["entities"]) > 0) {
-                                            similar_text($cursor["_source"]["name"], $ma_result["entities"][0]["Ti"], $percent);
-                                            if ($percent > 90) {
-                                                echo '<div class="uk-alert uk-h6">';
-                                                echo '<h5>API Microsoft Academic</h5>';
-                                                echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$ma_result["entities"][0]["Id"].'">'.$ma_result["entities"][0]["Ti"].'</a><br/>';
-                                                echo 'Número de citações: '.$ma_result["entities"][0]["CC"].'<br/>';
-                                                $ma_extended = json_decode($ma_result["entities"][0]["E"], TRUE);                                    
-                                                if (!empty($ma_extended["DOI"])){
-                                                    echo 'DOI: '.$ma_extended["DOI"].'<br/>';
+                                        if (isset($ma_result["entities"])) {
+                                            if (count($ma_result["entities"]) > 0) {
+                                                similar_text($cursor["_source"]["name"], $ma_result["entities"][0]["Ti"], $percent);
+                                                if ($percent > 90) {
+                                                    echo '<div class="uk-alert uk-h6">';
+                                                    echo '<h5>API Microsoft Academic</h5>';
+                                                    echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$ma_result["entities"][0]["Id"].'">'.$ma_result["entities"][0]["Ti"].'</a><br/>';
+                                                    echo 'Número de citações: '.$ma_result["entities"][0]["CC"].'<br/>';
+                                                    $ma_extended = json_decode($ma_result["entities"][0]["E"], TRUE);                                    
+                                                    if (!empty($ma_extended["DOI"])){
+                                                        echo 'DOI: '.$ma_extended["DOI"].'<br/>';
+                                                    }
+                                                    if (!empty($ma_extended["VFN"])){
+                                                        echo 'Título do periódico ou conferência: '.$ma_extended["VFN"].'<br/>';
+                                                    }
+                                                    if (!empty($ma_extended["V"])){
+                                                        echo 'Volume: '.$ma_extended["V"].'<br/>';
+                                                    }
+                                                    if (!empty($ma_extended["I"])){
+                                                        echo 'Fascículo: '.$ma_extended["I"].'<br/>';
+                                                    }
+                                                    if (!empty($ma_extended["FP"])){
+                                                        echo 'Página inicial: '.$ma_extended["FP"].'<br/>';
+                                                    }
+                                                    if (!empty($ma_extended["LP"])){
+                                                        echo 'Página final: '.$ma_extended["LP"].'<br/>';
+                                                    }   
+                                                    echo '</div>';
+                                                    unset($ma_result["entities"][0]["E"]);
+                                                    $update_am["doc"]["USP"]["microsoft_academic"] = $ma_result["entities"][0];
+                                                    $update_am["doc"]["USP"]["microsoft_academic"]["E"] = $ma_extended;
+                                                    $update_am["doc"]["USP"]["microsoft_academic"]["date"] = date("Ymd");
+                                                    $update_am["doc_as_upsert"] = true;
+                                                    $result_am = elasticsearch::elastic_update($_GET['_id'],$type,$update_am);
                                                 }
-                                                if (!empty($ma_extended["VFN"])){
-                                                    echo 'Título do periódico ou conferência: '.$ma_extended["VFN"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["V"])){
-                                                    echo 'Volume: '.$ma_extended["V"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["I"])){
-                                                    echo 'Fascículo: '.$ma_extended["I"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["FP"])){
-                                                    echo 'Página inicial: '.$ma_extended["FP"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["LP"])){
-                                                    echo 'Página final: '.$ma_extended["LP"].'<br/>';
-                                                }   
-                                                echo '</div>';
-                                                unset($ma_result["entities"][0]["E"]);
-                                                $update_am["doc"]["USP"]["microsoft_academic"] = $ma_result["entities"][0];
-                                                $update_am["doc"]["USP"]["microsoft_academic"]["E"] = $ma_extended;
-                                                $update_am["doc"]["USP"]["microsoft_academic"]["date"] = date("Ymd");
-                                                $update_am["doc_as_upsert"] = true;
-                                                $result_am = elasticsearch::elastic_update($_GET['_id'],$type,$update_am);
                                             }                                    
-    
+        
                                         }
                                     } 
                                         
