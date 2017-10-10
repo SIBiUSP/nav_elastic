@@ -51,6 +51,12 @@
 						<h4>Login</h4>
 						<img src="images/bdpi_login_sucess.png" height="500px">
 						<li style="font-size: 50%">Se apareceu o nome, o login foi feito com sucesso</li>
+				</section>
+				<section>
+					<h4>Exemplos de inconsistências</h4>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?search[]=_exists_:USP.aminer.doi&search[]=-_exists_:doi&search[]=-USP.aminer.doi.keyword:%22%22">Registros com DOI no AMiner e sem DOI na Base 04</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=+type.keyword:%22ARTIGO%20DE%20PERIODICO%22&search[]=-_exists_:isPartOf.name">Artigos de periódico sem o 773t (Título) preenchido corretamente</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=+type.keyword:%22ARTIGO%20DE%20PERIODICO%22&search[]=-_exists_:isPartOf.issn">Artigos de periódico sem o 773x (ISSN) preenchido corretamente</a></p>
 				</section>				
 
 																								
