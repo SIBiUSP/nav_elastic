@@ -579,4 +579,80 @@ class ui {
     }    
 }
 
+class metrics {
+
+    static function get_oadoi($doi) {
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'http://api.oadoi.org/v1/publication/doi/'.$doi.'',
+            CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $data = json_decode($resp, TRUE);
+        return $data;
+        // Close request to clear up some resources
+        curl_close($curl);    
+    }    
+
+    static function get_aminer($title){
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'https://api.aminer.org/api/search/pub?query='.urlencode($title).'',
+            //CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $data = json_decode($resp, TRUE);
+        return $data;
+        // Close request to clear up some resources
+        curl_close($curl);
+    }
+    
+    static function get_opencitation_doi($doi) {
+        $sparql = new EasyRdf_Sparql_Client('http://opencitations.net/sparql');
+        $result = $sparql->query(
+            'PREFIX cito: <http://purl.org/spar/cito/>
+            PREFIX dcterms: <http://purl.org/dc/terms/>
+            PREFIX datacite: <http://purl.org/spar/datacite/>
+            PREFIX literal: <http://www.essepuntato.it/2010/06/literalreification/>
+            SELECT ?citing ?title WHERE {
+              ?id a datacite:Identifier ;
+                datacite:usesIdentifierScheme datacite:doi ;
+                literal:hasLiteralValue "'.$doi.'" .
+              ?br 
+                datacite:hasIdentifier ?id ;
+                ^cito:cites ?citing .
+              ?citing dcterms:title ?title
+            }'
+        );        
+        return $result;
+    }
+    
+    static function get_wikipedia($url){
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'https://pt.wikipedia.org/w/api.php?action=query&list=exturlusage&format=json&euquery='.$url.'',
+            CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $data = json_decode($resp, TRUE);
+        print_r($data);
+        return $data;
+        // Close request to clear up some resources
+        curl_close($curl);
+    }     
+
+}
+
 ?>
