@@ -25,7 +25,7 @@
 
   foreach ($cursor["hits"]["hits"] as $r) {
 
-      $result = API::get_opencitation($r["_source"]['doi']);
+      $result = metrics::get_opencitation_doi($r["_source"]['doi']);
       $i = 0;
       if (!empty($result)) {
         foreach ($result as $record) {

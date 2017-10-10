@@ -486,7 +486,7 @@ if (!empty($_POST['delete_file'])) {
                             </div>
                            <?php if ($use_api_oadoi == true) {
                                     if (!empty($cursor["_source"]['doi'])) {
-                                        $oadoi = API::get_oadoi($cursor["_source"]['doi']);
+                                        $oadoi = metrics::get_oadoi($cursor["_source"]['doi']);
                                         echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org">oaDOI API</a>)';
                                         echo '<ul>';
                                         if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
@@ -525,7 +525,7 @@ if (!empty($_POST['delete_file'])) {
 
                             <!-- API AMINER - Início -->                                
                             <?php 
-                                $aminer = API::get_aminer($cursor["_source"]["name"]);
+                                $aminer = metrics::get_aminer($cursor["_source"]["name"]);
                                 if(count($aminer["result"]) > 0 ){
                                     similar_text($cursor["_source"]["name"], $aminer["result"][0]["title"], $percent);
                                     if ($percent > 90) {
@@ -552,6 +552,10 @@ if (!empty($_POST['delete_file'])) {
 
                                         $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
                                     }
+                                } else {
+                                    $update_aminer["doc"]["USP"]["aminer"]["date"] = date("Ymd");
+                                    $update_aminer["doc_as_upsert"] = true;
+                                    $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
                                 }
                             ?>
                             <!-- API AMINER - Fim -->
