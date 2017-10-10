@@ -209,6 +209,8 @@
                                     $facets->facet_range("USP.citescore.citescore.2016.citescore",100,"Citescore - 2016",$_GET["search"]);
                                     $facets->facet_range("USP.citescore.citescore.2016.SJR",100,"SJR - 2016",$_GET["search"]);
                                     $facets->facet_range("USP.citescore.citescore.2016.SNIP",100,"SNIP - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.aminer.num_citation",100,"Citações no AMiner",$_GET["search"]);
+                                    $facets->facet_range("USP.opencitation.num_citations",100,"Citações no OpenCitations",$_GET["search"]);
                                     $facets->facet("USP.citescore.citescore.2016.open_access",50,$t->gettext('Acesso aberto'),null,"_term",$_GET["search"]);
                                     
                                 ?>                                    
