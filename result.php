@@ -190,7 +190,7 @@
                                     $facets->facet("author.person.affiliation.name_not_found",50,"Afiliação dos autores externos não normalizada",null,"_term",$_GET["search"]);                                    
                                     $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);   
                                 ?>
-                                <li class="uk-nav-header"><?php echo $t->gettext('Métricas'); ?></li>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                                 <?php 
                                     $facets->facet("USP.serial_metrics.qualis.2012.area",50,$t->gettext('Qualis 2010/2012 - Área'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.serial_metrics.qualis.2012.nota",50,$t->gettext('Qualis 2010/2012 - Nota'),null,"_term",$_GET["search"]);                                    
@@ -209,11 +209,14 @@
                                     $facets->facet_range("USP.citescore.citescore.2016.citescore",100,"Citescore - 2016",$_GET["search"]);
                                     $facets->facet_range("USP.citescore.citescore.2016.SJR",100,"SJR - 2016",$_GET["search"]);
                                     $facets->facet_range("USP.citescore.citescore.2016.SNIP",100,"SNIP - 2016",$_GET["search"]);
-                                    $facets->facet_range("USP.aminer.num_citation",100,"Citações no AMiner",$_GET["search"]);
-                                    $facets->facet_range("USP.opencitation.num_citations",100,"Citações no OpenCitations",$_GET["search"]);
                                     $facets->facet("USP.citescore.citescore.2016.open_access",50,$t->gettext('Acesso aberto'),null,"_term",$_GET["search"]);
                                     
-                                ?>                                    
+                                ?>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Métricas no nível do artigo'); ?></li> 
+                                <?php
+                                    $facets->facet_range("USP.aminer.num_citation",100,"Citações no AMiner",$_GET["search"]);
+                                    $facets->facet_range("USP.opencitation.num_citations",100,"Citações no OpenCitations",$_GET["search"]);
+                                ?>                                   
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
                                     $facets->facet("inSupportOf",30,"Tipo de tese",null,"_term",$_GET["search"]);
@@ -509,7 +512,7 @@
                                                         </div>
                                                     </div>
                                                     <?php endif; ?>                                                      
-                                                    <?php endif; ?>                                                        
+                                                    <?php endif; ?>                                                                                                            
 
                                                     <?php endif; ?>
                                                 <?php endif; ?>
