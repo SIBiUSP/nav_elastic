@@ -19,11 +19,12 @@
 
     foreach ($cursor["hits"]["hits"] as $r) {
 
-        foreach ($r["_source"]['url'] as $url) {
-            API::get_wikipedia(str_replace("https://","",str_replace("http://","",$url)));
+        foreach ($r["_source"]['relation'] as $url) {
+            metrics::get_wikipedia(str_replace("https://","",str_replace("http://","",$url)));
         }       
 
         $body["doc"]["USP"]["wikipedia"] = $result;
+        $body["doc"]["USP"]["wikipedia"]["data_coleta"] = date("Ymd");
         $body["doc_as_upsert"] = true;
 
         print_r($body);

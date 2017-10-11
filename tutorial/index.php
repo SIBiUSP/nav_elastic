@@ -22,6 +22,11 @@
 		</script>
 	</head>
 	<body>
+		<?php
+            if (file_exists("../inc/analyticstracking.php")){
+                include_once("../inc/analyticstracking.php");
+            }
+        ?>   		
 		<div class="reveal">
 			<div class="slides">
 				<section data-background="http://www.imagens.usp.br/wp-content/uploads/9072_09082011caph038.jpg">
@@ -57,11 +62,32 @@
 				</section>
 				<section>
 						<h4>Busca avançada</h4>
+						<img src="images/bdpi_avancada.png" height="500px">
 						<ul>
-								<li style="font-size: 50%">Ver produções por autor nos formatos: Tabela, ABNT e RIS</li>
-						</ul>						
-
+								<li style="font-size: 50%">Possibilidade de busca em campos específicos</li>
+						</ul>
 				</section>
+				<section>
+						<h4>Busca avançada - Por autor USP</h4>
+						<img src="images/bdpi_autorUSP.png" height="450px">
+						<ul>
+								<li style="font-size: 50%">Busca por obras de determinado autor USP por número USP, com a possibilidade de escolher os formatos ABNT, Tabela ou RIS em lote</li>
+						</ul>
+				</section>
+				<section>
+						<h4>Busca avançada - Busca pelo Vocabulário Controlado do SIBiUSP</h4>
+						<img src="images/bdpi_avancada2.png" height="500px">
+						<ul>
+								<li style="font-size: 50%">Possibilidade de busca em campos específicos</li>
+						</ul>
+				</section>
+				<section>
+						<h4>Busca pelo Vocabulário Controlado do SIBiUSP - Resultado</h4>
+						<img src="images/bdpi_vocab.png" height="200px">
+						<ul>
+								<li style="font-size: 50%">Na busca pelo Vocabulário Controlado do SIBiUSP, aparece uma caixa com a hierarquia do termo buscado</li>
+						</ul>
+				</section>													
 				<section>
 						<h4>Todos os registros por Unidade USP</h4>
 						<img src="images/bdpi_unidadesUSP.png" height="250px">
@@ -88,7 +114,50 @@
 								<li style="font-size: 50%">Facetas são filtros para novas buscas</li>
 						</ul>						
 				
-				</section>																										
+				</section>
+				<section>
+						<h4>Enriquecimento de Registros com dados de APIs</h4>
+						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_metricas.png" height="500px"></a>
+						<ul>
+								<li style="font-size: 50%">Fontes: QUALIS, Web of Scielo, Scopus, AMiner, OpenCitations</li>
+								<li style="font-size: 50%">Preenchumento automático, seguindo critérios definidos para cada fonte</li>
+						</ul>						
+				
+				</section>
+				<section>
+						<h4>Enriquecimento de Registros com dados de APIs -2</h4>
+						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_metricas2.png" height="500px"></a>
+						<ul>
+								<li style="font-size: 50%">Complementação com dados obtidos no momento da consulta</li>
+								<li style="font-size: 50%">Fontes: Altmetric.com, PlumX, Citações na Scopus</li>
+						</ul>						
+				
+				</section>
+				<section>
+						<h4>Registros</h4>
+						<a href="http://bdpi.usp.br/single.php?_id=002790839"><img src="images/bdpi_ris.png" height="500px"></a>
+						<ul>
+								<li style="font-size: 50%">Exportação no formato RIS (Compatível com EndNote e Mendeley)</li>
+						</ul>
+				</section>
+				<section>
+						<h4>Exemplares físicos</h4>
+						<a href="http://bdpi.usp.br/single.php?_id=002187951"><img src="images/bdpi_exemplares.png" height="170px"></a>
+						<ul>
+								<li style="font-size: 50%">Caso as Bibliotecas possuam exemplares físicos do material, a informação sobre os exemplares será exibida</li>
+						</ul>
+				</section>				
+				<section>
+						<h4>Como citar</h4>
+						<a href="http://bdpi.usp.br/single.php?_id=002790839"><img src="images/bdpi_como_citar.png" height="500px"></a>
+						<ul>
+								<li style="font-size: 50%">Referências geradas automaticamente nos formatos: ABNT, APA, NLM e Vancouver</li>
+						</ul>
+				</section>
+				<section>
+						<h4>Contato</h4>
+						<p style="font-size: 50%">atendimento@dt.sibi.usp.br</p>
+				</section>																																																
 
 			</div>
 		</div>

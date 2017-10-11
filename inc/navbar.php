@@ -87,6 +87,9 @@
 
 
                 </li>
+                <li class="uk-active">
+                    <a href="tutorial/"><?php echo $t->gettext('Tutorial'); ?></a>
+                </li>                
              </ul>
         </div>
 
