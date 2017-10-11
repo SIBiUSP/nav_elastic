@@ -825,7 +825,24 @@ class API {
         return $data;
         // Close request to clear up some resources
         curl_close($curl);    
-    }     
+    } 
+    
+    static function get_opencitation_title($title) {
+        $sparql = new EasyRdf_Sparql_Client('http://opencitations.net/sparql');
+        $result = $sparql->query(
+            'PREFIX cito: <http://purl.org/spar/cito/>
+            PREFIX dcterms: <http://purl.org/dc/terms/>
+            PREFIX datacite: <http://purl.org/spar/datacite/>
+            PREFIX literal: <http://www.essepuntato.it/2010/06/literalreification/>
+            SELECT ?citing ?title WHERE {
+              ?br 
+                dcterms:title "'.$title.'" ;
+                ^cito:cites ?citing .
+              ?citing dcterms:title ?title
+            }'
+        );        
+        return $result;
+    }    
 
     
 }
