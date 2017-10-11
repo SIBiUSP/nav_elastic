@@ -90,7 +90,7 @@
 				</section>													
 				<section>
 						<h4>Todos os registros por Unidade USP</h4>
-						<img src="images/bdpi_unidadesUSP.png" height="250px">
+						<img src="images/bdpi_unidadesUSP.png" height="400px">
 						<ul>
 								<li style="font-size: 50%">Acesso pelo link: UNIDADES USP, na menu superior</li>
 								<li style="font-size: 50%">Lista todas os registros em todas as bases por Unidade</li>
@@ -108,10 +108,10 @@
 				</section>
 				<section>
 						<h4>Facetas</h4>
-						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_resultado_busca.png" height="500px"></a>
+						<p><a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_facetas.png" height="400px"></a></p>
 						<ul>
-								<li style="font-size: 50%">Ordenação por data</li>
-								<li style="font-size: 50%">Facetas são filtros para novas buscas</li>
+								<li style="font-size: 50%">Ordenação por quantidade de ocorrências</li>
+								<li style="font-size: 50%">Possibilita limitar os resultados</li>
 						</ul>						
 				
 				</section>
