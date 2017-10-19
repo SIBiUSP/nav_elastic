@@ -68,7 +68,8 @@
                     //print_r($facets);
                     echo '<node id="'.sha1($facets['key']).'" label="'.$facets['key'].'">
                             <viz:size value="10.0"></viz:size>
-                            <viz:position x="'.mt_rand(1,500).'" y="'.mt_rand(1,500).'"></viz:position>
+                            <viz:position x="'.mt_rand(-500,500).'" y="'.mt_rand(-500,500).'"></viz:position>
+                            <viz:color r="'.mt_rand(0,255).'" g="'.mt_rand(0,255).'" b="'.mt_rand(0,255).'"></viz:color>
                         </node>';
 
                     
