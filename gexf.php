@@ -98,6 +98,7 @@
                     $i++;
                 }
                 echo '</nodes>';
+                echo '<edges>';
                 
                 $edges_unique = array_unique($edges,SORT_REGULAR);
                 $i_edge = 0;
@@ -105,6 +106,7 @@
                     echo '<edge id="'.$i_edge.'" source="'.$edge[0].'" target="'.$edge[1].'" weight="'.$edge[2].'.0"></edge>';
                     $i_edge++;
                 }
+                echo '</edges>';
                 
         
             }
