@@ -41,18 +41,14 @@
         $cursor = $client->search($params);
         $total = $cursor["hits"]["total"];
         
-        gexf($field,1000,null,"_term",$query);
+        gexf($field,10000,null,"_term",$query);
 
         //print_r($params);
 
-        function gexf($field,$size,$sort,$sort_type,$get_search) {
+        function gexf($field,$size,$sort,$sort_type,$get_search = "") {
             global $type;
             $query = $get_search;
             $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
-            $query["aggs"]["counts"]["terms"]["missing"] = "Não preenchido";
-            if (isset($sort)) {
-                $query["aggs"]["counts"]["terms"]["order"][$sort_type] = $sort;
-            }
             $query["aggs"]["counts"]["terms"]["size"] = $size;
             
             $response = elasticsearch::elastic_search($type,null,0,$query);
@@ -66,47 +62,46 @@
                 $i = 0;
                 foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {                    
                     //print_r($facets);
+
+                    // Pega todas as facetas e joga como nó
                     echo '<node id="'.sha1($facets['key']).'" label="'.$facets['key'].'">
                             <viz:size value="10.0"></viz:size>
                             <viz:position x="'.mt_rand(-500,500).'" y="'.mt_rand(-500,500).'"></viz:position>
                             <viz:color r="'.mt_rand(0,255).'" g="'.mt_rand(0,255).'" b="'.mt_rand(0,255).'"></viz:color>
-                        </node>';
+                        </node>';  
 
-                    
-                    if ($i == 0) {
-                        // Pega o central
-                        $central_string = $facets['key'];
-                        $central = sha1($facets['key']);
-                    } else {
-                        // Joga os outros no array
-                        $edges[] = array($central, sha1($facets['key']),$facets['doc_count']);
-
-                        // Nova consulta para formar a rede
-                        $query["query"]["query_string"]["query"] = $get_search["query"]["query_string"]["query"] . " " . str_replace($central_string,$facets['key'],$get_search["query"]["query_string"]["query"]);
-                        $response_network = elasticsearch::elastic_search($type,null,0,$query);
-
+                        // Consulta para formar os edges
+                        $query_n = $query;
+                        $query_n["query"]["query_string"]["query"] = $get_search["query"]["query_string"]["query"] . " +" . $field . ".keyword:\"" . $facets['key'] ."\"";
+                        $response_network = elasticsearch::elastic_search($type,null,0,$query_n);
+                        
                         $i_network = 0;                        
-                        foreach ($response_network["aggregations"]["counts"]["buckets"] as $facets_network) {
-                            if ($i_network == 0) {
-                                $central_n_string = $facets_network['key'];
-                                $central_n = sha1($facets_network['key']);
-                            } else{
-                                $edges[] = array($central_n, sha1($facets_network['key']),$facets_network['doc_count']);
-                            }
+                        foreach ($response_network["aggregations"]["counts"]["buckets"] as $facets_network) {  
+                                                     
+                                $central_n_string = $facets['key'];
+                                if ($facets['key'] != $facets_network['key']) {
+                                    $array =  array(sha1($facets['key']), sha1($facets_network['key']),$facets_network['doc_count']);
+                                    $edges[] = $array;
+                                }
+                                
+                            
                             $i_network++;
-                        }                        
-                    }
+                        }
+
                     $i++;
                 }
                 echo '</nodes>';
                 echo '<edges>';
                 
                 $edges_unique = array_unique($edges,SORT_REGULAR);
+                //$edges_unique= array_map('unserialize', array_unique(array_map('serialize', $edges)));
                 $i_edge = 0;
+
                 foreach ($edges_unique as $edge) {
                     echo '<edge id="'.$i_edge.'" source="'.$edge[0].'" target="'.$edge[1].'" weight="'.$edge[2].'.0"></edge>';
                     $i_edge++;
                 }
+
                 echo '</edges>';
                 
         
