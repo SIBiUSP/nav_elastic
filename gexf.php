@@ -64,7 +64,7 @@
                     //print_r($facets);
 
                     // Pega todas as facetas e joga como nó
-                    echo '<node id="'.sha1($facets['key']).'" label="'.$facets['key'].'">
+                    echo '<node id="'.(string)crc32($facets['key']).'" label="'.$facets['key'].'">
                             <viz:size value="10.0"></viz:size>
                             <viz:position x="'.mt_rand(-500,500).'" y="'.mt_rand(-500,500).'"></viz:position>
                             <viz:color r="'.mt_rand(0,255).'" g="'.mt_rand(0,255).'" b="'.mt_rand(0,255).'"></viz:color>
@@ -80,7 +80,9 @@
                                                      
                                 $central_n_string = $facets['key'];
                                 if ($facets['key'] != $facets_network['key']) {
-                                    $array =  array(sha1($facets['key']), sha1($facets_network['key']),$facets_network['doc_count']);
+                                    $array =  array((string)crc32($facets['key']), (string)crc32($facets_network['key']),(string)$facets_network['doc_count']);
+                                    $array[] = sort($array);
+                                    $array = array_values($array);
                                     $edges[] = $array;
                                 }
                                 
@@ -90,19 +92,27 @@
 
                     $i++;
                 }
-                echo '</nodes>';
-                echo '<edges>';
-                
+                echo '</nodes>
+                <edges>';
+
+                echo '
+                ';
+                //$edges_unique = array_map('unserialize', array_unique(array_map('serialize', $edges)));
+                //print_r($edges_check); 
                 $edges_unique = array_unique($edges,SORT_REGULAR);
-                //$edges_unique= array_map('unserialize', array_unique(array_map('serialize', $edges)));
+                //$edges_unique_new = array_unique($edges_unique);
+                //$edges_unique = array_diff_key($edges_unique, $edges);
+                
                 $i_edge = 0;
 
                 foreach ($edges_unique as $edge) {
-                    echo '<edge id="'.$i_edge.'" source="'.$edge[0].'" target="'.$edge[1].'" weight="'.$edge[2].'.0"></edge>';
+                    echo '<edge id="'.$i_edge.'" source="'.$edge[2].'" target="'.$edge[1].'" weight="'.$edge[0].'.0"></edge>
+                    ';
                     $i_edge++;
                 }
 
-                echo '</edges>';
+                echo '</edges>
+                ';
                 
         
             }
