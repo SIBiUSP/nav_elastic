@@ -2,6 +2,9 @@
 <html lang="pt-br" dir="ltr">
     <head>
         <?php 
+            // Set directory to ROOT
+            chdir('../');
+            // Include essencial files
             include('inc/config.php'); 
             include('inc/functions.php');
             include('inc/meta-header.php'); 
@@ -65,7 +68,6 @@ echo 'Total de registros faltantes: '.$response['hits']['total'].'';
         <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
     </head>
     <body> 
-        <?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-large-bottom">
             
 
@@ -226,6 +228,5 @@ echo 'Total de registros faltantes: '.$response['hits']['total'].'';
                 ?> 
    
         </div>
-        <?php include('inc/footer.php'); ?>
     </body>
 </html>
