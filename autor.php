@@ -359,18 +359,35 @@
             <thead>
                 <tr>
                     <th>Sysno</th>
-                    <th>Ano</th>
+                    <th>DOI</th>
                     <th>Título</th>
                     <th>Autores</th>
-                    <th>In:</th>
-                    <th>DOI</th>
+                    <th>Fonte da publicação</th>                    
+                    <th>Paginação</th>
+                    <th>Ano de publicação</th>
+                    <th>ISSN</th>  
+                    <th>Local de publicação</th>
+                    <th>Editora</th>
+                    <th>Nome do evento</th>
+                    <th>Tipo de Material</th>
+                    <th>Autores USP</th>
+                    <th>Número USP</th>
+                    <th>Unidades USP</th>
+                    <th>Departamentos</th>
+                    <th>Qualis 2013/2016</th>
+                    <th>JCR - Journal Impact Factor - 2016</th>
+                    <th>Citescore - 2016</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
                 <tr>
                     <td><a href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo  $r['_id'];?></a></td>
-                    <td><?php if (!empty($r["_source"]['datePublished'])) { echo $r["_source"]['datePublished']; } ?></td>
+                    <td>
+                        <?php if (!empty($r["_source"]['doi'])) : ?>
+                            <a href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank"><?php echo $r["_source"]['doi'];?></a>
+                        <?php endif; ?>    
+                    </td>
                     <td><?php echo $r["_source"]['name'];?></td>
                     <td>
                         <?php foreach ($r["_source"]['author'] as $authors) {
@@ -389,12 +406,109 @@
                         <?php if (!empty($r["_source"]['isPartOf'])) : ?>
                             <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"]; } ?>&quot;"><?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"];} ?></a>
                         <?php endif; ?>     
+                    </td>    
+                    <td>
+                        <?php if (!empty($r["_source"]['isPartOf']['USP']['dados_do_periodico'])) {
+                                 echo $r["_source"]['isPartOf']['USP']['dados_do_periodico']; 
+                        } 
+                        ?>
+                    </td>
+                    <td><?php if (!empty($r["_source"]['datePublished'])) { echo $r["_source"]['datePublished']; } ?></td>
+                    <td>
+                        <?php if (!empty($r["_source"]['isPartOf']['issn'])) : ?>
+                        <?php foreach ($r["_source"]['isPartOf']['issn'] as $issn) {
+                            $issn_array[]='<a href="result.php?search[]=isPartOf.issn.keyword:&quot;'.$issn.'&quot;">'.$issn.'</a>';
+                        } 
+                        $array_issn = implode("; ",$issn_array);
+                        unset($issn_array);
+                        print_r($array_issn);
+                        ?>
+                        <?php endif; ?>
+                    </td> 
+                    <td>
+                        <?php if (!empty($r["_source"]['publisher']['organization']['location'])) {
+                                 echo $r["_source"]['publisher']['organization']['location']; 
+                        } 
+                        ?>
                     </td>
                     <td>
-                        <?php if (!empty($r["_source"]['doi'])) : ?>
-                            <a href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank"><?php echo $r["_source"]['doi'];?></a>
-                        <?php endif; ?>    
+                        <?php if (!empty($r["_source"]['publisher']['organization']['name'])) {
+                                 echo $r["_source"]['publisher']['organization']['name']; 
+                        } 
+                        ?>
                     </td>                                        
+                    <td>
+                        <?php if (!empty($r["_source"]['releasedEvent'])) {
+                                 echo $r["_source"]['releasedEvent']; 
+                              } 
+                        ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['type'])) {
+                                 echo $r["_source"]['type']; 
+                              } 
+                        ?>
+                    </td>                      
+                    <td>
+                        <?php foreach ($r["_source"]['authorUSP'] as $authorsUSP) {
+                            $authorsUSP_array[]='<a href="result.php?search[]=authorUSP.name.keyword:&quot;'.$authorsUSP["name"].'&quot;">'.$authorsUSP["name"].'</a>';
+                        } 
+                        $array_autUSP = implode("; ",$authorsUSP_array);
+                        unset($authorsUSP_array);
+                        print_r($array_autUSP);
+                        ?>
+                    </td>
+                    <td>
+                        <?php foreach ($r["_source"]['authorUSP'] as $numUSP) {
+                            $numUSP_array[]='<a href="result.php?search[]=authorUSP.codpes.keyword:&quot;'.$numUSP["codpes"].'&quot;">'.$numUSP["codpes"].'</a>';
+                        } 
+                        $array_numUSP = implode("; ",$numUSP_array);
+                        unset($numUSP_array);
+                        print_r($array_numUSP);
+                        ?>
+                    </td>
+                    <td>
+                        <?php foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
+                            $unidadesUSP_array[]='<a href="result.php?search[]=authorUSP.unidadeUSP.keyword:&quot;'.$unidadesUSP_aut["unidadeUSP"].'&quot;">'.$unidadesUSP_aut["unidadeUSP"].'</a>';
+                        } 
+                        $array_unidadesUSP = implode("; ",$unidadesUSP_array);
+                        unset($unidadesUSP_array);
+                        print_r($array_unidadesUSP);
+                        ?>
+                    </td>
+                    <td>
+                        <?php foreach ($r["_source"]['authorUSP'] as $departament_aut) {
+                            $departament_array[]='<a href="result.php?search[]=authorUSP.departament.keyword:&quot;'.$departament_aut["departament"].'&quot;">'.$departament_aut["departament"].'</a>';
+                        } 
+                        $array_departament = implode("; ",$departament_array);
+                        unset($departament_array);
+                        print_r($array_departament);
+                        ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['USP']['serial_metrics']['qualis']['2016'])) : ?>
+                        <?php foreach ($r["_source"]['USP']['serial_metrics']['qualis']['2016'] as $qualis) {
+                            $qualis_array[]='<a href="result.php?search[]=USP.serial_metrics.qualis.2016.area_nota.keyword:&quot;'.$qualis["area_nota"].'&quot;">'.$qualis["area_nota"].'</a>';
+                        } 
+                        $array_qualis = implode("; ",$qualis_array);
+                        unset($qualis_array);
+                        print_r($array_qualis);
+                        ?>
+                        <?php endif; ?>   
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor'])) {
+                                 echo $r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor']; 
+                              } 
+                        ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore'])) {
+                                 echo $r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore']; 
+                              } 
+                        ?>
+                    </td>                                                                                                                                                                               
+                                  
                 </tr>
                 <?php endforeach;?>
             </tbody>
