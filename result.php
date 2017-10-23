@@ -168,7 +168,7 @@
                         $.get("tools/gexf/update_bdpi.php?<?=$value?>");
                         setTimeout(function(){
                             document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
-                        }, 2000);                        
+                        }, 5000);                        
                     }
                     </script>
                     <li><a class="" href="#modal-full-network" onClick='gexf_unidadeUSP()' uk-toggle>Rede de Coautoria entre Unidades USP</a></li>
