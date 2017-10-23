@@ -165,9 +165,9 @@
                    ?>
                     <script>                    
                     function gexf_unidadeUSP() {
-                        $.get("tools/gexf-js/update_bdpi.php?<?=$value?>");
+                        $.get("tools/gexf/update_bdpi.php?<?=$value?>");
                         setTimeout(function(){
-                            document.getElementById("ifr").src="tools/gexf-js/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
+                            document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
                         }, 2000);                        
                     }
                     </script>
@@ -192,9 +192,9 @@
 
                     <script>                    
                     function gexf_authors() {
-                        $.get("tools/gexf-js/update_bdpi.php?<?=$value_authors?>");
+                        $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
                         setTimeout(function(){
-                            document.getElementById("ifr-authors").src="tools/gexf-js/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
+                            document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
                         }, 6000);                        
                     }
                     </script>
@@ -218,9 +218,9 @@
                     ?>
                     <script>                    
                     function gexf_about() {
-                        $.get("tools/gexf-js/update_bdpi.php?<?=$value_about?>");
+                        $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
                         setTimeout(function(){
-                            document.getElementById("ifr-about").src="tools/gexf-js/index.html#data/bdpi-<?=$sha1_about?>.gexf";
+                            document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
                         }, 6000);                        
                     }
                     </script>
