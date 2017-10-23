@@ -155,6 +155,8 @@
                     <div class="uk-panel uk-panel-box">
 
                     <h3 class="uk-panel-title"><?php echo $t->gettext('Visualização em rede'); ?></h3>
+                    <p><?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
+                    
                             <hr>
                             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">                    
 
