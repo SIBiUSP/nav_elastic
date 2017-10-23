@@ -195,7 +195,7 @@
                         $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
                         setTimeout(function(){
                             document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
-                        }, 6000);                        
+                        }, 15000);                        
                     }
                     </script>
                     <li><a class="" href="#modal-authors" onClick='gexf_authors()' uk-toggle>Rede de Coautoria entre Autores com vínculo com a USP</a></li>
@@ -221,7 +221,7 @@
                         $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
                         setTimeout(function(){
                             document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
-                        }, 6000);                        
+                        }, 15000);                        
                     }
                     </script>
                     <li><a class="" href="#modal-about" onClick='gexf_about()' uk-toggle>Rede de Assuntos</a></li>
