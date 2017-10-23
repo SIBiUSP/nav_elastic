@@ -15,7 +15,7 @@
 
         $result_get = get::analisa_get($_GET);
         $query = $result_get['query'];  
-        $limit = 1000;
+        $limit = 500;
         $page = $result_get['page'];
         $skip = $result_get['skip'];
 
@@ -41,7 +41,7 @@
         $cursor = $client->search($params);
         $total = $cursor["hits"]["total"];
         
-        gexf($field,10000,null,"_term",$query);
+        gexf($field,1000,null,"_term",$query);
 
         //print_r($params);
 
