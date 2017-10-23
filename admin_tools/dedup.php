@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php
-    /* ARC2 static class inclusion */
+    // Set directory to ROOT
+    chdir('../');
+    // Include essencial files
     include('inc/config.php'); 
     include('inc/functions.php'); 
 
