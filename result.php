@@ -154,94 +154,6 @@
                 <div class="uk-width-1-4@s uk-width-2-6@m">
                     <div class="uk-panel uk-panel-box">
 
-                    <h3 class="uk-panel-title"><?php echo $t->gettext('Visualização em rede'); ?></h3>
-                    <p><?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
-                    
-                            <hr>
-                            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">                    
-
-                    <!-- Modal - Rede - unidadeUSP -->
-                   <?php 
-                        $value = ''.$_SERVER["QUERY_STRING"].'&gexf_field=unidadeUSP';
-                        $sha1_unidade = sha1($value);
-                   ?>
-                    <script>                    
-                    function gexf_unidadeUSP() {
-                        $.get("tools/gexf/update_bdpi.php?<?=$value?>");
-                        setTimeout(function(){
-                            document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
-                        }, 15000);                        
-                    }
-                    </script>
-                    <li><a class="" href="#modal-full-network" onClick='gexf_unidadeUSP()' uk-toggle>Rede de Coautoria entre Unidades USP</a></li>
-
-                    <div id="modal-full-network" class="uk-modal-full" uk-modal>
-                        <div class="uk-modal-dialog">
-                            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                            <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
-                            
-                            <iframe id='ifr' height="800px" width="100vh"></iframe> 
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Rede - Fim -->
-
-                    <!-- Modal - Rede - autores -->
-                    <?php 
-                        $value_authors = ''.$_SERVER["QUERY_STRING"].'&gexf_field=authorUSP.name';
-                        $sha1_authors = sha1($value_authors);
-                    ?>
-
-                    <script>                    
-                    function gexf_authors() {
-                        $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
-                        setTimeout(function(){
-                            document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
-                        }, 15000);                        
-                    }
-                    </script>
-                    <li><a class="" href="#modal-authors" onClick='gexf_authors()' uk-toggle>Rede de Coautoria entre Autores com vínculo com a USP</a></li>
-
-                    <div id="modal-authors" class="uk-modal-full" uk-modal>
-                        <div class="uk-modal-dialog">
-                            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                            <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
-                            
-                            <iframe id='ifr-authors' height="800px" width="100vh"></iframe> 
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Rede - Fim -->   
-                    
-                    <!-- Modal - Rede - Assuntos -->
-                    <?php 
-                        $value_about = ''.$_SERVER["QUERY_STRING"].'&gexf_field=about';
-                        $sha1_about = sha1($value_about);
-                    ?>
-                    <script>                    
-                    function gexf_about() {
-                        $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
-                        setTimeout(function(){
-                            document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
-                        }, 15000);                        
-                    }
-                    </script>
-                    <li><a class="" href="#modal-about" onClick='gexf_about()' uk-toggle>Rede de Assuntos</a></li>
-
-                    <div id="modal-about" class="uk-modal-full" uk-modal>
-                        <div class="uk-modal-dialog">
-                            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                            <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
-                            
-                            <iframe id='ifr-about' height="800px" width="100vh"></iframe> 
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Rede - Fim -->
-                    </ul> 
-                    <hr>                      
-
-
                         <!-- Facetas - Início -->
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Refinar busca'); ?></h3>
                             <hr>
@@ -368,6 +280,92 @@
                             <!-- Limitar por data - Fim -->
 
                             <hr>
+
+                            <h3 class="uk-panel-title"><?php echo $t->gettext('Visualização em rede'); ?></h3>
+                        <p><?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
+                        <hr>
+                        <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">                    
+
+                        <!-- Modal - Rede - unidadeUSP -->
+                        <?php 
+                            $value = ''.$_SERVER["QUERY_STRING"].'&gexf_field=unidadeUSP';
+                            $sha1_unidade = sha1($value);
+                        ?>
+                        <script>                    
+                        function gexf_unidadeUSP() {
+                            $.get("tools/gexf/update_bdpi.php?<?=$value?>");
+                            setTimeout(function(){
+                                document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
+                            }, 15000);                        
+                        }
+                        </script>
+                        <li><a class="" href="#modal-full-network" onClick='gexf_unidadeUSP()' uk-toggle>Rede de Coautoria entre Unidades USP</a></li>
+
+                        <div id="modal-full-network" class="uk-modal-full" uk-modal>
+                            <div class="uk-modal-dialog">
+                                <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                
+                                <iframe id='ifr' height="800px" width="100vh"></iframe> 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Rede - Fim -->
+
+                        <!-- Modal - Rede - autores -->
+                        <?php 
+                            $value_authors = ''.$_SERVER["QUERY_STRING"].'&gexf_field=authorUSP.name';
+                            $sha1_authors = sha1($value_authors);
+                        ?>
+
+                        <script>                    
+                        function gexf_authors() {
+                            $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
+                            setTimeout(function(){
+                                document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
+                            }, 15000);                        
+                        }
+                        </script>
+                        <li><a class="" href="#modal-authors" onClick='gexf_authors()' uk-toggle>Rede de Coautoria entre Autores com vínculo com a USP</a></li>
+
+                        <div id="modal-authors" class="uk-modal-full" uk-modal>
+                            <div class="uk-modal-dialog">
+                                <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                
+                                <iframe id='ifr-authors' height="800px" width="100vh"></iframe> 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Rede - Fim -->   
+                        
+                        <!-- Modal - Rede - Assuntos -->
+                        <?php 
+                            $value_about = ''.$_SERVER["QUERY_STRING"].'&gexf_field=about';
+                            $sha1_about = sha1($value_about);
+                        ?>
+                        <script>                    
+                        function gexf_about() {
+                            $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
+                            setTimeout(function(){
+                                document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
+                            }, 15000);                        
+                        }
+                        </script>
+                        <li><a class="" href="#modal-about" onClick='gexf_about()' uk-toggle>Rede de Assuntos</a></li>
+
+                        <div id="modal-about" class="uk-modal-full" uk-modal>
+                            <div class="uk-modal-dialog">
+                                <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                
+                                <iframe id='ifr-about' height="800px" width="100vh"></iframe> 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Rede - Fim -->
+                        </ul> 
+                    <hr>                                
 
                             <!-- Gerar relatório - Início -->
                             <?php if(!empty($_SESSION['oauthuserdata'])): ?>
