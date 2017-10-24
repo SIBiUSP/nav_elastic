@@ -223,7 +223,7 @@
                                     $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
-                                    $facets->facet("USP.about_BDTD",50,$t->gettext('Assuntos provenientes das teses'),null,"_term",$_GET["search"]);
+                                    $facets->facet("USP.about_BDTD",50,$t->gettext('Palavras-chave do autor'),null,"_term",$_GET["search"]);
                                 ?>
                             </ul>
                             <?php if(!empty($_SESSION['oauthuserdata'])): ?> 
