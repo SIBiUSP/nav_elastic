@@ -662,7 +662,6 @@ class metrics {
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, TRUE);
-        print_r($data);
         return $data;
         // Close request to clear up some resources
         curl_close($curl);
