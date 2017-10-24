@@ -2,7 +2,7 @@
 <html lang="pt-br" dir="ltr">
     <head>
         <?php
-            // Set directory to ROOT
+            getcwd();
             chdir('../');
             // Include essencial files         
             include('inc/config.php'); 

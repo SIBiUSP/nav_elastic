@@ -3,8 +3,8 @@
  
   <?php
   /* ARC2 static class inclusion */
-  include('inc/config.php'); 
-  include('inc/functions.php'); 
+  include('../inc/config.php'); 
+  include('../inc/functions.php'); 
 
   $query["query"]["query_string"]["query"] = "-_exists_:USP.opencitation";    
   $query['sort'] = [

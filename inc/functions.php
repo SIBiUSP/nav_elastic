@@ -1,8 +1,10 @@
 <?php
 
-define("URL_BASE_PATH", "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"]));
-
-include('functions_core/functions_core.php');
+if (file_exists('functions_core/functions_core.php')) {
+    include('functions_core/functions_core.php');
+} else {
+    include('../functions_core/functions_core.php');
+}
 
 /**
  * Classe de funções da página inicial

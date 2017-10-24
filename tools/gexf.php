@@ -10,8 +10,8 @@
     </meta>
     <graph defaultedgetype="undirected" mode="static">
     <?php
-        include('inc/config.php'); 
-        include('inc/functions.php');
+        include('../inc/config.php'); 
+        include('../inc/functions.php');
 
         $result_get = get::analisa_get($_GET);
         $query = $result_get['query'];  

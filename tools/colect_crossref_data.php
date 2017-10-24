@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
 
-    include('inc/config.php'); 
-    include('inc/functions.php');
+    include('../inc/config.php'); 
+    include('../inc/functions.php');
 
     $query["query"]["query_string"]["query"] = "+_exists_:doi -_exists_:USP.crossref"; 
     $query['sort'] = [
