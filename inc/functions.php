@@ -1,5 +1,7 @@
 <?php
 
+define("URL_BASE_PATH", "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"]));
+
 include('functions_core/functions_core.php');
 
 /**

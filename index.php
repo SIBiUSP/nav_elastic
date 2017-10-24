@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php 
-            include('inc/config.php');             
+        <?php             
+            include('inc/config.php');
+            include('inc/functions.php');             
             include('inc/meta-header.php');
-            include('inc/functions.php');
+            
       
             /* Define variables */
             define('authorUSP','authorUSP');
