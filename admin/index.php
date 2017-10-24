@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php 
+        <?php
+            // Set directory to ROOT
+            chdir('../');
+            // Include essencial files         
             include('inc/config.php'); 
             include('inc/functions.php');
             include('inc/meta-header.php'); 
@@ -26,13 +29,13 @@
 
                 <div class="uk-width-2-4@">
 
-                    <p><a href="autoridades.php">Atualizar autoridades</a></p> 
+                    <p><a href="admin/autoridades.php">Atualizar autoridades</a></p> 
                     
                 </div>
 
                 <div class="uk-width-2-4@m">
                     
-                    <p><a href="translate_en.php">Atualizar tradução para o Inglês</a></p>
+                    <p><a href="admin/translate_en.php">Atualizar tradução para o Inglês</a></p>
                     
                 </div>
             </div>
