@@ -203,19 +203,19 @@
                                 ?>
                                 <?php
                                     $facets->facet("USP.WOS.coverage",50,$t->gettext('Cobertura na Web of Science'),null,"_term",$_GET["search"]);
-                                    $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor",100,"JCR - Journal Impact Factor - 2016",$_GET["search"]);
-                                    $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites",100,"JCR - Journal Impact Factor without Journal Self Cites - 2016",$_GET["search"]);
-                                    $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score",100,"JCR - Eigenfactor Score - 2016",$_GET["search"]);
-                                    $facets->facet_range("USP.citescore.citescore.2016.citescore",100,"Citescore - 2016",$_GET["search"]);
-                                    $facets->facet_range("USP.citescore.citescore.2016.SJR",100,"SJR - 2016",$_GET["search"]);
-                                    $facets->facet_range("USP.citescore.citescore.2016.SNIP",100,"SNIP - 2016",$_GET["search"]);
+                                    $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor",100,"JCR - Journal Impact Factor - 2016");
+                                    $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites",100,"JCR - Journal Impact Factor without Journal Self Cites - 2016");
+                                    $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score",100,"JCR - Eigenfactor Score - 2016");
+                                    $facets->facet_range("USP.citescore.citescore.2016.citescore",100,"Citescore - 2016");
+                                    $facets->facet_range("USP.citescore.citescore.2016.SJR",100,"SJR - 2016");
+                                    $facets->facet_range("USP.citescore.citescore.2016.SNIP",100,"SNIP - 2016");
                                     $facets->facet("USP.citescore.citescore.2016.open_access",50,$t->gettext('Acesso aberto'),null,"_term",$_GET["search"]);
                                     
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Métricas no nível do artigo'); ?></li> 
                                 <?php
-                                    $facets->facet_range("USP.aminer.num_citation",100,"Citações no AMiner",$_GET["search"]);
-                                    $facets->facet_range("USP.opencitation.num_citations",100,"Citações no OpenCitations",$_GET["search"]);
+                                    $facets->facet_range("USP.aminer.num_citation",100,"Citações no AMiner","INT");
+                                    $facets->facet_range("USP.opencitation.num_citations",100,"Citações no OpenCitations","INT");
                                 ?>                                   
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
