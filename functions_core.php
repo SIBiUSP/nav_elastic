@@ -406,20 +406,35 @@ class facets {
 
     }
 
-    public function facet_range($field,$size,$nome_do_campo) {
+    public function facet_range($field,$size,$nome_do_campo,$type_of_number = "") {
         global $type;
         $query = $this->query;
-        $query["aggs"]["ranges"]["range"]["field"] = "$field";
-        $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 0.5;
-        $query["aggs"]["ranges"]["range"]["ranges"][1]["from"] = 0.5;
-        $query["aggs"]["ranges"]["range"]["ranges"][1]["to"] = 1;
-        $query["aggs"]["ranges"]["range"]["ranges"][2]["from"] = 1;
-        $query["aggs"]["ranges"]["range"]["ranges"][2]["to"] = 2;
-        $query["aggs"]["ranges"]["range"]["ranges"][3]["from"] = 2;
-        $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 5;
-        $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 5;
-        $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 10;
-        $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;        
+        if ($type_of_number == "INT") {
+            $query["aggs"]["ranges"]["range"]["field"] = "$field";
+            $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 1;
+            $query["aggs"]["ranges"]["range"]["ranges"][1]["from"] = 1;
+            $query["aggs"]["ranges"]["range"]["ranges"][1]["to"] = 2;
+            $query["aggs"]["ranges"]["range"]["ranges"][2]["from"] = 2;
+            $query["aggs"]["ranges"]["range"]["ranges"][2]["to"] = 5;
+            $query["aggs"]["ranges"]["range"]["ranges"][3]["from"] = 5;
+            $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 10;
+            $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;
+            $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 20;
+            $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 20;
+        } else {
+            $query["aggs"]["ranges"]["range"]["field"] = "$field";
+            $query["aggs"]["ranges"]["range"]["ranges"][0]["to"] = 0.5;
+            $query["aggs"]["ranges"]["range"]["ranges"][1]["from"] = 0.5;
+            $query["aggs"]["ranges"]["range"]["ranges"][1]["to"] = 1;
+            $query["aggs"]["ranges"]["range"]["ranges"][2]["from"] = 1;
+            $query["aggs"]["ranges"]["range"]["ranges"][2]["to"] = 2;
+            $query["aggs"]["ranges"]["range"]["ranges"][3]["from"] = 2;
+            $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 5;
+            $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 5;
+            $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 10;
+            $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;  
+        }
+      
         //$query["aggs"]["counts"]["terms"]["size"] = $size;               
         
         $response = elasticsearch::elastic_search($type,null,0,$query);
