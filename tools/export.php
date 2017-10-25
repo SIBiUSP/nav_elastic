@@ -121,10 +121,14 @@ if ($_GET["format"] = "tsv") {
                 unset($authorsUSP_array);
 
                 foreach ($r["_source"]['authorUSP'] as $numUSP) {
-                    $numUSP_array[]= $numUSP["codpes"];                
+                    if (!empty($numUSP["codpes"])) {
+                        $numUSP_array[]= $numUSP["codpes"]; 
+                    }               
                 }
-                $fields[] = implode(";",$numUSP_array);
-                unset($numUSP_array);
+                if (!empty($numUSP_array)) {
+                    $fields[] = implode(";",$numUSP_array);
+                    unset($numUSP_array);
+                }
 
                 foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
                     $unidadesUSP_array[]= $unidadesUSP_aut["unidadeUSP"];                
