@@ -379,9 +379,6 @@
 
                         <hr>
 
-
-                                                       
-                    <?php endif; ?>
                         <!-- Exportar resultados -->
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Exportar'); ?></h3>
                         <p>Limitado aos primeiros 10000 resultados</p>
@@ -389,7 +386,10 @@
                             <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>">Exportar resultados em formato tabela</a></li>
                             <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=ris'; ?>">Exportar resultados em formato RIS</a></li>
                         </ul>
-                        <!-- Exportar resultados - Fim -->                       
+                        <!-- Exportar resultados - Fim -->        
+                                                       
+                    <?php endif; ?>
+               
 
                           
                                             
