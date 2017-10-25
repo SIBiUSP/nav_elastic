@@ -367,15 +367,29 @@
                         </ul> 
                     <hr>                                
 
-                            <!-- Gerar relatório - Início -->
-                            <?php if(!empty($_SESSION['oauthuserdata'])): ?>
-                                    <fieldset>
-                                        <legend>Gerar relatório</legend>                  
-                                        <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
-                                        </div>
-                                    </fieldset>        
-                            <?php endif; ?>
-                            <!-- Gerar relatório - Fim -->                
+                            
+                    <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                        <!-- Gerar relatório - Início -->
+                        <fieldset>
+                            <legend>Gerar relatório</legend>                  
+                            <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
+                            </div>
+                        </fieldset>
+                        <!-- Gerar relatório - Fim -->
+
+                        <hr>
+
+                        <!-- Exportar resultados -->
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Exportar'); ?></h3>
+                        <p>Limitado aos primeiros 10000 resultados</p>
+                        <?php $value_export = ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>
+                        <li><a class="" href="tools/export.php?<?php echo $value_export; ?>">Exportar resultados em formato tabela</a></li>
+                        <!-- Exportar resultados - Fim -->   
+                                                       
+                    <?php endif; ?>
+
+                          
+                                            
                     </div>
                 </div>
                 

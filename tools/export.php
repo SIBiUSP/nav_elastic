@@ -133,10 +133,14 @@ if ($_GET["format"] = "tsv") {
                 unset($unidadesUSP_array);
 
                 foreach ($r["_source"]['authorUSP'] as $departament_aut) {
-                    $departament_array[]= $departament_aut["departament"];                
+                    if (!empty($departament_aut["departament"])) {
+                        $departament_array[]= $departament_aut["departament"];
+                    }                
                 }
-                $fields[] = implode(";",$departament_array);
-                unset($departament_array);
+                if (!empty($departament_array)) {
+                    $fields[] = implode(";",$departament_array);
+                    unset($departament_array);
+                }
 
             }
             
