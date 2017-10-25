@@ -1,6 +1,6 @@
 <?php
 
-if ($_GET["format"] = "tsv") {
+if ($_GET["format"] == "table") {
 
     $file="export_bdpi.tsv";
     header('Content-type: text/tab-separated-values');
@@ -177,6 +177,55 @@ if ($_GET["format"] = "tsv") {
         echo implode("\n",$content);            
 
     }    
+
+} elseif($_GET["format"] == "ris") {
+
+    $file="export_bdpi.ris";
+    header('Content-type: application/x-research-info-systems');
+    header("Content-Disposition: attachment; filename=$file");
+
+    // Set directory to ROOT
+    chdir('../');
+    // Include essencial files
+    include('inc/config.php'); 
+    include('inc/functions.php');
+
+
+    $result_get = get::analisa_get($_GET);
+    $query = $result_get['query'];  
+    $limit = $result_get['limit'];
+    $page = $result_get['page'];
+    $skip = $result_get['skip'];
+
+    if (isset($_GET["sort"])) {
+        $query['sort'] = [
+            ['name.keyword' => ['order' => 'asc']],
+        ];
+    } else {
+        $query['sort'] = [
+            ['datePublished.keyword' => ['order' => 'desc']],
+        ];
+    }
+
+    $params = [];
+    $params["index"] = $index;
+    $params["type"] = $type;
+    $params["size"] = 10000;
+    $params["from"] = $skip;
+    $params["body"] = $query; 
+
+    $cursor = $client->search($params); 
+
+    foreach ($cursor["hits"]["hits"] as $r) { 
+        /* Exportador RIS */
+        $record_blob[] = exporters::RIS($r);
+    }
+    foreach ($record_blob as $record) {
+        $record_array = explode('\n',$record);
+        echo implode("\n",$record_array);
+    }
+    
+
 
 }
 
