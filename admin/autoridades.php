@@ -1,230 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php 
+        <?php
             // Set directory to ROOT
-            chdir('../');
-            // Include essencial files
+            chdir('../');         
             include('inc/config.php'); 
-            include('inc/functions.php');
-            include('inc/meta-header.php'); 
-        
+            include('inc/functions.php');            
+            include('inc/meta-header.php');
 
-/* Consulta n registros ainda não corrigidos */
+            /* Consulta n registros ainda não corrigidos */
+            if (empty($_GET)) {
+                $body["query"]["query_string"]["query"] = "+_exists_:author.person.affiliation.name_not_found";
+            } 
 
-if (empty($_GET)) {
+            if (isset($_GET["sort"])) {        
+                $body["sort"][$_GET["sort"]]["unmapped_type"] = "long";
+                $body["sort"][$_GET["sort"]]["missing"] = "_last";
+                $body["sort"][$_GET["sort"]]["order"] = "desc";
+                $body["sort"][$_GET["sort"]]["mode"] = "max";
+            } else {
+                //$query['sort']['facebook.facebook_total']['order'] = "desc";
+                $body['sort']['_uid']['order'] = "desc";
+            }                
 
-$query='
-{    
-    "query": {
-        "query_string" : {
-            "fields" : ["colab_instituicao","colab_instituicao_tematres"],
-            "query" : "+_exists_:colab_instituicao -_exists_:colab_instituicao_tematres"
-        }
-    },
-    "size":1000
-}
-';
-    
-/*
-{
-    "term": {
-        "colab_instituicao_tematres": false
-    }
-},
+            $params = [];
+            $params["index"] = $index;
+            $params["type"] = $type;
+            $params["_source"] = ["_id","author"];
+            $params["size"] = 10;        
+            $params["body"] = $body;   
 
-
-*/    
-    
-} else {
-
-$query='
-{
-    "query": {
-        "query_string" : {
-            "fields" : ["colab_instituicao","colab_instituicao_naocorrigido"],
-            "query" : "colab_instituicao_naocorrigido:\"'.$_GET["term"].'\""
-        }
-    },
-    "size":1000
-}
-';
-    //print_r($query);
-}
-
-$params = [
-    'index' => 'sibi',
-    'type' => 'producao',
-    '_source' => [
-      '_id','colab_instituicao','colab_instituicao_naocorrigido'  
-    ],    
-    'body' => $query
-];
-$response = $client->search($params);       
-echo 'Total de registros faltantes: '.$response['hits']['total'].'';
-//print_r($response);        
+            $response = $client->search($params);
+                
+            echo 'Total de registros faltantes: '.$response['hits']['total'].'';
         
         ?> 
-        <title>BDPI USP - Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo</title>
+        <title>Autoridades</title>
     </head>
     <body> 
-        <div class="uk-container uk-margin-large-bottom">
+        
+        <div class="uk-container uk-container-center uk-margin-large-bottom">
             
-
-                
+            
                 <?php 
-                    $i = 1;
-                    foreach ($response["hits"]["hits"] as $colab) {
-                        print_r($i);
-                        $i++;                        
-                        echo ' - ';
-                        print_r($colab["_id"]);
-                        //echo '<br/><br/>';
-                        flush();
-                        //print_r($colab);
+            
+                    // Pega cada um dos registros da resposta
+                    foreach ($response["hits"]["hits"] as $registro) {   
                         
-                        
-                        foreach ($colab['_source']['colab_instituicao'] as $termo) {
-                            //echo 'Termo original: '.$termo.'<br/>';
-                            $termo_limpo = limpar($termo);
-                            //echo 'Termo limpo: '.$termo_limpo.'<br/>';
+                        $i = 0;                        
+                        // Para cada autor no registro
+                        foreach ($registro['_source']['author'] as $autor) {
                             
-                            $xml = simplexml_load_file('http://bdpife2.sibi.usp.br/instituicoes/vocab/services.php?task=fetch&arg='.$termo_limpo.'');
-                            
-                            if ($xml->{'resume'}->{'cant_result'} != 0) {                                         
-                                $termo_xml = simplexml_load_file('http://bdpife2.sibi.usp.br/instituicoes/vocab/services.php?task=fetchTerm&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-                                $termo_corrigido[] = $termo_xml->{'result'}->{'term'}->{'string'};
-                                //echo 'Termo recuperado : '.$termo_xml->{'result'}->{'term'}->{'string'}.'<br/>';
-                                if ($termo_xml->{'result'}->{'term'}->{'code'} != "") {
-                                   $termo_geolocalizacao[] = $termo_xml->{'result'}->{'term'}->{'code'};
-                                } 
-                            } else {
-                                $termo_naocorrigido[] = $termo_limpo;
-                            }
-                            //echo '<br/>';
-                            flush();
-                        }
-                        
-                        if (empty($termo_corrigido)){
-                            $termo_corrigido = [];
-                        }
-                        
-                        if (empty($termo_naocorrigido)){
-                            $termo_naocorrigido = [];
-                        }
-                        
-                        if (empty($termo_geolocalizacao)){
-                            $termo_geolocalizacao = [];
-                        }
-                        
-                        
-                        $termo_edit = implode("\",\"",$termo_corrigido);
-                        $termo_nao_corrigido = implode("\",\"",$termo_naocorrigido);
-                        $geocode_edit = implode("\",\"",$termo_geolocalizacao);
-                        //echo $termo_edit;
-                        //echo '<br/>';
-                        //echo $geocode_edit;
-                        $conta = count($termo_corrigido);
-                        $conta_geo = count($termo_geolocalizacao);
-                        $conta_total = count($colab['_source']['colab_instituicao']);    
-                        //echo '<br/>Quantidade de termos corrigidos: '.$conta.'<br/>';
-                        //echo 'Quantidade de termos consultados: '.$conta_total.'<br/>';
-                        //echo 'Quantidade de termos geolocalizados: '.$conta_geo.'';                        
-                        
-                        echo '<br/><br/>';
-                        
-                        if (count($termo_corrigido) > 0 && count($termo_geolocalizacao) > 0) {  
-                            //echo "<br/><br/>Termo e Geolocalização Incluídos<br/><br/>";
-                        
-                            
-                               $query = '
-                                {
-                                   "doc" : {
-                                      "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
-                                      "colab_instituicao_geocode" : [ "'.$geocode_edit.'" ],
-                                      "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                      "colab_instituicao_tematres" : true
+                                if (isset($autor["person"]["affiliation"]["name_not_found"])) {
+                                    $autor["person"]["affiliation"]["name_not_found"] = preg_replace("/\s+/"," ",$autor["person"]["affiliation"]["name_not_found"]);
+                                    $termo_limpo = str_replace (array("\r\n", "\n", "\r"), "", $autor["person"]["affiliation"]["name_not_found"]);
+                                    $termo_limpo = preg_replace('/^\s+|\s+$/', '', $termo_limpo);
+                                    $termo_limpo = str_replace ("\t\n\r\0\x0B\xc2\xa0"," ",$termo_limpo);
+                                    $termo_limpo = trim($termo_limpo, " \t\n\r\0\x0B\xc2\xa0");
+                                    $termo_limpo_p = $autor["person"]["affiliation"]["name_not_found"];
+                                    $termo_limpo = rawurlencode($termo_limpo);
+                                    $termo_limpo = str_replace("%C2%A0","%20",$termo_limpo);
 
-                                   },
-                                   "doc_as_upsert" : true
+                                    $ch = curl_init();
+                                    $method = "GET";
+                                    $url = 'http://vocab.sibi.usp.br/instituicoes/vocab/services.php?task=fetch&arg='.$termo_limpo.'&output=json';                            
+                                    curl_setopt($ch, CURLOPT_URL, $url);
+                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+                                    $result_get_id_tematres = curl_exec($ch);
+                                    $resultado_get_id_tematres = json_decode($result_get_id_tematres, true);
+                                    curl_close($ch);
+                                } else {
+                                    $resultado_get_id_tematres["resume"]["cant_result"] = 0;
                                 }
-                              ';
-                                
-                            $params = [
-                                'index' => 'sibi',
-                                'type' => 'producao',
-                                'id' => $colab["_id"],
-                                'body' => $query
-                            ];
-                            $response = $client->update($params);  
                             
-                            print_r($query);
-                            echo '<br/>';
-                            print_r($response);
-                            echo '<br/>';
-                        
+ 
+                            
+                                if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {
 
-                        
-                        } elseif (count($termo_corrigido) > 0) {
-                            //echo "<br/><br/>Apenas termo incluído<br/><br/>";
-                            
-                                                
-                                $query = '
-                                    {
-                                       "doc" : {
-                                          "colab_instituicao_corrigido" : [ "'.$termo_edit.'" ],
-                                          "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                          "colab_instituicao_tematres" : true
-                                       },
-                                       "doc_as_upsert" : true
+                                    foreach($resultado_get_id_tematres["result"] as $key => $val) {
+                                        $term_key = $key;
                                     }
-                                    ';
-                            
-                            $params = [
-                                'index' => 'sibi',
-                                'type' => 'producao',
-                                'id' => $colab["_id"],
-                                'body' => $query
-                            ];
-                            $response = $client->update($params);  
-                            
-                            print_r($query);
-                            echo '<br/>';
-                            print_r($response);
-                            echo '<br/>';
-                        
-                        } else {
-                            //echo "<br/><br/>Termo não corrigido incluído<br/><br/>";
-                        
-                            $query = '
-                                {
-                                   "doc" : {
-                                      "colab_instituicao_naocorrigido" : [ "'.$termo_nao_corrigido.'" ],
-                                      "colab_instituicao_tematres" : true
+                                    
+                                    $ch = curl_init();
+                                    $method = "GET";
+                                    $url = 'http://vocab.sibi.usp.br/instituicoes/vocab/services.php?task=fetchTerm&arg='.$term_key.'&output=json';
+                                    curl_setopt($ch, CURLOPT_URL, $url);
+                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+                                    $result_term = curl_exec($ch);
+                                    $resultado_term = json_decode($result_term, true);
+                                    $termo_correto = $resultado_term["result"]["term"]["string"];
+                                    curl_close($ch);
 
-                                   },
-                                   "doc_as_upsert" : true
-                                }
-                                ';
+                                    if(!empty($autor["person"]["name"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["name"] = $autor["person"]["name"];
+                                    }
+                                    if(!empty($autor["person"]["affiliation"]["location"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["affiliation"]["location"] = $autor["person"]["affiliation"]["location"];
+                                    }
+                                    if(!empty($autor["person"]["date"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["date"] = $autor["person"]["date"];
+                                    }
+                                    if(!empty($autor["person"]["potentialAction"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["potentialAction"] = $autor["person"]["potentialAction"];
+                                    }
+                                    if(!empty($autor["person"]["USP"]["autor_funcao"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["USP"]["autor_funcao"] = $autor["person"]["USP"]["autor_funcao"];
+                                    }
+                                    echo '<br/>Encontrado: '.$termo_correto.'<br/>';                                                                            
+                                    if(!empty($termo_correto)){
+                                        $body_upsert["doc"]["author"][$i]["person"]["affiliation"]["name"] = $termo_correto;
+                                    }                                    
+                                 
+                                } else {
+                                    
+                                    //echo "Não obteve resultados no tematres<br/>";
+
+                                    if(!empty($autor["person"]["name"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["name"] = $autor["person"]["name"];
+                                    }
+                                    if(!empty($autor["person"]["affiliation"]["location"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["affiliation"]["location"] = $autor["person"]["affiliation"]["location"];
+                                    }
+                                    if(!empty($autor["person"]["date"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["date"] = $autor["person"]["date"];
+                                    }
+                                    if(!empty($autor["person"]["potentialAction"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["potentialAction"] = $autor["person"]["potentialAction"];
+                                    }
+                                    if(!empty($autor["person"]["USP"]["autor_funcao"])){
+                                        $body_upsert["doc"]["author"][$i]["person"]["USP"]["autor_funcao"] = $autor["person"]["USP"]["autor_funcao"];
+                                    }                                                                            
+                                    if(!empty($autor["person"]["affiliation"]["name_not_found"])){
+                                        echo '<br/>Sem resultado: '.$termo_limpo_p.'<br/>';
+                                        $body_upsert["doc"]["author"][$i]["person"]["affiliation"]["name_not_found"] = $termo_limpo_p;
+                                    }
+
+                                } 
+                            $i++;
                             
-                            $params = [
-                                'index' => 'sibi',
-                                'type' => 'producao',
-                                'id' => $colab["_id"],
-                                'body' => $query
-                            ];
-                            $response = $client->update($params);                              
-                            print_r($query);
-                            echo '<br/>';
-                            print_r($response);
-                            echo '<br/>';
-                        
                         }
-                        flush();
-                        $termo_corrigido = array();
-                        $termo_naocorrigido = array();
-                        $termo_geolocalizacao = array();
+                            $body_upsert["doc_as_upsert"] = true;
+                            echo '<br/>';
+                            print_r($body_upsert);
+                            $resultado_upsert = elasticsearch::elastic_update($registro["_id"],$type,$body_upsert);
+                            echo '<br/><br/>'; 
+                            print_r($resultado_upsert);
+                            unset($body_upsert);
+                                                   
+                        echo "<br/>=========================================================<br/><br/>";
                     } 
+            
                 ?> 
    
         </div>
