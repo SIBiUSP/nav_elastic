@@ -669,4 +669,51 @@ class metrics {
 
 }
 
+class authorities {
+    static function tematres($term,$tematres_url) {
+        // Clean term
+        $term = preg_replace("/\s+/"," ",$term);
+        $clean_term = str_replace (array("\r\n", "\n", "\r"), "", $term);
+        $clean_term = preg_replace('/^\s+|\s+$/', '', $clean_term);
+        $clean_term = str_replace ("\t\n\r\0\x0B\xc2\xa0"," ",$clean_term);
+        $clean_term = trim($clean_term, " \t\n\r\0\x0B\xc2\xa0");
+        $clean_term = rawurlencode($clean_term);
+        $clean_term_p = $term;
+        $clean_term = str_replace("%C2%A0","%20",$clean_term);
+
+        // Query tematres
+        $ch = curl_init();
+        $method = "GET";
+        $url = ''.$tematres_url.'?task=fetch&arg='.$clean_term.'&output=json';                            
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+        $result_get_id_tematres = curl_exec($ch);
+        $resultado_get_id_tematres = json_decode($result_get_id_tematres, true);
+        curl_close($ch);
+
+        // Get correct term
+        if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {                                        
+            foreach($resultado_get_id_tematres["result"] as $key => $val) {
+                $term_key = $key;
+            }            
+            $ch = curl_init();
+            $method = "GET";
+            $url = ''.$tematres_url.'?task=fetchTerm&arg='.$term_key.'&output=json';
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+            $result_term = curl_exec($ch);
+            $resultado_term = json_decode($result_term, true);
+            $found_term = $resultado_term["result"]["term"]["string"];
+            $term_not_found = "";
+            curl_close($ch);
+        } else {
+            $term_not_found = $clean_term_p;
+            $found_term = "";
+        } 
+        return compact('found_term','term_not_found');       
+    }
+}
+
 ?>
