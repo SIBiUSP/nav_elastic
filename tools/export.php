@@ -3,7 +3,7 @@
 if ($_GET["format"] == "table") {
 
     $file="export_bdpi.tsv";
-    header('Content-type: text/tab-separated-values');
+    header('Content-type: text/tab-separated-values; charset=utf-8');
     header("Content-Disposition: attachment; filename=$file");
 
     // Set directory to ROOT
