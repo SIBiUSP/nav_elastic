@@ -478,11 +478,13 @@
                     </td>
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $departament_aut) {
-                            $departament_array[]='<a href="result.php?search[]=authorUSP.departament.keyword:&quot;'.$departament_aut["departament"].'&quot;">'.$departament_aut["departament"].'</a>';
+                            if (!empty($departament_aut["departament"])) {
+                                $departament_array[]='<a href="result.php?search[]=authorUSP.departament.keyword:&quot;'.$departament_aut["departament"].'&quot;">'.$departament_aut["departament"].'</a>';
+                                $array_departament = implode("; ",$departament_array);
+                                unset($departament_array);
+                                print_r($array_departament);                                
+                            }
                         } 
-                        $array_departament = implode("; ",$departament_array);
-                        unset($departament_array);
-                        print_r($array_departament);
                         ?>
                     </td>
                     <td>
