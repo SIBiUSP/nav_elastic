@@ -138,7 +138,9 @@
 <div class="uk-hidden@m">
     <div class="uk-offcanvas-content">
 
-        <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-nav-primary">Menu</button>
+        <div class="uk-navbar-left">
+            <a class="uk-navbar-toggle" href="#" uk-toggle="target: #offcanvas-nav-primary" style="color:black"><span uk-navbar-toggle-icon></span> <span class="uk-margin-small-left">Menu</span></a>
+        </div>
 
         <div id="offcanvas-nav-primary" uk-offcanvas="overlay: true">
             <div class="uk-offcanvas-bar uk-flex uk-flex-column">
