@@ -709,21 +709,20 @@ class authorities {
             $term_not_found = "";
             curl_close($ch);
 
-            $ch = curl_init();
+            $ch_country = curl_init();
             $method = "GET";
-            $url = ''.$tematres_url.'?task=fetchUp&arg='.$term_key.'&output=json';
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
-            $result_country = curl_exec($ch);
-            $resultado_country = json_decode($result_term, true);
+            $url_country = ''.$tematres_url.'?task=fetchUp&arg='.$term_key.'&output=json';
+            curl_setopt($ch_country, CURLOPT_URL, $url_country);
+            curl_setopt($ch_country, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch_country, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+            $result_country = curl_exec($ch_country);
+            $resultado_country = json_decode($result_country, true);
             foreach ($resultado_country["result"] as $country_list){
                 if ($country_list["order"] == 1) {
                     $country = $country_list["string"];
                 }
-            }
-            
-            curl_close($ch);
+            }            
+            curl_close($ch_country);
 
         } else {
             $term_not_found = $clean_term_p;
