@@ -478,7 +478,7 @@
                                         </div>
                                         <div class="uk-width-4-5@m">    
                                             <article class="uk-article">
-                                                <p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['datePublished'])) { echo ' ('.$r["_source"]['datePublished'].')'; } ?></a></p>
+                                                <p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="item/<?php echo  $r['_id'];?>"><?php echo $r["_source"]['name'];?><?php if (!empty($r["_source"]['datePublished'])) { echo ' ('.$r["_source"]['datePublished'].')'; } ?></a></p>
                                                 <?php if (!empty($r["_source"]['author'])) : ?>
                                                     <p class="uk-article-meta uk-margin-remove"><?php echo $t->gettext('Autores'); ?>: 
                                                     <?php foreach ($r["_source"]['author'] as $authors) {
@@ -623,7 +623,7 @@
 
                                                 <div class="uk-grid-small uk-child-width-auto" uk-grid>
                                                     <div>
-                                                        <a class="uk-button uk-button-text" href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo $t->gettext('Ver registro completo'); ?></a>
+                                                        <a class="uk-button uk-button-text" href="item/<?php echo  $r['_id'];?>"><?php echo $t->gettext('Ver registro completo'); ?></a>
                                                     </div>
                                                     <div>
                                                         <a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao<?php echo  $r['_id'];?>; animation: uk-animation-fade"><?php echo $t->gettext('Como citar'); ?></a>

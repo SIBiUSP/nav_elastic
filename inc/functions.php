@@ -102,7 +102,7 @@ class paginaInicial {
             };
             echo '<div class="uk-width-expand">';
             if (!empty($r["_source"]['name'])){
-                echo '<a href="single.php?_id='.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['name'].'';
+                echo '<a href="item/'.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['name'].'';
                 if (!empty($r["_source"]['datePublished'])){
                    echo ' ('.$r["_source"]['datePublished'].')';
                 }         
