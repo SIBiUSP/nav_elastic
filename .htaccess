@@ -1,6 +1,5 @@
+ErrorDocument 404 http://bdpi.usp.br/404.php
+
 RewriteEngine On
 
 RewriteRule ^item/([-\w]+)$ single.php?_id=$1 [NC,L]
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ /var/www/html/index.php [L]
