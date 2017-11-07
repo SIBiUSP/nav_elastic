@@ -29,10 +29,6 @@ $update_counter["doc"]["USP"]["views_counter"] = $cursor_metrics["_source"]["cou
 $update_counter["doc_as_upsert"] = true;
 elasticsearch::elastic_update($_GET['_id'],$type,$update_counter);
 
-/* Exportador RIS */
-$record_blob = exporters::RIS($cursor);
-
-
 
 /* Upload de PDF */
 
@@ -58,19 +54,7 @@ if (!empty($_POST['delete_file'])) {
 <html lang="pt-br" dir="ltr">
     <head>
         <?php include('inc/meta-header.php'); ?>
-        <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
-        <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
-        <script>
-              function SaveAsFile(t,f,m) {
-                    try {
-                        var b = new Blob([t],{type:m});
-                        saveAs(b, f);
-                    } catch (e) {
-                        window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
-                    }
-                }
-
-        </script>       
+        <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>    
 
         <?php paginaSingle::metadataGoogleScholar($cursor["_source"]); ?>
 
@@ -144,7 +128,7 @@ if (!empty($_POST['delete_file'])) {
                     <ul class="uk-nav uk-margin-top uk-margin-bottom">
                         <hr>                   
                         <li>
-                            <button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo $record_blob; ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button>
+                            <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
                         </li>
                         <li>
                     <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
