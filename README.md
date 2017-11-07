@@ -3,6 +3,17 @@
 
 ## Install
 
+Enable mod_rewrite on Apache2
+
+Add to Apache2 sites-available
+`<Directory /var/www/html/>`
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+`</Directory>`
+
+
 Run: 
 
 mkdir upload
