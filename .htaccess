@@ -3,4 +3,4 @@ RewriteEngine On
 RewriteRule ^item/([-\w]+)$ single.php?_id=$1 [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ /var/www/html/bdpi/404.php [L]
+RewriteRule ^(.*)$ /var/www/html/404.php [L]
