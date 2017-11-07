@@ -3,7 +3,9 @@
 
 ## Install
 
-Enable mod_rewrite on Apache2
+Enable mod_rewrite on Apache2: 
+
+sudo a2enmod rewrite
 
 Add to Apache2 sites-available
 `<Directory /var/www/html/>`
