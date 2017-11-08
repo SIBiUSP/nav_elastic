@@ -812,9 +812,40 @@ if (!empty($_POST['delete_file'])) {
                         
                         <hr>                            
                         <?php
-                            if ($dedalus_single == true) {
-                                processaResultados::load_itens_aleph($cursor["_id"]);
-                            }                             
+
+                            if (!empty($cursor["_source"]["itens"])){
+                                echo '<div id="exemplares'.$cursor["_id"].'">';
+                                echo "<table class=\"uk-table uk-table-small uk-text-small uk-table-striped\">
+                                            <caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>
+                                            <thead>
+                                              <tr>
+                                                <th><small>Biblioteca</small></th>
+                                                <th><small>Cód. de barras</small></th>
+                                                <th><small>Status</small></th>
+                                                <th><small>Núm. de chamada</small></th>
+                                                <th><small>Disponibilidade</small></th>
+                                              </tr>  
+                                            </thead>
+                                          <tbody>";                               
+
+                                foreach ($cursor["_source"]["itens"] as $item) {
+                                    echo '<tr>';
+                                    echo '<td><small>'.$item["sub-library"].'</small></td>';
+                                    echo '<td><small>'.$item["barcode"].'</small></td>';
+                                    echo '<td><small>'.$item["item-status"].'</small></td>';
+                                    echo '<td><small>'.$item["call-no-1"].'</small></td>';
+                                    echo '<td><small>'.$item["loan-status"].'</small></td>';
+                                    echo '</tr>';
+                                }
+
+                                echo "</tbody></table></div>";
+                                
+                            } else {
+                                if ($dedalus_single == true) {
+                                    processaResultados::load_itens_aleph($cursor["_id"]);
+                                }     
+                            }
+                        
                         ?>                            
   
                             <div class="uk-text-small" style="color:black;">
