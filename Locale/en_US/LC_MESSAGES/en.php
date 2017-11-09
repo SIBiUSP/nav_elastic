@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-10-23T14:05:49-02:00
+POT-Creation-Date: 2017-11-09T12:57:27-02:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
@@ -27,6 +27,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Acesso online à fonte' => 
       array (
         0 => 'Online access',
+      ),
+      'Afiliação dos autores externos normalizada' => 
+      array (
+        0 => 'Normalized affiliation',
+      ),
+      'Afiliação dos autores externos não normalizada' => 
+      array (
+        0 => 'Non normalized affiliation',
       ),
       'Agência de fomento' => 
       array (
@@ -104,9 +112,21 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Centers, Hospitals, Institutes and Museums',
       ),
+      'Citações no AMiner' => 
+      array (
+        0 => 'Num. of citations on AMiner',
+      ),
+      'Citações no OpenCitations' => 
+      array (
+        0 => 'Num. of citations on OpenCitations',
+      ),
       'Clique para uma nova pesquisa' => 
       array (
         0 => 'Click here for a new search',
+      ),
+      'Colaboração institucional' => 
+      array (
+        0 => 'Collaboration',
       ),
       'Começar novamente' => 
       array (
@@ -180,6 +200,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Metrics',
       ),
+      'Métricas do periódico' => 
+      array (
+        0 => 'Journal Metrics',
+      ),
+      'Métricas no nível do artigo' => 
+      array (
+        0 => 'Article level metrics',
+      ),
       'MONOGRAFIA/LIVRO' => 
       array (
         0 => 'Book',
@@ -200,9 +228,21 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'USP ID',
       ),
+      'Ordenar por Data' => 
+      array (
+        0 => 'Sort by date',
+      ),
+      'Ordenar por Título' => 
+      array (
+        0 => 'Sort by title',
+      ),
       'ou pesquise este registro no' => 
       array (
         0 => 'or search this record in',
+      ),
+      'País das instituições de afiliação dos autores externos' => 
+      array (
+        0 => 'Countries of institutions of collaboration',
       ),
       'País de publicação' => 
       array (
@@ -211,6 +251,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Página Principal' => 
       array (
         0 => 'Home',
+      ),
+      'Palavras-chave do autor' => 
+      array (
+        0 => 'Keywords',
       ),
       'PARTE DE MONOGRAFIA/LIVRO' => 
       array (
@@ -256,6 +300,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Select date range',
       ),
+      'Selecionar os campos para realizar a busca:' => 
+      array (
+        0 => 'Select fields to search:',
+      ),
+      'String de busca avançada' => 
+      array (
+        0 => 'Advanced search string',
+      ),
       'Sobre' => 
       array (
         0 => 'About',
@@ -275,6 +327,18 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Tipo de material' => 
       array (
         0 => 'Document Types',
+      ),
+      'Tipo de tese' => 
+      array (
+        0 => 'Type',
+      ),
+      'Título' => 
+      array (
+        0 => 'Title',
+      ),
+      'Título da fonte' => 
+      array (
+        0 => 'Source title',
       ),
       'Todas as bases' => 
       array (
@@ -307,6 +371,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Ver registro completo' => 
       array (
         0 => 'Full record',
+      ),
+      'Visualização em rede' => 
+      array (
+        0 => 'Network visualization',
       ),
     ),
   ),

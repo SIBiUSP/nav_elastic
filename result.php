@@ -186,9 +186,9 @@
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
                                 <?php 
-                                    $facets->facet("author.person.affiliation.name",50,"Afiliação dos autores externos normalizada",null,"_term",$_GET["search"]);
-                                    $facets->facet("author.person.affiliation.name_not_found",50,"Afiliação dos autores externos não normalizada",null,"_term",$_GET["search"]);                                    
-                                    $facets->facet("author.person.affiliation.location",50,"País dos autores externos",null,"_term",$_GET["search"]);   
+                                    $facets->facet("author.person.affiliation.name",50,$t->gettext('Afiliação dos autores externos normalizada'),null,"_term",$_GET["search"]);
+                                    $facets->facet("author.person.affiliation.name_not_found",50,$t->gettext('Afiliação dos autores externos não normalizada'),null,"_term",$_GET["search"]);                                    
+                                    $facets->facet("author.person.affiliation.location",50,$t->gettext('País das instituições de afiliação dos autores externos'),null,"_term",$_GET["search"]);   
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                                 <?php 
@@ -214,12 +214,12 @@
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Métricas no nível do artigo'); ?></li> 
                                 <?php
-                                    $facets->facet_range("USP.aminer.num_citation",100,"Citações no AMiner","INT");
-                                    $facets->facet_range("USP.opencitation.num_citations",100,"Citações no OpenCitations","INT");
+                                    $facets->facet_range("USP.aminer.num_citation",100,$t->gettext('Citações no AMiner'),"INT");
+                                    $facets->facet_range("USP.opencitation.num_citations",100,$t->gettext('Citações no OpenCitations'),"INT");
                                 ?>                                   
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
-                                    $facets->facet("inSupportOf",30,"Tipo de tese",null,"_term",$_GET["search"]);
+                                    $facets->facet("inSupportOf",30,$t->gettext('Tipo de tese'),null,"_term",$_GET["search"]);
                                     $facets->facet("USP.areaconcentracao",100,"Área de concentração",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_sigla",100,"Sigla do Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);
                                     $facets->facet("USP.programa_pos_nome",100,"Departamento/Programa de Pós Graduação",null,"_term",$_GET["search"]);

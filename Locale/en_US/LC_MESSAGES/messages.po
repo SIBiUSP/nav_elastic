@@ -18,6 +18,12 @@ msgstr "Online access"
 msgid "Acesso online à fonte"
 msgstr "Online access"
 
+msgid "Afiliação dos autores externos normalizada"
+msgstr "Normalized affiliation"
+
+msgid "Afiliação dos autores externos não normalizada"
+msgstr "Non normalized affiliation"
+
 msgid "Agência de fomento"
 msgstr "Funding Agencies"
 
@@ -75,8 +81,17 @@ msgstr "Search"
 msgid "Centros, Hospitais, Institutos especializados e Museus"
 msgstr "Centers, Hospitals, Institutes and Museums"
 
+msgid "Citações no AMiner"
+msgstr "Num. of citations on AMiner"
+
+msgid "Citações no OpenCitations"
+msgstr "Num. of citations on OpenCitations"
+
 msgid "Clique para uma nova pesquisa"
 msgstr "Click here for a new search"
+
+msgid "Colaboração institucional"
+msgstr "Collaboration"
 
 msgid "Começar novamente"
 msgstr "Start over"
@@ -132,6 +147,12 @@ msgstr "More informations"
 msgid "Métricas"
 msgstr "Metrics"
 
+msgid "Métricas do periódico"
+msgstr "Journal Metrics"
+
+msgid "Métricas no nível do artigo"
+msgstr "Article level metrics"
+
 msgid "MONOGRAFIA/LIVRO"
 msgstr "Book"
 
@@ -147,14 +168,26 @@ msgstr "New search..."
 msgid "Número USP"
 msgstr "USP ID"
 
+msgid "Ordenar por Data"
+msgstr "Sort by date"
+
+msgid "Ordenar por Título"
+msgstr "Sort by title"
+
 msgid "ou pesquise este registro no"
 msgstr "or search this record in"
+
+msgid "País das instituições de afiliação dos autores externos"
+msgstr "Countries of institutions of collaboration"
 
 msgid "País de publicação"
 msgstr "Countries/Territories"
 
 msgid "Página Principal"
 msgstr "Home"
+
+msgid "Palavras-chave do autor"
+msgstr "Keywords"
 
 msgid "PARTE DE MONOGRAFIA/LIVRO"
 msgstr "BOOK CHAPTER"
@@ -189,6 +222,12 @@ msgstr "Source selection"
 msgid "Selecionar período de tempo"
 msgstr "Select date range"
 
+msgid "Selecionar os campos para realizar a busca:"
+msgstr "Select fields to search:"
+
+msgid "String de busca avançada"
+msgstr "Advanced search string"
+
 msgid "Sobre"
 msgstr "About"
 
@@ -203,6 +242,15 @@ msgstr "Search terms"
 
 msgid "Tipo de material"
 msgstr "Document Types"
+
+msgid "Tipo de tese"
+msgstr "Type"
+
+msgid "Título"
+msgstr "Title"
+
+msgid "Título da fonte"
+msgstr "Source title"
 
 msgid "Todas as bases"
 msgstr "All sources"
@@ -227,3 +275,6 @@ msgstr "User"
 
 msgid "Ver registro completo"
 msgstr "Full record"
+
+msgid "Visualização em rede"
+msgstr "Network visualization"

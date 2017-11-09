@@ -6,7 +6,7 @@
             include('inc/functions.php');
             include('inc/meta-header.php'); 
         ?>         
-        <title>BDPI USP - Busca Avançada</title>
+        <title>BDPI USP - <?php echo $t->gettext('Busca avançada'); ?></title>
     </head>
 
     <body>
@@ -18,21 +18,21 @@
 
 		<?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-large-top">
-            <h1>Busca avançada</h1>
+            <h1><?php echo $t->gettext('Busca avançada'); ?></h1>
                 <div class="uk-width-1-1@m">
                     <div class="uk-alert uk-alert-large">
                         <form class="uk-form" role="form" action="result.php" method="get">
                             <fieldset data-uk-margin>
-                                <legend>String de busca avançada</legend>
-                                <p>Selecionar campos para realizar a busca: </p>
-                                <label><input type="checkbox" name="fields[]" value="name" checked> Título</label>
-                                <label><input type="checkbox" name="fields[]" value="author.person.name" checked> Autores</label>
-                                <label><input type="checkbox" name="fields[]" value="authorUSP.name" checked> Autores USP</label>
-                                <label><input type="checkbox" name="fields[]" value="unidadeUSP"> Unidade USP</label>
-                                <label><input type="checkbox" name="fields[]" value="authorUSP.departament"> Departamento</label>
-                                <label><input type="checkbox" name="fields[]" value="about" checked> Assuntos</label>
-                                <label><input type="checkbox" name="fields[]" value="author.person.affiliation.name"> Colaboração institucional</label>
-                                <label><input type="checkbox" name="fields[]" value="funder"> Agência de Fomento</label>
+                                <legend><?php echo $t->gettext('String de busca avançada'); ?></legend>
+                                <p><?php echo $t->gettext('Selecionar os campos para realizar a busca:'); ?></p>
+                                <label><input type="checkbox" name="fields[]" value="name" checked> <?php echo $t->gettext('Título'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="author.person.name" checked> <?php echo $t->gettext('Autores'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="authorUSP.name" checked> <?php echo $t->gettext('Autores USP'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="unidadeUSP"> <?php echo $t->gettext('Unidades USP'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="authorUSP.departament"> <?php echo $t->gettext('Departamento'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="about" checked> <?php echo $t->gettext('Assuntos'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="author.person.affiliation.name"> <?php echo $t->gettext('Colaboração institucional'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="funder"> <?php echo $t->gettext('Agência de fomento'); ?></label>
                                 <label><input type="checkbox" name="fields[]" value="sysno"> Sysno</label>
                                 <br/>
                                 <script>
@@ -51,7 +51,7 @@
                                     } );
                                 </script>
                                 <p>
-                                    <label for="amount">Selecionar período de tempo:</label>
+                                    <label for="amount"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                     <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
                                 </p>
 
