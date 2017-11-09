@@ -4,11 +4,7 @@
         <?php             
             include('inc/config.php');
             include('inc/functions.php');             
-            include('inc/meta-header.php');
-            
-      
-            /* Define variables */
-            define('authorUSP','authorUSP');
+            include('inc/meta-header.php');            
         ?> 
         <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
@@ -16,7 +12,7 @@
         <meta property="og:url" content="http://bdpi.usp.br">
         <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
         <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
-        <meta property="og:description" content="Memória documental da produção científica, técnica e artística gerada nas Unidades da Universidade de São Paulo.">
+        <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
         <meta property="og:image:width" content="800"> 
