@@ -27,7 +27,7 @@
             $params["index"] = $index;
             $params["type"] = $type;
             $params["_source"] = ["_id","author"];
-            $params["size"] = 10;        
+            $params["size"] = 25;        
             $params["body"] = $body;   
 
             $response = $client->search($params);
