@@ -89,7 +89,7 @@
        
                 
                 <div id="type_chart" style="font-size:10px"></div>
-                <script type="application/javascript">
+                <script type="text/javascript">
                     var graphdef = {
                         categories : ['Tipo'],
                         dataset : {
@@ -127,7 +127,7 @@
 
 
                 <div id="unidadeUSP_chart"></div>
-                <script type="application/javascript">
+                <script type="text/javascript">
                     var graphdef = {
                         categories : ['Unidade USP'],
                         dataset : {
@@ -210,7 +210,7 @@
                 <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 19); ?>
 
                 <div id="ano_chart"></div>
-                <script type="application/javascript">
+                <script type="text/javascript">
                     var graphdef = {
                         categories : ['Ano'],
                         dataset : {
@@ -255,7 +255,7 @@
 
 <?php $internacionalizacao_bar = processaResultados::generateDataGraphBar($query, 'USP.internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
 <div id="internacionalizacao_chart"></div>         
-<script type="application/javascript">
+<script type="text/javascript">
 var graphdef = {
 categories : ['internacionalização'],
 dataset : {

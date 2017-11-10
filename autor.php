@@ -315,7 +315,7 @@
                         <a class="uk-alert-close" uk-close></a>
                         <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 10); ?>
                         <div id="ano_chart" class="uk-visible@l"></div>
-                        <script type="application/javascript">
+                        <script type="text/javascript">
                             var graphdef = {
                                 categories : ['<?= $t->gettext('Ano') ?>'],
                                 dataset : {
