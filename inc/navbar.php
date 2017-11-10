@@ -88,7 +88,7 @@
              </ul>
         </div>
         <div class="uk-navbar-center">
-            <a class="uk-navbar-item uk-logo" href="<?php echo $url_base; ?>/index.php"><img src="http://www.scs.usp.br/identidadevisual/wp-content/uploads/2013/08/usp-logo-png.png" width="110px"></a>
+            <a class="uk-navbar-item uk-logo" href="<?php echo $url_base; ?>/index.php"><img src="<?php echo $url_base; ?>/inc/images/usp-logo-png.png" width="110px"></a>
         </div>
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
