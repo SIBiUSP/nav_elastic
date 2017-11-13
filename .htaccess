@@ -1,4 +1,4 @@
-ErrorDocument 404 http://bdpi.usp.br/404.php
+# ErrorDocument 404 http://bdpi.usp.br/404.php
 
 RewriteEngine On
 
