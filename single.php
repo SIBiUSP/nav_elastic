@@ -720,7 +720,7 @@ if (!empty($_POST['delete_file'])) {
                         <?php if(!empty($_SESSION['oauthuserdata'])): ?>
                         <div class="uk-alert-warning">
                             <h4 class="uk-margin-top">Upload do texto completo:</h4>
-                            <form enctype="multipart/form-data" method="POST" action="single.php?_id=<?php echo $_GET['_id']; ?>" name="upload"> 
+                            <form enctype="multipart/form-data" method="POST" action="<?php echo $_GET['_id']; ?>" name="upload"> 
                                 <div id="upload-drop" class="uk-placeholder uk-text-center">
                                     <i class="uk-icon-cloud-upload uk-icon-medium uk-text-muted uk-margin-small-right"></i> Arrastar arquivos aqui ou <a class="uk-form-file">selecionar arquivo<input id="upload-select" name="upload_file" type="file"></a>.
                                 </div>
