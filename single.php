@@ -511,6 +511,7 @@ if (!empty($_POST['delete_file'])) {
 
                             <!-- API AMINER - Início -->                                
                             <?php 
+				/*
                                 $aminer = metrics::get_aminer($cursor["_source"]["name"]);
                                 if(count($aminer["result"]) > 0 ){
                                     similar_text($cursor["_source"]["name"], $aminer["result"][0]["title"], $percent);
@@ -543,6 +544,7 @@ if (!empty($_POST['delete_file'])) {
                                     $update_aminer["doc_as_upsert"] = true;
                                     $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
                                 }
+				*/
                             ?>
                             <!-- API AMINER - Fim -->
 
