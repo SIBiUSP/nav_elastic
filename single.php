@@ -139,7 +139,9 @@ if (!empty($_POST['delete_file'])) {
                     <?php if (!empty($cursor["_source"]['doi'])): ?>
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
                         <hr>
-                        <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
+                        <!-- Coletar por Ajax por conta da performance
+                        <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
+                        -->
                     <?php
                         if ($use_api_elsevier == true) {
                             $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi']),$api_elsevier);
