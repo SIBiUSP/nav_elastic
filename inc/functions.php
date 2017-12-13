@@ -518,6 +518,7 @@ class processaResultados {
 
 
     static function get_fulltext_file($id,$session){
+	global $url_base;
         $files_upload = glob('upload/'.$id[0].'/'.$id[1].'/'.$id[2].'/'.$id[3].'/'.$id[4].'/'.$id[5].'/'.$id[6].'/'.$id[7].'/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
         $links_upload = "";
         if (!empty($files_upload)){       
