@@ -212,11 +212,13 @@
                                     $facets->facet("USP.citescore.citescore.2016.open_access",50,$t->gettext('Acesso aberto'),null,"_term",$_GET["search"]);
                                     
                                 ?>
-                                <li class="uk-nav-header"><?php echo $t->gettext('Métricas no nível do artigo'); ?></li> 
-                                <?php
+                                <!--
+                                <li class="uk-nav-header">< ?php echo $t->gettext('Métricas no nível do artigo'); ?></li> 
+                                < ?php
                                     $facets->facet_range("USP.aminer.num_citation",100,$t->gettext('Citações no AMiner'),"INT");
                                     $facets->facet_range("USP.opencitation.num_citations",100,$t->gettext('Citações no OpenCitations'),"INT");
-                                ?>                                   
+                                ?>
+                                -->                                   
                                 <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
                                 <?php
                                     $facets->facet("inSupportOf",30,$t->gettext('Tipo de tese'),null,"_term",$_GET["search"]);
