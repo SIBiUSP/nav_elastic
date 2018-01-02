@@ -168,7 +168,7 @@
 
                                     $facets->facet("base",10,$t->gettext('Bases'),null,"_term",$_GET["search"]);
                                     $facets->facet("type",100,$t->gettext('Tipo de material'),null,"_term",$_GET["search"]);
-                                    $facets->facet("unidadeUSP",100,$t->gettext('Unidades USP'),null,"_term",$_GET["search"]);
+                                    $facets->facet("unidadeUSP",200,$t->gettext('Unidades USP'),null,"_term",$_GET["search"]);
                                     $facets->facet("authorUSP.departament",50,$t->gettext('Departamento'),null,"_term",$_GET["search"]);
                                     $facets->facet("author.person.name",30,$t->gettext('Autores'),null,"_term",$_GET["search"]);
                                     $facets->facet("authorUSP.name",50,$t->gettext('Autores USP'),null,"_term",$_GET["search"]);
