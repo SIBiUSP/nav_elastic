@@ -2,20 +2,20 @@
 <html lang="pt-br" dir="ltr">
     <head>
         <?php 
-            include('inc/config.php'); 
-            include('inc/functions.php');
-            include('inc/meta-header.php'); 
+            require 'inc/config.php'; 
+            require 'inc/functions.php';
+            require 'inc/meta-header.php'; 
         ?>
-        <title>BDPI USP - Contato</title>
+        <title>BDPI USP - <?php echo $t->gettext('Contato'); ?></title>
     </head>
 
     <body>
         <?php
-            if (file_exists("inc/analyticstracking.php")){
-                include_once("inc/analyticstracking.php");
-            }
+        if (file_exists('inc/analyticstracking.php')) {
+            include_once 'inc/analyticstracking.php';
+        }
         ?>
-        <?php include('inc/navbar.php'); ?>
+        <?php require 'inc/navbar.php'; ?>
         <div class="uk-container uk-margin-large-top">
     
             <div class="uk-grid" uk-grid>
