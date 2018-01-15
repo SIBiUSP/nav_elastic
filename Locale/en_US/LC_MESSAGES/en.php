@@ -14,7 +14,7 @@ Language-Team: SIBiUSP
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2017-11-09T12:57:27-02:00
+POT-Creation-Date: 2018-01-15T15:15:13-02:00
 PO-Revision-Date: 2016-11-18
 Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
@@ -152,6 +152,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Publisher',
       ),
+      'Enviar' => 
+      array (
+        0 => 'Send',
+      ),
       'Estatísticas da base' => 
       array (
         0 => 'Statistics',
@@ -280,6 +284,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Next',
       ),
+      'Redes sociais' => 
+      array (
+        0 => 'Social Media',
+      ),
       'Refinar busca' => 
       array (
         0 => 'Refine search',
@@ -303,6 +311,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Selecionar os campos para realizar a busca:' => 
       array (
         0 => 'Select fields to search:',
+      ),
+      'Selecione uma Unidade USP para filtrar a busca' => 
+      array (
+        0 => 'Select one USP School to filter the search',
       ),
       'String de busca avançada' => 
       array (

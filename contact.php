@@ -50,7 +50,7 @@
 
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
-                                    <button class="uk-button uk-button-primary" disabled>Enviar</button>
+                                    <button class="uk-button uk-button-primary" disabled><?php echo $t->gettext('Enviar'); ?></button>
                                 </div>
                             </div>
 
@@ -65,7 +65,7 @@
                 
                 <div class="uk-width-1-3@m">
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                        <h3 class="uk-panel-title">Contato</h3>
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Contato'); ?></h3>
                         <p>
                             <strong>Departamento Técnico do Sistema Integrado de Bibliotecas da Universidade de São Paulo</strong>     
                             <br>Rua da Praça do Relógio, 109 - Bloco L  Térreo
@@ -75,7 +75,7 @@
                             <a>atendimento@dt.sibi.usp.br</a>
                             <br>Tel: (0xx11) 2648-0948
                         </p>
-                        <h3 class="uk-h4">Redes sociais</h3>
+                        <h3 class="uk-h4"><?php echo $t->gettext('Redes sociais'); ?></h3>
                         <p>
                             <a href="https://www.facebook.com/sibiusp/?fref=ts" uk-icon="icon: facebook"></a>
                             <a href="https://twitter.com/sibiusp" uk-icon="icon: twitter"></a>                           

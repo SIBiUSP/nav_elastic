@@ -111,6 +111,9 @@ msgstr "Departament"
 msgid "Editora"
 msgstr "Publisher"
 
+msgid "Enviar"
+msgstr "Send"
+
 msgid "Estatísticas da base"
 msgstr "Statistics"
 
@@ -207,6 +210,9 @@ msgstr "Scientific Production"
 msgid "Próxima"
 msgstr "Next"
 
+msgid "Redes sociais"
+msgstr "Social Media"
+
 msgid "Refinar busca"
 msgstr "Refine search"
 
@@ -224,6 +230,9 @@ msgstr "Select date range"
 
 msgid "Selecionar os campos para realizar a busca:"
 msgstr "Select fields to search:"
+
+msgid "Selecione uma Unidade USP para filtrar a busca"
+msgstr "Select one USP School to filter the search"
 
 msgid "String de busca avançada"
 msgstr "Advanced search string"
