@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php             
-            include('inc/config.php');
-            include('inc/functions.php');             
-            include('inc/meta-header.php');            
+        <?php 
+            require 'inc/config.php';
+            require 'inc/functions.php';             
+            require 'inc/meta-header.php';            
         ?> 
         <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
@@ -25,9 +25,9 @@
     <body>     
         
         <?php
-            if (file_exists("inc/analyticstracking.php")){
-                include_once("inc/analyticstracking.php");
-            }
+        if (file_exists("inc/analyticstracking.php")) {
+            include_once "inc/analyticstracking.php";
+        }
         ?>        
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
@@ -41,7 +41,7 @@
 
                 ?>    
                 <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(<?php echo ${$prefix . $background_number}; ?>);">
-                    <?php include('inc/navbar.php'); ?>
+                    <?php require 'inc/navbar.php'; ?>
                     <div class="uk-overlay uk-overlay-primary">
                     <h2 style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>                    
                         <form class="uk-form-stacked" action="result.php">
@@ -161,12 +161,12 @@
             <?php paginaInicial::ultimos_registros();?>
         </div>
 
-<?php include('inc/footer.php'); ?>
+<?php require 'inc/footer.php'; ?>
 
         </div>
         
         
-<?php include('inc/offcanvas.php'); ?>
+<?php require 'inc/offcanvas.php'; ?>
             
         
     </body>
