@@ -471,54 +471,52 @@ class processaResultados {
     }
     
     /* Recupera os exemplares do DEDALUS */
-    static function load_itens_aleph ($sysno) {
+    static function load_itens_aleph($sysno) 
+    {
         $xml = simplexml_load_file('http://dedalus.usp.br/X?op=item-data&base=USP01&doc_number='.$sysno.'');
-        if ($xml->error == "No associated items"){
+        if ($xml->error == "No associated items") {
 
         } else {
-
-
             echo '<div id="exemplares'.$sysno.'">';
-            echo "<table class=\"uk-table uk-table-small uk-text-small uk-table-striped\">
-                        <caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>
-                        <thead>
-                          <tr>
-                            <th><small>Biblioteca</small></th>
-                            <th><small>Cód. de barras</small></th>
-                            <th><small>Status</small></th>
-                            <th><small>Núm. de chamada</small></th>";
-                            if ($xml->item->{'loan-status'} == "A"){
-                            echo "<th><small>Status</small></th>
-                            <th><small>Data provável de devolução</small></th>";
-                          } else {
-                            echo "<th><small>Disponibilidade</small></th>";
-                          }
-                          echo "</tr>
-                        </thead>
-                      <tbody>";
-              foreach ($xml->item as $item) {
+            echo "<table class=\"uk-table uk-table-small uk-text-small uk-table-striped\">";
+            echo "<caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th><small>Biblioteca</small></th>";
+            echo "<th><small>Cód. de barras</small></th>";
+            echo "<th><small>Status</small></th>";
+            echo "<th><small>Núm. de chamada</small></th>";
+            if ($xml->item->{'loan-status'} == "A") {
+                echo "<th><small>Status</small></th>
+                <th><small>Data provável de devolução</small></th>";
+            } else {
+                echo "<th><small>Disponibilidade</small></th>";
+            }
+            echo "</tr></thead><tbody>";
+            foreach ($xml->item as $item) {
                 echo '<tr>';
                 echo '<td><small>'.$item->{'sub-library'}.'</small></td>';
                 echo '<td><small>'.$item->{'barcode'}.'</small></td>';
                 echo '<td><small>'.$item->{'item-status'}.'</small></td>';
                 echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
-                if ($item->{'loan-status'} == "A"){
-                echo '<td><small>Emprestado</small></td>';
-                echo '<td><small>'.$item->{'loan-due-date'}.'</small></td>';
-              } else {
-                echo '<td><small>Disponível</small></td>';
-              }
+                if ($item->{'loan-status'} == "A") {
+                    echo '<td><small>Emprestado</small></td>';
+                    echo '<td><small>'.$item->{'loan-due-date'}.'</small></td>';
+                } else {
+                    echo '<td><small>Disponível</small></td>';
+                }
                 echo '</tr>';
-              }
-              echo "</tbody></table></div>";
-              }
-              flush();
-      }
+            }
+            echo "</tbody></table></div>";
+        }
+        flush();
+    }
     
 
 
-    static function get_fulltext_file($id,$session){
-	global $url_base;
+    static function get_fulltext_file($id,$session) 
+    {
+        global $url_base;
         $files_upload = glob('upload/'.$id[0].'/'.$id[1].'/'.$id[2].'/'.$id[3].'/'.$id[4].'/'.$id[5].'/'.$id[6].'/'.$id[7].'/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
         $links_upload = "";
         if (!empty($files_upload)){       
