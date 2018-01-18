@@ -494,8 +494,9 @@ class processaResultados {
             }
             echo "</tr></thead><tbody>";
             foreach ($xml->item as $item) {
+                $bib_fisica = explode("-", $item->{'sub-library'});
                 echo '<tr>';
-                echo '<td><small>'.$item->{'sub-library'}.'</small></td>';
+                echo '<td><small><a target="_blank" href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'">'.$item->{'sub-library'}.'</a></small></td>';
                 echo '<td><small>'.$item->{'barcode'}.'</small></td>';
                 echo '<td><small>'.$item->{'item-status'}.'</small></td>';
                 echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
