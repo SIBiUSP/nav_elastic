@@ -20,7 +20,7 @@ $citeproc_vancouver = new citeproc($csl_nlm, $lang);
 $mode = "reference";
 
 /* Contador */
-paginaSingle::counter($_GET['_id'], $client);
+PageSingle::counter($_GET['_id'], $client);
 
 /* Montar a consulta */
 $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
@@ -36,7 +36,7 @@ elasticsearch::elastic_update($_GET['_id'], $type, $update_counter);
 /* Upload de PDF */
 
 if (!empty($_FILES)) {
-    paginaSingle::uploader();    
+    PageSingle::uploader();    
 }
 
 if (!empty($_POST['delete_file'])) {
@@ -58,8 +58,8 @@ if (!empty($_POST['delete_file'])) {
     <head>
         <?php require 'inc/meta-header.php'; ?>
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
-        <?php paginaSingle::metadataGoogleScholar($cursor["_source"]); ?>
-        <?php paginaSingle::jsonLD($cursor["_source"]); ?>
+        <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
+        <?php PageSingle::jsonLD($cursor["_source"]); ?>
     </head>
     <body>
         <?php if(!empty($response_upload)) : ?>

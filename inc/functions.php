@@ -20,12 +20,12 @@ if (file_exists('functions_core/functions_core.php')) {
  * Página Inicial
  *
  * @category Class
- * @package  PaginaInicial
+ * @package  Homepage
  * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     http://github.com/sibiusp/nav_elastic
  */
-class PaginaInicial
+class Homepage
 {
     
     static function unidadeUSP_inicio()
@@ -165,12 +165,12 @@ class PaginaInicial
  * Página Single
  *
  * @category Class
- * @package  PaginaSingle
+ * @package  PageSingle
  * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     http://github.com/sibiusp/nav_elastic 
  */
-class paginaSingle
+class PageSingle
 {
 
     public static function counter($_id,$client)
