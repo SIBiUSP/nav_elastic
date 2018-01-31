@@ -148,7 +148,7 @@
                     <div class="uk-card">
                         <h3 class="uk-card-title"><?php echo $t->gettext('Bases'); ?></h3>
                         <ul class="uk-list uk-list-divider">
-                            <?php paginaInicial::base_inicio(); ?>
+                            <?php PaginaInicial::base_inicio(); ?>
                         </ul>                      
                     </div>
                 </div>
@@ -158,7 +158,7 @@
         
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Últimos registros'); ?></span></h1>
-            <?php paginaInicial::ultimos_registros();?>
+            <?php PaginaInicial::ultimos_registros();?>
         </div>
 
 <?php require 'inc/footer.php'; ?>

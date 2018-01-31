@@ -1,15 +1,16 @@
 <?php
 
 if (file_exists('functions_core/functions_core.php')) {
-    include('functions_core/functions_core.php');
+    include 'functions_core/functions_core.php';
 } else {
-    include('../functions_core/functions_core.php');
+    include '../functions_core/functions_core.php';
 }
 
 /**
  * Classe de funções da página inicial
  */
-class paginaInicial {
+class PaginaInicial
+{
     
     static function unidadeUSP_inicio() {
         global $type;
@@ -811,7 +812,8 @@ class API {
 
     }
     
-    static function get_microsoft_academic($title) {
+    static function get_microsoft_academic($title)
+    {
         global $api_microsoft;
         // Get cURL resource
         $curl = curl_init();
@@ -831,7 +833,8 @@ class API {
         curl_close($curl);    
     } 
     
-    static function get_opencitation_title($title) {
+    static function get_opencitation_title($title)
+    {
         $sparql = new EasyRdf_Sparql_Client('http://opencitations.net/sparql');
         $result = $sparql->query(
             'PREFIX cito: <http://purl.org/spar/cito/>
@@ -851,8 +854,11 @@ class API {
     
 }
 
-class exporters {
-    static function RIS($cursor) {
+class exporters
+{
+
+    static function RIS($cursor) 
+    {
 
         $record = [];
         switch ($cursor["_source"]["type"]) {
@@ -873,31 +879,31 @@ class exporters {
         $record[] = "TI  - ".$cursor["_source"]['name']."";
 
         if (!empty($cursor["_source"]['datePublished'])) {
-        $record[] = "PY  - ".$cursor["_source"]['datePublished']."";
+            $record[] = "PY  - ".$cursor["_source"]['datePublished']."";
         }
 
         foreach ($cursor["_source"]['author'] as $autores) {
-        $record[] = "AU  - ".$autores["person"]["name"]."";
+            $record[] = "AU  - ".$autores["person"]["name"]."";
         }
 
         if (!empty($cursor["_source"]["isPartOf"]["name"])) {
-        $record[] = "T2  - ".$cursor["_source"]["isPartOf"]["name"]."";
+            $record[] = "T2  - ".$cursor["_source"]["isPartOf"]["name"]."";
         }
 
         if (!empty($cursor["_source"]['isPartOf']['issn'])) {
-        $record[] = "SN  - ".$cursor["_source"]['isPartOf']['issn'][0]."";
+            $record[] = "SN  - ".$cursor["_source"]['isPartOf']['issn'][0]."";
         }
 
         if (!empty($cursor["_source"]["doi"])) {
-        $record[] = "DO  - ".$cursor["_source"]["doi"]."";
+            $record[] = "DO  - ".$cursor["_source"]["doi"]."";
         }
 
         if (!empty($cursor["_source"]["url"])) {
-        $record[] = "UR  - ".$cursor["_source"]["url"][0]."";
+            $record[] = "UR  - ".$cursor["_source"]["url"][0]."";
         }
 
         if (!empty($cursor["_source"]["publisher"]["organization"]["location"])) {
-        $record[] = "PP  - ".$cursor["_source"]["publisher"]["organization"]["location"]."";
+            $record[] = "PP  - ".$cursor["_source"]["publisher"]["organization"]["location"]."";
         }
 
         if (!empty($cursor["_source"]["publisher"]["organization"]["name"])) {
@@ -905,14 +911,14 @@ class exporters {
         }
 
         if (!empty($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])) {
-            $periodicos_array = explode(",",$cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"]);
+            $periodicos_array = explode(",", $cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
                 if (strpos($periodicos_array_new, 'v.') !== false) {
-                    $record[] = "VL  - ".trim(str_replace("v.","",$periodicos_array_new))."";
+                    $record[] = "VL  - ".trim(str_replace("v.", "", $periodicos_array_new))."";
                 } elseif (strpos($periodicos_array_new, 'n.') !== false) {
-                    $record[] = "IS  - ".str_replace("n.","",trim(str_replace("n.","",$periodicos_array_new)))."";
+                    $record[] = "IS  - ".str_replace("n.", "", trim(str_replace("n.","",$periodicos_array_new)))."";
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
-                    $record[] = "SP  - ".str_replace("p.","",trim(str_replace("p.","",$periodicos_array_new)))."";
+                    $record[] = "SP  - ".str_replace("p.", "", trim(str_replace("p.","",$periodicos_array_new)))."";
                 }
 
             }
