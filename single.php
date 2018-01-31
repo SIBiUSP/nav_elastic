@@ -790,7 +790,7 @@ if (!empty($_POST['delete_file'])) {
                         if (empty($_SESSION['oauthuserdata'])) {
                             $_SESSION['oauthuserdata']="";
                         } 
-                        $full_links = processaResultados::get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
+                        $full_links = Results::get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
                         if (!empty($full_links)) {
                             echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
                                     foreach ($full_links as $links) {
@@ -831,7 +831,7 @@ if (!empty($_POST['delete_file'])) {
                             
                         } else {
                             if ($dedalus_single == true) {
-                                processaResultados::load_itens_aleph($cursor["_id"]);
+                                Results::load_itens_aleph($cursor["_id"]);
                             }     
                         }                        
                         ?>                            

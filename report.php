@@ -85,7 +85,7 @@
 
 
         <h3>Tipo de publicação (Somente os primeiros)</h3>
-        <?php $type_mat_bar = processaResultados::generateDataGraphBar($query, "type", "_count", "desc", 'Tipo de publicação', 4); ?>
+        <?php $type_mat_bar = Results::generateDataGraphBar($query, "type", "_count", "desc", 'Tipo de publicação', 4); ?>
        
                 
                 <div id="type_chart" style="font-size:10px"></div>
@@ -123,7 +123,7 @@
 
 
                 <h3>Unidade USP (10 primeiros)</h3>
-                <?php $unidadeUSP_trab_bar = processaResultados::generateDataGraphBar($query, "unidadeUSP", "_count", "desc", 'Unidade USP', 9); ?>
+                <?php $unidadeUSP_trab_bar = Results::generateDataGraphBar($query, "unidadeUSP", "_count", "desc", 'Unidade USP', 9); ?>
 
 
                 <div id="unidadeUSP_chart"></div>
@@ -207,7 +207,7 @@
 
 
                 <h3>Ano de publicação</h3>  
-                <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 19); ?>
+                <?php $ano_bar = Results::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 19); ?>
 
                 <div id="ano_chart"></div>
                 <script type="text/javascript">
@@ -253,7 +253,7 @@
 
 
 
-<?php $internacionalizacao_bar = processaResultados::generateDataGraphBar($query, 'USP.internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
+<?php $internacionalizacao_bar = Results::generateDataGraphBar($query, 'USP.internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
 <div id="internacionalizacao_chart"></div>         
 <script type="text/javascript">
 var graphdef = {

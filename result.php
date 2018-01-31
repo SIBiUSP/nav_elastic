@@ -404,7 +404,7 @@
                 <?php if ($year_result_graph == true) : ?>
                     <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
-                        <?php $ano_bar = processaResultados::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 10); ?>
+                        <?php $ano_bar = Results::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 10); ?>
                         <div id="ano_chart" class="uk-visible@l"></div>
                         <script type="text/javascript">
                             var graphdef = {
@@ -557,7 +557,7 @@
                                                         <?php endif; ?>
                                                         <?php
                                                             if ($dedalus == true) {
-                                                                processaResultados::load_itens_aleph($r['_id']);
+                                                                Results::load_itens_aleph($r['_id']);
                                                             } 
                                                         ?>
                                                     
@@ -565,7 +565,7 @@
                                                             if(empty($_SESSION['oauthuserdata'])){
                                                                 $_SESSION['oauthuserdata']="";
                                                             } 
-                                                            $full_links = processaResultados::get_fulltext_file($r['_id'],$_SESSION['oauthuserdata']);
+                                                            $full_links = Results::get_fulltext_file($r['_id'],$_SESSION['oauthuserdata']);
                                                             if (!empty($full_links)){
                                                                 echo '<p class="uk-text-small">Download do texto completo</p><div class="uk-grid">';
                                                                         foreach ($full_links as $links) {
