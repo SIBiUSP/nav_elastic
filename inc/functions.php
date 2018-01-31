@@ -1,5 +1,4 @@
 <?php
-
 if (file_exists('functions_core/functions_core.php')) {
     include 'functions_core/functions_core.php';
 } else {
@@ -12,7 +11,8 @@ if (file_exists('functions_core/functions_core.php')) {
 class PaginaInicial
 {
     
-    static function unidadeUSP_inicio() {
+    static function unidadeUSP_inicio()
+    {
         global $type;
         $query = '{
             "aggs": {
@@ -26,7 +26,7 @@ class PaginaInicial
             }
         }';
 
-        $response = elasticsearch::elastic_search($type,null,0,$query);
+        $response = elasticsearch::elastic_search($type, null, 0, $query);
 
         $programas = [];
         $count = 1;
@@ -57,7 +57,8 @@ class PaginaInicial
 
     }
     
-    static function base_inicio() {
+    static function base_inicio()
+    {
         global $type;
         $query = '{
             "aggs": {
@@ -76,7 +77,8 @@ class PaginaInicial
 
     }    
     
-    static function ultimos_registros() {
+    static function ultimos_registros()
+    {
         global $type;
         $query = '{
                     "query": {
@@ -86,35 +88,35 @@ class PaginaInicial
                         {"_uid" : {"order" : "desc"}}
                         ]
                     }';
-        $response = elasticsearch::elastic_search($type,null,11,$query);
+        $response = elasticsearch::elastic_search($type, null, 11, $query);
 
-        foreach ($response["hits"]["hits"] as $r){
+        foreach ($response["hits"]["hits"] as $r) {
             echo '<article class="uk-comment">
-            <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>';    
+            <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>'; 
             if (!empty($r["_source"]['unidadeUSP'])) {
                 $file = 'inc/images/logosusp/'.$r["_source"]['unidadeUSP'][0].'.jpg';
             } else {
                 $file = "";
             }
             if (file_exists($file)) {
-            echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="60" height="60" alt=""></div>';
+                echo '<div class="uk-width-auto"><img class="uk-comment-avatar" src="'.$file.'" width="60" height="60" alt=""></div>';
             } else {
 
             };
             echo '<div class="uk-width-expand">';
-            if (!empty($r["_source"]['name'])){
+            if (!empty($r["_source"]['name'])) {
                 echo '<a href="item/'.$r['_id'].'"><h4 class="uk-comment-title uk-margin-remove">'.$r["_source"]['name'].'';
-                if (!empty($r["_source"]['datePublished'])){
-                   echo ' ('.$r["_source"]['datePublished'].')';
+                if (!empty($r["_source"]['datePublished'])) {
+                    echo ' ('.$r["_source"]['datePublished'].')';
                 }         
                 echo '</h4></a>';
             };
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
             if (!empty($r["_source"]['author'])) { 
-            foreach ($r["_source"]['author'] as $autores) {
-            echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
-            }
-            echo '</ul></div>';     
+                foreach ($r["_source"]['author'] as $autores) {
+                    echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
+                }
+                echo '</ul></div>';     
             };
             echo '</header>';
             echo '</article>';
@@ -122,7 +124,8 @@ class PaginaInicial
 
     }
     
-    static function card_unidade ($sigla,$nome_unidade) {
+    static function card_unidade($sigla,$nome_unidade)
+    {
         $card = '
         <div class="uk-text-center">
             <a href="result.php?search[]=unidadeUSPtrabalhos:'.$sigla.'">
@@ -141,9 +144,11 @@ class PaginaInicial
     
 }
 
-class paginaSingle {
+class paginaSingle
+{
 
-    public static function counter ($_id,$client) {
+    public static function counter($_id,$client)
+    {
 
         global $index;
 
@@ -248,7 +253,8 @@ class paginaSingle {
 
     }
 
-    public static function metadataGoogleScholar($record) {
+    public static function metadataGoogleScholar($record)
+    {
         echo '<meta name="citation_title" content="'.$record["name"].'">';
         if (!empty($record['author'])) {
             foreach ($record['author'] as $autores) {
@@ -283,8 +289,8 @@ class paginaSingle {
 
         $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);    
         $links_upload = "";
-        if (!empty($files_upload)){       
-            foreach($files_upload as $file) {        
+        if (!empty($files_upload)) {       
+            foreach ($files_upload as $file) {        
                 echo '<meta name="citation_pdf_url" content="http://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
             ';
             }
@@ -293,23 +299,24 @@ class paginaSingle {
 
     }
 
-    public static function jsonLD ($record) {
+    public static function jsonLD($record)
+    {
 
         foreach ($record['author'] as $autores) {
             $autor_json[] = '"'.$autores["person"]["name"].'"';
         }
 
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
-            $periodicos_array = explode(",",$record["isPartOf"]["USP"]["dados_do_periodico"]);
+            $periodicos_array = explode(",", $record["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
                 if (strpos($periodicos_array_new, 'v.') !== false) {
-                    $volume = trim(str_replace("v.","",$periodicos_array_new));
+                    $volume = trim(str_replace("v.", "", $periodicos_array_new));
                 } elseif (strpos($periodicos_array_new, 'n.') !== false) {
-                    $numero = trim(str_replace("n.","",$periodicos_array_new));
+                    $numero = trim(str_replace("n.", "", $periodicos_array_new));
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
-                    $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
+                    $pages_array = explode("-", str_replace("p.", "", $periodicos_array_new));
                     $first_page = trim($pages_array[0]);
-                    if (!empty($pages_array[1])){
+                    if (!empty($pages_array[1])) {
                         $end_page = trim($pages_array[1]);
                     } else {
                         $end_page = "N/D";
@@ -328,7 +335,7 @@ class paginaSingle {
         }
 
         if (!empty($record['description'])) { 
-            $description = '"description": "'.$record['description'][0].'",';         
+            $description = '"description": "'.$record['description'][0].'",'; 
         } else {
             $description = "";
         }       
@@ -346,25 +353,25 @@ class paginaSingle {
               ';
             
         
-            switch ($record["type"]) {
-                case "ARTIGO DE PERIODICO":
-                if (empty($record["isPartOf"]["issn"][0])){
-                    $record["isPartOf"]["issn"][0] = "";
-                }
-                if (empty($numero)){
-                    $numero = "";
-                }
-                if (empty($volume)){
-                    $volume = "";
-                }                
-                if (empty($end_page)){
-                    $end_page = "";
-                }
-                if (empty($first_page)){
-                    $first_page = "";
-                }                                                 
+        switch ($record["type"]) {
+        case "ARTIGO DE PERIODICO":
+            if (empty($record["isPartOf"]["issn"][0])) {
+                $record["isPartOf"]["issn"][0] = "";
+            }
+            if (empty($numero)) {
+                $numero = "";
+            }
+            if (empty($volume)) {
+                $volume = "";
+            }                
+            if (empty($end_page)) {
+                $end_page = "";
+            }
+            if (empty($first_page)) {
+                $first_page = "";
+            }                                                 
                     
-                    echo '
+            echo '
 
             {
                 "@id": "#periodical", 
@@ -433,7 +440,8 @@ class paginaSingle {
 
 }
 
-class processaResultados {
+class processaResultados
+{
     
     /* Function to generate Graph Bar */
     static function generateDataGraphBar($query, $field, $sort, $sort_orientation, $facet_display_name, $size) {
@@ -457,7 +465,7 @@ class processaResultados {
 
         $data_array= array();
         foreach ($facet['aggregations']['counts']['buckets'] as $facets) {
-            array_push($data_array,'{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
+            array_push($data_array, '{"name":"'.$facets['key'].'","value":'.$facets['doc_count'].'}');
         };
 
         if ($field == "datePublished" ) {
@@ -544,7 +552,8 @@ class processaResultados {
     
 }
 
-class USP {
+class USP
+{
 
     /* Consulta o Vocabulário Controlado da USP */
     static function consultar_vcusp($termo) {
@@ -611,12 +620,12 @@ function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_d
     </thead>
     <tbody>";
 
-        foreach ($response['aggregations']['counts']['buckets'] as $facets) {
-            echo "<tr>
-                <td>".$facets['key']."</td>
-                <td>".$facets['doc_count']."</td>
-                </tr>";
-        };
+    foreach ($response['aggregations']['counts']['buckets'] as $facets) {
+        echo "<tr>
+            <td>".$facets['key']."</td>
+            <td>".$facets['doc_count']."</td>
+            </tr>";
+    };
 
     echo"</tbody>
         </table>";
@@ -625,9 +634,9 @@ function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_d
 }
 
 /* Function to generate CSV */
-function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho) {
+function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho)
+{
     global $client;
-	
     //if (!empty($sort)){
     //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     //}
@@ -648,14 +657,15 @@ function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display
     $response = $client->search($params); 
     $data_array= array();
     foreach ($response['aggregations']['counts']['buckets'] as $facets) {
-        array_push($data_array,''.$facets["key"].'\\t'.$facets["doc_count"].'');
+        array_push($data_array, ''.$facets["key"].'\\t'.$facets["doc_count"].'');
     };
     $comma_separated = implode("\\n", $data_array);
     return $comma_separated;
 
 }
 
-class autoridades {
+class autoridades
+{
     
      function limpar($text) {
         $utf8 = array(
@@ -688,10 +698,12 @@ class autoridades {
 }
 
 
-class API {
+class API
+{
     
 
-    static function get_title_elsevier($issn,$api_elsevier) {
+    static function get_title_elsevier($issn,$api_elsevier)
+    {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -708,7 +720,8 @@ class API {
         curl_close($curl);    
     }
 
-    static function get_citations_elsevier($doi,$api_elsevier) {
+    static function get_citations_elsevier($doi,$api_elsevier)
+    {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -725,7 +738,8 @@ class API {
         curl_close($curl);    
     } 
 
-    static function metrics_update($_id,$metrics_array){    
+    static function metrics_update($_id,$metrics_array)
+    {    
         global $client;    
         $query = 
         '
@@ -750,7 +764,8 @@ class API {
 
     }
 
-    static function store_issn_info($client,$issn,$issn_info){    
+    static function store_issn_info($client,$issn,$issn_info)
+    {    
 
         $query = 
         '
@@ -778,20 +793,20 @@ class API {
     /*
     * Obtem dados do Google Scholar  *
     */
-    static function google_scholar_py($record) {
+    static function google_scholar_py($record)
+    {
 
         if (!empty($record["doi"])) {
-            $command_string = 'google_scholar_py/scholar.py -c 1 --all "'.$record["doi"].'" --cookie-file=cookies.txt --csv';		
+            $command_string = 'google_scholar_py/scholar.py -c 1 --all "'.$record["doi"].'" --cookie-file=cookies.txt --csv';
             $command = escapeshellcmd($command_string);
             $output = shell_exec($command);
-        } 
-        else {
-            $array_name = explode(',',$record["author"][0]["person"]["name"]);
+        } else {
+            $array_name = explode(',', $record["author"][0]["person"]["name"]);
             $command_string = 'google_scholar_py/scholar.py -c 1 -p "'.htmlentities($record["name"]).'" -a "'.htmlentities($array_name[0]).'" --cookie-file=cookies.txt --csv';	
             $command = escapeshellcmd($command_string);
             $output = shell_exec($command);
-        }	
-        
+        }
+              
         if (!empty($output)) {
             $output_array = explode("|", $output);
             $g_output = [];
@@ -807,9 +822,8 @@ class API {
             $g_output["url_citation"] = $output_array[9];
             $g_output["excerpt"] = $output_array[10];
             return $g_output;
-            unset($g_output);			
-        }	
-
+            unset($g_output);
+        }
     }
     
     static function get_microsoft_academic($title)
@@ -827,7 +841,7 @@ class API {
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        $data = json_decode($resp, TRUE);
+        $data = json_decode($resp, true);
         return $data;
         // Close request to clear up some resources
         curl_close($curl);    
