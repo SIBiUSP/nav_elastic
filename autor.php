@@ -539,7 +539,7 @@
 
             foreach ($cursor["hits"]["hits"] as $r) { 
                 /* Exportador RIS */
-                $record_blob[] = exporters::RIS($r);
+                $record_blob[] = Exporters::RIS($r);
                 $record_blob = str_replace("'","",$record_blob);
             }
        ?> 

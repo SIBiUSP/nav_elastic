@@ -218,7 +218,7 @@ if ($_GET["format"] == "table") {
 
     foreach ($cursor["hits"]["hits"] as $r) { 
         /* Exportador RIS */
-        $record_blob[] = exporters::RIS($r);
+        $record_blob[] = Exporters::RIS($r);
     }
     foreach ($record_blob as $record) {
         $record_array = explode('\n',$record);
