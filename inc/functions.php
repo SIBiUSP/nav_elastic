@@ -470,7 +470,7 @@ class PageSingle
  * Processa resultados
  *
  * @category Class
- * @package  ProcessaResultados
+ * @package  Results
  * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     http://github.com/sibiusp/nav_elastic 
@@ -718,7 +718,7 @@ function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
  * @link     http://github.com/sibiusp/nav_elastic 
  */
-class autoridades
+class Autoridades
 {
     
      function limpar($text) {
