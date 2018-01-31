@@ -709,6 +709,15 @@ function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display
 
 }
 
+/**
+ * Autoridades
+ *
+ * @category Class
+ * @package  Autoridades
+ * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://github.com/sibiusp/nav_elastic 
+ */
 class autoridades
 {
     
@@ -742,6 +751,15 @@ class autoridades
     
 }
 
+/**
+ * APIs
+ *
+ * @category Class
+ * @package  APIs
+ * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://github.com/sibiusp/nav_elastic 
+ */
 class API
 {
     
@@ -912,6 +930,15 @@ class API
     
 }
 
+/**
+ * Exporters
+ *
+ * @category Class
+ * @package  Exporters
+ * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://github.com/sibiusp/nav_elastic 
+ */
 class exporters
 {
 
