@@ -72,7 +72,7 @@
 
                         // Consulta para formar os edges
                         $query_n = $query;
-                        $query_n["query"]["query_string"]["query"] = $get_search["query"]["query_string"]["query"] . " +" . $field . ".keyword:\"" . $facets['key'] ."\"";
+                        $query_n["query"]["query_string"]["query"] = $get_search["query"]["query_string"]["query"] . " +" . $field . ":\"" . $facets['key'] ."\"";
                         $response_network = elasticsearch::elastic_search($type,null,0,$query_n);
                         
                         $i_network = 0;                        

@@ -72,7 +72,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             //}
 
             if (!empty($set)) {                
-                $query["query"]["query_string"]["query"] = '+unidadeUSP.keyword:"'.$set.'"';
+                $query["query"]["query_string"]["query"] = '+unidadeUSP:"'.$set.'"';
             } else {
                 $query["query"]["query_string"]["query"] = "*";
             } 

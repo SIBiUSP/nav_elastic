@@ -20,17 +20,17 @@ $citeproc_vancouver = new citeproc($csl_nlm, $lang);
 $mode = "reference";
 
 /* Contador */
-PageSingle::counter($_GET['_id'], $client);
+//PageSingle::counter($_GET['_id'], $client);
 
 /* Montar a consulta */
 $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
-$cursor_metrics = elasticsearch::elastic_get($_GET['_id'], "metrics", null);
+//$cursor_metrics = elasticsearch::elastic_get($_GET['_id'], "producao", null);
 
 
 /* Atualizar métricas para exibição */
-$update_counter["doc"]["USP"]["views_counter"] = $cursor_metrics["_source"]["counter"];
-$update_counter["doc_as_upsert"] = true;
-elasticsearch::elastic_update($_GET['_id'], $type, $update_counter);
+//$update_counter["doc"]["USP"]["views_counter"] = $cursor_metrics["_source"]["counter"];
+//$update_counter["doc_as_upsert"] = true;
+//elasticsearch::elastic_update($_GET['_id'], $type, $update_counter);
 
 
 /* Upload de PDF */
@@ -60,27 +60,31 @@ if (!empty($_POST['delete_file'])) {
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
         <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
         <?php PageSingle::jsonLD($cursor["_source"]); ?>
+        <!-- Altmetric Script -->
+        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>        
+        <!-- PlumX Script -->
+        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>        
     </head>
     <body>
-        <?php if(!empty($response_upload)) : ?>
-            <?php if ($response_upload['result'] == 'created') : ?>
-                <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo incluído com sucesso", {status:'success'})</script>
-            <?php endif; ?>
+    <?php if(!empty($response_upload)) : ?>
+        <?php if ($response_upload['result'] == 'created') : ?>
+            <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo incluído com sucesso", {status:'success'})</script>
         <?php endif; ?>
-        <?php if(!empty($response_delete)) : ?>        
-            <?php if ($response_delete['result'] == 'deleted') : ?>
-                <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo excluído com sucesso", {status:'danger'})</script>
-            <?php endif; ?> 
-        <?php endif; ?>
+    <?php endif; ?>
+    <?php if(!empty($response_delete)) : ?>        
+        <?php if ($response_delete['result'] == 'deleted') : ?>
+            <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo excluído com sucesso", {status:'danger'})</script>
+        <?php endif; ?> 
+    <?php endif; ?>
 
-        <?php
-        if (file_exists("inc/analyticstracking.php")) {
-            include_once "inc/analyticstracking.php";
-        }
-        ?>
+    <?php
+    if (file_exists("inc/analyticstracking.php")) {
+        include_once "inc/analyticstracking.php";
+    }
+    ?>
 
-        <?php require 'inc/navbar.php'; ?>
-        <br/><br/><br/>
+    <?php require 'inc/navbar.php'; ?>
+    <br/><br/><br/>
 
     <div class="uk-container uk-margin-large-bottom">
         <div class="uk-grid uk-margin-top" uk-grid>
@@ -123,21 +127,67 @@ if (!empty($_POST['delete_file'])) {
                         <li>
                             <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
                         </li>
+                    <!--
                         <li>
-                    <?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
-                    <h4>Visitas ao registro: <?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
-                    <?php endif; ?>                
+                        
+                    < ?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
+                    <h4>Visitas ao registro: < ?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
+                    < ?php endif; ?>                
                         </li>
+                    -->    
                     </ul>
                     <?php if (!empty($cursor["_source"]['doi'])): ?>
-                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
-                        <hr>
-                        <!-- Coletar por Ajax por conta da performance
-                        <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=< ?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
-                        -->
+                    <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
+                    <hr>
+
+                    <!-- Métricas - Início -->
+                    <?php if ($show_metrics == true) : ?>
+                        <?php if (!empty($cursor["_source"]['doi'])) : ?>
+                        <div class="uk-alert-warning" uk-alert>
+                            <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                            <div uk-grid>
+                                <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
+                                <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
+                                <div><span class="__dimensions_badge_embed__" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
+                                <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["num_citations"])) :?>
+                                <div>Citações no OpenCitations: <?php echo $cursor["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
+                                <?php endif; ?>
+                                <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
+                                <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
+                                <?php endif; ?>                                                            
+                                <div>
+                                    <!--
+                                    < ?php 
+                                        $citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
+                                        if (!empty($citations_scopus['abstract-citations-response'])) {
+                                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
+                                            echo '<br/><br/>';
+                                        } 
+                                    ? >
+                                    -->                                                
+                                </div>
+                            </div>
+                        </div>
+                        <?php else : ?>
+                        <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
+                        <?php if($cursor["_source"]["USP"]["aminer"]["num_citation"] > 0) :?>
+                        <div class="uk-alert-warning" uk-alert>
+                            <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                            <div uk-grid>                                                    
+                                <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
+                            </div>
+                        </div>
+                        <?php endif; ?>                                                      
+                        <?php endif; ?>                                                                                                            
+
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <!-- Métricas - Fim -->   
+
                     <?php
                     if ($use_api_elsevier == true) {
-                        $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi']),$api_elsevier);
+                        $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi']), $api_elsevier);
                         if (!empty($full_citations["abstract-citations-response"])) {
                             echo '<h4>API SCOPUS</h4>';
                             echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
@@ -187,7 +237,7 @@ if (!empty($_POST['delete_file'])) {
                     <!--Type -->
                     <?php if (!empty($cursor["_source"]['type'])): ?>
                     <p class="uk-article-meta">    
-                        <a href="<?php echo $url_base ?>/result.php?search[]=type.keyword:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
+                        <a href="<?php echo $url_base ?>/result.php?search[]=type:&quot;<?php echo $cursor["_source"]['type'];?>&quot;"><?php echo $cursor["_source"]['type'];?></a>
                     </p>    
                     <?php endif; ?>                            
                     <h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href=""><?php echo $cursor["_source"]["name"];?><?php if (!empty($cursor["_source"]['datePublished'])) { echo ' ('.$cursor["_source"]['datePublished'].')'; } ?></a></h1>
@@ -201,11 +251,11 @@ if (!empty($_POST['delete_file'])) {
                             <?php 
                             foreach ($cursor["_source"]['author'] as $authors) {
                                 if (!empty($authors["person"]["affiliation"]["name"])) {
-                                    echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
+                                    echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
                                 } elseif (!empty($authors["person"]["potentialAction"])) {
-                                    echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["potentialAction"].'</a></li>';
+                                    echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["potentialAction"].'</a></li>';
                                 } else {
-                                    echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
+                                    echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
                                 }                                
                             }   
                             ?>
@@ -220,7 +270,7 @@ if (!empty($_POST['delete_file'])) {
                                 <?php echo $t->gettext('Autores USP'); ?>:
                                 <ul class="uk-list uk-list-striped uk-text-small">
                                 <?php foreach ($cursor["_source"]['authorUSP'] as $autoresUSP): ?>
-					                <li><a href="<?php echo $url_base ?>/result.php?search[]=authorUSP.name.keyword:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
+					                <li><a href="<?php echo $url_base ?>/result.php?search[]=authorUSP.name:&quot;<?php echo $autoresUSP["name"]; ?>&quot;"><?php echo $autoresUSP["name"];?> - <?php echo $autoresUSP["unidadeUSP"];?> </a></li>
                                 <?php endforeach;?>
                                 </ul>
                             </p>
@@ -234,7 +284,7 @@ if (!empty($_POST['delete_file'])) {
                                 <?php echo $t->gettext('Unidades USP'); ?>:
                                     <ul class="uk-list uk-list-striped uk-text-small">
                                     <?php foreach ($cursor["_source"]['unidadeUSP'] as $unidadeUSP): ?>
-                                    <li><a href="<?php echo $url_base ?>/result.php?search[]=unidadeUSP.keyword:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a></li>
+                                    <li><a href="<?php echo $url_base ?>/result.php?search[]=unidadeUSP:&quot;<?php echo $unidadeUSP;?>&quot;"><?php echo $unidadeUSP;?></a></li>
                                     <?php endforeach;?>
                                     </ul>
                             </p>
@@ -248,7 +298,7 @@ if (!empty($_POST['delete_file'])) {
                             <?php echo $t->gettext('Assuntos'); ?>:
                             <ul class="uk-list uk-list-striped uk-text-small">                            
                             <?php foreach ($cursor["_source"]['about'] as $subject) : ?>
-                                <li><a href="<?php echo $url_base ?>/result.php?search[]=about.keyword:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a></li>
+                                <li><a href="<?php echo $url_base ?>/result.php?search[]=about:&quot;<?php echo $subject;?>&quot;"><?php echo $subject;?></a></li>
                             <?php endforeach;?>
                             </ul>
                             </p>
@@ -262,7 +312,7 @@ if (!empty($_POST['delete_file'])) {
                             <?php echo $t->gettext('Assuntos provenientes das teses'); ?>:
                             <ul class="uk-list uk-list-striped uk-text-small">                            
                             <?php foreach ($cursor["_source"]["USP"]['about_BDTD'] as $subject_BDTD) : ?>
-                                <li><a href="<?php echo $url_base ?>/result.php?search[]=USP.about_BDTD.keyword:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a></li>
+                                <li><a href="<?php echo $url_base ?>/result.php?search[]=USP.about_BDTD:&quot;<?php echo $subject_BDTD;?>&quot;"><?php echo $subject_BDTD;?></a></li>
                             <?php endforeach;?>
                             </ul>
                         </p>
@@ -276,7 +326,7 @@ if (!empty($_POST['delete_file'])) {
                             <?php echo $t->gettext('Agências de fomento'); ?>:
                             <ul class="uk-list uk-list-striped uk-text-small">                            
                             <?php foreach ($cursor["_source"]['funder'] as $funder) : ?>
-                                <li><a href="<?php echo $url_base ?>/result.php?search[]=funder.keyword:&quot;<?php echo $funder;?>&quot;"><?php echo $funder;?></a></li>
+                                <li><a href="<?php echo $url_base ?>/result.php?search[]=funder:&quot;<?php echo $funder;?>&quot;"><?php echo $funder;?></a></li>
                             <?php endforeach;?>
                             </ul>
                             </p>
@@ -290,7 +340,7 @@ if (!empty($_POST['delete_file'])) {
                                 <?php echo $t->gettext('Idioma'); ?>:
                                 <ul class="uk-list uk-list-striped uk-text-small">
                                     <?php foreach ($cursor["_source"]['language'] as $language): ?>
-                                        <li><a href="<?php echo $url_base ?>/result.php?search[]=language.keyword:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a></li>
+                                        <li><a href="<?php echo $url_base ?>/result.php?search[]=language:&quot;<?php echo $language;?>&quot;"><?php echo $language;?></a></li>
                                     <?php endforeach;?>
                                 </ul>     
                             </p>
@@ -319,13 +369,13 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]['publisher'])) : ?>
                             <p class="uk-text-small uk-margin-remove">Imprenta:<ul class="uk-list uk-list-striped uk-article-meta">                                
                                 <?php if (!empty($cursor["_source"]["publisher"]["organization"]["name"])) : ?>
-                                    <li><?php echo $t->gettext('Editora'); ?>: <a href="<?php echo $url_base ?>/result.php?search[]=publisher.organization.name.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["name"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["name"];?></a></li>
+                                    <li><?php echo $t->gettext('Editora'); ?>: <a href="<?php echo $url_base ?>/result.php?search[]=publisher.organization.name:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["name"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["name"];?></a></li>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]["publisher"]["organization"]["location"])) : ?>
-                                    <li><?php echo $t->gettext('Local'); ?>: <a href="<?php echo $url_base ?>/result.php?search[]=publisher.organization.location.keyword:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["location"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["location"];?></a></li>
+                                    <li><?php echo $t->gettext('Local'); ?>: <a href="<?php echo $url_base ?>/result.php?search[]=publisher.organization.location:&quot;<?php echo $cursor["_source"]['publisher']["organization"]["location"];?>&quot;"><?php echo $cursor["_source"]['publisher']["organization"]["location"];?></a></li>
                                 <?php endif; ?>
                                 <?php if (!empty($cursor["_source"]['datePublished'])) : ?>
-                                    <li><?php echo $t->gettext('Data de publicação'); ?>: <a href="<?php echo $url_base ?>/result.php?search[]=datePublished.keyword:&quot;<?php echo $cursor["_source"]['datePublished'];?>&quot;"><?php echo $cursor["_source"]['datePublished'];?></a></li>
+                                    <li><?php echo $t->gettext('Data de publicação'); ?>: <a href="<?php echo $url_base ?>/result.php?search[]=datePublished:&quot;<?php echo $cursor["_source"]['datePublished'];?>&quot;"><?php echo $cursor["_source"]['datePublished'];?></a></li>
                                 <?php endif; ?>
                             </ul></p>
                             
@@ -363,9 +413,9 @@ if (!empty($_POST['delete_file'])) {
                         <?php if (!empty($cursor["_source"]['isPartOf'])) : ?>
                             <p class="uk-text-small uk-margin-remove">
                                 <p class="uk-text-small uk-margin-remove"><?php echo $t->gettext('Fonte'); ?>:<ul class="uk-list uk-list-striped uk-article-meta">
-                                    <li>Título do periódico: <a href="<?php echo $url_base ?>/result.php?search[]=isPartOf.name.keyword:&quot;<?php if (!empty($cursor["_source"]["isPartOf"]["name"])) { echo $cursor["_source"]["isPartOf"]["name"]; } ?>&quot;"><?php if (!empty($cursor["_source"]["isPartOf"]["name"])) { echo $cursor["_source"]["isPartOf"]["name"];} ?></a></li>
+                                    <li>Título do periódico: <a href="<?php echo $url_base ?>/result.php?search[]=isPartOf.name:&quot;<?php if (!empty($cursor["_source"]["isPartOf"]["name"])) { echo $cursor["_source"]["isPartOf"]["name"]; } ?>&quot;"><?php if (!empty($cursor["_source"]["isPartOf"]["name"])) { echo $cursor["_source"]["isPartOf"]["name"];} ?></a></li>
                                     <?php if (!empty($cursor["_source"]['isPartOf']['issn'][0])) : ?>
-                                    <li>ISSN: <a href="<?php echo $url_base ?>/result.php?search[]=issn.keyword:&quot;<?php echo $cursor['_source']['isPartOf']['issn'][0];?>&quot;"><?php echo $cursor["_source"]['isPartOf']['issn'][0];?></a></li>
+                                    <li>ISSN: <a href="<?php echo $url_base ?>/result.php?search[]=issn:&quot;<?php echo $cursor['_source']['isPartOf']['issn'][0];?>&quot;"><?php echo $cursor["_source"]['isPartOf']['issn'][0];?></a></li>
                                     <?php endif; ?>                                    
                                     <?php if (!empty($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"])) : ?>
                                     <li>Volume/Número/Paginação/Ano: <?php print_r($cursor["_source"]["isPartOf"]["USP"]["dados_do_periodico"]);?></li>
@@ -377,7 +427,7 @@ if (!empty($_POST['delete_file'])) {
                     </div>
 
                         <?php if (isset($issn_info["serial-metadata-response"])) : ?>
-                            <div class="uk-alert">
+                            <div class="uk-alert-primary">
                                 <li class="uk-h6">
                                     Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API)
                                     <ul>
@@ -463,7 +513,7 @@ if (!empty($_POST['delete_file'])) {
                             if ($use_api_oadoi == true) {
                                 if (!empty($cursor["_source"]['doi'])) {
                                     $oadoi = metrics::get_oadoi($cursor["_source"]['doi']);
-                                    echo '<div class="uk-alert uk-h6">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org">oaDOI API</a>)';
+                                    echo '<div class="uk-alert-primary uk-h6 uk-padding-small">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org">oaDOI API</a>)';
                                     echo '<ul>';
                                     if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
                                         echo '<li>Este periódico é de assinatura</li>';
@@ -493,7 +543,7 @@ if (!empty($_POST['delete_file'])) {
                                     if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
                                         $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
                                     }
-                                    API::metrics_update($_GET['_id'], $metrics);      
+                                    //API::metrics_update($_GET['_id'], $metrics);      
                                 }
                             }
                             ?>                            
@@ -506,7 +556,7 @@ if (!empty($_POST['delete_file'])) {
                                 if(count($aminer["result"]) > 0 ){
                                     similar_text($cursor["_source"]["name"], $aminer["result"][0]["title"], $percent);
                                     if ($percent > 90) {
-                                        echo '<div class="uk-alert uk-h6">';
+                                        echo '<div class="uk-alert-primary uk-h6">';
                                         echo '<h5>API AMiner</h5>';
                                         echo 'Título: <a href="https://aminer.org/archive/'.$aminer["result"][0]["id"].'">'.$aminer["result"][0]["title"].'</a><br/>';
                                         echo 'Número de citações: '.$aminer["result"][0]["num_citation"].'<br/>';
@@ -544,7 +594,7 @@ if (!empty($_POST['delete_file'])) {
                             if (isset($api_microsoft)) {
 
                                 if (isset($cursor["_source"]["USP"]["microsoft_academic"])) {
-                                    echo '<div class="uk-alert uk-h6">';
+                                    echo '<div class="uk-alert-primary uk-h6">';
                                     echo '<h5>API Microsoft Academic</h5>';
                                     echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$cursor["_source"]["USP"]["microsoft_academic"]["Id"].'">'.$cursor["_source"]["USP"]["microsoft_academic"]["Ti"].'</a><br/>';
                                     echo 'Número de citações: '.$cursor["_source"]["USP"]["microsoft_academic"]["CC"].'<br/>';                                  
@@ -574,7 +624,7 @@ if (!empty($_POST['delete_file'])) {
                                         if (count($ma_result["entities"]) > 0) {
                                             similar_text($cursor["_source"]["name"], $ma_result["entities"][0]["Ti"], $percent);
                                             if ($percent > 90) {
-                                                echo '<div class="uk-alert uk-h6">';
+                                                echo '<div class="uk-alert-primary uk-h6">';
                                                 echo '<h5>API Microsoft Academic</h5>';
                                                 echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$ma_result["entities"][0]["Id"].'">'.$ma_result["entities"][0]["Ti"].'</a><br/>';
                                                 echo 'Número de citações: '.$ma_result["entities"][0]["CC"].'<br/>';
@@ -620,7 +670,7 @@ if (!empty($_POST['delete_file'])) {
                             <!-- Opencitation - Início -->
                             <?php 
                             if (!empty($cursor["_source"]["USP"]["opencitation"]["citation"])) {
-                                echo '<div class="uk-alert uk-h6">';
+                                echo '<div class="uk-alert-primary uk-h6">';
                                 echo "<p>Citações recebidas (Fonte: OpenCitation)</p>";
                                 echo '<ul class="uk-list uk-list-bullet">'; 
                                 foreach ($cursor["_source"]["USP"]["opencitation"]["citation"] as $opencitation) {
@@ -838,7 +888,7 @@ if (!empty($_POST['delete_file'])) {
   
                             <div class="uk-text-small" style="color:black;">
                                 <h5><?php echo $t->gettext('Como citar'); ?></h5>
-                                <div class="uk-alert uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
+                                <div class="uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
                                 <p class="uk-text-small uk-margin-remove">
                                 <ul>
                                     <li class="uk-margin-top">
@@ -885,6 +935,7 @@ if (!empty($_POST['delete_file'])) {
         </div>
 
         <?php require 'inc/offcanvas.php'; ?>
+        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>   
         
     </body>
 </html>

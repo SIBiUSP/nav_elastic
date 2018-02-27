@@ -30,15 +30,6 @@ PUT /sibi
   }
 }
 
-PUT /sibi/files/_mapping
-{
-     "files": {
-        "_parent": {
-        "type": "producao" 
-        }
-    }
-}
-
 PUT /sibi/producao/_mapping
 {
          "producao": {
@@ -114,44 +105,83 @@ PUT /sibi/producao/_mapping
                   }
                 }
               },
-               "base": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
+              "authorUSP": {
+                "properties": {
+                  "name": {
+                    "type": "text",
+                    "analyzer": "portuguese",
+                    "fields": {
+                      "keyword": {
                         "type": "keyword",
                         "ignore_above": 256
-                     }
+                      }
+                    }
                   }
-               },
-                "description": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
+                }
+              },
+              "base": {
+                "type": "text",
+                "analyzer": "portuguese",
+                "fields": {
                     "keyword": {
                       "type": "keyword",
                       "ignore_above": 256
                     }
+                }
+              },
+              "description": {
+                "type": "text",
+                "analyzer": "portuguese",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                   }
-                },               
-                "name": {
-                  "type": "text",
-                  "analyzer": "portuguese",
-                  "fields": {
+                }
+              },
+              "isPartOf": {
+                "properties": {
+                  "name": {
+                    "type": "text",
+                    "analyzer": "portuguese",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              },              
+              "language": {
+                "type": "text",
+                "analyzer": "portuguese",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },                               
+              "name": {
+                "type": "text",
+                "analyzer": "portuguese",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },               
+              "sibi_id": {
+                "type": "text",
+                "fields": {
                     "keyword": {
                       "type": "keyword",
                       "ignore_above": 256
                     }
-                  }
-                },               
-               "sibi_id": {
-                  "type": "text",
-                  "fields": {
-                     "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                     }
-                  }
-               },
+                }
+              },
               "unidadeUSP": {
                 "type": "text",
                 "fields": {

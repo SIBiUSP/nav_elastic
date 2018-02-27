@@ -2,21 +2,20 @@
 <html lang="pt-br" dir="ltr">
     <head>
         <?php 
-            include('inc/config.php'); 
-            include('inc/functions.php');
-            include('inc/meta-header.php'); 
+            require 'inc/config.php'; 
+            require 'inc/functions.php';
+            require 'inc/meta-header.php'; 
         ?>         
         <title>BDPI USP - <?php echo $t->gettext('Busca avançada'); ?></title>
     </head>
 
     <body>
         <?php
-            if (file_exists("inc/analyticstracking.php")){
-                include_once("inc/analyticstracking.php");
-            }
+        if (file_exists('inc/analyticstracking.php')) {
+            include_once 'inc/analyticstracking.php';
+        }
+        require 'inc/navbar.php';
         ?>
-
-		<?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-large-top">
             <h1><?php echo $t->gettext('Busca avançada'); ?></h1>
                 <div class="uk-width-1-1@m">
@@ -66,7 +65,7 @@
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Número USP'); ?></legend>
                                 <input class="uk-input" id='searchCodpes' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpes').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpes').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
                         </form>
                         <form role="form" action="autor.php" method="get">
@@ -74,7 +73,7 @@
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em ABNT por autor USP'); ?></legend>
                                 <input class="uk-input" id='searchCodpesABNT' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
                                 <input type="hidden" name="format" value="abnt">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesABNT').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpesABNT').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesABNT').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesABNT').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
                         </form>
                         <form role="form" action="autor.php" method="get">
@@ -82,7 +81,7 @@
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em Formato Tabela por autor USP'); ?></legend>
                                 <input class="uk-input" id='searchCodpesTable' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
                                 <input type="hidden" name="format" value="table">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesTable').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpesTable').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesTable').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesTable').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
                         </form>
                         <form role="form" action="autor.php" method="get">
@@ -90,7 +89,7 @@
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em Formato RIS por autor USP'); ?></legend>
                                 <input class="uk-input" id='searchCodpesRIS' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
                                 <input type="hidden" name="format" value="RIS">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesRIS').value = 'authorUSP.codpes.keyword:' + String.fromCharCode(34) + document.getElementById('searchCodpesRIS').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesRIS').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesRIS').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
                         </form>                                                                                 
                         <form role="form" action="result.php" method="get" name="searchIBox">
@@ -104,7 +103,7 @@
                                 </label>            
                                 <br/>
                                 <input id="vocab" class="uk-input" type="text" name="search[]" data-validation="required">
-                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('vocab').value = 'about.keyword:' + String.fromCharCode(34) + document.getElementById('vocab').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('vocab').value = 'about:' + String.fromCharCode(34) + document.getElementById('vocab').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>
                                                                             
                             </fieldset>
                         </form>                            
@@ -112,11 +111,11 @@
                 </div>
             <hr class="uk-grid-divider">
             
-            <?php include('inc/footer.php'); ?>
+            <?php require 'inc/footer.php'; ?>
 
         </div>
         
-    <?php include('inc/offcanvas.php'); ?>
+    <?php require 'inc/offcanvas.php'; ?>
 
     <!-- PopTerms Client JavaScript -->
     <script src="inc/popterms/client/js/popterms.js"></script>

@@ -37,6 +37,7 @@
 							Sistema Integrado de Bibliotecas<br/>
 							Divisão de Gestão de Tratamento da Informação							
 						</p>
+						<p style="font-size: 50%">Para visualizar, utilize a seta para a direita no teclado -></p>
 				</section>
 				<section>
 					<h4>O que você encontra na BDPI USP?</h4>

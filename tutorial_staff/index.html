@@ -32,6 +32,7 @@
 							Sistema Integrado de Bibliotecas<br/>
 							Divisão de Gestão de Tratamento da Informação							
 						</p>
+						<p style="font-size: 50%">Para visualizar, utilize a seta para a direita no teclado -></p>
 				</section>
 				<section>
 					<h4>Como funciona a bdpi.usp.br?</h4>
@@ -54,13 +55,15 @@
 				</section>
 				<section>
 					<h4>Exemplos de inconsistências</h4>
-					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?search[]=_exists_:USP.aminer.doi&search[]=-_exists_:doi&search[]=-USP.aminer.doi.keyword:%22%22">Registros com DOI no AMiner e sem DOI na Base 04</a></p>
-					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=+type.keyword:%22ARTIGO%20DE%20PERIODICO%22&search[]=-_exists_:isPartOf.name">Artigos de periódico sem o 773t (Título) preenchido corretamente</a></p>
-					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=+type.keyword:%22ARTIGO%20DE%20PERIODICO%22&search[]=-_exists_:isPartOf.issn">Artigos de periódico sem o 773x (ISSN) preenchido corretamente</a></p>
+					<!-- <p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?search[]=_exists_:USP.aminer.doi&search[]=-_exists_:doi&search[]=-USP.aminer.doi:%22%22">Registros com DOI no AMiner e sem DOI na Base 04</a></p> -->
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&filter[]=type:%22ARTIGO%20DE%20PERIODICO%22&search[]=-_exists_:isPartOf.name">Artigos de periódico sem o 773t (Título) preenchido corretamente</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&filter[]=type:%22ARTIGO%20DE%20PERIODICO%22&search[]=-_exists_:isPartOf.issn">Artigos de periódico sem o 773x (ISSN) preenchido corretamente</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=-_exists_:datePublished">Sem o ano preenchido corretamente</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=-_exists_:unidadeUSP">Sem a Unidade USP preenchida corretamente</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=-_exists_:about">Sem Assunto</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?search%5B1%5D=+base.keyword%3A%22Produ%C3%A7%C3%A3o+cient%C3%ADfica%22&search[]=-_exists_:USP.internacionalizacao">Sem informação sobre a internacionalização preenchida corretamente</a></p>
+					<p style="font-size: 50%"><a href="http://bdpi.usp.br/result.php?&search[]=+base.keyword:%22Teses%20e%20disserta%C3%A7%C3%B5es%22&search[]=-_exists_:inSupportOf">Teses sem a informação sobre o tipo de tese preenchida corretamente</a></p>		
 				</section>				
-
-																								
-
 			</div>
 		</div>
 

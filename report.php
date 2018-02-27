@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
-    include('inc/config.php'); 
-    include('inc/functions.php');
+    require 'inc/config.php'; 
+    require 'inc/functions.php';
     
    $result_get = get::analisa_get($_GET);
     $query = $result_get['query'];  
@@ -9,9 +9,7 @@
     $page = $result_get['page'];
     $skip = $result_get['skip'];
     
-    $query['sort'] = [
-	['datePublished.keyword' => ['order' => 'desc']],
-    ];    
+    $query['sort'] = [ ['datePublished.keyword' => ['order' => 'desc']], ];    
 
     $params = [];
     $params["index"] = $index;

@@ -392,9 +392,9 @@
                     <td>
                         <?php foreach ($r["_source"]['author'] as $authors) {
                             if (!empty($authors["person"]["potentialAction"])) {
-                                $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+                                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
                             } else {
-                                $authors_array[]='<a href="result.php?search[]=author.person.name.keyword:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
                             }
                         } 
                         $array_aut = implode("; ",$authors_array);
@@ -404,7 +404,7 @@
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['isPartOf'])) : ?>
-                            <a href="result.php?search[]=isPartOf.name.keyword:&quot;<?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"]; } ?>&quot;"><?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"];} ?></a>
+                            <a href="result.php?search[]=isPartOf.name:&quot;<?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"]; } ?>&quot;"><?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"];} ?></a>
                         <?php endif; ?>     
                     </td>    
                     <td>
@@ -417,7 +417,7 @@
                     <td>
                         <?php if (!empty($r["_source"]['isPartOf']['issn'])) : ?>
                         <?php foreach ($r["_source"]['isPartOf']['issn'] as $issn) {
-                            $issn_array[]='<a href="result.php?search[]=isPartOf.issn.keyword:&quot;'.$issn.'&quot;">'.$issn.'</a>';
+                            $issn_array[]='<a href="result.php?search[]=isPartOf.issn:&quot;'.$issn.'&quot;">'.$issn.'</a>';
                         } 
                         $array_issn = implode("; ",$issn_array);
                         unset($issn_array);
@@ -451,7 +451,7 @@
                     </td>                      
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $authorsUSP) {
-                            $authorsUSP_array[]='<a href="result.php?search[]=authorUSP.name.keyword:&quot;'.$authorsUSP["name"].'&quot;">'.$authorsUSP["name"].'</a>';
+                            $authorsUSP_array[]='<a href="result.php?search[]=authorUSP.name:&quot;'.$authorsUSP["name"].'&quot;">'.$authorsUSP["name"].'</a>';
                         } 
                         $array_autUSP = implode("; ",$authorsUSP_array);
                         unset($authorsUSP_array);
@@ -460,7 +460,7 @@
                     </td>
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $numUSP) {
-                            $numUSP_array[]='<a href="result.php?search[]=authorUSP.codpes.keyword:&quot;'.$numUSP["codpes"].'&quot;">'.$numUSP["codpes"].'</a>';
+                            $numUSP_array[]='<a href="result.php?search[]=authorUSP.codpes:&quot;'.$numUSP["codpes"].'&quot;">'.$numUSP["codpes"].'</a>';
                         } 
                         $array_numUSP = implode("; ",$numUSP_array);
                         unset($numUSP_array);
@@ -469,7 +469,7 @@
                     </td>
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
-                            $unidadesUSP_array[]='<a href="result.php?search[]=authorUSP.unidadeUSP.keyword:&quot;'.$unidadesUSP_aut["unidadeUSP"].'&quot;">'.$unidadesUSP_aut["unidadeUSP"].'</a>';
+                            $unidadesUSP_array[]='<a href="result.php?search[]=authorUSP.unidadeUSP:&quot;'.$unidadesUSP_aut["unidadeUSP"].'&quot;">'.$unidadesUSP_aut["unidadeUSP"].'</a>';
                         } 
                         $array_unidadesUSP = implode("; ",$unidadesUSP_array);
                         unset($unidadesUSP_array);
@@ -479,7 +479,7 @@
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $departament_aut) {
                             if (!empty($departament_aut["departament"])) {
-                                $departament_array[]='<a href="result.php?search[]=authorUSP.departament.keyword:&quot;'.$departament_aut["departament"].'&quot;">'.$departament_aut["departament"].'</a>';
+                                $departament_array[]='<a href="result.php?search[]=authorUSP.departament:&quot;'.$departament_aut["departament"].'&quot;">'.$departament_aut["departament"].'</a>';
                                 $array_departament = implode("; ",$departament_array);
                                 unset($departament_array);
                                 print_r($array_departament);                                
@@ -490,7 +490,7 @@
                     <td>
                         <?php if (!empty($r["_source"]['USP']['serial_metrics']['qualis']['2016'])) : ?>
                         <?php foreach ($r["_source"]['USP']['serial_metrics']['qualis']['2016'] as $qualis) {
-                            $qualis_array[]='<a href="result.php?search[]=USP.serial_metrics.qualis.2016.area_nota.keyword:&quot;'.$qualis["area_nota"].'&quot;">'.$qualis["area_nota"].'</a>';
+                            $qualis_array[]='<a href="result.php?search[]=USP.serial_metrics.qualis.2016.area_nota:&quot;'.$qualis["area_nota"].'&quot;">'.$qualis["area_nota"].'</a>';
                         } 
                         $array_qualis = implode("; ",$qualis_array);
                         unset($qualis_array);

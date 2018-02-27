@@ -74,7 +74,7 @@ class Homepage
 
     }
     
-    static function base_inicio()
+    static function baseInicio()
     {
         global $type;
         $query = '{
@@ -89,7 +89,7 @@ class Homepage
         }';
         $response = elasticsearch::elastic_search($type,null,0,$query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-            echo '<li><a href="result.php?search[]=base.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+            echo '<li><a href="result.php?filter[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }   
 
     }    
@@ -131,7 +131,7 @@ class Homepage
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
             if (!empty($r["_source"]['author'])) { 
                 foreach ($r["_source"]['author'] as $autores) {
-                    echo '<li><a href="result.php?search[]=author.person.name.keyword:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
+                    echo '<li><a href="result.php?search[]=author.person.name:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
                 }
                 echo '</ul></div>';     
             };
@@ -478,9 +478,15 @@ class PageSingle
 class Results
 {
     
-    /* Function to generate Graph Bar */
+    /** 
+     * Function to generate Graph Bar 
+     * 
+     * @param array  $query User query
+     * @param string $field Field to aggregate
+     */
     static function generateDataGraphBar($query, $field, $sort, $sort_orientation, $facet_display_name, $size) {
         global $index;
+        global $type;
         global $client;
         
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
@@ -491,7 +497,7 @@ class Results
         
         $params = [
             'index' => $index,
-            'type' => 'producao',
+            'type' => $type,
             'size'=> 0, 
             'body' => $query
         ]; 
@@ -608,7 +614,7 @@ class USP
 
             $termo_xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchUp&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
             foreach (($termo_xml->{'result'}->{'term'}) as $string_up) {
-                $string_up_array[] = '<a href="result.php?search[]=about.keyword:&quot;'.$string_up->{'string'}.'&quot;">'.$string_up->{'string'}.'</a>';    
+                $string_up_array[] = '<a href="result.php?search[]=about:&quot;'.$string_up->{'string'}.'&quot;">'.$string_up->{'string'}.'</a>';    
             };
             echo 'Você também pode pesquisar pelos termos mais genéricos: ';
             print_r(implode(" -> ",$string_up_array));
@@ -616,7 +622,7 @@ class USP
             $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
             if (!empty($termo_xml_down->{'result'}->{'term'})){
                 foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
-                    $string_down_array[] = '<a href="result.php?search[]=about.keyword:&quot;'.$string_down->{'string'}.'&quot;">'.$string_down->{'string'}.'</a>';     
+                    $string_down_array[] = '<a href="result.php?search[]=about:&quot;'.$string_down->{'string'}.'&quot;">'.$string_down->{'string'}.'</a>';     
                 };
                 echo 'Ou pesquisar pelo assuntos mais específicos: ';
                 print_r(implode(" - ",$string_down_array));            
@@ -1036,6 +1042,259 @@ class Exporters
 
         return $record_blob;
 
+    }
+}
+
+/**
+ * Record
+ *
+ * @category Class
+ * @package  Record
+ * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://github.com/sibiusp/nav_elastic 
+ */
+class Record
+{
+
+    public function __construct($record, $showMetrics)
+    {   
+        $this->id = $record["_id"];
+        $this->name = $record["_source"]["name"];
+        $this->base = $record["_source"]["base"][0];
+        $this->type = ucfirst(strtolower($record["_source"]["type"]));
+        $this->datePublished = $record["_source"]["datePublished"];
+        $this->languageArray = $record["_source"]["language"];
+        $this->countryArray = $record["_source"]["country"];
+        $this->authorArray = $record["_source"]["author"];
+        if (isset($record["_source"]["publisher"])) {
+            $this->publisherArray = $record["_source"]["publisher"];
+        }
+        if (isset($record["_source"]["isPartOf"])) {
+            $this->isPartOfArray = $record["_source"]["isPartOf"];
+        }
+        if (isset($record["_source"]["about"])) {
+            $this->aboutArray = $record["_source"]["about"];
+        }
+        $this->USPArray = $record["_source"]["USP"];
+        $this->authorUSPArray = $record["_source"]["authorUSP"];
+        $this->unidadeUSPArray = $record["_source"]["unidadeUSP"];
+        if (isset($record["_source"]["isbn"])) {
+            $this->isbn = $record["_source"]["isbn"];
+        } else {
+            $this->isbn = "Não informado";
+        } 
+        if (isset($record["_source"]["url"])) {       
+            $this->url = $record["_source"]["url"];
+        }
+        if (isset($record["_source"]["doi"])) {
+            $this->doi = $record["_source"]["doi"];
+        } else {
+            $this->doi = "Não informado";
+        }
+        if (isset($record["_source"]["issn"])) {
+            $this->issnArray = $record["_source"]["issn"];
+        } else {
+            $this->issnArray[] = "Não informado";
+        } 
+        $this->completeRecord = $record;
+        $this->showMetrics = $showMetrics;
+    }
+
+    public function simpleRecordMetadata($t)
+    {
+        echo '<li>';
+        echo '<div class="uk-grid-divider uk-padding-small" uk-grid>';
+        echo '<div class="uk-width-1-5@m">';
+            echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].''.$_SERVER['QUERY_STRING'].'&filter[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a></p>';
+            echo '<p>Unidades USP: ';
+            if (!empty($this->unidadeUSPArray)) {
+                $unique =  array_unique($this->unidadeUSPArray);
+                foreach ($unique as $unidadeUSP) {
+                    echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.' </a>';
+                }
+            }
+            echo '</p>';
+            if (!empty($this->isbn)) {
+                $cover_link = 'http://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
+                echo  '<p><img src="'.$cover_link.'"></p>';
+            } 
+        echo '</div>';
+        echo '<div class="uk-width-4-5@m">';
+            echo '<article class="uk-article">';
+            echo '<p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
+            
+            /* Authors */
+            echo '<p class="uk-article-meta uk-margin-remove">'.$t->gettext('Autores').': '; 
+            foreach ($this->authorArray as $authors) {
+                if (!empty($authors["person"]["potentialAction"])) {
+                    $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+                } else {
+                    $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                }
+            } 
+            $array_aut = implode("; ", $authors_array);
+            print_r($array_aut);
+            echo '</p>';
+
+            /* IsPartOf */    
+            if (!empty($this->isPartOfArray)) {
+                echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
+            } 
+            
+            /* Subjects */
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
+            foreach ($this->aboutArray as $subject) {
+                echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+            }
+        
+        if (!empty($this->url)||!empty($this->doi)) {
+            $this->onlineAccess($t);
+        }
+        if ($this->showMetrics == true) {
+            $this->metrics($t, $this->doi, $this->completeRecord);
+        }             
+                        
+        $this->citation($t, $this->completeRecord);
+
+
+            
+        echo '</article>';
+                    
+        echo '</div>';
+        echo '</div>';
+
+        echo '</li>';
+
+    }
+
+    public function completeRecordMetadata($record)
+    {
+        print "Metadata!<br/>";
+        print_r($record);
+        print  "<br/><br/>";
+    }
+
+    public function onlineAccess($t)
+    {
+        
+        echo '<div class="uk-alert-primary" uk-alert>';
+            echo '<p class="uk-text-small">'.$t->gettext('Acesso ao documento').'</p>';
+            if (!empty($this->url)) {
+                foreach ($this->url as $url) {
+                    echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank">'.$t->gettext('Acesso online à fonte').'</a>';
+                }
+            }
+            if ($this->doi != "Não informado") {
+                echo '<a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/'.$this->doi.'" target="_blank">DOI</a>';
+            }
+
+            $sfx_array[] = 'rft.atitle='.$this->name.'';
+            $sfx_array[] = 'rft.year='.$this->datePublished.'';
+            if (!empty($this->isPartOfArray["name"])) {
+                $sfx_array[] = 'rft.jtitle='.$this->isPartOfArray["name"].'';
+            }
+            if ($this->doi != "Não informado") {
+                $sfx_array[] = 'rft_id=info:doi/'.$this->doi.'';
+            }
+            if (!empty($this->issnArray[0])) {
+                $sfx_array[] = 'rft.issn='.$this->issnArray[0].'';
+            }
+            if (!empty($r["_source"]['ispartof_data'][0])) {
+                $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';
+            }                                             
+            echo '<a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank"> '.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
+        echo '</div>';
+
+    }      
+    
+    public function holdings($id)
+    {
+        if ($dedalus == true) {
+            Results::load_itens_aleph($id);
+        } 
+    }    
+
+    public function metrics($t, $doi, $completeRecord)
+    {
+
+        if ($doi != "Não informado") {
+            echo '<div class="uk-alert-warning" uk-alert>';
+                echo '<p>'.$t->gettext('Métricas').'</p>';
+                echo '<div uk-grid>';
+                    echo '<div data-badge-popover="right" data-badge-type="1" data-doi="'.$doi.'" data-hide-no-mentions="true" class="altmetric-embed"></div>';
+                    echo '<div><a href="https://plu.mx/plum/a/?doi='.$doi.'" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>';
+                    if ($doi != "Não informado") {
+                        echo '<div><object data="http://api.elsevier.com/content/abstract/citation-count?doi='.$doi.'&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>';
+                    }
+                    echo '<div><span class="__dimensions_badge_embed__" data-doi="'.$doi.'" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>';
+                    if (!empty($completeRecord["_source"]["USP"]["opencitation"]["num_citations"])) {
+                        echo '<div>Citações no OpenCitations: '.$completeRecord["_source"]["USP"]["opencitation"]["num_citations"].'</div>';
+                    }
+                    if (isset($completeRecord["_source"]["USP"]["aminer"]["num_citation"])) {
+                        echo '<div>Citações no AMiner: '.$completeRecord["_source"]["USP"]["aminer"]["num_citation"].'</div>';
+                    }
+                echo '</div>';
+            echo '</div>';
+        } else {
+            if (isset($r["_source"]["USP"]["aminer"]["num_citation"])) {
+                if ($r["_source"]["USP"]["aminer"]["num_citation"] > 0) {
+                    echo '<div class="uk-alert-warning" uk-alert>';
+                        echo '<p>'.$t->gettext('Métricas').':</p>';
+                        echo '<div uk-grid>'; 
+                        echo '<div>Citações no AMiner: <?php echo $r["_source"]["USP"]["aminer"]["num_citation"]; ?></div>';
+                        echo '</div>';
+                    echo '</div>';
+                }
+            }
+        }
+    }
+
+    public function citation($t, $record)
+    {
+        /* Citeproc-PHP*/
+        require_once 'inc/citeproc-php/CiteProc.php';
+        $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
+        $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
+        $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
+        $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
+        $lang = "br";
+        $citeproc_abnt = new citeproc($csl_abnt,$lang);
+        $citeproc_apa = new citeproc($csl_apa,$lang);
+        $citeproc_nlm = new citeproc($csl_nlm,$lang);
+        $citeproc_vancouver = new citeproc($csl_nlm,$lang);
+        $mode = "reference";        
+        echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
+            echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';
+            echo '<div><a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade">'.$t->gettext('Como citar').'</a> </div>';
+        echo '</div>';        
+        echo '<div id="citacao'.$record['_id'].'" hidden="hidden">';
+            echo '<li class="uk-h6 uk-margin-top">';
+                echo '<div class="uk-alert-danger" uk-alert>A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>';
+                echo '<ul>';
+                    echo '<li class="uk-margin-top">';
+                    echo '<p><strong>ABNT</strong></p>';
+                    $data = citation::citation_query($record["_source"]);
+                    print_r($citeproc_abnt->render($data, $mode));
+                    echo '</li>';
+                    echo '<li class="uk-margin-top">';
+                    echo '<p><strong>APA</strong></p>';
+                    $data = citation::citation_query($record["_source"]);
+                    print_r($citeproc_apa->render($data, $mode));
+                    echo '</li>';
+                    echo '<li class="uk-margin-top">';
+                    echo '<p><strong>NLM</strong></p>';
+                    $data = citation::citation_query($record["_source"]);
+                    print_r($citeproc_nlm->render($data, $mode));
+                    echo '</li>';
+                    echo '<li class="uk-margin-top">';
+                    echo '<p><strong>Vancouver</strong></p>';
+                    $data = citation::citation_query($record["_source"]);
+                    print_r($citeproc_vancouver->render($data, $mode));
+                    echo '</li>';                                                
+                echo '</ul>';                                              
+            echo '</li>';
+        echo '</div>';
     }
 }
 
