@@ -167,17 +167,14 @@
                 <button  class="uk-button-primary" onclick="SaveAsFile('< ?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">
                     Exportar todas participações por Unidade em csv
                 </button>
-
-
-
-
-                <h3>Departamento - Participações</h3>
-                < ?php generateDataTable($query, 'authorUSP.departament', "_count", 'desc', 'Departamento - Participações', 9); ?>
-                < ?php $csv_departamento = generateCSV($query, 'authorUSP.departament', "_count", 'desc', 'Departamento - Participações', 10000); ?>
-                <button  class="uk-button-primary" onclick="SaveAsFile('< ?php echo str_replace("'", "", $csv_departamento); ?>','departamento_part.csv','text/plain;charset=utf-8')">
-                    Exportar todos as participações dos departamentos em csv
-                </button>
-                -->
+                -->     
+                
+                <h3>Departamento</h3>
+                <?php generateDataTable($query, 'authorUSP.departament', "_count", 'desc', 'Departamento', 9); ?>
+                <?php $csv_departament = generateCSV($query, 'authorUSP.departament', "_count", 'desc', 'Departamento', 10000); ?>
+                <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_departament); ?>','departamento.csv','text/plain;charset=utf-8')">
+                    Exportar todos os departamentos em csv
+                </button>                
 
 
                 <h3>Autores USP (10 primeiros)</h3>
@@ -287,7 +284,17 @@ height: 600
 <?php generateDataTable($query, 'country', "_count", 'desc', 'País de publicação', 10); ?>
 <?php $csv_country = generateCSV($query, 'country', "_count", 'desc', 'País de publicação', 10000); ?>
 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','pais.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>
-         
+
+<h3>Indexação</h3>
+<?php generateDataTable($query, 'USP.indexacao', "_count", 'desc', 'Indexação', 10); ?>
+<?php $csv_indexacao = generateCSV($query, 'USP.indexacao', "_count", 'desc', 'Indexação', 10000); ?>
+<button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_indexacao); ?>','indexacao.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>
+
+<h3>Cobertura na Web of Science</h3>
+<?php generateDataTable($query, 'USP.WOS.coverage', "_count", 'desc', 'Cobertura na Web of Science', 10); ?>
+<?php $csv_WOScoverage = generateCSV($query, 'USP.WOS.coverage', "_count", 'desc', 'Cobertura na Web of Science', 10000); ?>
+<button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_WOScoverage); ?>','WOScoverage.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>
+
 <h3>Instituição de colaboração</h3>
 <?php generateDataTable($query, 'author.person.affiliation.name', "_count", 'desc', 'Colaboração por instituição', 10); ?>
 <?php $csv_country = generateCSV($query, 'author.person.affiliation.name', "_count", 'desc', 'Colaboração por instituição', 10000); ?>
