@@ -148,7 +148,7 @@
         
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Últimos registros'); ?></span></h1>
-            <?php Homepage::ultimos_registros();?>
+            <?php Homepage::ultimosRegistros();?>
         </div>
 
 <?php require 'inc/footer.php'; ?>

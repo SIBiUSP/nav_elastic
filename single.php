@@ -59,7 +59,11 @@ if (!empty($_POST['delete_file'])) {
         <?php require 'inc/meta-header.php'; ?>
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
         <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
-        <?php PageSingle::jsonLD($cursor["_source"]); ?>
+        <?php 
+        if($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
+                PageSingle::jsonLD($cursor["_source"]);
+        } 
+        ?>
         <!-- Altmetric Script -->
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>        
         <!-- PlumX Script -->

@@ -94,7 +94,12 @@ class Homepage
 
     }    
     
-    static function ultimos_registros()
+    /** 
+     * Function last records
+     * 
+     * @return array Last records
+     */    
+    static function ultimosRegistros()
     {
         global $type;
         $query = '{
@@ -327,7 +332,6 @@ class PageSingle
 
     public static function jsonLD($record)
     {
-
         foreach ($record['author'] as $autores) {
             $autor_json[] = '"'.$autores["person"]["name"].'"';
         }
@@ -354,7 +358,7 @@ class PageSingle
         }
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
             if (!empty($record["publisher"]["organization"]["name"])) { 
-                $publisher = '"publisher": "'.$record["publisher"]["organization"]["name"].'",';
+                $publisher = '"publisher": "'.$record["publisher"]["organization"]["name"].'"';
             } else {
                 $publisher = "";
             }             
@@ -374,7 +378,11 @@ class PageSingle
               {
                 "@id": "http://bdpi.usp.br",
                 "@type": "Library",
-                "name": "Base de Produção Intelectual da USP"
+                "name": "Base de Produção Intelectual da USP",
+                "priceRange": "0",
+                "address":"Rua da Praça do Relógio, 109 - Bloco L  Térreo - Cidade Universitária, São Paulo, SP",
+                "image":"http://bdpi.usp.br/images/logo_sibi.jpg",
+                "telephone":"011 2648-0948"
               },
               ';
             
@@ -424,7 +432,8 @@ class PageSingle
                 "isPartOf": "#volume"
             }, 
             {
-                "@type": "ScholarlyArticle", 
+                "@type": "ScholarlyArticle",
+                "datePublished": "'.$record['datePublished'].'", 
                 "isPartOf": "#issue",
                 '.$description.'                 
                 ';
@@ -436,9 +445,10 @@ class PageSingle
                     "Works", 
                     "Catalog"
                 ], 
+                "image":"http://bdpi.usp.br/images/logo_sibi.jpg",
                 "pageEnd": "'.$end_page.'", 
                 "pageStart": "'.$first_page.'", 
-                "name": "'.$record["name"].'", 
+                "headline": "'.$record["name"].'", 
                 "author": ['.implode(",",$autor_json).']
             }
                             
@@ -1138,7 +1148,7 @@ class Record
             echo '</p>';
 
             /* IsPartOf */    
-            if (!empty($this->isPartOfArray)) {
+            if (!empty($this->isPartOfArray["name"])) {
                 echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
             } 
             
