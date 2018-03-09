@@ -371,26 +371,24 @@ if (isset($_GET["sort"])) {
                     </ul> 
                 <hr>                                
 
+                <!-- Gerar relatório - Início -->
+                <fieldset>
+                    <legend>Gerar relatório</legend>                  
+                    <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button uk-button-primary">Gerar relatório</a>
+                    </div>
+                </fieldset>
+                <!-- Gerar relatório - Fim -->
                         
                 <?php if(!empty($_SESSION['oauthuserdata'])): ?>
-                    <!-- Gerar relatório - Início -->
-                    <fieldset>
-                        <legend>Gerar relatório</legend>                  
-                        <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
-                        </div>
-                    </fieldset>
-                    <!-- Gerar relatório - Fim -->
-
-                    <hr>
-
-                    <!-- Exportar resultados -->
-                    <h3 class="uk-panel-title"><?php echo $t->gettext('Exportar'); ?></h3>
-                    <p>Limitado aos primeiros 10000 resultados</p>
-                    <ul>
-                        <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>">Exportar resultados em formato tabela</a></li>
-                        <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=ris'; ?>">Exportar resultados em formato RIS</a></li>
-                    </ul>
-                    <!-- Exportar resultados - Fim -->        
+                <hr>
+                <!-- Exportar resultados -->
+                <h3 class="uk-panel-title"><?php echo $t->gettext('Exportar'); ?></h3>
+                <p>Limitado aos primeiros 10000 resultados</p>
+                <ul>
+                    <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>">Exportar resultados em formato tabela</a></li>
+                    <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=ris'; ?>">Exportar resultados em formato RIS</a></li>
+                </ul>
+                <!-- Exportar resultados - Fim -->        
                                                     
                 <?php endif; ?>
                                         

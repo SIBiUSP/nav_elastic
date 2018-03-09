@@ -1074,9 +1074,18 @@ class Record
         $this->base = $record["_source"]["base"][0];
         $this->type = ucfirst(strtolower($record["_source"]["type"]));
         $this->datePublished = $record["_source"]["datePublished"];
+        if (isset($record["_source"]["dateCreated"])) {
+            $this->dateCreated = $record["_source"]["dateCreated"];
+        }        
         $this->languageArray = $record["_source"]["language"];
         $this->countryArray = $record["_source"]["country"];
         $this->authorArray = $record["_source"]["author"];
+        if (isset($record["_source"]["description"])) {
+            $this->descriptionArray = $record["_source"]["description"];
+        }
+        if (isset($record["_source"]["numberOfPages"])) {
+            $this->numberOfPages = $record["_source"]["numberOfPages"];
+        }
         if (isset($record["_source"]["publisher"])) {
             $this->publisherArray = $record["_source"]["publisher"];
         }
@@ -1086,22 +1095,28 @@ class Record
         if (isset($record["_source"]["about"])) {
             $this->aboutArray = $record["_source"]["about"];
         }
+        if (isset($record["_source"]["USP"]["about_BDTD"])) {
+            $this->aboutBDTDArray = $record["_source"]["USP"]["about_BDTD"];
+        } else {
+            $this->aboutBDTDArray = 0;
+        } 
+        if (isset($record["_source"]['funder'])) {
+            $this->funderArray = $record["_source"]['funder'];
+        } else {
+            $this->funderArray = 0;
+        }
         $this->USPArray = $record["_source"]["USP"];
         $this->authorUSPArray = $record["_source"]["authorUSP"];
         $this->unidadeUSPArray = $record["_source"]["unidadeUSP"];
         if (isset($record["_source"]["isbn"])) {
             $this->isbn = $record["_source"]["isbn"];
-        } else {
-            $this->isbn = "Não informado";
-        } 
+        }
         if (isset($record["_source"]["url"])) {       
             $this->url = $record["_source"]["url"];
         }
         if (isset($record["_source"]["doi"])) {
             $this->doi = $record["_source"]["doi"];
-        } else {
-            $this->doi = "Não informado";
-        }
+        } 
         if (isset($record["_source"]["issn"])) {
             $this->issnArray = $record["_source"]["issn"];
         } else {
@@ -1175,27 +1190,168 @@ class Record
         echo '</div>';
 
         echo '</li>';
+        flush();
+        ob_flush();
 
     }
 
-    public function completeRecordMetadata($record)
+    public function completeRecordMetadata($t,$url_base)
     {
-        print "Metadata!<br/>";
-        print_r($record);
-        print  "<br/><br/>";
+        echo '<article class="uk-article">';
+        echo '<p class="uk-article-meta">';    
+        echo '<a href="<?php echo $url_base ?>/result.php?search[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a>';
+        echo '</p>';
+        echo '<h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href="">'.$this->name.' ('.$this->datePublished.')</a></h1>';
+        echo '<div class="uk-flex" uk-grid>';
+        /* Authors */
+        echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Autores').':';
+        echo '<ul class="uk-list uk-list-striped uk-text-small">';
+        foreach ($this->authorArray as $authors) {
+            if (!empty($authors["person"]["affiliation"]["name"])) {
+                echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["affiliation"]["name"].'</a></li>';
+            } elseif (!empty($authors["person"]["potentialAction"])) {
+                echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - '.$authors["person"]["potentialAction"].'</a></li>';
+            } else {
+                echo '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
+            }                                
+        }
+        echo '</ul></p></div>';         
+        /* USP Authors */
+        echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Autores USP').':';
+        echo '<ul class="uk-list uk-list-striped uk-text-small">';
+        foreach ($this->authorUSPArray as $autoresUSP) {
+        echo '<li><a href="'.$url_base.'/result.php?search[]=authorUSP.name:&quot;'.$autoresUSP["name"].'&quot;">'.$autoresUSP["name"].' - '.$autoresUSP["unidadeUSP"].' </a></li>';
+        }
+        echo '</ul></p></div>';
+        /* USP Units */
+        echo '<div> <p class="uk-text-small uk-margin-remove">'.$t->gettext('Unidades USP').':';
+        echo '<ul class="uk-list uk-list-striped uk-text-small">';
+        foreach ($this->unidadeUSPArray as $unidadeUSP) {
+            echo '<li><a href="'.$url_base.'/result.php?search[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a></li>';
+        }
+        echo '</ul></p></div>';        
+        /* Subject */
+        echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').':';
+        echo '<ul class="uk-list uk-list-striped uk-text-small">';
+        foreach ($this->aboutArray as $subject) {
+            echo '<li><a href="'.$url_base.'/result.php?search[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a></li>';
+        }
+        echo '</ul></p></div>';
+        
+        /* BDTD Subject */
+        if ($this->aboutBDTDArray > 0){
+            echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos provenientes das teses').':';
+            echo '<ul class="uk-list uk-list-striped uk-text-small">';
+            foreach ($this->aboutBDTDArray as $subject_BDTD) {
+                echo '<li><a href="'.$url_base.'/result.php?search[]=USP.about_BDTD:&quot;'.$subject_BDTD.'&quot;">'.$subject_BDTD.'</a></li>';
+            }
+            echo '</ul></p></div>';
+        }
+
+        /* Funder */
+        if ($this->funderArray > 0){
+            echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Agências de fomento').': ';
+            echo '<ul class="uk-list uk-list-striped uk-text-small">';
+            foreach ($this->funderArray as $funder) {                
+                echo '<li><a href="'.$url_base.'/result.php?search[]=funder:&quot;'.$funder.'&quot;">'.$funder.'</a></li>';
+            }
+            echo '</ul></p></div>';
+        }
+
+        /* Language */
+        echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Idioma').': ';
+        echo '<ul class="uk-list uk-list-striped uk-text-small">';
+        foreach ($this->languageArray as $language) {
+            echo '<li><a href="'.$url_base.'/result.php?search[]=language:&quot;'.$language.'&quot;">'.$language.'</a></li>';
+        }
+        echo '</ul></p></div>';
+
+        echo '</div><hr>';
+
+        /* Abstract */
+        if (!empty($this->descriptionArray)) {
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Resumo').': ';
+                foreach ($this->descriptionArray as $resumo) {
+                    echo $resumo;
+                }
+            echo '</p>';
+        }
+
+        echo '<hr><div class="uk-column-1-2">';
+
+        /* Imprint */
+        if (!empty($this->publisherArray)) {
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Imprenta').':';
+            echo '<ul class="uk-list uk-list-striped uk-article-meta">';
+                if (!empty($this->publisherArray["organization"]["name"])) {
+                    echo '<li>'.$t->gettext('Editora').': <a href="'.$url_base.'/result.php?search[]=publisher.organization.name:&quot;'.$this->publisherArray["organization"]["name"].'&quot;">'.$this->publisherArray["organization"]["name"].'</a></li>';
+                }
+                if (!empty($this->publisherArray["organization"]["location"])) {
+                    echo '<li>'.$t->gettext('Local').': <a href="'.$url_base.'/result.php?search[]=publisher.organization.location:&quot;'.$this->publisherArray["organization"]["location"].'&quot;">'.$this->publisherArray["organization"]["location"].'</a></li>';
+                }
+                if (!empty($this->datePublished)) {
+                    echo '<li>'.$t->gettext('Data de publicação').': <a href="'.$url_base.'/result.php?search[]=datePublished:&quot;'.$this->datePublished.'&quot;">'.$this->datePublished.'</a></li>';
+                }
+            echo '</ul></p>';            
+        }
+        
+        /* Data da defesa */
+        if (!empty($this->dateCreated)) {
+            echo '<p class="uk-text-small uk-margin-remove">Data da defesa: '.$this->dateCreated.'</a></p>';
+        }
+        
+        /* Phisical description */
+        if (!empty($this->numberOfPages)) {
+            echo '<p class="uk-text-small uk-margin-remove">Descrição física: '.$this->numberOfPages.'</a></p>';
+        }              
+
+        /* ISBN */
+        if (!empty($this->isbn)) {
+            echo '<p class="uk-text-small uk-margin-remove">ISBN: '.$this->isbn.'</a></p>';
+        }
+
+        /* DOI */
+        if (!empty($this->doi)) {
+            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://dx.doi.org/'.$this->doi.'">'.$this->doi.'</a></p>';
+        }
+
+        /* Source */
+        if (!empty($this->isPartOfArray)) {
+            echo '<p class="uk-text-small uk-margin-remove">';
+                echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Fonte').':<ul class="uk-list uk-list-striped uk-article-meta">';
+                if (!empty($this->isPartOfArray["name"])) {
+                        echo '<li>Título do periódico: <a href="'.$url_base.'/result.php?search[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></li>';
+                }    
+                if (!empty($this->isPartOfArray['issn'][0])) {
+                    echo '<li>ISSN: <a href="'.$url_base.'/result.php?search[]=issn:&quot;'.$this->isPartOfArray['issn'][0].'&quot;">'.$this->isPartOfArray['issn'][0].'</a></li>';
+                }                                    
+                if (!empty($this->isPartOfArray["USP"]["dados_do_periodico"])) {
+                    echo '<li>Volume/Número/Paginação/Ano: '.$this->isPartOfArray["USP"]["dados_do_periodico"].'</li>';
+                }
+                echo '</ul></p>';
+        }        
+        
+        echo '</div>';
+
+        if (!empty($this->url)||!empty($this->doi)) {
+            $this->onlineAccess($t);
+        }        
+     
+        flush();
+        ob_flush();
     }
 
     public function onlineAccess($t)
     {
         
         echo '<div class="uk-alert-primary" uk-alert>';
-            echo '<p class="uk-text-small">'.$t->gettext('Acesso ao documento').'</p>';
+            echo '<p class="uk-text-small">'.$t->gettext('Acesso online ao documento').'</p>';
             if (!empty($this->url)) {
                 foreach ($this->url as $url) {
                     echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank">'.$t->gettext('Acesso online à fonte').'</a>';
                 }
             }
-            if ($this->doi != "Não informado") {
+            if (!empty($this->doi)) {
                 echo '<a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/'.$this->doi.'" target="_blank">DOI</a>';
             }
 
@@ -1204,7 +1360,7 @@ class Record
             if (!empty($this->isPartOfArray["name"])) {
                 $sfx_array[] = 'rft.jtitle='.$this->isPartOfArray["name"].'';
             }
-            if ($this->doi != "Não informado") {
+            if (!empty($this->doi)) {
                 $sfx_array[] = 'rft_id=info:doi/'.$this->doi.'';
             }
             if (!empty($this->issnArray[0])) {
@@ -1213,7 +1369,7 @@ class Record
             if (!empty($r["_source"]['ispartof_data'][0])) {
                 $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';
             }                                             
-            echo '<a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank"> '.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
+            echo ' <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank">'.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
         echo '</div>';
 
     }      
