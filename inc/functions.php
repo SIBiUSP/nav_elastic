@@ -1177,7 +1177,9 @@ class Record
             $this->onlineAccess($t);
         }
         if ($this->showMetrics == true) {
-            $this->metrics($t, $this->doi, $this->completeRecord);
+            if (!empty($this->doi)) {
+                $this->metrics($t, $this->doi, $this->completeRecord);
+            }
         }             
                         
         $this->citation($t, $this->completeRecord);
