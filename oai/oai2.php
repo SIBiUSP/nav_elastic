@@ -58,18 +58,19 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         function($resumptionToken = '') {
             return
                 array (
-                    array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes',
-                          'setDescription'=>
-                              'Conjunto de Teses e Produção Científica da Escola de Comunicações e Artes'));
+                    array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes')
+                );
         },
 
         'ListRecords' =>
         function($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {            
-            global $client;         
+            global $client;
+            global $index;
+            global $type;         
         
-            //if ($metadataPrefix != 'oai_dc') {
-            //    throw new OAI2Exception('noRecordsMatch');
-            //}
+            if ($metadataPrefix != 'oai_dc') {
+                throw new OAI2Exception('noRecordsMatch');
+            }
 
             if (!empty($set)) {                
                 $query["query"]["query_string"]["query"] = '+unidadeUSP:"'.$set.'"';
@@ -90,8 +91,8 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             $query["sort"]["_uid"]["order"] = 'desc';            
 
             $params = [];
-            $params["index"] = 'sibi';
-            $params["type"] = 'producao';
+            $params["index"] = $index;
+            $params["type"] = $type;
             $params["size"] = 50;            
             $params["from"] = $deliveredRecords;
             $params["body"] = $query;
@@ -157,14 +158,16 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         'GetRecord' =>
         function($identifier, $metadataPrefix) {
             global $client;
+            global $index;
+            global $type;             
 
-//            if ($metadataPrefix != 'oai_dc') {
-//                throw new OAI2Exception('noRecordsMatch');
-//            }
+            if ($metadataPrefix != 'oai_dc') {
+                throw new OAI2Exception('noRecordsMatch');
+            }
 
             $params = [
-                'index' => 'sibi',
-                'type' => 'producao',
+                'index' => $index,
+                'type' => $type,
                 'id' => ''.$identifier.''
             ];
             $record = $client->get($params);
