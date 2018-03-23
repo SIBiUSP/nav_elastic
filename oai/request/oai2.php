@@ -1,6 +1,6 @@
 <?php
 
-include('../inc/config.php');
+include('../../inc/config.php');
 require_once('oai2server.php');
 
 /**
