@@ -170,7 +170,7 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("author.person.affiliation.name", 50, $t->gettext('Afiliação dos autores externos normalizada'), null, "_term", $_GET["search"]);
                                 $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);                                    
                                 $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);  
-                                $facets->facet("author.person.affiliation.pais_tematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
+                                //$facets->facet("author.person.affiliation.pais_tematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                             <?php 
@@ -191,7 +191,7 @@ if (isset($_GET["sort"])) {
                                 $facets->facet_range("USP.citescore.citescore.2016.citescore", 100, "Citescore - 2016");
                                 $facets->facet_range("USP.citescore.citescore.2016.SJR", 100, "SJR - 2016");
                                 $facets->facet_range("USP.citescore.citescore.2016.SNIP", 100, "SNIP - 2016");
-                                $facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
+                                //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
                                 
                             ?>
                             <!--
@@ -264,22 +264,21 @@ if (isset($_GET["sort"])) {
                         <!-- Limitar por data - Fim -->
 
                         <hr>
-
-                        <h3 class="uk-panel-title"><?php echo $t->gettext('Visualização em rede'); ?></h3>
-                    <p><?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
+                    <!--
+                        <h3 class="uk-panel-title">< ?php echo $t->gettext('Visualização em rede'); ?></h3>
+                    <p>< ?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
                     <hr>
                     <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">                    
 
-                    <!-- Modal - Rede - unidadeUSP -->
-                    <?php 
+                    < ?php 
                         $value = ''.$_SERVER["QUERY_STRING"].'&gexf_field=unidadeUSP';
                         $sha1_unidade = sha1($value);
                     ?>
                     <script>                    
                     function gexf_unidadeUSP() {
-                        $.get("tools/gexf/update_bdpi.php?<?=$value?>");
+                        $.get("tools/gexf/update_bdpi.php?< ?=$value?>");
                         setTimeout(function(){
-                            document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
+                            document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-< ?=$sha1_unidade?>.gexf";
                         }, 15000);                        
                     }
                     </script>
@@ -300,19 +299,17 @@ if (isset($_GET["sort"])) {
                             </div>
                         </div>
                     </div>
-                    <!-- Rede - Fim -->
-
-                    <!-- Modal - Rede - autores -->
-                    <?php 
+                   
+                    < ?php 
                         $value_authors = ''.$_SERVER["QUERY_STRING"].'&gexf_field=authorUSP.name';
                         $sha1_authors = sha1($value_authors);
                     ?>
 
                     <script>                    
                     function gexf_authors() {
-                        $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
+                        $.get("tools/gexf/update_bdpi.php?< ?=$value_authors?>");
                         setTimeout(function(){
-                            document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
+                            document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-< ?=$sha1_authors?>.gexf";
                         }, 15000);                        
                     }
                     </script>
@@ -334,18 +331,16 @@ if (isset($_GET["sort"])) {
                             </div>
                         </div>
                     </div>
-                    <!-- Rede - Fim -->   
                     
-                    <!-- Modal - Rede - Assuntos -->
-                    <?php 
+                    < ?php 
                         $value_about = ''.$_SERVER["QUERY_STRING"].'&gexf_field=about';
                         $sha1_about = sha1($value_about);
                     ?>
                     <script type="text/javascript">                    
                         function gexf_about() {
-                            $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
+                            $.get("tools/gexf/update_bdpi.php?< ?=$value_about?>");
                             setTimeout(function(){
-                                document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
+                                document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-< ?=$sha1_about?>.gexf";
                             }, 15000);                        
                         }
                     </script>
@@ -367,7 +362,8 @@ if (isset($_GET["sort"])) {
                             </div>                                
                         </div>
                     </div>
-                    <!-- Rede - Fim -->
+                    
+                    -->
                     </ul> 
                 <hr>                                
 
