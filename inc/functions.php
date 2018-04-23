@@ -1339,8 +1339,6 @@ class Record
             $this->onlineAccess($t);
         }        
      
-        flush();
-        ob_flush();
     }
 
     public function onlineAccess($t)
