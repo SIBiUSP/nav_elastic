@@ -19,37 +19,8 @@ $citeproc_nlm = new citeproc($csl_nlm, $lang);
 $citeproc_vancouver = new citeproc($csl_nlm, $lang);
 $mode = "reference";
 
-/* Contador */
-//PageSingle::counter($_GET['_id'], $client);
-
 /* Montar a consulta */
 $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
-//$cursor_metrics = elasticsearch::elastic_get($_GET['_id'], "producao", null);
-
-
-/* Atualizar métricas para exibição */
-//$update_counter["doc"]["USP"]["views_counter"] = $cursor_metrics["_source"]["counter"];
-//$update_counter["doc_as_upsert"] = true;
-//elasticsearch::elastic_update($_GET['_id'], $type, $update_counter);
-
-
-/* Upload de PDF */
-
-if (!empty($_FILES)) {
-    PageSingle::uploader();    
-}
-
-if (!empty($_POST['delete_file'])) {
-    unlink($_POST['delete_file']);
-    $delete_json = ''.$_POST['delete_file'].'.json';
-    unlink($delete_json);
-    //    $params = [
-    //        'index' => 'sibi',
-    //        'type' => 'files',
-    //        'id' => $_POST['delete_file']
-    //    ];
-    //    $response_delete = $client->delete($params);
-}
 
 ?>
 
@@ -70,251 +41,92 @@ if (!empty($_POST['delete_file'])) {
         <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>        
     </head>
     <body>
-    <?php if(!empty($response_upload)) : ?>
-        <?php if ($response_upload['result'] == 'created') : ?>
-            <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo incluído com sucesso", {status:'success'})</script>
-        <?php endif; ?>
-    <?php endif; ?>
-    <?php if(!empty($response_delete)) : ?>        
-        <?php if ($response_delete['result'] == 'deleted') : ?>
-            <script>UIkit.notify("<span uk-icon="icon: check"></span> Arquivo excluído com sucesso", {status:'danger'})</script>
-        <?php endif; ?> 
-    <?php endif; ?>
+        <?php
+        if (file_exists("inc/analyticstracking.php")) {
+            include_once "inc/analyticstracking.php";
+        }
+        require 'inc/navbar.php';
+        ?>
+        <br/><br/><br/>
 
-    <?php
-    if (file_exists("inc/analyticstracking.php")) {
-        include_once "inc/analyticstracking.php";
-    }
-    ?>
+        <div class="uk-container uk-margin-large-bottom">
+            <div class="uk-grid uk-margin-top" uk-grid>
+                <div class="uk-width-1-4@m">
+                    <div class="uk-card uk-card-body">                                     
+                        <h5 class="uk-panel-title">Ver registro no DEDALUS</h5>
+                        <ul class="uk-nav uk-margin-top uk-margin-bottom">
+                            <hr>
+                            <li>
+                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank">Ver no Dedalus</a>                    
+                            </li>
+                        </ul>
+                        <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
+                        <ul class="uk-nav uk-margin-top uk-margin-bottom">
+                            <hr>                   
+                            <li>
+                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
+                            </li>
+                        </ul>
 
-    <?php require 'inc/navbar.php'; ?>
-    <br/><br/><br/>
-
-    <div class="uk-container uk-margin-large-bottom">
-        <div class="uk-grid uk-margin-top" uk-grid>
-            <!-- Obtem informações da API da Elsevier -->
-            <?php
-            if ($use_api_elsevier == true) {
-                if (!empty($cursor["_source"]["isPartOf"]["issn"][0])) {
-                    $issn_info = API::get_title_elsevier(str_replace("-", "", $cursor["_source"]["isPartOf"]["issn"][0]), $api_elsevier);
-                    if (!empty($issn_info)) {
-                        API::store_issn_info($client, $cursor["_source"]["isPartOf"]["issn"][0], json_encode($issn_info));
-                    }
-                }
-            }
-            ?>
-            <div class="uk-width-1-4@m">
-                <div class="uk-card uk-card-body">                    
-                    <?php
-                    if (isset($issn_info["serial-metadata-response"])) {
-                        $image_url = "{$issn_info["serial-metadata-response"]["entry"][0]["link"][2]["@href"]}&apiKey={$api_elsevier}";
-                        $headers = get_headers($image_url, 1);
-                        if ($headers[0] == 'HTTP/1.1 200 OK') {
-                            if (exif_imagetype($image_url) == IMAGETYPE_GIF) {
-                                echo '<div class="uk-margin-top uk-margin-bottom">';
-                                echo '<img src="'.$image_url.'">';
-                                echo '</div>';
-                            }
-                        }
-                    } 
-                    ?>                    
-                    <h5 class="uk-panel-title">Ver registro no DEDALUS</h5>
-                    <ul class="uk-nav uk-margin-top uk-margin-bottom">
-                        <hr>
-                        <li>
-                            <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank">Ver no Dedalus</a>                    
-                        </li>
-                    </ul>
-                    <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
-                    <ul class="uk-nav uk-margin-top uk-margin-bottom">
-                        <hr>                   
-                        <li>
-                            <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
-                        </li>
-                    <!--
-                        <li>
-                        
-                    < ?php if (!empty($cursor["_source"]["files"][0]["visitors"])) : ?>
-                    <h4>Visitas ao registro: < ?php echo ''.$cursor["_source"]["files"][0]["visitors"].''; ?></h4>
-                    < ?php endif; ?>                
-                        </li>
-                    -->    
-                    </ul>
-                    <?php if (!empty($cursor["_source"]['doi'])): ?>
-                    <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
-                    <hr>
-
-                    <!-- Métricas - Início -->
-                    <?php if ($show_metrics == true) : ?>
-                        <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                        <div class="uk-alert-warning" uk-alert>
-                            <p><?php echo $t->gettext('Métricas'); ?>:</p>
-                            <div uk-grid>
-                                <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
-                                <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
-                                <div><span class="__dimensions_badge_embed__" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
-                                <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["num_citations"])) :?>
-                                <div>Citações no OpenCitations: <?php echo $cursor["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
-                                <?php endif; ?>
-                                <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
-                                <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
-                                <?php endif; ?>                                                            
-                                <div>
-                                    <!--
-                                    < ?php 
-                                        $citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
-                                        if (!empty($citations_scopus['abstract-citations-response'])) {
-                                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
-                                            echo '<br/><br/>';
-                                        } 
-                                    ? >
-                                    -->                                                
+                        <!-- Métricas - Início -->
+                        <?php if (!empty($cursor["_source"]['doi'])): ?>
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
+                        <hr>                        
+                        <?php if ($show_metrics == true) : ?>
+                            <?php if (!empty($cursor["_source"]['doi'])) : ?>
+                            <div class="uk-alert-warning" uk-alert>
+                                <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                                <div uk-grid>
+                                    <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                    <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
+                                    <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
+                                    <div><span class="__dimensions_badge_embed__" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
+                                    <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["num_citations"])) :?>
+                                        <div>Citações no OpenCitations: <?php echo $cursor["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
+                                    <?php endif; ?>
+                                    <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
+                                        <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
+                                    <?php endif; ?>                                                            
+                                    <div>
+                                        <!--
+                                        < ?php 
+                                            $citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
+                                            if (!empty($citations_scopus['abstract-citations-response'])) {
+                                                echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
+                                                echo '<br/><br/>';
+                                            } 
+                                        ? >
+                                        -->                                                
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php else : ?>
-                        <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
-                        <?php if($cursor["_source"]["USP"]["aminer"]["num_citation"] > 0) :?>
-                        <div class="uk-alert-warning" uk-alert>
-                            <p><?php echo $t->gettext('Métricas'); ?>:</p>
-                            <div uk-grid>                                                    
-                                <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
-                            </div>
-                        </div>
-                        <?php endif; ?>                                                      
-                        <?php endif; ?>                                                                                                            
+                            <?php else : ?>
+                                <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
+                                    <?php if($cursor["_source"]["USP"]["aminer"]["num_citation"] > 0) :?>
+                                    <div class="uk-alert-warning" uk-alert>
+                                        <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                                        <div uk-grid>                                                    
+                                            <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>                                                      
+                                <?php endif; ?>                                                                                                            
 
+                                <?php endif; ?>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php endif; ?>
-                    <!-- Métricas - Fim -->   
-
-                    <?php
-                    if ($use_api_elsevier == true) {
-                        $full_citations = API::get_citations_elsevier(trim($cursor["_source"]['doi']), $api_elsevier);
-                        if (!empty($full_citations["abstract-citations-response"])) {
-                            echo '<h4>API SCOPUS</h4>';
-                            echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$full_citations['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Ver registro na SCOPUS</a>';
-                            echo '<h5>Ver perfil dos autores na SCOPUS:</h5>';
-                            foreach ($full_citations["abstract-citations-response"]["citeInfoMatrix"]["citeInfoMatrixXML"]["citationMatrix"]["citeInfo"][0]["author"] as $authors_scopus) {
-                                //print_r($authors_scopus);
-                                echo '<a href="https://www.scopus.com/authid/detail.uri?partnerID=HzOxMe3b&authorId='.$authors_scopus['authid'].'&origin=inward">'.$authors_scopus['index-name'].'</a><br/>';
-                            }                            
-                            echo '
-                            <table class="uk-table">
-                                <caption>Citações na Scopus nos últimos 3 anos</caption>
-                                <thead>
-                                    <tr>';
-                            foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnHeading"] as $header){
-                                echo '<th>'.$header["$"].'</th>';
-                            }
-                            echo '
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>';
-                            foreach ($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["columnTotal"] as $total){
-                                echo '<td>'.$total["$"].'</td>';
-                            }
-                            echo ' 
-                                    </tr>
-                                </tbody>
-                            </table>                        
-
-                            ';
-                            //print_r($full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]);
-                            echo 'Total de citações nos últimos 3 anos: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'<br/>';
-                            echo 'Total de citações: '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'<br/>';
-                        
-                    
-                            
-                            $metrics[] = '"three_years_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["rangeColumnTotal"].'';
-                            $metrics[] = '"full_citations_scopus": '.$full_citations["abstract-citations-response"]["citeColumnTotalXML"]["citeCountHeader"]["grandTotal"].'';
-                        }
-                    } 
-                    ?>
-                    <?php endif; ?>
+                        <!-- Métricas - Fim -->   
+                    </div>
                 </div>
-            </div>
-            <div class="uk-width-3-4@m">
-                <?php 
-                    $record = new Record($cursor, $show_metrics);
-                    $record->completeRecordMetadata($t,$url_base);
-                ?>                              
-                <article class="uk-article"> 
-
-
-                        <?php if (isset($issn_info["serial-metadata-response"])) : ?>
-                            <div class="uk-alert-primary">
-                                <li class="uk-h6">
-                                    Informações sobre o periódico <a href="<?php print_r($issn_info["serial-metadata-response"]["entry"][0]["link"][1]["@href"]); ?>"><?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:title"]); ?></a> (Fonte: Scopus API)
-                                    <ul>
-                                        <li>
-                                            Editor: <?php print_r($issn_info["serial-metadata-response"]["entry"][0]["dc:publisher"]); ?>
-                                        </li>
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["subject-area"] as $subj_area) : ?>
-                                        <li> 
-                                            Área: <?php print_r($subj_area["$"]); $subject_area_array[] = '"'.$subj_area["$"].'"'; ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                    <?php $metrics[] = '"subject_area_scopus":['.implode(",",$subject_area_array).']'; ?>    
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SJRList"]["SJR"] as $sjr) : ?>
-                                        <li>                                                    
-                                            SJR <?php print_r($sjr["@year"]); ?>: <?php print_r($sjr["$"]); ?>
-                                            <?php $metrics[] = '"scopus_sjr_'.$sjr["@year"].'": '.$sjr["$"].'';?>
-                                        </li>
-                                    <?php endforeach; ?>
-
-                                    <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["SNIPList"]["SNIP"] as $snip) : ?>
-                                        <li>                                                    
-                                            SNIP <?php print_r($snip["@year"]); ?>: <?php print_r($snip["$"]); ?>
-                                            <?php $metrics[] = '"scopus_snip_'.$snip["@year"].'": '.$snip["$"].'';?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                    
-                                    <?php if (isset($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"])): ?>    
-                                        <?php foreach ($issn_info["serial-metadata-response"]["entry"][0]["IPPList"]["IPP"] as $ipp) : ?>
-                                            <li>                                                    
-                                                IPP <?php print_r($ipp["@year"]); ?>: <?php print_r($ipp["$"]); ?>
-                                                <?php $metrics[] = '"scopus_ipp_'.$ipp["@year"].'": '.$ipp["$"].'';?>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>    
-                                    <?php 
-                                    if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccess'])) {
-                                        echo '<li>Periódico de acesso aberto</li>';
-                                        $metrics[] = '"scopus_openaccess":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccess'].'"';
-                                    }
-                                    if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'])) {
-                                        echo '<li>Artigo em Acesso aberto</li>';
-                                        $metrics[] = '"scopus_openaccessArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessArticle'].'"';
-                                    }
-                                    if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'])) {
-                                        echo '<li>Artigo em arquivo de Acesso aberto</li>';
-                                        $metrics[] = '"scopus_openArchiveArticle":"'.$issn_info["serial-metadata-response"]["entry"][0]['openArchiveArticle'].'"';
-                                    } 
-                                    if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessType'])) {
-                                        echo '<li>Tipo de acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'</li>';
-                                        $metrics[] = '"scopus_openaccessType":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessType'].'"';
-                                    }  
-                                    if (!empty($issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'])) {
-                                        echo '<li>Data de início do acesso aberto: '.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'</li>';
-                                        $metrics[] = '"scopus_openaccessStartDate":"'.$issn_info["serial-metadata-response"]["entry"][0]['openaccessStartDate'].'"';
-                                    }
-                                    if (!empty($issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'])) {
-                                        echo '<li>Acesso aberto pago pelo autor: '.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'</li>';
-                                        $metrics[] = '"scopus_oaAllowsAuthorPaid":"'.$issn_info["serial-metadata-response"]["entry"][0]['oaAllowsAuthorPaid'].'"';
-                                    }                                        
-                                    ?>    
-                                    </ul>
-                                </li>
-                          </div>    
-                                        
-                          <?php flush(); unset($issn_info); endif; ?>       
-                        
-                        </ul>
-                            <?php if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) : ?>
-                            <?php 
+                <div class="uk-width-3-4@m">
+                    <article class="uk-article">
+                        <?php 
+                        $record = new Record($cursor, $show_metrics);
+                        $record->completeRecordMetadata($t,$url_base);
+                        ?>                              
+                     
+                        <?php 
+                        if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) {
                             if ($use_api_oadoi == true) {
                                 if (!empty($cursor["_source"]['doi'])) {
                                     $oadoi = metrics::get_oadoi($cursor["_source"]['doi']);
@@ -351,311 +163,176 @@ if (!empty($_POST['delete_file'])) {
                                     //API::metrics_update($_GET['_id'], $metrics);      
                                 }
                             }
-                            ?>                            
-                            <?php endif; ?>
+                        }
+                        ?>                            
 
-                            <!-- API AMINER - Início -->                                
-                            <?php 
-				/*
-                                $aminer = metrics::get_aminer($cursor["_source"]["name"]);
-                                if(count($aminer["result"]) > 0 ){
-                                    similar_text($cursor["_source"]["name"], $aminer["result"][0]["title"], $percent);
-                                    if ($percent > 90) {
-                                        echo '<div class="uk-alert-primary uk-h6">';
-                                        echo '<h5>API AMiner</h5>';
-                                        echo 'Título: <a href="https://aminer.org/archive/'.$aminer["result"][0]["id"].'">'.$aminer["result"][0]["title"].'</a><br/>';
-                                        echo 'Número de citações: '.$aminer["result"][0]["num_citation"].'<br/>';
-                                        if (!empty($aminer["result"][0]["doi"])) {
-                                            echo 'DOI: '.$aminer["result"][0]["doi"].'<br/>';
-                                        }                                           
-                                        if (!empty($aminer["result"][0]["venue"]["name"])){
-                                            echo 'Título do periódico: '.$aminer["result"][0]["venue"]["name"].'<br/>';
-                                        }
-                                        if (!empty($aminer["result"][0]["venue"]["volume"])){
-                                            echo 'Volume: '.$aminer["result"][0]["venue"]["volume"].'<br/>';
-                                        }                                        
-                                        if (!empty($aminer["result"][0]["venue"]["issue"])) {
-                                            echo 'Fascículo: '.$aminer["result"][0]["venue"]["issue"].'<br/>';
-                                        }                                        
-                                        $update_aminer["doc"]["USP"]["aminer"] = $aminer["result"][0];
-                                        $update_aminer["doc"]["USP"]["aminer"]["date"] = date("Ymd");
-                                        $update_aminer["doc_as_upsert"] = true;
-                                        echo '</div>';
+                        <!-- API Microsoft Academic - Inicio -->
+                        <?php
+                        if (isset($api_microsoft)) {
 
-                                        $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
-                                    }
-                                } else {
-                                    $update_aminer["doc"]["USP"]["aminer"]["date"] = date("Ymd");
-                                    $update_aminer["doc_as_upsert"] = true;
-                                    $result_aminer = elasticsearch::elastic_update($_GET['_id'],$type,$update_aminer);
-                                }
-				*/
-                            ?>
-                            <!-- API AMINER - Fim -->
-
-                            <!-- API Microsoft Academic - Inicio -->
-
-                            <?php
-                            if (isset($api_microsoft)) {
-
-                                if (isset($cursor["_source"]["USP"]["microsoft_academic"])) {
-                                    echo '<div class="uk-alert-primary uk-h6">';
-                                    echo '<h5>API Microsoft Academic</h5>';
-                                    echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$cursor["_source"]["USP"]["microsoft_academic"]["Id"].'">'.$cursor["_source"]["USP"]["microsoft_academic"]["Ti"].'</a><br/>';
-                                    echo 'Número de citações: '.$cursor["_source"]["USP"]["microsoft_academic"]["CC"].'<br/>';                                  
-                                    if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["DOI"])) {
-                                        echo 'DOI: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["DOI"].'<br/>';
-                                    }
-                                    if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["VFN"])) {
-                                        echo 'Título do periódico ou conferência: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["VFN"].'<br/>';
-                                    }
-                                    if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["V"])) {
-                                        echo 'Volume: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["V"].'<br/>';
-                                    }
-                                    if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["I"])) {
-                                        echo 'Fascículo: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["I"].'<br/>';
-                                    }
-                                    if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["FP"])) {
-                                        echo 'Página inicial: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["FP"].'<br/>';
-                                    }
-                                    if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["LP"])) {
-                                        echo 'Página final: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["LP"].'<br/>';
-                                    }   
-                                    echo '</div>';                                    
-
-                                } else {
-                                    $ma_result = API::get_microsoft_academic(rawurlencode(strtolower($cursor["_source"]['name'])));
-                                    if (isset($ma_result["entities"])) {
-                                        if (count($ma_result["entities"]) > 0) {
-                                            similar_text($cursor["_source"]["name"], $ma_result["entities"][0]["Ti"], $percent);
-                                            if ($percent > 90) {
-                                                echo '<div class="uk-alert-primary uk-h6">';
-                                                echo '<h5>API Microsoft Academic</h5>';
-                                                echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$ma_result["entities"][0]["Id"].'">'.$ma_result["entities"][0]["Ti"].'</a><br/>';
-                                                echo 'Número de citações: '.$ma_result["entities"][0]["CC"].'<br/>';
-                                                $ma_extended = json_decode($ma_result["entities"][0]["E"], TRUE);                                    
-                                                if (!empty($ma_extended["DOI"])) {
-                                                    echo 'DOI: '.$ma_extended["DOI"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["VFN"])) {
-                                                    echo 'Título do periódico ou conferência: '.$ma_extended["VFN"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["V"])) {
-                                                    echo 'Volume: '.$ma_extended["V"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["I"])) {
-                                                    echo 'Fascículo: '.$ma_extended["I"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["FP"])) {
-                                                    echo 'Página inicial: '.$ma_extended["FP"].'<br/>';
-                                                }
-                                                if (!empty($ma_extended["LP"])) {
-                                                    echo 'Página final: '.$ma_extended["LP"].'<br/>';
-                                                }   
-                                                echo '</div>';
-                                                unset($ma_result["entities"][0]["E"]);
-                                                $update_am["doc"]["USP"]["microsoft_academic"] = $ma_result["entities"][0];
-                                                $update_am["doc"]["USP"]["microsoft_academic"]["E"] = $ma_extended;
-                                                $update_am["doc"]["USP"]["microsoft_academic"]["date"] = date("Ymd");
-                                                $update_am["doc_as_upsert"] = true;
-                                                $result_am = elasticsearch::elastic_update($_GET['_id'], $type, $update_am);
-                                            }
-                                        }                                    
-    
-                                    }
-                                } 
-                                    
-                                
-                            }
-
-                            ?>
-
-                            <!-- API Microsoft Academic - Fim -->
-
-                            <!-- Opencitation - Início -->
-                            <?php 
-                            if (!empty($cursor["_source"]["USP"]["opencitation"]["citation"])) {
+                            if (isset($cursor["_source"]["USP"]["microsoft_academic"])) {
                                 echo '<div class="uk-alert-primary uk-h6">';
-                                echo "<p>Citações recebidas (Fonte: OpenCitation)</p>";
-                                echo '<ul class="uk-list uk-list-bullet">'; 
-                                foreach ($cursor["_source"]["USP"]["opencitation"]["citation"] as $opencitation) {
-                                    echo '<li><a href="'.$opencitation["citing"].'">'.$opencitation["title"].'</a></li>';
+                                echo '<h5>API Microsoft Academic</h5>';
+                                echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$cursor["_source"]["USP"]["microsoft_academic"]["Id"].'">'.$cursor["_source"]["USP"]["microsoft_academic"]["Ti"].'</a><br/>';
+                                echo 'Número de citações: '.$cursor["_source"]["USP"]["microsoft_academic"]["CC"].'<br/>';                                  
+                                if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["DOI"])) {
+                                    echo 'DOI: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["DOI"].'<br/>';
                                 }
-                                echo '</ul>';
-                                echo '</div>';
+                                if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["VFN"])) {
+                                    echo 'Título do periódico ou conferência: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["VFN"].'<br/>';
+                                }
+                                if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["V"])) {
+                                    echo 'Volume: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["V"].'<br/>';
+                                }
+                                if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["I"])) {
+                                    echo 'Fascículo: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["I"].'<br/>';
+                                }
+                                if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["FP"])) {
+                                    echo 'Página inicial: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["FP"].'<br/>';
+                                }
+                                if (!empty($cursor["_source"]["USP"]["microsoft_academic"]["E"]["LP"])) {
+                                    echo 'Página final: '.$cursor["_source"]["USP"]["microsoft_academic"]["E"]["LP"].'<br/>';
+                                }   
+                                echo '</div>';                                    
+
+                            } else {
+                                $ma_result = API::get_microsoft_academic(rawurlencode(strtolower($cursor["_source"]['name'])));
+                                if (isset($ma_result["entities"])) {
+                                    if (count($ma_result["entities"]) > 0) {
+                                        similar_text($cursor["_source"]["name"], $ma_result["entities"][0]["Ti"], $percent);
+                                        if ($percent > 90) {
+                                            echo '<div class="uk-alert-primary uk-h6">';
+                                            echo '<h5>API Microsoft Academic</h5>';
+                                            echo 'Título: <a href="https://academic.microsoft.com/#/detail/'.$ma_result["entities"][0]["Id"].'">'.$ma_result["entities"][0]["Ti"].'</a><br/>';
+                                            echo 'Número de citações: '.$ma_result["entities"][0]["CC"].'<br/>';
+                                            $ma_extended = json_decode($ma_result["entities"][0]["E"], TRUE);                                    
+                                            if (!empty($ma_extended["DOI"])) {
+                                                echo 'DOI: '.$ma_extended["DOI"].'<br/>';
+                                            }
+                                            if (!empty($ma_extended["VFN"])) {
+                                                echo 'Título do periódico ou conferência: '.$ma_extended["VFN"].'<br/>';
+                                            }
+                                            if (!empty($ma_extended["V"])) {
+                                                echo 'Volume: '.$ma_extended["V"].'<br/>';
+                                            }
+                                            if (!empty($ma_extended["I"])) {
+                                                echo 'Fascículo: '.$ma_extended["I"].'<br/>';
+                                            }
+                                            if (!empty($ma_extended["FP"])) {
+                                                echo 'Página inicial: '.$ma_extended["FP"].'<br/>';
+                                            }
+                                            if (!empty($ma_extended["LP"])) {
+                                                echo 'Página final: '.$ma_extended["LP"].'<br/>';
+                                            }   
+                                            echo '</div>';
+                                            unset($ma_result["entities"][0]["E"]);
+                                            $update_am["doc"]["USP"]["microsoft_academic"] = $ma_result["entities"][0];
+                                            $update_am["doc"]["USP"]["microsoft_academic"]["E"] = $ma_extended;
+                                            $update_am["doc"]["USP"]["microsoft_academic"]["date"] = date("Ymd");
+                                            $update_am["doc_as_upsert"] = true;
+                                            $result_am = elasticsearch::elastic_update($_GET['_id'], $type, $update_am);
+                                        }
+                                    }                                    
+
+                                }
                             } 
-                            ?>
+                                
+                            
+                        }
 
-                            <!-- Opencitation - Fim -->
+                        ?>
+                        <!-- API Microsoft Academic - Fim -->
+
+                        <!-- Opencitation - Início -->
+                        <?php 
+                        if (!empty($cursor["_source"]["USP"]["opencitation"]["citation"])) {
+                            echo '<div class="uk-alert-primary uk-h6">';
+                            echo "<p>Citações recebidas (Fonte: OpenCitation)</p>";
+                            echo '<ul class="uk-list uk-list-bullet">'; 
+                            foreach ($cursor["_source"]["USP"]["opencitation"]["citation"] as $opencitation) {
+                                echo '<li><a href="'.$opencitation["citing"].'">'.$opencitation["title"].'</a></li>';
+                            }
+                            echo '</ul>';
+                            echo '</div>';
+                        } 
+                        ?>
+                        <!-- Opencitation - Fim -->
 
 
-                            <!-- Qualis 2015 - Início -->
-                            <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
-                                <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
-                                <div class="uk-alert-primary" uk-alert>
-                                    <a class="uk-alert-close" uk-close></a>
-                                    <h5>Informações sobre o Qualis do periódico</h5>
-                                    <li class="uk-h6">
-                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
+                        <!-- Qualis - Início -->
+                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
+                            <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
+                            <div class="uk-alert-primary" uk-alert>
+                                <a class="uk-alert-close" uk-close></a>
+                                <h5>Informações sobre o Qualis do periódico</h5>
+                                <li class="uk-h6">
+                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
 
-                                        <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])): ?>
-                                            <p>Qualis 2010-2012</p>
-                                            <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
-                                                <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>  
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])): ?>
+                                        <p>Qualis 2010-2012</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>  
 
-                                        <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])): ?>
-                                            <p>Qualis 2015</p>
-                                            <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
-                                                <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])): ?>
+                                        <p>Qualis 2015</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
 
-                                        <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])): ?>
-                                            <p>Qualis 2013-2016</p>
-                                            <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
-                                                <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?> 
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])): ?>
+                                        <p>Qualis 2013-2016</p>
+                                        <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
+                                            <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?> 
 
-                                    </li>
-                                </div>
-                                <?php endif; ?>                           
-                            <?php endif; ?>
-                            <!-- Qualis 2015 - Fim -->
-                        
+                                </li>
+                            </div>
+                            <?php endif; ?>                           
+                        <?php endif; ?>
+                        <!-- Qualis  - Fim -->
+                            
                         <!-- JCR - Início -->
-                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
-                            <?php if (!empty($cursor["_source"]["USP"]["JCR"])): ?>
-                                <div class="uk-alert-primary" uk-alert>
-                                    <a class="uk-alert-close" uk-close></a>
-                                    <h5>Informações sobre o JCR</h5>
-                                    <li class="uk-h6">
-                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Journal_Impact_Factor"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["IF_without_Journal_Self_Cites"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Eigenfactor_Score"]); ?></p>                               
-                                        <p class="uk-text-small uk-margin-remove">JCR Rank - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["JCR_Rank"]); ?></p> 
-                                    </li>
-                                </div>
-                            <?php endif; ?>  
-                        <!-- < ?php endif; ?> -->
+                        <?php if (!empty($cursor["_source"]["USP"]["JCR"])): ?>
+                            <div class="uk-alert-primary" uk-alert>
+                                <a class="uk-alert-close" uk-close></a>
+                                <h5>Informações sobre o JCR</h5>
+                                <li class="uk-h6">
+                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Journal_Impact_Factor"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["IF_without_Journal_Self_Cites"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Eigenfactor_Score"]); ?></p>                               
+                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["JCR_Rank"]); ?></p> 
+                                </li>
+                            </div>
+                        <?php endif; ?>  
                         <!-- JCR - Fim --> 
 
                         <!-- Citescore - Início -->
-                        <!-- < ?php if(!empty($_SESSION['oauthuserdata'])): ?> -->
-                            <?php if (!empty($cursor["_source"]["USP"]["citescore"])): ?>
-                                <div class="uk-alert-primary" uk-alert>
-                                    <a class="uk-alert-close" uk-close></a>
-                                    <h5>Informações sobre o Citescore</h5>
-                                    <li class="uk-h6">
-                                        <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["citescore"]["title"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">Citescore - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["citescore"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">SJR - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SJR"]); ?></p>
-                                        <p class="uk-text-small uk-margin-remove">SNIP - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SNIP"]); ?></p>                               
-                                        <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["open_access"]); ?></p> 
-                                    </li>
-                                </div>
-                            <?php endif; ?>  
-                        <!-- < ?php endif; ?> -->
-                        <!-- Citescore - Fim -->                                                     
-
-                        <?php if(!empty($_SESSION['oauthuserdata'])) : ?>
-                        <div class="uk-alert-warning">
-                            <h4 class="uk-margin-top">Upload do texto completo:</h4>
-                            <form enctype="multipart/form-data" method="POST" action="<?php echo $_GET['_id']; ?>" name="upload"> 
-                                <div id="upload-drop" class="uk-placeholder uk-text-center">
-                                    <i class="uk-icon-cloud-upload uk-icon-medium uk-text-muted uk-margin-small-right"></i> Arrastar arquivos aqui ou <a class="uk-form-file">selecionar arquivo<input id="upload-select" name="upload_file" type="file"></a>.
-                                </div>
-
-                                <div id="progressbar" class="uk-progress uk-hidden">
-                                    <div class="uk-progress-bar" style="width: 0%;">0%</div>
-                                </div>
-                                
-                                <script>
-
-                                    $(function(){
-
-                                        var progressbar = $("#progressbar"),
-                                            bar         = progressbar.find('.uk-progress-bar'),
-                                            settings    = {
-
-                                            method: 'POST', // HTTP method, default is 'POST'    
-
-                                            action: 'single.php', // upload url
-
-                                            allow : '*.(pdf|pptx)', // allow only images
-
-                                            loadstart: function() {
-                                                bar.css("width", "0%").text("0%");
-                                                progressbar.removeClass("uk-hidden");
-                                            },
-
-                                            progress: function(percent) {
-                                                percent = Math.ceil(percent);
-                                                bar.css("width", percent+"%").text(percent+"%");
-                                            },
-
-                                            allcomplete: function(response) {
-
-                                                bar.css("width", "100%").text("100%");
-
-                                                setTimeout(function(){
-                                                    progressbar.addClass("uk-hidden");
-                                                }, 250);
-
-                                                alert("Upload Completo")
-                                            }
-                                        };
-
-                                        var select = UIkit.uploadSelect($("#upload-select"), settings),
-                                            drop   = UIkit.uploadDrop($("#upload-drop"), settings);
-                                    });
-
-                                </script>                                
-                                                                
-                                <!--<div class="uk-form-file">
-                                    <button class="uk-button">Selecionar arquivo</button>
-                                    <input name="upload_file" data-validation="required" data-validation="mime size" data-validation-allowing="pdf, pptx" data-validation-max-size="100M" type="file">
-                                </div> -->
-                                <div class="uk-form-select uk-button" data-uk-form-select>
-                                    <span>Informe o tipo de acesso <span uk-icon="icon: caret-down"></span></span>
-                                    <select name="rights" data-validation="required">
-                                        <option value="">Informe o tipo de acesso <span uk-icon="icon: caret-down"></span></option>
-                                        <option value="Acesso aberto">Acesso aberto</option>
-                                        <option value="Pré-print">Pré-print</option>
-                                        <option value="Embargado">Embargado</option>
-                                    </select>
-                                </div><br/><br/>
-                                <span>Caso tenha embargo, informe a data de liberação</span><br/>
-                                <input type="date" name="embargo_date" data-uk-datepicker="{months:['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'], weekdays:['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], format:'YYYYMMDD'}" placeholder="Informe a data de embargo">                                
-                                <br/><br/><button class="uk-button">Enviar</button>
-                            </form> 
-                        </div>    
-                        <?php endif; ?>
+                        <?php if (!empty($cursor["_source"]["USP"]["citescore"])): ?>
+                            <div class="uk-alert-primary" uk-alert>
+                                <a class="uk-alert-close" uk-close></a>
+                                <h5>Informações sobre o Citescore</h5>
+                                <li class="uk-h6">
+                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["citescore"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Citescore - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["citescore"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">SJR - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SJR"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">SNIP - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SNIP"]); ?></p>                               
+                                    <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["open_access"]); ?></p> 
+                                </li>
+                            </div>
+                        <?php endif; ?>  
+                        <!-- Citescore - Fim -->                        
                         
-                        
-                        
-                        
-                        <?php 
-                        if (empty($_SESSION['oauthuserdata'])) {
-                            $_SESSION['oauthuserdata']="";
-                        } 
-                        $full_links = Results::get_fulltext_file($_GET['_id'],$_SESSION['oauthuserdata']);
-                        if (!empty($full_links)) {
-                            echo '<h4 class="uk-margin-top uk-margin-bottom">Download do texto completo</h4><div class="uk-grid">';
-                                    foreach ($full_links as $links) {
-                                        print_r($links);
-                                    }                                  
-                            echo '</div>';
-                        }
-                        ?>
-                        
-                        <hr>                            
+                        <hr>
+
+                        <!-- Query itens on Aleph - Start -->                            
                         <?php
                         if (!empty($cursor["_source"]["itens"])) {
                             echo '<div id="exemplares'.$cursor["_id"].'">';
@@ -689,55 +366,73 @@ if (!empty($_POST['delete_file'])) {
                                 Results::load_itens_aleph($cursor["_id"]);
                             }     
                         }                        
-                        ?>                            
-  
-                            <div class="uk-text-small" style="color:black;">
-                                <h5><?php echo $t->gettext('Como citar'); ?></h5>
-                                <div class="uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
-                                <p class="uk-text-small uk-margin-remove">
-                                <ul>
-                                    <li class="uk-margin-top">
-                                        <p><strong>ABNT</strong></p>
-                                        <?php
-                                            $data = citation::citation_query($cursor["_source"]);
-                                            print_r($citeproc_abnt->render($data, $mode));
-                                        ?>                                    
-                                    </li>
-                                    <li class="uk-margin-top">
-                                        <p><strong>APA</strong></p>
-                                        <?php
-                                            $data = citation::citation_query($cursor["_source"]);
-                                            print_r($citeproc_apa->render($data, $mode));
-                                        ?>                                    
-                                    </li>
-                                    <li class="uk-margin-top">
-                                        <p><strong>NLM</strong></p>
-                                        <?php
-                                            $data = citation::citation_query($cursor["_source"]);
-                                            print_r($citeproc_nlm->render($data, $mode));
-                                        ?>                                    
-                                    </li>
-                                    <li class="uk-margin-top">
-                                        <p><strong>Vancouver</strong></p>
-                                        <?php
-                                            $data = citation::citation_query($cursor["_source"]);
-                                            print_r($citeproc_vancouver->render($data, $mode));
-                                        ?>                                    
-                                    </li>                                      
-                                </ul>
-                                </p>
-                            </div>                           
-                         
-        </div>
-            </div>
-        </div>
-        
-        
-        <hr class="uk-grid-divider">
-        
-        <?php require 'inc/footer.php'; ?>   
+                        ?>
+                        <!-- Query itens on Aleph - End -->
 
+                        <!-- Query bitstreams on Dspace - Start -->   
+                        <?php
+                        if (isset($dspaceRest)) {
+                            $cookies = DSpaceREST::loginREST();
+                            $itemID = DSpaceREST::searchItem($cookies,$cursor["_id"]);
+                            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($cookies,$itemID);
+                            echo '<div class="uk-alert-primary" uk-alert>
+                            <a class="uk-alert-close" uk-close></a>
+                            <h5>Download do texto completo</h5>';
+                                foreach ($bitstreamsDSpace as $bitstreamDSpace) { 
+                                    //print_r($bitstreamDSpace);
+                                    echo '<div class="uk-width-1-4@m"><div class="uk-panel"><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></div></div>';
+                                }
+                            echo '</div>';                           
+                            DSpaceREST::logoutREST($cookies);
+                        }
+                        ?>
+                        <!-- Query bitstreams on Dspace - End -->                               
+                            
+                        <!-- Citation - Start -->
+                        <div class="uk-text-small" style="color:black;">
+                            <h5><?php echo $t->gettext('Como citar'); ?></h5>
+                            <div class="uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
+                            <p class="uk-text-small uk-margin-remove">
+                            <ul>
+                                <li class="uk-margin-top">
+                                    <p><strong>ABNT</strong></p>
+                                    <?php
+                                        $data = citation::citation_query($cursor["_source"]);
+                                        print_r($citeproc_abnt->render($data, $mode));
+                                    ?>                                    
+                                </li>
+                                <li class="uk-margin-top">
+                                    <p><strong>APA</strong></p>
+                                    <?php
+                                        $data = citation::citation_query($cursor["_source"]);
+                                        print_r($citeproc_apa->render($data, $mode));
+                                    ?>                                    
+                                </li>
+                                <li class="uk-margin-top">
+                                    <p><strong>NLM</strong></p>
+                                    <?php
+                                        $data = citation::citation_query($cursor["_source"]);
+                                        print_r($citeproc_nlm->render($data, $mode));
+                                    ?>                                    
+                                </li>
+                                <li class="uk-margin-top">
+                                    <p><strong>Vancouver</strong></p>
+                                    <?php
+                                        $data = citation::citation_query($cursor["_source"]);
+                                        print_r($citeproc_vancouver->render($data, $mode));
+                                    ?>                                    
+                                </li>                                      
+                            </ul>
+                            </p>
+                        </div>
+                        <!-- Citation - End -->                           
+                            
+                </div>
+            </div>
+            <hr class="uk-grid-divider">        
+            <?php require 'inc/footer.php'; ?> 
         </div>
+  
 
         <?php require 'inc/offcanvas.php'; ?>
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>   

@@ -1466,4 +1466,83 @@ class Record
     }
 }
 
+class DSpaceREST {
+    static function loginREST()
+    {
+    
+        global $dspaceRest;
+        $ch = curl_init();
+    
+        curl_setopt($ch, CURLOPT_URL,"$dspaceRest/rest/login");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,
+                    http_build_query(array('email' => 'dgti@dt.sibi.usp.br','password' => '123456'))
+        );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $server_output = curl_exec($ch);
+        $output_parsed = explode(" ",$server_output);
+        
+        return $output_parsed[3];
+        
+        curl_close ($ch);  
+    
+    } 
+    
+    static function logoutREST($cookies)
+    {
+        global $dspaceRest;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
+        curl_setopt($ch, CURLOPT_URL,"$dspaceRest/rest/logout");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        //print_r($server_output);  
+        curl_close ($ch);
+    } 
+    
+    static function searchItem($cookies,$sysno)
+    {
+        global $dspaceRest;
+        $data_string = "{\"key\":\"usp.sysno\", \"value\":\"$sysno\"}";  
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/find-by-metadata-field");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Cookie: $cookies",                                                                          
+            'Content-Type: application/json'      
+            )                                                                       
+        );  
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        return $result[0]["uuid"];
+        curl_close($ch);
+    }
+    
+    static function getBitstreamDSpace($cookies,$itemID)
+    {
+        global $dspaceRest;
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$itemID/bitstreams");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Cookie: $cookies",                                                                          
+            'Content-Type: application/json'      
+            )                                                                       
+        );  
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        return $result;
+        curl_close($ch);
+    } 
+}
+
+
+
 ?>
