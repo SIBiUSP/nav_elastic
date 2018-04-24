@@ -29,6 +29,17 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
     <head>
         <?php require 'inc/meta-header.php'; ?>
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
+        
+        <?php
+        /* Get Bitstreams on DSpace */ 
+        if (isset($dspaceRest)) {
+            $cookies = DSpaceREST::loginREST();
+            $itemID = DSpaceREST::searchItem($cursor["_id"], $cookies);
+            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+            DSpaceREST::logoutREST($cookies);
+        }
+        ?>
+
         <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
         <?php 
         if($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
@@ -294,21 +305,15 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         <!-- Query bitstreams on Dspace - Start -->   
                         <?php
-                        if (isset($dspaceRest)) {
-                            $cookies = DSpaceREST::loginREST();
-                            $itemID = DSpaceREST::searchItem($cursor["_id"], $cookies);
-                            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
-                            if (!empty($bitstreamsDSpace)) {
-                                echo '<div class="uk-alert-primary" uk-alert>
-                                <a class="uk-alert-close" uk-close></a>
-                                <h5>Download do texto completo</h5>';
-                                    foreach ($bitstreamsDSpace as $bitstreamDSpace) { 
-                                        echo '<div class="uk-width-1-4@m"><div class="uk-panel"><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></div></div>';
-                                    }
-                                echo '</div>'; 
-                            }                          
-                            DSpaceREST::logoutREST($cookies);
-                        }
+                        if (!empty($bitstreamsDSpace)) {
+                            echo '<div class="uk-alert-primary" uk-alert>
+                            <a class="uk-alert-close" uk-close></a>
+                            <h5>Download do texto completo</h5>';
+                                foreach ($bitstreamsDSpace as $bitstreamDSpace) { 
+                                    echo '<div class="uk-width-1-4@m"><div class="uk-panel"><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></div></div>';
+                                }
+                            echo '</div>'; 
+                        } 
                         ?>
                         <!-- Query bitstreams on Dspace - End -->                               
                             
