@@ -1502,7 +1502,7 @@ class DSpaceREST {
         curl_close ($ch);
     } 
     
-    static function searchItem($cookies,$sysno)
+    static function searchItem($sysno, $cookies = NULL)
     {
         global $dspaceRest;
         $data_string = "{\"key\":\"usp.sysno\", \"value\":\"$sysno\"}";  
@@ -1511,29 +1511,37 @@ class DSpaceREST {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",                                                                          
-            'Content-Type: application/json'      
-            )                                                                       
-        );  
+        if (!empty($cookies)){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $cookies",                                                                          
+                'Content-Type: application/json'      
+                )                                                                       
+            );
+        }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result[0]["uuid"];
+        if (!empty($result)) {
+            return $result[0]["uuid"];
+        } else {
+            return "";
+        }        
         curl_close($ch);
     }
     
-    static function getBitstreamDSpace($cookies,$itemID)
+    static function getBitstreamDSpace($itemID, $cookies = NULL)
     {
         global $dspaceRest;
         $ch = curl_init();          
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$itemID/bitstreams");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",                                                                          
-            'Content-Type: application/json'      
-            )                                                                       
-        );  
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        if (!empty($cookies)){ 
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $cookies",                                                                          
+                'Content-Type: application/json'      
+                )                                                                       
+            );
+        }  
         $output = curl_exec($ch);
         $result = json_decode($output, true);
         return $result;

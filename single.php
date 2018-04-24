@@ -296,16 +296,17 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php
                         if (isset($dspaceRest)) {
                             $cookies = DSpaceREST::loginREST();
-                            $itemID = DSpaceREST::searchItem($cookies,$cursor["_id"]);
-                            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($cookies,$itemID);
-                            echo '<div class="uk-alert-primary" uk-alert>
-                            <a class="uk-alert-close" uk-close></a>
-                            <h5>Download do texto completo</h5>';
-                                foreach ($bitstreamsDSpace as $bitstreamDSpace) { 
-                                    //print_r($bitstreamDSpace);
-                                    echo '<div class="uk-width-1-4@m"><div class="uk-panel"><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></div></div>';
-                                }
-                            echo '</div>';                           
+                            $itemID = DSpaceREST::searchItem($cursor["_id"], $cookies);
+                            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+                            if (!empty($bitstreamsDSpace)) {
+                                echo '<div class="uk-alert-primary" uk-alert>
+                                <a class="uk-alert-close" uk-close></a>
+                                <h5>Download do texto completo</h5>';
+                                    foreach ($bitstreamsDSpace as $bitstreamDSpace) { 
+                                        echo '<div class="uk-width-1-4@m"><div class="uk-panel"><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></div></div>';
+                                    }
+                                echo '</div>'; 
+                            }                          
                             DSpaceREST::logoutREST($cookies);
                         }
                         ?>
