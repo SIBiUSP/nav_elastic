@@ -1464,7 +1464,17 @@ class Record
     }
 }
 
-class DSpaceREST {
+/**
+ * DSpaceREST
+ *
+ * @category Class
+ * @package  DSpaceREST
+ * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://github.com/sibiusp/nav_elastic 
+ */
+class DSpaceREST 
+{
     static function loginREST()
     {
     
