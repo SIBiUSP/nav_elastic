@@ -358,6 +358,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
   
 
         <?php require 'inc/offcanvas.php'; ?>
+        <?php ob_flush(); flush(); ?>
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>   
         
     </body>
