@@ -184,13 +184,13 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("USP.serial_metrics.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
                             ?>
                             <?php
-                                $facets->facet("USP.WOS.coverage", 50, $t->gettext('Cobertura na Web of Science'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.WOS.coverage", 50, $t->gettext('Índices da Web of Science'), null, "_term", $_GET["search"]);
                                 $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
                                 $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
                                 $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.citescore", 100, "Citescore - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.SJR", 100, "SJR - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.SNIP", 100, "SNIP - 2016");
+                                $facets->facet_range("USP.citescore.citescore.2016.citescore", 100, "Scopus - Citescore - 2016");
+                                $facets->facet_range("USP.citescore.citescore.2016.SJR", 100, "Scopus - SJR - 2016");
+                                $facets->facet_range("USP.citescore.citescore.2016.SNIP", 100, "Scopus - SNIP - 2016");
                                 //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
                                 
                             ?>
