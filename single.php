@@ -31,11 +31,54 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
         
         <?php
-        /* Get Bitstreams on DSpace */ 
-        if (isset($dspaceRest)) {
+        /* DSpace */ 
+        if (isset($dspaceRest)) { 
+
+            $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
             $cookies = DSpaceREST::loginREST();
-            $itemID = DSpaceREST::searchItem($cursor["_id"], $cookies);
-            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+
+            /* Search for existing record on DSpace */
+            $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
+            
+            if (!empty($itemID)) {
+
+                $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                    <fieldset data-uk-margin>
+                        <legend>Enviar um arquivo</legend>
+                        <input type="file" name="file">
+                        <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>                                    
+                    </fieldset>
+                    </form>';
+            
+                if (isset($_FILES['file'])) {
+                    $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $cookies);
+                }
+                $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+
+            } else {
+
+                $createForm  = '<form action="' . $actual_link . '" method="post">
+                        <input type="hidden" name="createRecord" value="true" />
+                        <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
+                        </form>';                
+                
+                if (isset($_POST["createRecord"])) {
+                    if ($_POST["createRecord"] == "true") {
+                        $collectionDSpace = "4269b9a7-e2ad-4c01-a49e-b444bc96f951";
+                        $dataString = DSpaceREST::buildDC($cursor,$_GET['_id']);
+                        $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString,$collectionDSpace,$cookies);
+                        
+                        echo "<script type='text/javascript'>
+                        $(document).ready(function(){  
+                                //Reload the page
+                                window.location = window.location.href;
+                        });
+                        </script>";
+                    } 
+                }
+
+            }
             DSpaceREST::logoutREST($cookies);
         }
         ?>
@@ -305,14 +348,40 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         <!-- Query bitstreams on Dspace - Start -->   
                         <?php
+
+                        if(!empty($_SESSION['oauthuserdata'])){
+                            if (!empty($uploadForm)) {
+                                echo '<div class="uk-alert-danger" uk-alert>';
+                                echo '<a class="uk-alert-close" uk-close></a>';
+                                echo '<h5>Gestão do documento digital</h5>';
+                                echo $uploadForm;
+                                echo '</div>';
+                            }
+    
+                            if (!empty($createForm)) {
+                                echo '<div class="uk-alert-danger" uk-alert>';
+                                echo '<a class="uk-alert-close" uk-close></a>';
+                                echo '<h5>Gestão do documento digital</h5>';
+                                echo $createForm;
+                                echo '</div>';
+                            }
+                        }                      
+
                         if (!empty($bitstreamsDSpace)) {
                             echo '<div class="uk-alert-primary" uk-alert>
                             <a class="uk-alert-close" uk-close></a>
-                            <h5>Download do texto completo</h5>';
-                                foreach ($bitstreamsDSpace as $bitstreamDSpace) { 
-                                    echo '<div class="uk-width-1-4@m"><div class="uk-panel"><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></div></div>';
+                            <h5>Download do texto completo</h5>
+                            <div class="uk-child-width-1-3@m uk-grid-small uk-grid-match" uk-grid>';
+                                foreach ($bitstreamsDSpace as $bitstreamDSpace) {
+                                    //print_r($bitstreamDSpace);
+                                    echo '<div>
+                                            <div class="uk-card uk-card-default uk-card-body">
+                                                <b>'.$bitstreamDSpace["name"].'</b>
+                                                <p><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></p>
+                                            </div>
+                                        </div>';
                                 }
-                            echo '</div>'; 
+                            echo '</div></div>';
                         } 
                         ?>
                         <!-- Query bitstreams on Dspace - End -->                               

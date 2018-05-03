@@ -1512,7 +1512,7 @@ class DSpaceREST
         curl_close ($ch);
     } 
     
-    static function searchItem($sysno, $cookies = NULL)
+    static function searchItemDSpace($sysno, $cookies = NULL)
     {
         global $dspaceRest;
         $data_string = "{\"key\":\"usp.sysno\", \"value\":\"$sysno\"}";  
@@ -1556,7 +1556,204 @@ class DSpaceREST
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
+    }
+    
+    static function createItemDSpace($dataString,$collection,$cookies)
+    {
+        global $dspaceRest;
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/collections/$collection/items");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Cookie: $cookies",                                                                          
+            'Content-Type: application/json'      
+            )                                                                       
+        );
+        $output = curl_exec($ch);
+        curl_close($ch);
+      
+    }
+    
+    static function deleteItemDSpace($uuid, $cookies)
+    {
+        global $dspaceRest;
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        if (!empty($cookies)){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $cookies",                                                                          
+                'Content-Type: application/json'      
+                )                                                                       
+            );
+        }
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        return $result;
+        curl_close($ch);
+    }
+
+    static function addBitstreamDSpace($uuid, $file, $cookies)
+    {
+        global $dspaceRest;
+        $filename = $file["file"]["name"];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/bitstreams?name=$filename&description=Description");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);      
+        curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($file["file"]["tmp_name"]));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Cookie: $cookies",                                                                          
+            'Content-Type: text/plain',
+            'Accept: application/json'      
+            )                                                                       
+        );        
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
+
+    static function deleteBitstreamDSpace($bitstreamId, $cookies)
+    {
+        global $dspaceRest;
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamId");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        if (!empty($cookies)){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $cookies",                                                                          
+                'Content-Type: application/json'      
+                )                                                                       
+            );
+        }
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        return $result;
+        curl_close($ch);
+    }    
+    
+    static function buildDC($cursor,$sysno){
+        $arrayDC["type"] = "item";
+    
+        /* Title */
+        $title["key"] = "dc.title";
+        $title["language"] = "pt_BR";
+        $title["value"] = $cursor["_source"]["name"];
+        $arrayDC["metadata"][] = $title;
+        $title = [];
+    
+        /* Sysno */
+        $sysnoArray["key"] = "usp.sysno";
+        $sysnoArray["language"] = "pt_BR";
+        $sysnoArray["value"] = $sysno;    
+        $arrayDC["metadata"][] = $sysnoArray;
+        $sysnoArray = [];
+    
+        // /* Abstract */
+        // if (!empty($marc["record"]["940"]["a"])){
+        //     $abstractArray["key"] = "dc.description.abstract";
+        //     $abstractArray["language"] = "pt_BR";
+        //     $abstractArray["value"] = $marc["record"]["940"]["a"][0];    
+        //     $arrayDC["metadata"][] = $abstractArray;
+        //     $abstractArray = []; 
+        // } elseif (!empty($marc["record"]["520"]["a"])){
+        //     $abstractArray["key"] = "dc.description.abstract";
+        //     $abstractArray["language"] = "pt_BR";
+        //     $abstractArray["value"] = $marc["record"]["520"]["a"][0];    
+        //     $arrayDC["metadata"][] = $abstractArray;
+        //     $abstractArray = []; 
+        // }
+    
+        
+        /* DateIssued */
+        $dateIssuedArray["key"] = "dc.date.issued";
+        $dateIssuedArray["language"] = "pt_BR";
+        $dateIssuedArray["value"] = $cursor["_source"]["datePublished"];    
+        $arrayDC["metadata"][] = $dateIssuedArray;
+        $dateIssuedArray = [];
+        
+        /* DOI */
+        if (!empty($cursor["_source"]["doi"])){
+            $DOIArray["key"] = "dc.identifier";
+            $DOIArray["language"] = "pt_BR";
+            $DOIArray["value"] = $cursor["_source"]["doi"];    
+            $arrayDC["metadata"][] = $DOIArray;
+            $DOIArray = []; 
+        }
+        
+        /* IsPartOf */
+        if (!empty($cursor["_source"]["isPartOf"])){
+            $IsPartOfArray["key"] = "dc.relation.ispartof";
+            $IsPartOfArray["language"] = "pt_BR";
+            $IsPartOfArray["value"] = $cursor["_source"]["isPartOf"]["name"];    
+            $arrayDC["metadata"][] = $IsPartOfArray;
+            $IsPartOfArray = [];       
+        }
+
+        /* Authors */    
+        foreach ($cursor["_source"]["author"] as $author) {
+            $authorArray["key"] = "dc.contributor.author";
+            $authorArray["language"] = "pt_BR";
+            $authorArray["value"] = $author["person"]["name"];    
+            $arrayDC["metadata"][] = $authorArray; 
+            $authorArray = [];     
+        }         
+    
+    
+        /* Unidade USP */
+        foreach ($cursor["_source"]["authorUSP"] as $unidadeUSP) {
+            $unidadeUSPArray["key"] = "usp.unidadeUSP";
+            $unidadeUSPArray["language"] = "pt_BR";
+            $unidadeUSPArray["value"] = $unidadeUSP["unidadeUSP"];    
+            $arrayDC["metadata"][] = $unidadeUSPArray; 
+            $unidadeUSPArray = [];  
+            
+            $authorUSPArray["key"] = "usp.authorUSP.name";
+            $authorUSPArray["language"] = "pt_BR";
+            $authorUSPArray["value"] = $unidadeUSP["name"];    
+            $arrayDC["metadata"][] = $authorUSPArray; 
+            $authorUSPArray = [];            
+        }    
+    
+        /* Subject */        
+        foreach ($cursor["_source"]["about"] as $subject) {
+            $subjectArray["key"] = "dc.subject.other";
+            $subjectArray["language"] = "pt_BR";
+            $subjectArray["value"] = $subject;    
+            $arrayDC["metadata"][] = $subjectArray; 
+            $subjectArray = [];     
+        }
+        
+        /* USP Type */
+        $USPTypeArray["key"] = "usp.type";
+        $USPTypeArray["language"] = "pt_BR";
+        $USPTypeArray["value"] = $cursor["_source"]["type"];
+        $arrayDC["metadata"][] = $USPTypeArray;
+        $USPTypeArray = [];
+    
+        $jsonDC = json_encode($arrayDC);
+        return $jsonDC;
+    
     } 
+    
+    static function testREST($cookies){
+
+        $ch = curl_init();
+      
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
+        curl_setopt($ch, CURLOPT_URL,"http://172.31.1.37:8080/rest/status");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $server_output = curl_exec($ch);
+        print_r($server_output);  
+        curl_close ($ch);  
+      
+      }     
 }
 
 
