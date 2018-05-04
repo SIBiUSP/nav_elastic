@@ -528,7 +528,11 @@ class citation {
         }        
         if (!empty($citacao["url"][0])) {
             $array_citation["URL"] = $citacao["url"][0];
-        }           
+        }
+        if ($citacao["base"][0] == "Teses e dissertações"){
+            $citacao["publisher"]["organization"]["name"] = "Universidade de São Paulo";
+        }
+        
         if (!empty($citacao["publisher"]["organization"]["name"])) {
             $array_citation["publisher"] = $citacao["publisher"]["organization"]["name"];
         }
