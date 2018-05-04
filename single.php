@@ -65,9 +65,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 
                 if (isset($_POST["createRecord"])) {
                     if ($_POST["createRecord"] == "true") {
-                        $collectionDSpace = "4269b9a7-e2ad-4c01-a49e-b444bc96f951";
+                        
                         $dataString = DSpaceREST::buildDC($cursor,$_GET['_id']);
-                        $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString,$collectionDSpace,$cookies);
+                        $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
                         
                         echo "<script type='text/javascript'>
                         $(document).ready(function(){  
