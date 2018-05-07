@@ -349,23 +349,26 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <!-- Query bitstreams on Dspace - Start -->   
                         <?php
 
-                        if (!empty($_SESSION['oauthuserdata'])) {
-                            if (!empty($uploadForm)) {
-                                echo '<div class="uk-alert-danger" uk-alert>';
-                                echo '<a class="uk-alert-close" uk-close></a>';
-                                echo '<h5>Gestão do documento digital</h5>';
-                                echo $uploadForm;
-                                echo '</div>';
+                        //if (!empty($_SESSION['oauthuserdata'])) {
+                            if ($testDSpace == "true") {
+                                if (!empty($uploadForm)) {
+                                    echo '<div class="uk-alert-danger" uk-alert>';
+                                    echo '<a class="uk-alert-close" uk-close></a>';
+                                    echo '<h5>Gestão do documento digital</h5>';
+                                    echo $uploadForm;
+                                    echo '</div>';
+                                }
+        
+                                if (!empty($createForm)) {
+                                    echo '<div class="uk-alert-danger" uk-alert>';
+                                    echo '<a class="uk-alert-close" uk-close></a>';
+                                    echo '<h5>Gestão do documento digital</h5>';
+                                    echo $createForm;
+                                    echo '</div>';
+                                }                                
+
                             }
-    
-                            if (!empty($createForm)) {
-                                echo '<div class="uk-alert-danger" uk-alert>';
-                                echo '<a class="uk-alert-close" uk-close></a>';
-                                echo '<h5>Gestão do documento digital</h5>';
-                                echo $createForm;
-                                echo '</div>';
-                            }
-                        }                      
+                        //}                      
 
                         if (!empty($bitstreamsDSpace)) {
                             echo '<div class="uk-alert-primary" uk-alert>
