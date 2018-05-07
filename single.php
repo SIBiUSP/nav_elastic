@@ -176,7 +176,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                     <article class="uk-article">
                         <?php 
                         $record = new Record($cursor, $show_metrics);
-                        $record->completeRecordMetadata($t,$url_base);
+                        $record->completeRecordMetadata($t, $url_base);
                         ?>                              
                      
                         <?php 
@@ -373,28 +373,23 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             <h5>Download do texto completo</h5>
                             <div class="uk-child-width-1-3@m uk-grid-small uk-grid-match" uk-grid>';
                                 $cookies = DSpaceREST::loginREST();
-                                foreach ($bitstreamsDSpace as $bitstreamDSpace) {
-                                    $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($bitstreamDSpace["uuid"],$cookies);
-                                    if ($bitstreamDSpace["mimeType"] == "application/pdf"){
-                                        echo '<div>
-                                            <div class="uk-card uk-card-default uk-card-body">
-                                                <b>'.$bitstreamDSpace["name"].'</b>
-                                                <p><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></p>';
-                                                if ($bitstreamPolicy[0]["groupId"] == "6d28bcd6-4c62-40eb-b548-839d2f5b589f") {
-                                                    echo '<a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="64" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a>';
-                                                } else {
-                                                    echo '<a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="64" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a>';
-                                                }
-                                            echo '</div>
-                                        </div>';
-                                    } 
-                                   
-                                    
-
-                                    
-                                    
-
-                                }
+                            foreach ($bitstreamsDSpace as $bitstreamDSpace) {
+                                $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($bitstreamDSpace["uuid"], $cookies);
+                                if ($bitstreamDSpace["mimeType"] == "application/pdf") {
+                                    echo '<div>
+                                        <div class="uk-card uk-card-default uk-card-body">
+                                            <b>'.$bitstreamDSpace["name"].'</b>
+                                            <p><a href="'.$dspaceRest.''.$bitstreamDSpace["retrieveLink"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></p>';
+                                            if ($bitstreamPolicy[0]["groupId"] == "6d28bcd6-4c62-40eb-b548-839d2f5b589f") {
+                                                echo '<a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="64" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a>';
+                                            } else {
+                                                echo '<a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="64" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a>';
+                                            }
+                                        echo '</div>
+                                    </div>';
+                                } 
+                            
+                            }
                                 DSpaceREST::logoutREST($cookies);
                             echo '</div></div>';
                         } 
