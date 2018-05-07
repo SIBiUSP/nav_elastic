@@ -1106,8 +1106,12 @@ class Record
             $this->funderArray = 0;
         }
         $this->USPArray = $record["_source"]["USP"];
-        $this->authorUSPArray = $record["_source"]["authorUSP"];
-        $this->unidadeUSPArray = $record["_source"]["unidadeUSP"];
+        if (isset($record["_source"]["authorUSP"])) {
+            $this->authorUSPArray = $record["_source"]["authorUSP"];
+        }
+        if (isset($record["_source"]["unidadeUSP"])) {
+            $this->unidadeUSPArray = $record["_source"]["unidadeUSP"];
+        }
         if (isset($record["_source"]["isbn"])) {
             $this->isbn = $record["_source"]["isbn"];
         }
@@ -1219,19 +1223,23 @@ class Record
         }
         echo '</ul></p></div>';         
         /* USP Authors */
-        echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Autores USP').':';
-        echo '<ul class="uk-list uk-list-striped uk-text-small">';
-        foreach ($this->authorUSPArray as $autoresUSP) {
-        echo '<li><a href="'.$url_base.'/result.php?search[]=authorUSP.name:&quot;'.$autoresUSP["name"].'&quot;">'.$autoresUSP["name"].' - '.$autoresUSP["unidadeUSP"].' </a></li>';
+        if (!empty($this->authorUSPArray)) {
+            echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Autores USP').':';
+            echo '<ul class="uk-list uk-list-striped uk-text-small">';
+            foreach ($this->authorUSPArray as $autoresUSP) {
+                echo '<li><a href="'.$url_base.'/result.php?search[]=authorUSP.name:&quot;'.$autoresUSP["name"].'&quot;">'.$autoresUSP["name"].' - '.$autoresUSP["unidadeUSP"].' </a></li>';
+            }
+            echo '</ul></p></div>';
         }
-        echo '</ul></p></div>';
         /* USP Units */
-        echo '<div> <p class="uk-text-small uk-margin-remove">'.$t->gettext('Unidades USP').':';
-        echo '<ul class="uk-list uk-list-striped uk-text-small">';
-        foreach ($this->unidadeUSPArray as $unidadeUSP) {
-            echo '<li><a href="'.$url_base.'/result.php?search[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a></li>';
-        }
-        echo '</ul></p></div>';        
+        if (!empty($this->unidadeUSPArray)) {
+            echo '<div> <p class="uk-text-small uk-margin-remove">'.$t->gettext('Unidades USP').':';
+            echo '<ul class="uk-list uk-list-striped uk-text-small">';
+            foreach ($this->unidadeUSPArray as $unidadeUSP) {
+                echo '<li><a href="'.$url_base.'/result.php?search[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a></li>';
+            }
+            echo '</ul></p></div>';
+        }        
         /* Subject */
         echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').':';
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
