@@ -54,6 +54,13 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 if (isset($_FILES['file'])) {
                     $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $cookies);
                 }
+                if (isset($_POST['deleteBitstream'])) {
+                    $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $cookies);
+                    echo '<div class="uk-alert-danger" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p>Arquivo excluído com sucesso</p>
+                </div>';
+                }
                 $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
 
             } else {
@@ -66,7 +73,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 if (isset($_POST["createRecord"])) {
                     if ($_POST["createRecord"] == "true") {
                         
-                        $dataString = DSpaceREST::buildDC($cursor,$_GET['_id']);
+                        $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
                         $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
                         
                         echo "<script type='text/javascript'>
@@ -85,7 +92,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
         <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
         <?php 
-        if($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
+        if ($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
                 PageSingle::jsonLD($cursor["_source"]);
         } 
         ?>
@@ -123,7 +130,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         </ul>
 
                         <!-- Métricas - Início -->
-                        <?php if (!empty($cursor["_source"]['doi'])): ?>
+                        <?php if (!empty($cursor["_source"]['doi'])) : ?>
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
                         <hr>                        
                         <?php if ($show_metrics == true) : ?>
@@ -166,8 +173,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <?php endif; ?> 
                                 <?php endif; ?>  
 
-                                <?php endif; ?>
                             <?php endif; ?>
+                        <?php endif; ?>
                         <?php endif; ?>
                         <!-- Métricas - Fim -->   
                     </div>
@@ -350,24 +357,24 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php
 
                         //if (!empty($_SESSION['oauthuserdata'])) {
-                            if ($testDSpace == "true") {
-                                if (!empty($uploadForm)) {
-                                    echo '<div class="uk-alert-danger" uk-alert>';
-                                    echo '<a class="uk-alert-close" uk-close></a>';
-                                    echo '<h5>Gestão do documento digital</h5>';
-                                    echo $uploadForm;
-                                    echo '</div>';
-                                }
-        
-                                if (!empty($createForm)) {
-                                    echo '<div class="uk-alert-danger" uk-alert>';
-                                    echo '<a class="uk-alert-close" uk-close></a>';
-                                    echo '<h5>Gestão do documento digital</h5>';
-                                    echo $createForm;
-                                    echo '</div>';
-                                }                                
-
+                        if ($testDSpace == "true") {
+                            if (!empty($uploadForm)) {
+                                echo '<div class="uk-alert-danger" uk-alert>';
+                                echo '<a class="uk-alert-close" uk-close></a>';
+                                echo '<h5>Gestão do documento digital</h5>';
+                                echo $uploadForm;
+                                echo '</div>';
                             }
+    
+                            if (!empty($createForm)) {
+                                echo '<div class="uk-alert-danger" uk-alert>';
+                                echo '<a class="uk-alert-close" uk-close></a>';
+                                echo '<h5>Gestão do documento digital</h5>';
+                                echo $createForm;
+                                echo '</div>';
+                            }                                
+
+                        }
                         //}                      
 
                         if (!empty($bitstreamsDSpace)) {
@@ -383,14 +390,17 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         <div class="uk-card uk-card-default uk-card-body">
                                             <b>'.$bitstreamDSpace["name"].'</b>
                                             <p><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$bitstreamDSpace["uuid"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></p>';
-                                            if ($bitstreamPolicy[0]["groupId"] == "6d28bcd6-4c62-40eb-b548-839d2f5b589f") {
-                                                echo '<a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="64" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a>';
-                                            } else {
-                                                echo '<a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="64" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a>';
-                                            }
-                                            echo '<p><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></p>';                                            
-                                        echo '</div>
-                                    </div>';
+                                    if ($bitstreamPolicy[0]["groupId"] == "6d28bcd6-4c62-40eb-b548-839d2f5b589f") {
+                                        echo '<a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="64" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a>';
+                                    } else {
+                                        echo '<a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="64" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a>';
+                                    }
+                                    echo '<p><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></p>';
+                                    echo '<form action="' . $actual_link . '" method="post">
+                                            <input type="hidden" name="deleteBitstream" value="'.$bitstreamDSpace["uuid"].'" />
+                                            <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
+                                            </form>'; 
+                                    echo '</div></div>';
                                 } 
                             
                             }
