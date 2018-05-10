@@ -163,8 +163,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
                                         </div>
                                     </div>
-                                    <?php endif; ?>                                                      
-                                <?php endif; ?>                                                                                                            
+                                    <?php endif; ?> 
+                                <?php endif; ?>  
 
                                 <?php endif; ?>
                             <?php endif; ?>
@@ -237,8 +237,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
 
                         <!-- Qualis - Início -->
-                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ): ?>
-                            <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])): ?>
+                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ) : ?>
+                            <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o Qualis do periódico</h5>
@@ -246,21 +246,21 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["title"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["serial_metrics"]["issn"][0]); ?></p>
 
-                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])): ?>
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"])) : ?>
                                         <p>Qualis 2010-2012</p>
                                         <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
                                             <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
                                         <?php endforeach; ?>
                                     <?php endif; ?>  
 
-                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])): ?>
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])) : ?>
                                         <p>Qualis 2015</p>
                                         <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"] as $metrics_2015) : ?>
                                             <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2015["area_nota"]); ?></p>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
 
-                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])): ?>
+                                    <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"])) : ?>
                                         <p>Qualis 2013-2016</p>
                                         <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
                                             <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
@@ -274,7 +274,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <!-- Qualis  - Fim -->
                             
                         <!-- JCR - Início -->
-                        <?php if (!empty($cursor["_source"]["USP"]["JCR"])): ?>
+                        <?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o JCR</h5>
@@ -291,7 +291,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <!-- JCR - Fim --> 
 
                         <!-- Citescore - Início -->
-                        <?php if (!empty($cursor["_source"]["USP"]["citescore"])): ?>
+                        <?php if (!empty($cursor["_source"]["USP"]["citescore"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o Citescore</h5>
@@ -388,6 +388,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             } else {
                                                 echo '<a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="64" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a>';
                                             }
+                                            echo '<p><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></p>';                                            
                                         echo '</div>
                                     </div>';
                                 } 

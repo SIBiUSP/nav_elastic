@@ -1648,7 +1648,7 @@ class DSpaceREST
     static function addBitstreamDSpace($uuid, $file, $cookies)
     {
         global $dspaceRest;
-        $filename = $file["file"]["name"];
+        $filename = rawurlencode($file["file"]["name"]);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/bitstreams?name=$filename&description=Description");
         curl_setopt($ch, CURLOPT_POST, 1);
