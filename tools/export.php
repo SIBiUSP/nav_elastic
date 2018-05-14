@@ -210,7 +210,7 @@ if ($_GET["format"] == "table") {
             $params = [];
             $params["index"] = $index;
             $params["type"] = $type;
-            $params["size"] = 3000;
+            $params["size"] = 5000;
             $params["from"] = $skip;
             $params["body"] = $query; 
     
@@ -218,7 +218,7 @@ if ($_GET["format"] == "table") {
             $total = $cursor["hits"]["total"];
            
     
-            $content[] = "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa";
+            echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\n";
 
             foreach ($cursor["hits"]["hits"] as $r) {
     
@@ -287,12 +287,15 @@ if ($_GET["format"] == "table") {
 
                 $fields[] = $r["_source"]['dateCreated'];
                 
-                $content[] = implode("\t", $fields);
+                // $content[] = implode("\t", $fields);
+                
+                echo implode("\t", $fields)."\n";
+                flush();
+
                 unset($fields);
-    
             
             }
-            echo implode("\n", $content);            
+            // echo implode("\n", $content);            
     
         }        
 
