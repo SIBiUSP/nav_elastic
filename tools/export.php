@@ -176,7 +176,125 @@ if ($_GET["format"] == "table") {
         }
         echo implode("\n",$content);            
 
-    }    
+    }
+    
+} elseif ($_GET["format"] == "csvThesis") {
+
+        $file="export_bdpi.tsv";
+        header('Content-type: text/tab-separated-values; charset=utf-8');
+        header("Content-Disposition: attachment; filename=$file");
+    
+        // Set directory to ROOT
+        chdir('../');
+        // Include essencial files
+        include('inc/config.php'); 
+        include('inc/functions.php');
+    
+        if (!empty($_GET)) {
+            $result_get = get::analisa_get($_GET);
+            $query = $result_get['query'];  
+            $limit = $result_get['limit'];
+            $page = $result_get['page'];
+            $skip = $result_get['skip'];
+    
+            if (isset($_GET["sort"])) {
+                $query['sort'] = [
+                    ['name.keyword' => ['order' => 'asc']],
+                ];
+            } else {
+                $query['sort'] = [
+                    ['datePublished.keyword' => ['order' => 'desc']],
+                ];
+            }
+    
+            $params = [];
+            $params["index"] = $index;
+            $params["type"] = $type;
+            $params["size"] = 6000;
+            $params["from"] = $skip;
+            $params["body"] = $query; 
+    
+            $cursor = $client->search($params);
+            $total = $cursor["hits"]["total"];
+           
+    
+            $content[] = "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa";
+
+            foreach ($cursor["hits"]["hits"] as $r) {
+    
+                $fields[] = $r['_id'];
+                $fields[] = "Não foi possível coletar";
+
+                foreach ($r["_source"]['authorUSP'] as $numUSP_aut) {
+                    $fields[] = $numUSP_aut["codpes"];
+                    $fields[] = $numUSP_aut["name"];
+                }
+                
+                
+                foreach ($r["_source"]['author'] as $authors) {
+                    if (empty($authors["person"]["potentialAction"])) {
+                        $fields[] = $authors["person"]["name"];
+                    } else {
+                        $orientadores_array[] = $authors["person"]["name"]; 
+                    }
+                }
+                if (isset($orientadores_array)) {
+                    $array_orientadores = implode("; ", $orientadores_array);
+                    unset($orientadores_array);
+                    $fields[] = $array_orientadores;       
+                } else {
+                    $fields[] = "Não preenchido";
+                }
+               
+            
+                foreach ($r["_source"]['authorUSP'] as $numUSP_aut) {
+                    if (!empty($numUSP_aut["codpesOrientador"])) {
+                        $fields[] = $numUSP_aut["codpesOrientador"];
+                    } else {
+                        $fields[] = "Não foi possível coletar";
+                    }
+                }
+
+                if (isset($r["_source"]['USP']['areaconcentracao'])) {
+                    $fields[] = $r["_source"]['USP']['areaconcentracao'];
+                } else {
+                    $fields[] = "Não preenchido";
+                }
+                
+                $fields[] = $r["_source"]['inSupportOf'];
+                $fields[] = $r["_source"]['language'][0];
+                $fields[] = $r["_source"]['name'];
+
+                if (isset($r["_source"]['description'][0])) {
+                    $fields[] = $r["_source"]['description'][0];
+                } else {
+                    $fields[] = "Não preenchido";
+                }    
+                
+                foreach ($r["_source"]['about'] as $subject) {
+                    $subject_array[]=$subject;
+                } 
+                $array_subject = implode("; ", $subject_array);
+                unset($subject_array);
+                $fields[] = $array_subject;                
+                
+                $fields[] = "Não foi possível coletar";
+                $fields[] = "Não foi possível coletar";
+                
+                $fields[] = $r["_source"]['datePublished'];
+
+                $fields[] = $r["_source"]['publisher']['organization']['location'];
+
+                $fields[] = $r["_source"]['dateCreated'];
+                
+                $content[] = implode("\t", $fields);
+                unset($fields);
+    
+            
+            }
+            echo implode("\n", $content);            
+    
+        }        
 
 } elseif($_GET["format"] == "ris") {
 

@@ -84,6 +84,15 @@
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesTable').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesTable').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
                         </form>
+                        <form role="form" action="tools/export.php" method="get">
+                            <fieldset>
+                                <legend class="uk-legend"><?php echo $t->gettext('Resultados das Teses em Formato Tabela por unidade USP'); ?></legend>
+                                <input class="uk-input" id='searchUnidadeUSPTable' type="text" placeholder="Insira uma sigla de Unidade USP" name="filter[]" data-validation="required">
+                                <input type="hidden" name="filter[]" value="base:&quot;Teses e dissertações&quot;">
+                                <input type="hidden" name="format" value="csvThesis">
+                                <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchUnidadeUSPTable').value = 'unidadeUSP:' + String.fromCharCode(34) + document.getElementById('searchUnidadeUSPTable').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
+                            </fieldset>
+                        </form>                        
                         <form role="form" action="autor.php" method="get">
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em Formato RIS por autor USP'); ?></legend>
