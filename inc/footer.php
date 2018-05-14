@@ -9,4 +9,3 @@
       modules : 'file'
   });  
 </script>
-<script src="https://getuikit.com/migrate.min.js"></script>
