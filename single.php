@@ -127,6 +127,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             <li>
                                 <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
                             </li>
+                            <li>
+                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" >Tabela (TSV)</a>
+                            </li>                            
                         </ul>
 
                         <!-- Métricas - Início -->
