@@ -409,10 +409,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         echo '<th><a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a></th>';
                                     }
                                     echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></th>';
-                                    echo '<th><form action="' . $actual_link . '" method="post">
-                                            <input type="hidden" name="deleteBitstream" value="'.$bitstreamDSpace["uuid"].'" />
-                                            <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
-                                            </form></th>';
+                                    //echo '<th><form action="' . $actual_link . '" method="post">
+                                    //        <input type="hidden" name="deleteBitstream" value="'.$bitstreamDSpace["uuid"].'" />
+                                    //        <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
+                                    //        </form></th>';
                                 } 
                             
                             }
