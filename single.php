@@ -382,34 +382,43 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         if (!empty($bitstreamsDSpace)) {
                             echo '<div class="uk-alert-primary" uk-alert>
+                            <h4>Download do texto completo</h4>
                             <a class="uk-alert-close" uk-close></a>
-                            <h5>Download do texto completo</h5>
-                            <div class="uk-child-width-1-3@m uk-grid-small uk-grid-match" uk-grid>';
+
+                            <table class="uk-table uk-table-justify uk-table-divider">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Nome do arquivo</th>
+                                    <th>Tipo de acesso</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
                                 $cookies = DSpaceREST::loginREST();
                             foreach ($bitstreamsDSpace as $bitstreamDSpace) {
                                 $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($bitstreamDSpace["uuid"], $cookies);
                                 if ($bitstreamDSpace["mimeType"] == "application/pdf") {
-                                    echo '<div>
-                                        <div class="uk-card uk-card-default uk-card-body">
-                                            <b>'.$bitstreamDSpace["name"].'</b>
-                                            <p><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$bitstreamDSpace["uuid"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a></p>';
+                                    echo '<tr>
+                                            <th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$bitstreamDSpace["uuid"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>
+                                            <th>'.$bitstreamDSpace["name"].'</th>';
+                                            
                                     if ($bitstreamPolicy[0]["groupId"] == "6d28bcd6-4c62-40eb-b548-839d2f5b589f") {
-                                        echo '<a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="64" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a>';
+                                        echo '<th><a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a></th>';
                                     } else {
-                                        echo '<a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="64" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a>';
+                                        echo '<th><a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a></th>';
                                     }
-                                    echo '<p><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></p>';
-                                    echo '<form action="' . $actual_link . '" method="post">
+                                    echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></th>';
+                                    echo '<th><form action="' . $actual_link . '" method="post">
                                             <input type="hidden" name="deleteBitstream" value="'.$bitstreamDSpace["uuid"].'" />
                                             <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
-                                            </form>'; 
-                                    echo '</div></div>';
+                                            </form></th>';
                                 } 
                             
                             }
                                 DSpaceREST::logoutREST($cookies);
-                            echo '</div></div>';
-                        } 
+                            echo '</tbody></table></div>';
+                        }                     
                         ?>
                         <!-- Query bitstreams on Dspace - End -->                               
                             
