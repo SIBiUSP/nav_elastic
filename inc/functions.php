@@ -1660,7 +1660,8 @@ class DSpaceREST
             'Accept: application/json'      
             )                                                                       
         );        
-        $result = curl_exec($ch);
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
         curl_close($ch);
         return $result;
     }

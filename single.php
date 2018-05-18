@@ -41,7 +41,17 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
             /* Search for existing record on DSpace */
             $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
             
+            
             if (!empty($itemID)) {
+
+                function removeElementWithValue($array, $key, $value) {
+                    foreach($array as $subKey => $subArray){
+                         if($subArray[$key] == $value){
+                              unset($array[$subKey]);
+                         }
+                    }
+                    return $array;
+                }
 
                 $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                     <fieldset data-uk-margin>
@@ -53,13 +63,42 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
             
                 if (isset($_FILES['file'])) {
                     $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $cookies);
+                    if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+                        $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+                    }
+                    $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
+                    //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
+                    $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+                    echo "<script type='text/javascript'>
+                    $(document).ready(function(){  
+                            //Reload the page
+                            window.location = window.location.href;
+                    });
+                    </script>";
                 }
                 if (isset($_POST['deleteBitstream'])) {
                     $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $cookies);
+                    if (isset($cursor["_source"]["USP"]["fullTextFiles"])) { 
+                        $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+                        $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
+                        //$body["doc"]["USP"]["fullTextFiles"] = [];
+                        $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+                        print_r($resultUpdateFilesElastic);
+                    }
+                    
                     echo '<div class="uk-alert-danger" uk-alert>
                     <a class="uk-alert-close" uk-close></a>
                     <p>Arquivo excluído com sucesso</p>
-                </div>';
+                    </div>';
+
+                    echo "<script type='text/javascript'>
+                    $(document).ready(function(){  
+                            //Reload the page
+                            window.location = window.location.href;
+                    });
+                    </script>";
+
+    
                 }
                 $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
 
@@ -359,26 +398,29 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <!-- Query bitstreams on Dspace - Start -->   
                         <?php
 
-                        //if (!empty($_SESSION['oauthuserdata'])) {
-                        if ($testDSpace == "true") {
-                            if (!empty($uploadForm)) {
-                                echo '<div class="uk-alert-danger" uk-alert>';
-                                echo '<a class="uk-alert-close" uk-close></a>';
-                                echo '<h5>Gestão do documento digital</h5>';
-                                echo $uploadForm;
-                                echo '</div>';
-                            }
+                        if (isset($_SESSION['oauthuserdata'])) {
+                            if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
+                                if ($testDSpace == "true") {
+                                    if (!empty($uploadForm)) {
+                                        echo '<div class="uk-alert-danger" uk-alert>';
+                                        echo '<a class="uk-alert-close" uk-close></a>';
+                                        echo '<h5>Gestão do documento digital</h5>';
+                                        echo $uploadForm;
+                                        echo '</div>';
+                                    }
+            
+                                    if (!empty($createForm)) {
+                                        echo '<div class="uk-alert-danger" uk-alert>';
+                                        echo '<a class="uk-alert-close" uk-close></a>';
+                                        echo '<h5>Gestão do documento digital</h5>';
+                                        echo $createForm;
+                                        echo '</div>';
+                                    }                              
     
-                            if (!empty($createForm)) {
-                                echo '<div class="uk-alert-danger" uk-alert>';
-                                echo '<a class="uk-alert-close" uk-close></a>';
-                                echo '<h5>Gestão do documento digital</h5>';
-                                echo $createForm;
-                                echo '</div>';
-                            }                                
+                                }
+                            }
 
-                        }
-                        //}                      
+                        }                      
 
                         if (!empty($bitstreamsDSpace)) {
                             echo '<div class="uk-alert-primary" uk-alert>
@@ -396,25 +438,29 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             </thead>
                             <tbody>';
                                 $cookies = DSpaceREST::loginREST();
-                            foreach ($bitstreamsDSpace as $bitstreamDSpace) {
-                                $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($bitstreamDSpace["uuid"], $cookies);
-                                if ($bitstreamDSpace["mimeType"] == "application/pdf") {
+                            foreach ($bitstreamsDSpace as $key => $value) {
+                                $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $cookies);
+                                if ($value["mimeType"] == "application/pdf") {
                                     echo '<tr>
-                                            <th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$bitstreamDSpace["uuid"].'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>
-                                            <th>'.$bitstreamDSpace["name"].'</th>';
+                                            <th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>
+                                            <th>'.$value["name"].'</th>';
                                             
                                     if ($bitstreamPolicy[0]["groupId"] == "6d28bcd6-4c62-40eb-b548-839d2f5b589f") {
-                                        echo '<th><a title="By Jakob Voss, based on art designer at PLoS, modified by Wikipedia users Nina and Beao [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Closed_Access_logo_white.svg"><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></a></th>';
+                                        echo '<th><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></th>';
                                     } else {
-                                        echo '<th><a title="By art designer at PLoS, modified by Wikipedia users Nina, Beao, and JakobVoss (http://www.plos.org/) [CC0], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg"><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></a></th>';
+                                        echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
                                     }
-                                    echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$bitstreamDSpace["uuid"].'/'.$bitstreamDSpace["name"].'" target="_blank">Direct link</a></th>';
-                                    //echo '<th><form action="' . $actual_link . '" method="post">
-                                    //        <input type="hidden" name="deleteBitstream" value="'.$bitstreamDSpace["uuid"].'" />
-                                    //        <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
-                                    //        </form></th>';
+                                    echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank">Direct link</a></th>';
+                                    
+                                    if (isset($_SESSION['oauthuserdata'])) {
+                                        if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
+                                            echo '<th><form action="' . $actual_link . '" method="post">
+                                            <input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />
+                                            <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
+                                            </form></th>';
+                                        }
+                                    }
                                 } 
-                            
                             }
                                 DSpaceREST::logoutREST($cookies);
                             echo '</tbody></table></div>';
