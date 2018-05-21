@@ -1585,6 +1585,57 @@ class DSpaceREST
         return $result;
         curl_close($ch);
     }
+
+    static function deleteBitstreamPolicyDSpace($bitstreamID, $policyID, $cookies)
+    {
+        global $dspaceRest;
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy/$policyID");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Cookie: $cookies",                                                                          
+            'Content-Type: application/json'      
+            )                                                                       
+        );
+        $output = curl_exec($ch);
+        //var_dump($output);
+        $result = json_decode($output, true);
+        return $result;
+        curl_close($ch);
+    } 
+    
+    static function addBitstreamPolicyDSpace($bitstreamID, $policyAction, $groupId, $resourceType, $rpType, $cookies)
+    {
+        global $dspaceRest;
+        $policyArray["action"] =  $policyAction;
+        $policyArray["epersonId"] =  "";
+        $policyArray["groupId"] =  $groupId;
+        $policyArray["resourceId"] =  $bitstreamID;
+        $policyArray["resourceType"] =  $resourceType;
+        $policyArray["rpDescription"] =  "";
+        $policyArray["rpName"] =  "";
+        $policyArray["rpType"] =  $rpType;
+        $policyArray["startDate"] =  "";
+        $policyArray["endDate"] =  "";
+        $data_string = json_encode($policyArray);
+        $ch = curl_init();          
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        if (!empty($cookies)){ 
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $cookies",                                                                          
+                'Content-Type: application/json'      
+                )                                                                       
+            );
+        }  
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        return $result;
+        curl_close($ch);
+    }    
     
     static function getBitstreamRestrictedDSpace($bitstreamID, $cookies)
     {
