@@ -454,10 +454,46 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     
                                     if (isset($_SESSION['oauthuserdata'])) {
                                         if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                            echo '<th><form action="' . $actual_link . '" method="post">
-                                            <input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />
-                                            <button class="uk-button uk-button-danger" name="btn_submit">Excluir arquivo</button>
-                                            </form></th>';
+
+
+
+                                            echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream">Excluir</button></th>';
+                                            
+                                            echo '<div id="modal-deleteBitstream" uk-modal>
+                                                <div class="uk-modal-dialog uk-modal-body">
+                                                    <h2 class="uk-modal-title">Excluir arquivo</h2>
+                                                    <p>Tem certeza que quer excluir o arquivo '.$value["name"].'?</p>
+                                                    <p class="uk-text-right">
+                                                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                                        <form action="' . $actual_link . '" method="post">
+                                                            <input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />
+                                                            <button class="uk-button uk-button-danger" name="btn_submit">Excluir</button>
+                                                        </form>
+                                                    </p>
+                                                </div>
+                                            </div>';
+
+                                            echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Private">Tornar privado</button></th>';
+                                            
+                                            echo '<div id="modal-Private" uk-modal>
+                                                <div class="uk-modal-dialog uk-modal-body">
+                                                    <h2 class="uk-modal-title">Tornar privado/público</h2>
+                                                    <p>Tem certeza que quer tornar privado o arquivo '.$value["name"].'?</p>
+                                                    <p class="uk-text-right">
+                                                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                                        <form action="' . $actual_link . '" method="post">
+                                                            <input type="hidden" name="makePrivate" value="'.$value["uuid"].'" />
+                                                            <button class="uk-button uk-button-secondary" name="btn_submit">Tornar privado</button>
+                                                        </form>
+                                                    </p>
+                                                </div>
+                                            </div>';                                            
+
+
+
+
+
+                                            echo '<th></th>';
                                         }
                                     }
                                 } 
