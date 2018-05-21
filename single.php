@@ -463,7 +463,6 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $cookies);
 
                                 if ($bitstreamPolicy[0]["groupId"] == $dspaceRestrictedID) {
-                                    echo "Restrito"; 
                                     if (isset($_SESSION['oauthuserdata'])) {
                                         if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                             echo '<tr>';
