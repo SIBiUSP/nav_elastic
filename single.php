@@ -415,29 +415,48 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         ?>
                         <!-- Query itens on Aleph - End -->
 
+                        <?php 
+                        $user = json_decode(json_encode($_SESSION['oauthuserdata']), true);
+                        foreach ($user['vinculo'] as $key => $value) {
+                            if (in_array($value["siglaUnidade"], $cursor["_source"]["unidadeUSP"])) {
+                                $isOfThisUnit = true;
+                            } else {
+                                $isOfThisUnit = false;
+                            }
+                        }
+                    
+                        
+                        ?>
+
+                        
+
                         <!-- Query bitstreams on Dspace - Start -->   
                         <?php
 
                         if (isset($_SESSION['oauthuserdata'])) {
                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                if ($testDSpace == "true") {
-                                    if (!empty($uploadForm)) {
-                                        echo '<div class="uk-alert-danger" uk-alert>';
-                                        echo '<a class="uk-alert-close" uk-close></a>';
-                                        echo '<h5>Gestão do documento digital</h5>';
-                                        echo $uploadForm;
-                                        echo '</div>';
-                                    }
-            
-                                    if (!empty($createForm)) {
-                                        echo '<div class="uk-alert-danger" uk-alert>';
-                                        echo '<a class="uk-alert-close" uk-close></a>';
-                                        echo '<h5>Gestão do documento digital</h5>';
-                                        echo $createForm;
-                                        echo '</div>';
-                                    }                              
-    
+                                if ($isOfThisUnit == true) {
+                                    if ($testDSpace == "true") {
+                                        if (!empty($uploadForm)) {
+                                            echo '<div class="uk-alert-danger" uk-alert>';
+                                            echo '<a class="uk-alert-close" uk-close></a>';
+                                            echo '<h5>Gestão do documento digital</h5>';
+                                            echo $uploadForm;
+                                            echo '</div>';
+                                        }
+                
+                                        if (!empty($createForm)) {
+                                            echo '<div class="uk-alert-danger" uk-alert>';
+                                            echo '<a class="uk-alert-close" uk-close></a>';
+                                            echo '<h5>Gestão do documento digital</h5>';
+                                            echo $createForm;
+                                            echo '</div>';
+                                        }                              
+        
+                                    }                                  
+
                                 }
+
                             }
 
                         }                      
@@ -471,20 +490,22 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             echo '<th>'.$value["name"].'</th>';
                                             echo '<th><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></th>';
                                             echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank">Direct link</a></th>';
-                                            echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream">Excluir</button></th>';
-                                            echo '<div id="modal-deleteBitstream" uk-modal>
-                                                    <div class="uk-modal-dialog uk-modal-body">
-                                                        <h2 class="uk-modal-title">Excluir arquivo</h2>
-                                                        <p>Tem certeza que quer excluir o arquivo '.$value["name"].'?</p>
-                                                        <p class="uk-text-right">
-                                                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                            <form action="' . $actual_link . '" method="post">
-                                                                <input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />
-                                                                <button class="uk-button uk-button-danger" name="btn_submit">Excluir</button>
-                                                            </form>
-                                                        </p>
-                                                    </div>
-                                                </div>';
+                                            if ($isOfThisUnit == true) {
+                                                echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream">Excluir</button></th>';
+                                                echo '<div id="modal-deleteBitstream" uk-modal>';
+                                                echo '<div class="uk-modal-dialog uk-modal-body">';
+                                                echo '<h2 class="uk-modal-title">Excluir arquivo</h2>';
+                                                echo '<p>Tem certeza que quer excluir o arquivo '.$value["name"].'?</p>';
+                                                echo '<p class="uk-text-right">';
+                                                echo '<button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
+                                                echo '<form action="' . $actual_link . '" method="post">';
+                                                echo '<input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />';
+                                                echo '<button class="uk-button uk-button-danger" name="btn_submit">Excluir</button>';
+                                                echo '</form>';
+                                                echo '</p>';
+                                                echo '</div>';
+                                                echo '</div>';
+                                            }
                                             echo '<th></th>';
                                         } else {
                                             echo '<tr><th>Consulte a biblioteca de sua unidade</th></tr>';
