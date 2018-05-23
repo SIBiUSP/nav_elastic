@@ -1696,12 +1696,12 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function addBitstreamDSpace($uuid, $file, $cookies)
+    static function addBitstreamDSpace($uuid, $file, $userBitstream, $cookies)
     {
         global $dspaceRest;
         $filename = rawurlencode($file["file"]["name"]);
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/bitstreams?name=$filename&description=Description");
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/bitstreams?name=$filename&description=$userBitstream");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);      
         curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($file["file"]["tmp_name"]));
