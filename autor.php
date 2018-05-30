@@ -183,8 +183,7 @@ if (!empty($_GET)) {
                                 $facets->facet("publisher.organization.name", 50, $t->gettext('Editora'), null, "_term", $_GET["search"]);
                                 $facets->facet("releasedEvent", 50, $t->gettext('Nome do evento'), null, "_term", $_GET["search"]);
                                 $facets->facet("country", 200, $t->gettext('País de publicação'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]);
-                                $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);                                    
+                                $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]); 
                                 $facets->facet("funder", 50, $t->gettext('Agência de fomento'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.indexacao", 50, $t->gettext('Indexado em'), null, "_term", $_GET["search"]);
 
@@ -223,7 +222,7 @@ if (!empty($_GET)) {
                                     $facets->facet("USP.areaconcentracao", 100, "Área de concentração", null, "_term", $_GET["search"]);
                                     $facets->facet("USP.programa_pos_sigla", 100, "Sigla do Departamento/Programa de Pós Graduação", null, "_term", $_GET["search"]);
                                     $facets->facet("USP.programa_pos_nome", 100, "Departamento/Programa de Pós Graduação", null, "_term", $_GET["search"]);
-                                    $facets->facet("USP.about_BDTD", 50, $t->gettext('Assuntos provenientes das teses'), null, "_term", $_GET["search"]);
+                                    $facets->facet("USP.about_BDTD", 50, $t->gettext('Palavras-chave do autor'), null, "_term", $_GET["search"]);
                                 ?>
                             </ul>
                             <?php if(!empty($_SESSION['oauthuserdata'])) : ?> 
@@ -231,6 +230,7 @@ if (!empty($_GET)) {
                                 <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                                 <hr>
                                 <?php
+                                    $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);                                 
                                     $facets->facet("authorUSP.regime_de_trabalho", 50, $t->gettext('Regime de trabalho'), null, "_term", $_GET["search"]);
                                     $facets->facet("authorUSP.funcao", 50, $t->gettext('Função'), null, "_term", $_GET["search"]);
                                     $facets->facet("USP.CAT.date", 100, "Data de registro e alterações", "desc", "_term", $_GET["search"]);

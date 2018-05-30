@@ -1250,7 +1250,7 @@ class Record
         
         /* BDTD Subject */
         if ($this->aboutBDTDArray > 0){
-            echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos provenientes das teses').':';
+            echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Palavras-chave do autor').':';
             echo '<ul class="uk-list uk-list-striped uk-text-small">';
             foreach ($this->aboutBDTDArray as $subject_BDTD) {
                 echo '<li><a href="'.$url_base.'/result.php?search[]=USP.about_BDTD:&quot;'.$subject_BDTD.'&quot;">'.$subject_BDTD.'</a></li>';
