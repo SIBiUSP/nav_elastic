@@ -1489,20 +1489,20 @@ class DSpaceREST
         global $dspaceRest;
         $ch = curl_init();
     
-        curl_setopt($ch, CURLOPT_URL,"$dspaceRest/rest/login");
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/login");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
-                    http_build_query(array('email' => 'dgti@dt.sibi.usp.br','password' => '123456'))
+            http_build_query(array('email' => 'dgti@dt.sibi.usp.br','password' => '123456'))
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
         $server_output = curl_exec($ch);
-        $output_parsed = explode(" ",$server_output);
+        $output_parsed = explode(" ", $server_output);
         
         return $output_parsed[3];
         
-        curl_close ($ch);  
+        curl_close($ch);  
     
     } 
     
@@ -1511,13 +1511,12 @@ class DSpaceREST
         global $dspaceRest;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
-        curl_setopt($ch, CURLOPT_URL,"$dspaceRest/rest/logout");
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/logout");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $server_output = curl_exec($ch);
-        //print_r($server_output);  
-        curl_close ($ch);
+        curl_close($ch);
     } 
     
     static function searchItemDSpace($sysno, $cookies = NULL)
@@ -1529,7 +1528,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        if (!empty($cookies)){
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1553,7 +1552,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$itemID/bitstreams");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)){ 
+        if (!empty($cookies)) { 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1573,7 +1572,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)){ 
+        if (!empty($cookies)) { 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1624,7 +1623,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        if (!empty($cookies)){ 
+        if (!empty($cookies)) { 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1644,7 +1643,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/retrieve/64171-196117-1-PB.pdf");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)){ 
+        if (!empty($cookies)) { 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1683,7 +1682,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        if (!empty($cookies)){
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1724,7 +1723,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamId");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        if (!empty($cookies)){
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Cookie: $cookies",                                                                          
                 'Content-Type: application/json'      
@@ -1737,7 +1736,7 @@ class DSpaceREST
         curl_close($ch);
     }    
     
-    static function buildDC($cursor,$sysno){
+    static function buildDC($cursor,$sysno) {
         $arrayDC["type"] = "item";
     
         /* Title */
@@ -1778,7 +1777,7 @@ class DSpaceREST
         $dateIssuedArray = [];
         
         /* DOI */
-        if (!empty($cursor["_source"]["doi"])){
+        if (!empty($cursor["_source"]["doi"])) {
             $DOIArray["key"] = "dc.identifier";
             $DOIArray["language"] = "pt_BR";
             $DOIArray["value"] = $cursor["_source"]["doi"];    
@@ -1787,7 +1786,7 @@ class DSpaceREST
         }
         
         /* IsPartOf */
-        if (!empty($cursor["_source"]["isPartOf"])){
+        if (!empty($cursor["_source"]["isPartOf"])) {
             $IsPartOfArray["key"] = "dc.relation.ispartof";
             $IsPartOfArray["language"] = "pt_BR";
             $IsPartOfArray["value"] = $cursor["_source"]["isPartOf"]["name"];    
@@ -1841,18 +1840,17 @@ class DSpaceREST
     
     } 
     
-    static function testREST($cookies){
-
-        $ch = curl_init();
-      
+    static function testREST($cookies) 
+    {
+        global $dspaceRest;
+        $ch = curl_init();      
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
-        curl_setopt($ch, CURLOPT_URL,"http://172.31.1.37:8080/rest/status");
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/status");
         curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);        
         $server_output = curl_exec($ch);
         print_r($server_output);  
-        curl_close ($ch);  
+        curl_close($ch);  
       
       }     
 }
