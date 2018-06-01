@@ -1080,19 +1080,21 @@ class DSpaceREST
     
     
         /* Unidade USP */
-        foreach ($cursor["_source"]["authorUSP"] as $unidadeUSP) {
-            $unidadeUSPArray["key"] = "usp.unidadeUSP";
-            $unidadeUSPArray["language"] = "pt_BR";
-            $unidadeUSPArray["value"] = $unidadeUSP["unidadeUSP"];    
-            $arrayDC["metadata"][] = $unidadeUSPArray; 
-            $unidadeUSPArray = [];  
-            
-            $authorUSPArray["key"] = "usp.authorUSP.name";
-            $authorUSPArray["language"] = "pt_BR";
-            $authorUSPArray["value"] = $unidadeUSP["name"];    
-            $arrayDC["metadata"][] = $authorUSPArray; 
-            $authorUSPArray = [];            
-        }    
+        if (isset($cursor["_source"]["authorUSP"])) {
+            foreach ($cursor["_source"]["authorUSP"] as $unidadeUSP) {
+                $unidadeUSPArray["key"] = "usp.unidadeUSP";
+                $unidadeUSPArray["language"] = "pt_BR";
+                $unidadeUSPArray["value"] = $unidadeUSP["unidadeUSP"];    
+                $arrayDC["metadata"][] = $unidadeUSPArray; 
+                $unidadeUSPArray = [];  
+                
+                $authorUSPArray["key"] = "usp.authorUSP.name";
+                $authorUSPArray["language"] = "pt_BR";
+                $authorUSPArray["value"] = $unidadeUSP["name"];    
+                $arrayDC["metadata"][] = $authorUSPArray; 
+                $authorUSPArray = [];            
+            }  
+        }  
     
         /* Subject */        
         foreach ($cursor["_source"]["about"] as $subject) {
