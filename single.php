@@ -384,7 +384,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         <!-- Query itens on Aleph - Start -->                            
                         <?php
-                        if (!empty($cursor["_source"]["itens"])) {
+                        if (!empty($cursor["_source"]["item"])) {
                             echo '<div id="exemplares'.$cursor["_id"].'">';
                             echo "<table class=\"uk-table uk-table-small uk-text-small uk-table-striped\">";
                             echo "<caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>";
@@ -392,20 +392,16 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             echo "<tr>";
                             echo "<th><small>Biblioteca</small></th>";
                             echo "<th><small>Cód. de barras</small></th>";
-                            echo "<th><small>Status</small></th>";
                             echo "<th><small>Núm. de chamada</small></th>";
-                            echo "<th><small>Disponibilidade</small></th>";
                             echo "</tr>";  
                             echo "</thead>";
                             echo "<tbody>";                               
 
-                            foreach ($cursor["_source"]["itens"] as $item) {
+                            foreach ($cursor["_source"]["item"] as $item) {
                                 echo '<tr>';
-                                echo '<td><small>'.$item["sub-library"].'</small></td>';
-                                echo '<td><small>'.$item["barcode"].'</small></td>';
-                                echo '<td><small>'.$item["item-status"].'</small></td>';
-                                echo '<td><small>'.$item["call-no-1"].'</small></td>';
-                                echo '<td><small>'.$item["loan-status"].'</small></td>';
+                                echo '<td><small><a target="_blank" href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. $item["Z30_SUB_LIBRARY"] .'">'.$item["Z30_SUB_LIBRARY"].'</a></small></td>';
+                                echo '<td><small>'.$item["Z30_BARCODE"].'</small></td>';
+                                echo '<td><small>'.$item["Z30_CALL_NO"].'</small></td>';
                                 echo '</tr>';
                             }
 
