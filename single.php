@@ -181,17 +181,17 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank">Ver no Dedalus</a>                    
+                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="nofollow">Ver no Dedalus</a>                    
                             </li>
                         </ul>
                         <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>                   
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
+                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="nofollow">RIS (EndNote)</a>
                             </li>
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" >Tabela (TSV)</a>
+                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="nofollow">Tabela (TSV)</a>
                             </li>                            
                         </ul>
 
