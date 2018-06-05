@@ -252,12 +252,17 @@ if (isset($_GET["sort"])) {
                                 <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                 <input class="uk-input" type="text" id="date" readonly style="border:0; color:#f6931f;" name="search[]">
                                 </p>        
-                                <div id="limitar-data" class="uk-margin-bottom"></div>        
+                                <div id="limitar-data" class="uk-margin-bottom"></div>
                                 <?php if (!empty($_GET["search"])) : ?>
                                     <?php foreach($_GET["search"] as $search_expression): ?>
                                         <input type="hidden" name="search[]" value="<?php echo str_replace('"', '&quot;', $search_expression); ?>">
                                     <?php endforeach; ?>
                                 <?php endif; ?>
+                                <?php if (!empty($_GET["filter"])) : ?>
+                                    <?php foreach($_GET["filter"] as $filter_expression): ?>
+                                        <input type="hidden" name="filter[]" value="<?php echo str_replace('"', '&quot;', $filter_expression); ?>">
+                                    <?php endforeach; ?>
+                                <?php endif; ?>                                
                                 <button class="uk-button uk-button-primary uk-button-small"><?php echo $t->gettext('Limitar datas'); ?></button>
                             </fieldset>        
                         </form>
