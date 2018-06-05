@@ -294,7 +294,7 @@ class PageSingle
         } 
         echo '
         <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
-        if (!empty($record["isPartOf"])) {
+        if (!empty($record["isPartOf"]["name"])) {
             echo '<meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
         }
 
