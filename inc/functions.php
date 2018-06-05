@@ -616,7 +616,8 @@ class USP
 {
 
     /* Consulta o Vocabulário Controlado da USP */
-    static function consultar_vcusp($termo) {
+    static function consultar_vcusp($termo) 
+    {
         echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
         $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
 
@@ -627,15 +628,15 @@ class USP
                 $string_up_array[] = '<a href="result.php?search[]=about:&quot;'.$string_up->{'string'}.'&quot;">'.$string_up->{'string'}.'</a>';    
             };
             echo 'Você também pode pesquisar pelos termos mais genéricos: ';
-            print_r(implode(" -> ",$string_up_array));
+            print_r(implode(" -> ", $string_up_array));
             echo '<br/>';
             $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-            if (!empty($termo_xml_down->{'result'}->{'term'})){
+            if (!empty($termo_xml_down->{'result'}->{'term'})) {
                 foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
                     $string_down_array[] = '<a href="result.php?search[]=about:&quot;'.$string_down->{'string'}.'&quot;">'.$string_down->{'string'}.'</a>';     
                 };
                 echo 'Ou pesquisar pelo assuntos mais específicos: ';
-                print_r(implode(" - ",$string_down_array));            
+                print_r(implode(" - ", $string_down_array));            
             }
 
 
