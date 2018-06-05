@@ -1073,7 +1073,9 @@ class Record
         $this->name = $record["_source"]["name"];
         $this->base = $record["_source"]["base"][0];
         $this->type = ucfirst(strtolower($record["_source"]["type"]));
-        $this->datePublished = $record["_source"]["datePublished"];
+        if (isset($record["_source"]["datePublished"])) {
+            $this->datePublished = $record["_source"]["datePublished"];
+        }
         if (isset($record["_source"]["dateCreated"])) {
             $this->dateCreated = $record["_source"]["dateCreated"];
         }        
