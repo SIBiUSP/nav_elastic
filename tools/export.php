@@ -310,7 +310,9 @@ if ($_GET["format"] == "table") {
 
                 $fields[] = $r["_source"]['publisher']['organization']['location'];
 
-                $fields[] = $r["_source"]['dateCreated'];
+                if (isset($r["_source"]['dateCreated'])) {
+                    $fields[] = $r["_source"]['dateCreated'];
+                }
 
                 if (isset($r["_source"]['url'])) {
                     foreach ($r["_source"]['url'] as $url) {
