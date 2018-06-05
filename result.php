@@ -35,7 +35,7 @@ if (isset($_GET["sort"])) {
 
     <?php if ($year_result_graph == true) : ?>
         <!-- D3.js Libraries and CSS -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
+        <script type="text/javascript" src="inc/jquery/3.2.2/d3.v3.min.js"></script>
         <!-- UV Charts -->
         <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
     <?php endif; ?>
