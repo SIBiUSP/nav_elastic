@@ -6,57 +6,56 @@
 /**
  * Classe de interação com o Elasticsearch
  */
-class elasticsearch 
+class elasticsearch
 {
 
     /**
      * Executa o commando get no Elasticsearch
-     * 
+     *
      * @param string   $_id               ID do documento.
-     * @param string   $type              Tipo de documento no índice do Elasticsearch                         
-     * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
-     * @param string $alternative_index Caso use indice alternativo
-     * 
+     * @param string   $type              Tipo de documento no índice do Elasticsearch
+     * @param string[] $fields            Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
+     * @param string   $alternative_index Caso use indice alternativo
+     *
      */
-    public static function elastic_get ($_id,$type,$fields,$alternative_index = "") 
+    public static function elastic_get($_id, $type, $fields, $alternative_index = "")
     {
         global $index;
         global $client;
         $params = [];
 
-        if( strlen($alternative_index) > 0 ){
+        if (strlen($alternative_index) > 0) {
             $params["index"] = $alternative_index;
-        }
-        else {
+        } else {
             $params["index"] = $index;
         }
-                
+
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["_source"] = $fields;
-        
-        $response = $client->get($params);        
-        return $response;    
-    }    
+
+        $response = $client->get($params);
+        return $response;
+    }
 
     /**
      * Executa o commando search no Elasticsearch
-     * 
-     * @param string $type Tipo de documento no índice do Elasticsearch                         
+     *
+     * @param string   $type   Tipo de documento no índice do Elasticsearch
      * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
-     * @param int $size Quantidade de registros nas respostas
-     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
-     * 
-     */    
-    public static function elastic_search ($type,$fields,$size,$body,$alternative_index = "") {
+     * @param int      $size   Quantidade de registros nas respostas
+     * @param resource $body   Arquivo JSON com os parâmetros das consultas no Elasticsearch
+     *
+     */
+    public static function elastic_search($type, $fields, $size, $body, $alternative_index = "")
+    {
         global $index;
         global $client;
         $params = [];
 
-        if( strlen($alternative_index) > 0 ){
+        if (strlen($alternative_index) > 0 ) {
             $params["index"] = $alternative_index;
-        }
-        else {
+        } else {
             $params["index"] = $index;
         }
 
@@ -64,124 +63,127 @@ class elasticsearch
         $params["_source"] = $fields;
         $params["size"] = $size;
         $params["body"] = $body;
-        
-        $response = $client->search($params);        
+
+        $response = $client->search($params);
         return $response;
     }
-    
+
     /**
      * Executa o commando update no Elasticsearch
-     * 
-     * @param string $_id ID do documento
-     * @param string $type Tipo de documento no índice do Elasticsearch
-     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
-     * 
-     */     
-    public static function elastic_update ($_id,$type,$body,$alternative_index = "") {
+     *
+     * @param string   $_id  ID do documento
+     * @param string   $type Tipo de documento no índice do Elasticsearch
+     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
+     *
+     */
+    public static function elastic_update($_id, $type, $body, $alternative_index = "")
+    {
         global $index;
         global $client;
         $params = [];
 
-        if( strlen($alternative_index) > 0 ){
+        if (strlen($alternative_index) > 0) {
             $params["index"] = $alternative_index;
-        }
-        else {
+        } else {
             $params["index"] = $index;
         }
 
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["body"] = $body;
-        
-        $response = $client->update($params);        
+
+        $response = $client->update($params);
         return $response;
     }
 
     /**
      * Executa o commando delete no Elasticsearch
-     * 
-     * @param string $_id ID do documento
-     * @param string $type Tipo de documento no índice do Elasticsearch     
-     * 
-     */     
-    public static function elastic_delete ($_id,$type,$alternative_index = "") {
+     *
+     * @param string $_id  ID do documento
+     * @param string $type Tipo de documento no índice do Elasticsearch
+     *
+     */
+    public static function elastic_delete($_id, $type, $alternative_index = "")
+    {
         global $index;
         global $client;
         $params = [];
 
-        if( strlen($alternative_index) > 0 ){
+        if (strlen($alternative_index) > 0) {
             $params["index"] = $alternative_index;
-        }
-        else {
+        } else {
             $params["index"] = $index;
-        }  
-        
+        }
+
         $params["type"] = $type;
         $params["id"] = $_id;
-        
-        $response = $client->delete($params);        
+
+        $response = $client->delete($params);
         return $response;
     }
-    
+
     /**
      * Executa o commando delete_by_query no Elasticsearch
-     * 
-     * @param string $_id ID do documento
-     * @param string $type Tipo de documento no índice do Elasticsearch
-     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
-     * 
-     */     
-    public static function elastic_delete_by_query ($_id,$type,$body,$alternative_index = "") {
+     *
+     * @param string   $_id  ID do documento
+     * @param string   $type Tipo de documento no índice do Elasticsearch
+     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
+     *
+     */
+    public static function elastic_delete_by_query($_id, $type, $body, $alternative_index = "")
+    {
         global $index;
         global $client;
         $params = [];
 
-        if( strlen($alternative_index) > 0 ){
+        if (strlen($alternative_index) > 0) {
             $params["index"] = $alternative_index;
-        }
-        else {
+        } else {
             $params["index"] = $index;
-        }    
+        }
 
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["body"] = $body;
-        
-        $response = $client->deleteByQuery($params);        
+
+        $response = $client->deleteByQuery($params);
         return $response;
-    }    
-    
+    }
+
     /**
      * Executa o commando update no Elasticsearch e retorna uma resposta em html
-     * 
-     * @param string $_id ID do documento
-     * @param string $type Tipo de documento no índice do Elasticsearch
-     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch  
-     * 
-     */     
-    static function store_record ($_id,$type,$body){
-        $response = elasticsearch::elastic_update($_id,$type,$body);    
-        echo '<br/>Resultado: '.($response["_id"]).', '.($response["result"]).', '.($response["_shards"]['successful']).'<br/>';   
+     *
+     * @param string   $_id  ID do documento
+     * @param string   $type Tipo de documento no índice do Elasticsearch
+     * @param resource $body Arquivo JSON com os parâmetros das consultas no Elasticsearch
+     *
+     */
+    static function store_record($_id, $type, $body)
+    {
+        $response = elasticsearch::elastic_update($_id, $type, $body);
+        echo '<br/>Resultado: '.($response["_id"]).', '.($response["result"]).', '.($response["_shards"]['successful']).'<br/>';
 
     }
-    
+
 }
 
-class get {
-    
-    static function analisa_get($get) {
+class get
+{
+
+    static function analisa_get($get)
+    {
         $query = [];
 
         if (!empty($get['fields'])) {
             $query["query"]["bool"]["must"]["query_string"]["fields"] = $get['fields'];
         } else {
             $query["query"]["bool"]["must"]["query_string"]["fields"][] = "_all";
-        } 
+        }
 
         /* codpes */
-        if (!empty($get['codpes'])){        
+        if (!empty($get['codpes'])) {
             $get['search'][] = 'authorUSP.codpes:'.$get['codpes'].'';
-        }           
+        }
 
         /* Pagination */
         if (isset($get['page'])) {
@@ -205,7 +207,7 @@ class get {
                 $query["query"]["bool"]["filter"][$i_filter]["term"][(string)$filter_array[0].".keyword"] = $filter_array_term;
                 $i_filter++;
             }
-            
+
         }
 
         if (!empty($get['notFilter'])) {
@@ -215,39 +217,40 @@ class get {
                 $notFilterArrayTerm = str_replace('"', "", (string)$notFilterArray[1]);
                 $query["query"]["bool"]["must_not"][$i_notFilter]["term"][(string)$notFilterArray[0].".keyword"] = $notFilterArrayTerm;
                 $i_notFilter++;
-            }            
+            }
         }
-        
+
         if (!empty($get['search'])) {
             $search = implode(" ", $get['search']);
             $query["query"]["bool"]["must"]["query_string"]["query"] = $search;
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
-     
+
         $query["query"]["bool"]["must"]["query_string"]["default_operator"] = "AND";
         $query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
         $query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
 
         //print_r(json_encode($query, true));
-        
+
         return compact('page', 'query', 'limit', 'skip');
-    }    
-    
+    }
+
 }
 
-class users {
-    
-    static function store_user ($userdata){
-	global $index;
-	
+class Users
+{
+    static function store_user($userdata)
+    {
+        global $index;
+
         $query["doc"]["nomeUsuario"] = $userdata->{'nomeUsuario'};
         $query["doc"]["tipoUsuario"] = $userdata->{'tipoUsuario'};
         $query["doc"]["emailPrincipalUsuario"] = $userdata->{'emailPrincipalUsuario'};
         $query["doc"]["emailAlternativoUsuario"] = $userdata->{'emailAlternativoUsuario'};
         $query["doc"]["emailUspUsuario"] = $userdata->{'emailUspUsuario'};
-        $query["doc"]["numeroTelefoneFormatado"] = $userdata->{'numeroTelefoneFormatado'};       
-        
+        $query["doc"]["numeroTelefoneFormatado"] = $userdata->{'numeroTelefoneFormatado'};
+
         $i = 0;
         foreach ($userdata->{'vinculo'} as $vinculo) {
             $query["doc"]["vinculo"][$i]["tipoVinculo"] = $vinculo->{'tipoVinculo'};
@@ -268,13 +271,15 @@ class users {
             'id' => "$num_usp",
             'body' => $query
         ];
-        $response = elasticsearch::elastic_update($num_usp,"users",$query);
-    }    
-    
+        $response = elasticsearch::elastic_update($num_usp, "users", $query);
+    }
+
 }
 
-class Facets {
-    public function facet($field,$size,$field_name,$sort,$sort_type,$get_search) {
+class Facets
+{
+    public function facet($field,$size,$field_name,$sort,$sort_type,$get_search)
+    {
         global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
@@ -283,133 +288,133 @@ class Facets {
             $query["aggs"]["counts"]["terms"]["order"][$sort_type] = $sort;
         }
         $query["aggs"]["counts"]["terms"]["size"] = $size;
-        
-        $response = elasticsearch::elastic_search($type,null,0,$query);
-	
-	$result_count = count($response["aggregations"]["counts"]["buckets"]);
-	
-		
-	if ($result_count == 0) {
-		
-	} elseif ($result_count <= 5) {
-	
-		echo '<li class="uk-parent">';    
-		echo '<a href="#" style="color:#333">'.$field_name.'</a>';
-		echo ' <ul class="uk-nav-sub">';
-		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {            
-            if ($facets['key'] == "Não preenchido") {
-                if(!empty($_SESSION['oauthuserdata'])){
+
+        $response = elasticsearch::elastic_search($type, null, 0, $query);
+
+        $result_count = count($response["aggregations"]["counts"]["buckets"]);
+
+        if ($result_count == 0) {
+
+        } elseif ($result_count <= 5) {
+
+            echo '<li class="uk-parent">';
+            echo '<a href="#" style="color:#333">'.$field_name.'</a>';
+            echo ' <ul class="uk-nav-sub">';
+            foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+                if ($facets['key'] == "Não preenchido") {
+                    if (!empty($_SESSION['oauthuserdata'])) {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
+                        echo '</div></li>';
+                    }
+                } else {
                     echo '<li>';
                     echo '<div uk-grid>
-                        <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>';
-                    echo '</div></li>';                   
+                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
+                        <div class="uk-width-1-3" style="color:#333">
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                        ';
+                    echo '</div></div></li>';
+
                 }
-            } else {
-                echo '<li>';
-                echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&','%26',$facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
-                    <div class="uk-width-1-3" style="color:#333">                    
-                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
-                    ';
-                echo '</div></div></li>';                
 
-            }    		
+            };
+            echo '</ul></li>';
 
-		};
-		echo   '</ul></li>';
-	
-	} else {
-		$i = 0;
-		echo '<li class="uk-parent">';    
-		echo '<a href="#" style="color:#333">'.$field_name.'</a>';
-		echo ' <ul class="uk-nav-sub">';
-		while ($i <= 5) {
-            if ($response["aggregations"]["counts"]["buckets"][$i]['key'] == "Não preenchido") {
-                if(!empty($_SESSION['oauthuserdata'])){
+        } else {
+            $i = 0;
+            echo '<li class="uk-parent">';
+            echo '<a href="#" style="color:#333">'.$field_name.'</a>';
+            echo ' <ul class="uk-nav-sub">';
+            while ($i <= 5) {
+                if ($response["aggregations"]["counts"]["buckets"][$i]['key'] == "Não preenchido") {
+                    if (!empty($_SESSION['oauthuserdata'])) {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'], 0, ',', '.').')</a></div>';
+                        echo '</div></li>';
+                    }
+                } else {
                     echo '<li>';
                     echo '<div uk-grid>
-                        <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>';
-                    echo '</div></li>';
-                }
-            } else {
-                echo '<li>';
-                echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&','%26',$response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
-                    <div class="uk-width-1-3" style="color:#333">                    
-                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
-                    ';
-                echo '</div></div></li>';                
+                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
+                        <div class="uk-width-1-3" style="color:#333">
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                        ';
+                    echo '</div></div></li>';
 
+                }
+
+                $i++;
             }
 
-			$i++;
-		}	
+            echo '<a href="#'.str_replace(".", "_", $field).'" uk-toggle>mais >></a>';
+            echo   '</ul></li>';
 
-		echo '<a href="#'.str_replace(".", "_", $field).'" uk-toggle>mais >></a>';
-		echo   '</ul></li>';
-		
-		
-		echo '
-		<div id="'.str_replace(".", "_", $field).'" uk-modal="center: true">
-			<div class="uk-modal-dialog">
-				<button class="uk-modal-close-default" type="button" uk-close></button>
-				<div class="uk-modal-header">
-					<h2 class="uk-modal-title">'.$field_name.'</h2>
-				</div>
-				<div class="uk-modal-body">
-				<ul class="uk-list">
-		';
-            
-		foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            if ($facets['key'] == "Não preenchido") {
-                if(!empty($_SESSION['oauthuserdata'])){
+
+            echo '
+            <div id="'.str_replace(".", "_", $field).'" uk-modal="center: true">
+                <div class="uk-modal-dialog">
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">'.$field_name.'</h2>
+                    </div>
+                    <div class="uk-modal-body">
+                    <ul class="uk-list">
+            ';
+
+            foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+                if ($facets['key'] == "Não preenchido") {
+                    if (!empty($_SESSION['oauthuserdata'])) {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
+                        echo '</div></li>';
+                    }
+
+                } else {
                     echo '<li>';
                     echo '<div uk-grid>
-                        <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>';
-                    echo '</div></li>';
-                }                   
+                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>
+                        <div class="uk-width-1-3" style="color:#333">
+                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
+                        ';
+                    echo '</div></div></li>';
+                }
+            };
+            echo '</ul>';
+            echo '
+            </div>
+            <div class="uk-modal-footer uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Fechar</button>
+            </div>
+            </div>
+            </div>
+            ';
 
-            } else {
-                echo '<li>';
-                echo '<div uk-grid>
-                    <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&','%26',$facets['key']).'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
-                    <div class="uk-width-1-3" style="color:#333">
-                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
-                    ';
-                echo '</div></div></li>';
-            }    
-		};
-		echo '</ul>';
-		echo '    
-		</div>
-		<div class="uk-modal-footer uk-text-right">
-			<button class="uk-button uk-button-default uk-modal-close" type="button">Fechar</button>
-		</div>
-		</div>
-		</div>
-		';
-	
+        }
+
     }
-    
-    }
-    
-    public function rebuild_facet($field,$size,$nome_do_campo) {
+
+    public function rebuild_facet($field,$size,$nome_do_campo)
+    {
         global $type;
         $query = $this->query;
         $query["aggs"]["counts"]["terms"]["field"] = "$field.keyword";
         if (isset($sort)) {
             $query["aggs"]["counts"]["terms"]["order"]["_count"] = "desc";
         }
-        $query["aggs"]["counts"]["terms"]["size"] = $size;        
-        
-        $response = elasticsearch::elastic_search($type,null,0,$query);
+        $query["aggs"]["counts"]["terms"]["size"] = $size;
+
+        $response = elasticsearch::elastic_search($type, null, 0, $query);
 
         echo '<li">';
         echo '<a href="#">'.$nome_do_campo.'</a>';
         echo ' <ul class="uk-list">';
         foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li class="uk-h6">';        
-            echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+            echo '<li class="uk-h6">';
+            echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a>';
             echo '</li>';
         };
         echo   '</ul>
@@ -417,7 +422,8 @@ class Facets {
 
     }
 
-    public function facet_range($field,$size,$nome_do_campo,$type_of_number = "") {
+    public function facet_range($field,$size,$nome_do_campo,$type_of_number = "")
+    {
         global $type;
         $query = $this->query;
         if ($type_of_number == "INT") {
@@ -443,99 +449,102 @@ class Facets {
             $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 5;
             $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 5;
             $query["aggs"]["ranges"]["range"]["ranges"][3]["to"] = 10;
-            $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;  
+            $query["aggs"]["ranges"]["range"]["ranges"][4]["from"] = 10;
         }
-      
-        //$query["aggs"]["counts"]["terms"]["size"] = $size;               
-        
-        $response = elasticsearch::elastic_search($type,null,0,$query);
 
-        $result_count = count($response["aggregations"]["ranges"]["buckets"]);       
-            
+        //$query["aggs"]["counts"]["terms"]["size"] = $size;
+
+        $response = elasticsearch::elastic_search($type, null, 0, $query);
+
+        $result_count = count($response["aggregations"]["ranges"]["buckets"]);
+
         if ($result_count > 0) {
-            echo '<li class="uk-parent">';    
+            echo '<li class="uk-parent">';
             echo '<a href="#" style="color:#333">'.$nome_do_campo.'</a>';
             echo ' <ul class="uk-nav-sub">';
             foreach ($response["aggregations"]["ranges"]["buckets"] as $facets) {
-                $facets_array = explode("-",$facets['key']);
+                $facets_array = explode("-", $facets['key']);
                 echo '<li>
                     <div uk-grid>
                     <div class="uk-width-3-3 uk-text-small" style="color:#333">';
                     echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':['.$facets_array[0].' TO '.$facets_array[1].']">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
                     echo '</div>';
-                
+
                 echo '</div></li>';
             };
             echo   '</ul></li>';
-        }    
+        }
 
 
     }
 }
 
-class citation {
-    
+class citation
+{
+
     /* Pegar o tipo de material */
-    static function get_type($material_type){
+    static function get_type($material_type)
+    {
         switch ($material_type) {
-            case "ARTIGO DE JORNAL":
-                return "article-newspaper";
-            break;
-            case "ARTIGO DE PERIODICO":
-                return "article-journal";
-            break;
-            case "PARTE DE MONOGRAFIA/LIVRO":
-                return "chapter";
-            break;
-            case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
-                return "interview";
-            break;
-            case "TRABALHO DE EVENTO-RESUMO":
-                return "paper-conference";
-            break;
-            case "TRABALHO DE EVENTO":
-                return "paper-conference";
-            break;     
-            case "TESE":
-                return "thesis";
-            break;          
-            case "TEXTO NA WEB":
-                return "post-weblog";
-            break;
+        case "ARTIGO DE JORNAL":
+            return "article-newspaper";
+        break;
+        case "ARTIGO DE PERIODICO":
+            return "article-journal";
+        break;
+        case "PARTE DE MONOGRAFIA/LIVRO":
+            return "chapter";
+        break;
+        case "APRESENTACAO SONORA/CENICA/ENTREVISTA":
+            return "interview";
+        break;
+        case "TRABALHO DE EVENTO-RESUMO":
+            return "paper-conference";
+        break;
+        case "TRABALHO DE EVENTO":
+            return "paper-conference";
+        break;
+        case "TESE":
+            return "thesis";
+        break;
+        case "TEXTO NA WEB":
+            return "post-weblog";
+        break;
         }
-    }    
-    
-    static function citation_query($citacao) {
+    }
+
+    static function citation_query($citacao)
+    {
 
         $array_citation = [];
         $array_citation["type"] = citation::get_type($citacao["type"]);
         $array_citation["title"] = $citacao["name"];
-        
+
         if (!empty($citacao["author"])) {
             $i = 0;
-            foreach ($citacao["author"] as $authors){
+            foreach ($citacao["author"] as $authors) {
                 $array_authors = explode(',', $authors["person"]["name"]);
                 $array_citation["author"][$i]["family"] = $array_authors[0];
-                if (!empty($array_authors[1])){
+                if (!empty($array_authors[1])) {
                     $array_citation["author"][$i]["given"] = $array_authors[1];
-                }                
+                }
                 $i++;
             }
         }
-        
+
         if (!empty($citacao["isPartOf"]["name"])) {
             $array_citation["container-title"] = $citacao["isPartOf"]["name"];
         }
         if (!empty($citacao["doi"])) {
             $array_citation["DOI"] = $citacao["doi"];
-        }        
+        }
         if (!empty($citacao["url"][0])) {
             $array_citation["URL"] = $citacao["url"][0];
         }
-        if ($citacao["base"][0] == "Teses e dissertações"){
+        if ($citacao["base"][0] == "Teses e dissertações") {
             $citacao["publisher"]["organization"]["name"] = "Universidade de São Paulo";
         }
-        
+
         if (!empty($citacao["publisher"]["organization"]["name"])) {
             $array_citation["publisher"] = $citacao["publisher"]["organization"]["name"];
         }
@@ -547,71 +556,74 @@ class citation {
         }
 
         if (!empty($citacao["isPartOf"]["USP"]["dados_do_periodico"])) {
-            $periodicos_array = explode(",",$citacao["isPartOf"]["USP"]["dados_do_periodico"]);
+            $periodicos_array = explode(",", $citacao["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
                 if (strpos($periodicos_array_new, 'v.') !== false) {
-                    $array_citation["volume"] = str_replace("v.","",$periodicos_array_new);
+                    $array_citation["volume"] = str_replace("v.", "", $periodicos_array_new);
                 } elseif (strpos($periodicos_array_new, 'n.') !== false) {
-                    $array_citation["issue"] = str_replace("n.","",$periodicos_array_new);
+                    $array_citation["issue"] = str_replace("n.", "", $periodicos_array_new);
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
-                    $array_citation["page"] = str_replace("p.","",$periodicos_array_new);
+                    $array_citation["page"] = str_replace("p.", "", $periodicos_array_new);
                 }
 
             }
-        }         
+        }
 
-       
+
         $json = json_encode($array_citation);
         $data = json_decode($json);
-        return $data;    
+        return $data;
     }
-    
+
 }
 
 class ui {
-    
+
     /* Montar a barra de paginação */
-    static function pagination ($page, $total, $limit, $t){
+    static function pagination($page, $total, $limit, $t)
+    {
 
         echo '<div class="uk-child-width-expand@s uk-grid-divider" uk-grid>';
-            echo '<div>';
-                echo '<ul class="uk-pagination uk-flex-center">';
-                if ($page == 1) {
-                    echo '<li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
-                } else {                    
-                    $_GET["page"] = $page-1 ;
-                    echo '<li><a href="result.php?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
-                }
-                echo '</ul>';
-            echo '</div>';
-            echo '<div>';
-                echo '<p class="uk-text-center">'.number_format($total,0,',','.') .'&nbsp;'. $t->gettext('registros').'</p>'; 
-            echo '</div>';
-            echo '<div>';
-                if (isset($_GET["sort"])) {
-                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace('&sort='.$_GET["sort"].'',"",$_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
-                } else {
-                    echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=name.keyword">'.$t->gettext('Ordenar por Título').'</a>';
-                }
-            echo '</div>';
-            echo '<div>';
-                echo '<ul class="uk-pagination uk-flex-center">';
-                    if ($total/$limit > $page){
-                        $_GET["page"] = $page+1;
-                        echo '<li class="uk-margin-auto-left"><a href="result.php?'.http_build_query($_GET).'">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
-                    } else {
-                        echo '<li class="uk-margin-auto-left"><a href="#">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
-                    }
-                echo '</ul>';    
-            echo '</div>';
-        echo '</div>';      
+        echo '<div>';
+        echo '<ul class="uk-pagination uk-flex-center">';
+        if ($page == 1) {
+            echo '<li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
+        } else {
+            $_GET["page"] = $page-1 ;
+            echo '<li><a href="result.php?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
+        }
+        echo '</ul>';
+        echo '</div>';
+        echo '<div>';
+        echo '<p class="uk-text-center">'.number_format($total, 0, ',', '.') .'&nbsp;'. $t->gettext('registros').'</p>';
+        echo '</div>';
+        echo '<div>';
+        if (isset($_GET["sort"])) {
+            echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace('&sort='.$_GET["sort"].'', "", $_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
+        } else {
+            echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=name.keyword">'.$t->gettext('Ordenar por Título').'</a>';
+        }
+        echo '</div>';
+        echo '<div>';
+        echo '<ul class="uk-pagination uk-flex-center">';
+        if ($total/$limit > $page) {
+            $_GET["page"] = $page+1;
+            echo '<li class="uk-margin-auto-left"><a href="result.php?'.http_build_query($_GET).'">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
+        } else {
+            echo '<li class="uk-margin-auto-left"><a href="#">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
+        }
+        echo '</ul>';
+        echo '</div>';
+        echo '</div>';
 
-    }    
+    }
 }
 
-class metrics {
+class metrics
+{
 
-    static function get_oadoi($doi) {
+    static function get_oadoi($doi)
+    {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -622,13 +634,14 @@ class metrics {
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        $data = json_decode($resp, TRUE);
+        $data = json_decode($resp, true);
         return $data;
         // Close request to clear up some resources
-        curl_close($curl);    
-    }    
+        curl_close($curl);
+    }
 
-    static function get_aminer($title){
+    static function get_aminer($title)
+    {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -639,13 +652,14 @@ class metrics {
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        $data = json_decode($resp, TRUE);
+        $data = json_decode($resp, true);
         return $data;
         // Close request to clear up some resources
         curl_close($curl);
     }
-    
-    static function get_opencitation_doi($doi) {
+
+    static function get_opencitation_doi($doi)
+    {
         $sparql = new EasyRdf_Sparql_Client('http://opencitations.net/sparql');
         $result = $sparql->query(
             'PREFIX cito: <http://purl.org/spar/cito/>
@@ -656,16 +670,17 @@ class metrics {
               ?id a datacite:Identifier ;
                 datacite:usesIdentifierScheme datacite:doi ;
                 literal:hasLiteralValue "'.$doi.'" .
-              ?br 
+              ?br
                 datacite:hasIdentifier ?id ;
                 ^cito:cites ?citing .
               ?citing dcterms:title ?title
             }'
-        );        
+        );
         return $result;
     }
-    
-    static function get_wikipedia($url){
+
+    static function get_wikipedia($url)
+    {
         // Get cURL resource
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -676,30 +691,31 @@ class metrics {
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        $data = json_decode($resp, TRUE);
+        $data = json_decode($resp, true);
         return $data;
         // Close request to clear up some resources
         curl_close($curl);
-    }     
+    }
 
 }
 
 class authorities {
-    static function tematres($term,$tematres_url) {
+    static function tematres($term, $tematres_url)
+    {
         // Clean term
-        $term = preg_replace("/\s+/"," ",$term);
-        $clean_term = str_replace (array("\r\n", "\n", "\r"), "", $term);
+        $term = preg_replace("/\s+/", " ", $term);
+        $clean_term = str_replace(array("\r\n", "\n", "\r"), "", $term);
         $clean_term = preg_replace('/^\s+|\s+$/', '', $clean_term);
-        $clean_term = str_replace ("\t\n\r\0\x0B\xc2\xa0"," ",$clean_term);
+        $clean_term = str_replace("\t\n\r\0\x0B\xc2\xa0", " ", $clean_term);
         $clean_term = trim($clean_term, " \t\n\r\0\x0B\xc2\xa0");
         $clean_term = rawurlencode($clean_term);
         $clean_term_p = $term;
-        $clean_term = str_replace("%C2%A0","%20",$clean_term);
+        $clean_term = str_replace("%C2%A0", "%20", $clean_term);
 
         // Query tematres
         $ch = curl_init();
         $method = "GET";
-        $url = ''.$tematres_url.'?task=fetch&arg='.$clean_term.'&output=json';                            
+        $url = ''.$tematres_url.'?task=fetch&arg='.$clean_term.'&output=json';
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
@@ -708,10 +724,10 @@ class authorities {
         curl_close($ch);
 
         // Get correct term
-        if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {                                        
-            foreach($resultado_get_id_tematres["result"] as $key => $val) {
+        if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {
+            foreach ($resultado_get_id_tematres["result"] as $key => $val) {
                 $term_key = $key;
-            }            
+            }
             $ch = curl_init();
             $method = "GET";
             $url = ''.$tematres_url.'?task=fetchTerm&arg='.$term_key.'&output=json';
@@ -732,19 +748,19 @@ class authorities {
             curl_setopt($ch_country, CURLOPT_CUSTOMREQUEST, strtoupper($method));
             $result_country = curl_exec($ch_country);
             $resultado_country = json_decode($result_country, true);
-            foreach ($resultado_country["result"] as $country_list){
+            foreach ($resultado_country["result"] as $country_list) {
                 if ($country_list["order"] == 1) {
                     $country = $country_list["string"];
                 }
-            }            
+            }
             curl_close($ch_country);
 
         } else {
             $term_not_found = $clean_term_p;
             $found_term = "";
             $country = "ND";
-        } 
-        return compact('found_term','term_not_found','country');       
+        }
+        return compact('found_term', 'term_not_found', 'country');
     }
 }
 
@@ -755,18 +771,18 @@ class authorities {
  * @package  DSpaceREST
  * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
  * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     http://github.com/sibiusp/nav_elastic 
+ * @link     http://github.com/sibiusp/nav_elastic
  */
-class DSpaceREST 
+class DSpaceREST
 {
     static function loginREST()
     {
-    
+
         global $dspaceRest;
         global $dspaceEmail;
         global $dspacePassword;
         $ch = curl_init();
-    
+
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/login");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -774,16 +790,16 @@ class DSpaceREST
             http_build_query(array('email' => $dspaceEmail,'password' => $dspacePassword))
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
+
         $server_output = curl_exec($ch);
         $output_parsed = explode(" ", $server_output);
-        
+
         return $output_parsed[3];
-        
-        curl_close($ch);  
-    
-    } 
-    
+
+        curl_close($ch);
+
+    }
+
     static function logoutREST($cookies)
     {
         global $dspaceRest;
@@ -795,22 +811,22 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $server_output = curl_exec($ch);
         curl_close($ch);
-    } 
-    
-    static function searchItemDSpace($sysno, $cookies = NULL)
+    }
+
+    static function searchItemDSpace($sysno, $cookies = null)
     {
         global $dspaceRest;
-        $data_string = "{\"key\":\"usp.sysno\", \"value\":\"$sysno\"}";  
-        $ch = curl_init();          
+        $data_string = "{\"key\":\"usp.sysno\", \"value\":\"$sysno\"}";
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/find-by-metadata-field");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
         }
         $output = curl_exec($ch);
@@ -819,44 +835,44 @@ class DSpaceREST
             return $result[0]["uuid"];
         } else {
             return "";
-        }        
+        }
         curl_close($ch);
     }
-    
+
     static function getBitstreamDSpace($itemID, $cookies = NULL)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$itemID/bitstreams");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)) { 
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
-        }  
+        }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
     }
 
-    static function getBitstreamPolicyDSpace($bitstreamID, $cookies = NULL)
+    static function getBitstreamPolicyDSpace($bitstreamID, $cookies = null)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)) { 
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
-        }  
+        }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
         return $result;
@@ -866,22 +882,22 @@ class DSpaceREST
     static function deleteBitstreamPolicyDSpace($bitstreamID, $policyID, $cookies)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy/$policyID");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",                                                                          
-            'Content-Type: application/json'      
-            )                                                                       
+            "Cookie: $cookies",
+            'Content-Type: application/json'
+            )
         );
         $output = curl_exec($ch);
         //var_dump($output);
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
-    } 
-    
+    }
+
     static function addBitstreamPolicyDSpace($bitstreamID, $policyAction, $groupId, $resourceType, $rpType, $cookies)
     {
         global $dspaceRest;
@@ -896,75 +912,75 @@ class DSpaceREST
         $policyArray["startDate"] =  "";
         $policyArray["endDate"] =  "";
         $data_string = json_encode($policyArray);
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        if (!empty($cookies)) { 
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
-        }  
+        }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
-    }    
-    
+    }
+
     static function getBitstreamRestrictedDSpace($bitstreamID, $cookies)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/retrieve/64171-196117-1-PB.pdf");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)) { 
+        if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
-        }  
-        $output = curl_exec($ch);    
+        }
+        $output = curl_exec($ch);
         var_dump($output);
         //$result = json_decode($output, true);
         return $result;
         curl_close($ch);
-    }      
-    
+    }
+
     static function createItemDSpace($dataString,$collection,$cookies)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/collections/$collection/items");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",                                                                          
-            'Content-Type: application/json'      
-            )                                                                       
+            "Cookie: $cookies",
+            'Content-Type: application/json'
+            )
         );
         $output = curl_exec($ch);
         curl_close($ch);
-      
+
     }
-    
+
     static function deleteItemDSpace($uuid, $cookies)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
         }
         $output = curl_exec($ch);
@@ -980,14 +996,14 @@ class DSpaceREST
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/bitstreams?name=$filename&description=$userBitstream");
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);      
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($file["file"]["tmp_name"]));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",                                                                          
+            "Cookie: $cookies",
             'Content-Type: text/plain',
-            'Accept: application/json'      
-            )                                                                       
-        );        
+            'Accept: application/json'
+            )
+        );
         $output = curl_exec($ch);
         $result = json_decode($output, true);
         curl_close($ch);
@@ -997,142 +1013,143 @@ class DSpaceREST
     static function deleteBitstreamDSpace($bitstreamId, $cookies)
     {
         global $dspaceRest;
-        $ch = curl_init();          
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamId");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         if (!empty($cookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",                                                                          
-                'Content-Type: application/json'      
-                )                                                                       
+                "Cookie: $cookies",
+                'Content-Type: application/json'
+                )
             );
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
-    }    
-    
-    static function buildDC($cursor,$sysno) {
+    }
+
+    static function buildDC($cursor,$sysno) 
+    {
         $arrayDC["type"] = "item";
-    
+
         /* Title */
         $title["key"] = "dc.title";
         $title["language"] = "pt_BR";
         $title["value"] = $cursor["_source"]["name"];
         $arrayDC["metadata"][] = $title;
         $title = [];
-    
+
         /* Sysno */
         $sysnoArray["key"] = "usp.sysno";
         $sysnoArray["language"] = "pt_BR";
-        $sysnoArray["value"] = $sysno;    
+        $sysnoArray["value"] = $sysno;
         $arrayDC["metadata"][] = $sysnoArray;
         $sysnoArray = [];
-    
+
         // /* Abstract */
         // if (!empty($marc["record"]["940"]["a"])){
         //     $abstractArray["key"] = "dc.description.abstract";
         //     $abstractArray["language"] = "pt_BR";
-        //     $abstractArray["value"] = $marc["record"]["940"]["a"][0];    
+        //     $abstractArray["value"] = $marc["record"]["940"]["a"][0];
         //     $arrayDC["metadata"][] = $abstractArray;
-        //     $abstractArray = []; 
+        //     $abstractArray = [];
         // } elseif (!empty($marc["record"]["520"]["a"])){
         //     $abstractArray["key"] = "dc.description.abstract";
         //     $abstractArray["language"] = "pt_BR";
-        //     $abstractArray["value"] = $marc["record"]["520"]["a"][0];    
+        //     $abstractArray["value"] = $marc["record"]["520"]["a"][0];
         //     $arrayDC["metadata"][] = $abstractArray;
-        //     $abstractArray = []; 
+        //     $abstractArray = [];
         // }
-    
-        
+
+
         /* DateIssued */
         $dateIssuedArray["key"] = "dc.date.issued";
         $dateIssuedArray["language"] = "pt_BR";
-        $dateIssuedArray["value"] = $cursor["_source"]["datePublished"];    
+        $dateIssuedArray["value"] = $cursor["_source"]["datePublished"];
         $arrayDC["metadata"][] = $dateIssuedArray;
         $dateIssuedArray = [];
-        
+
         /* DOI */
         if (!empty($cursor["_source"]["doi"])) {
             $DOIArray["key"] = "dc.identifier";
             $DOIArray["language"] = "pt_BR";
-            $DOIArray["value"] = $cursor["_source"]["doi"];    
+            $DOIArray["value"] = $cursor["_source"]["doi"];
             $arrayDC["metadata"][] = $DOIArray;
-            $DOIArray = []; 
+            $DOIArray = [];
         }
-        
+
         /* IsPartOf */
         if (!empty($cursor["_source"]["isPartOf"])) {
             $IsPartOfArray["key"] = "dc.relation.ispartof";
             $IsPartOfArray["language"] = "pt_BR";
-            $IsPartOfArray["value"] = $cursor["_source"]["isPartOf"]["name"];    
+            $IsPartOfArray["value"] = $cursor["_source"]["isPartOf"]["name"];
             $arrayDC["metadata"][] = $IsPartOfArray;
-            $IsPartOfArray = [];       
+            $IsPartOfArray = [];
         }
 
-        /* Authors */    
+        /* Authors */
         foreach ($cursor["_source"]["author"] as $author) {
             $authorArray["key"] = "dc.contributor.author";
             $authorArray["language"] = "pt_BR";
-            $authorArray["value"] = $author["person"]["name"];    
-            $arrayDC["metadata"][] = $authorArray; 
-            $authorArray = [];     
-        }         
-    
-    
+            $authorArray["value"] = $author["person"]["name"];
+            $arrayDC["metadata"][] = $authorArray;
+            $authorArray = [];
+        }
+
+
         /* Unidade USP */
         if (isset($cursor["_source"]["authorUSP"])) {
             foreach ($cursor["_source"]["authorUSP"] as $unidadeUSP) {
                 $unidadeUSPArray["key"] = "usp.unidadeUSP";
                 $unidadeUSPArray["language"] = "pt_BR";
-                $unidadeUSPArray["value"] = $unidadeUSP["unidadeUSP"];    
-                $arrayDC["metadata"][] = $unidadeUSPArray; 
-                $unidadeUSPArray = [];  
-                
+                $unidadeUSPArray["value"] = $unidadeUSP["unidadeUSP"];
+                $arrayDC["metadata"][] = $unidadeUSPArray;
+                $unidadeUSPArray = [];
+
                 $authorUSPArray["key"] = "usp.authorUSP.name";
                 $authorUSPArray["language"] = "pt_BR";
-                $authorUSPArray["value"] = $unidadeUSP["name"];    
-                $arrayDC["metadata"][] = $authorUSPArray; 
-                $authorUSPArray = [];            
-            }  
-        }  
-    
-        /* Subject */        
+                $authorUSPArray["value"] = $unidadeUSP["name"];
+                $arrayDC["metadata"][] = $authorUSPArray;
+                $authorUSPArray = [];
+            }
+        }
+
+        /* Subject */
         foreach ($cursor["_source"]["about"] as $subject) {
             $subjectArray["key"] = "dc.subject.other";
             $subjectArray["language"] = "pt_BR";
-            $subjectArray["value"] = $subject;    
-            $arrayDC["metadata"][] = $subjectArray; 
-            $subjectArray = [];     
+            $subjectArray["value"] = $subject;
+            $arrayDC["metadata"][] = $subjectArray;
+            $subjectArray = [];
         }
-        
+
         /* USP Type */
         $USPTypeArray["key"] = "usp.type";
         $USPTypeArray["language"] = "pt_BR";
         $USPTypeArray["value"] = $cursor["_source"]["type"];
         $arrayDC["metadata"][] = $USPTypeArray;
         $USPTypeArray = [];
-    
+
         $jsonDC = json_encode($arrayDC);
         return $jsonDC;
-    
-    } 
-    
-    static function testREST($cookies) 
+
+    }
+
+    static function testREST($cookies)
     {
         global $dspaceRest;
-        $ch = curl_init();      
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/status");
         curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);        
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $server_output = curl_exec($ch);
-        print_r($server_output);  
-        curl_close($ch);  
-      
-      }     
+        print_r($server_output);
+        curl_close($ch);
+
+    }
 }
 
 ?>
