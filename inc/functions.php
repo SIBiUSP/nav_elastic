@@ -1269,7 +1269,7 @@ class Record
                 echo '<li><a href="'.$url_base.'/result.php?search[]=funder:&quot;'.$funder["name"].'&quot;">'.$funder["name"].'</a>';
                 if (!empty($funder["projectNumber"]) && $funder["name"] == "Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP)") {
                     foreach ($funder["projectNumber"] as $projectNumber) {
-                        echo '<p>Projeto: <a href="http://bv.fapesp.br/pt/processo/'.$projectNumber.'" target="_blank" rel="noopener noreferrer">'.$projectNumber.'</a></p>';
+                        echo '<p>Processo FAPESP: <a href="http://bv.fapesp.br/pt/processo/'.str_replace(" ", "", $projectNumber).'" target="_blank" rel="noopener noreferrer">'.$projectNumber.'</a></p>';
                     }
                 }
                 echo '</li>';
