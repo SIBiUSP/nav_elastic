@@ -6,17 +6,20 @@
 /**
  * Classe de interação com o Elasticsearch
  */
-class elasticsearch {
+class elasticsearch 
+{
 
     /**
      * Executa o commando get no Elasticsearch
      * 
-     * @param string $_id ID do documento
-     * @param string $type Tipo de documento no índice do Elasticsearch                         
+     * @param string   $_id               ID do documento.
+     * @param string   $type              Tipo de documento no índice do Elasticsearch                         
      * @param string[] $fields Informa quais campos o sistema precisa retornar. Se nulo, o sistema retornará tudo.
+     * @param string $alternative_index Caso use indice alternativo
      * 
      */
-    public static function elastic_get ($_id,$type,$fields,$alternative_index = "") {
+    public static function elastic_get ($_id,$type,$fields,$alternative_index = "") 
+    {
         global $index;
         global $client;
         $params = [];
@@ -306,7 +309,7 @@ class Facets {
                 echo '<div uk-grid>
                     <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&','%26',$facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
                     <div class="uk-width-1-3" style="color:#333">                    
-                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
                     ';
                 echo '</div></div></li>';                
 
@@ -333,7 +336,7 @@ class Facets {
                 echo '<div uk-grid>
                     <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&','%26',$response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
                     <div class="uk-width-1-3" style="color:#333">                    
-                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="NÃO" style="color:#0040ff;font-size: 65%">Não</a>
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
                     ';
                 echo '</div></div></li>';                
 
@@ -342,12 +345,12 @@ class Facets {
 			$i++;
 		}	
 
-		echo '<a href="#'.str_replace(".","_",$field).'" uk-toggle>mais >></a>';
+		echo '<a href="#'.str_replace(".", "_", $field).'" uk-toggle>mais >></a>';
 		echo   '</ul></li>';
 		
 		
 		echo '
-		<div id="'.str_replace(".","_",$field).'" uk-modal="center: true">
+		<div id="'.str_replace(".", "_", $field).'" uk-modal="center: true">
 			<div class="uk-modal-dialog">
 				<button class="uk-modal-close-default" type="button" uk-close></button>
 				<div class="uk-modal-header">
@@ -371,7 +374,7 @@ class Facets {
                 echo '<div uk-grid>
                     <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&','%26',$facets['key']).'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></div>
                     <div class="uk-width-1-3" style="color:#333">
-                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Não</a>
+                    <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
                     ';
                 echo '</div></div></li>';
             }    
