@@ -83,7 +83,7 @@
 
                 </li>
                 <li class="uk-active">
-                    <a href="<?php echo $url_base; ?>/tutorial/" target="_blank"><?php echo $t->gettext('Tutorial'); ?></a>
+                    <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
                 </li>                
              </ul>
         </div>
