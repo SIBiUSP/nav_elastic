@@ -11,8 +11,8 @@
                 <a href=http://www.usp.br/sibi/><img src="inc/images/sibi.png" title="SIBi - Sistema Integrado de Bibliotecas da USP" width=150 height=69 border=0 /></a>
                 <div class="uspmenu_top_usp">
                     <ul>
-                        <li><a href="http://www.producao.usp.br/a/barrausp/barra/creditos.html" target=_blank>Créditos</a></li>
-                        <li><a href="http://www.producao.usp.br/a/barrausp/barra/contato.html" target=_blank>Fale com o SIBi</a></li>
+                        <li><a href="http://www.producao.usp.br/a/barrausp/barra/creditos.html" target="_blank" rel="noopener noreferrer">Créditos</a></li>
+                        <li><a href="http://www.producao.usp.br/a/barrausp/barra/contato.html" target="_blank" rel="noopener noreferrer">Fale com o SIBi</a></li>
                         <div><img src="inc/images/spacer.gif" width=10 height=10 /></div>
                         <div class="panel-heading">PORTAL DE BUSCA INTEGRADA</div>
                         <div class="panel-body">Um único ponto de acesso a todos os conteúdos informacionais disponíveis para a comunidade USP.</div>
@@ -44,47 +44,47 @@
             <div class="column">
                 <ul class="uspmenu_top_usp">
                     <div class="panel-heading">BIBLIOTECAS USP</div>
-                    <li><a href="http://www.bibliotecas.usp.br/lista.htm" target="_blank">Lista alfabética</a></li>
-                    <li><a href="http://www.sibi.usp.br/30anos" target="_blank">SIBiUSP 30 Anos</a></li>
+                    <li><a href="http://www.bibliotecas.usp.br/lista.htm" target="_blank" rel="noopener noreferrer">Lista alfabética</a></li>
+                    <li><a href="http://www.sibi.usp.br/30anos" target="_blank" rel="noopener noreferrer">SIBiUSP 30 Anos</a></li>
                 </ul>
                 <ul class="uspmenu_top_usp">
                     <div class="panel-heading">PRODUTOS E SERVIÇOS</div>
-                    <li><a href="http://www.acessoaberto.usp.br/" target="_blank">Acesso Aberto</a></li>
-                    <li><a href="http://dedalus.usp.br/" target="_blank">Acesso ao catálogo Dedalus</a></li>
-                    <li><a href="http://www.buscaintegrada.usp.br" target="_blank">Portal de Busca Integrada</a></li>
-                    <li><a href="http://www.sibi.usp.br/Vocab/" target="_blank">Vocabulário Controlado</a></li>
-                    <li><a href="http://workshop.sibi.usp.br/index.php"  target="_blank">Writing Center - WorkShops</a></li>
+                    <li><a href="http://www.acessoaberto.usp.br/" target="_blank" rel="noopener noreferrer">Acesso Aberto</a></li>
+                    <li><a href="http://dedalus.usp.br/" target="_blank" rel="noopener noreferrer">Acesso ao catálogo Dedalus</a></li>
+                    <li><a href="http://www.buscaintegrada.usp.br" target="_blank" rel="noopener noreferrer">Portal de Busca Integrada</a></li>
+                    <li><a href="http://www.sibi.usp.br/Vocab/" target="_blank" rel="noopener noreferrer">Vocabulário Controlado</a></li>
+                    <li><a href="http://workshop.sibi.usp.br/index.php"  target="_blank" rel="noopener noreferrer">Writing Center - WorkShops</a></li>
                 </ul>
             </div>
             <div class="column">
                 <ul class="uspmenu_top_usp">
                     <div class="panel-heading">BIBLIOTECAS DIGITAIS</div>
-                    <li><a href="http://bore.usp.br" target="_blank">Obras Raras e Especiais</a></li>
-                    <li><a href="http://revistas.usp.br" target="_blank">Portal de Revistas</a></li>
-                    <li><a href="http://www.producao.usp.br" target="_blank">Biblioteca Digital da Produção Intelectual (BDPI)</a></li>
+                    <li><a href="http://bore.usp.br" target="_blank" rel="noopener noreferrer">Obras Raras e Especiais</a></li>
+                    <li><a href="http://revistas.usp.br" target="_blank" rel="noopener noreferrer">Portal de Revistas</a></li>
+                    <li><a href="http://www.producao.usp.br" target="_blank" rel="noopener noreferrer">Biblioteca Digital da Produção Intelectual (BDPI)</a></li>
                 </ul>
                 <ul class="uspmenu_top_usp">
                     <div class="panel-heading">PARCERIAS INTERNAS</div>
-                    <li><a href="http://repositorio.iau.usp.br" target="_blank">Repositório Digital IAU</a></li>
-                    <li><a href="http://www.brasiliana.usp.br" target="_blank">Biblioteca Digital Brasiliana</a></li>
-                    <li><a href="http://www.ieb.usp.br/catalogo_eletronico" target="_blank">Biblioteca Digital do IEB</a></li>
-                    <li><a href="http://www.mapashistoricos.usp.br" target="_blank">Cartografia Histórica</a></li>
-                    <li><a href="http://www.teses.usp.br" target="_blank">Teses/Dissertações</a></li>
+                    <li><a href="http://repositorio.iau.usp.br" target="_blank" rel="noopener noreferrer">Repositório Digital IAU</a></li>
+                    <li><a href="http://www.brasiliana.usp.br" target="_blank" rel="noopener noreferrer">Biblioteca Digital Brasiliana</a></li>
+                    <li><a href="http://www.ieb.usp.br/catalogo_eletronico" target="_blank" rel="noopener noreferrer">Biblioteca Digital do IEB</a></li>
+                    <li><a href="http://www.mapashistoricos.usp.br" target="_blank" rel="noopener noreferrer">Cartografia Histórica</a></li>
+                    <li><a href="http://www.teses.usp.br" target="_blank" rel="noopener noreferrer">Teses/Dissertações</a></li>
                 </ul>             
             </div>
             <div class="column">
                 <ul class="uspmenu_top_usp">
                     <div class="panel-heading">PARCERIAS EXTERNAS</div>
-                    <li><a href="http://regional.bvsalud.org/php/index.php" target="_blank">BVS em Saúde</a></li>
-                    <li><a href="http://enfermagem.bvs.br/php/index.php" target="_blank">BVS em Enfermagem</a></li>
-                    <li><a href="http://odontologia.bvs.br" target="_blank">BVS em Odontologia</a></li>
-                    <li><a href="http://www.bvs-psi.org.br"  target="_blank">BVS Psicologia Brasil</a></li>
-                    <li><a href="http://www.saudepublica.bvs.br/php/index.php" target="_blank">BVS em Saúde Pública</a></li>
-                    <li><a href="http://www.bvmemorial.fapesp.br" target="_blank">Biblioteca Virtual da América Latina</a></li>
-                    <li><a href="http://www.bv.fapesp.br" target="_blank">Biblioteca Virtual da FAPESP</a></li>
-                    <li><a href="http://ppegeo.igc.usp.br/scielo.php" target="_blank">PaGEO (Geociências)</a></li>
-                    <li><a href="http://www.periodicos.capes.gov.br" target="_blank">Portal CAPES</a></li>
-                    <li><a href="http://www.scielo.org/php/index.php?lang=pt" target="_blank">SciELO</a></li>
+                    <li><a href="http://regional.bvsalud.org/php/index.php" target="_blank" rel="noopener noreferrer">BVS em Saúde</a></li>
+                    <li><a href="http://enfermagem.bvs.br/php/index.php" target="_blank" rel="noopener noreferrer">BVS em Enfermagem</a></li>
+                    <li><a href="http://odontologia.bvs.br" target="_blank" rel="noopener noreferrer">BVS em Odontologia</a></li>
+                    <li><a href="http://www.bvs-psi.org.br"  target="_blank" rel="noopener noreferrer">BVS Psicologia Brasil</a></li>
+                    <li><a href="http://www.saudepublica.bvs.br/php/index.php" target="_blank" rel="noopener noreferrer">BVS em Saúde Pública</a></li>
+                    <li><a href="http://www.bvmemorial.fapesp.br" target="_blank" rel="noopener noreferrer">Biblioteca Virtual da América Latina</a></li>
+                    <li><a href="http://www.bv.fapesp.br" target="_blank" rel="noopener noreferrer">Biblioteca Virtual da FAPESP</a></li>
+                    <li><a href="http://ppegeo.igc.usp.br/scielo.php" target="_blank" rel="noopener noreferrer">PaGEO (Geociências)</a></li>
+                    <li><a href="http://www.periodicos.capes.gov.br" target="_blank" rel="noopener noreferrer">Portal CAPES</a></li>
+                    <li><a href="http://www.scielo.org/php/index.php?lang=pt" target="_blank" rel="noopener noreferrer">SciELO</a></li>
                 </ul>             
             </div>
         </div>   

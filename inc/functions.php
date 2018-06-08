@@ -556,7 +556,7 @@ class Results
             foreach ($xml->item as $item) {
                 $bib_fisica = explode("-", $item->{'sub-library'});
                 echo '<tr>';
-                echo '<td><small><a target="_blank" href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'">'.$item->{'sub-library'}.'</a></small></td>';
+                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'" target="_blank" rel="noopener noreferrer">'.$item->{'sub-library'}.'</a></small></td>';
                 echo '<td><small>'.$item->{'barcode'}.'</small></td>';
                 echo '<td><small>'.$item->{'item-status'}.'</small></td>';
                 echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
@@ -1266,7 +1266,13 @@ class Record
             echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Agências de fomento').': ';
             echo '<ul class="uk-list uk-list-striped uk-text-small">';
             foreach ($this->funderArray as $funder) {                
-                echo '<li><a href="'.$url_base.'/result.php?search[]=funder:&quot;'.$funder.'&quot;">'.$funder.'</a></li>';
+                echo '<li><a href="'.$url_base.'/result.php?search[]=funder:&quot;'.$funder["name"].'&quot;">'.$funder["name"].'</a>';
+                if (!empty($funder["projectNumber"]) && $funder["name"] == "Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP)") {
+                    foreach ($funder["projectNumber"] as $projectNumber) {
+                        echo '<p>Projeto: <a href="http://bv.fapesp.br/pt/processo/'.$projectNumber.'" target="_blank" rel="noopener noreferrer">'.$projectNumber.'</a></p>';
+                    }
+                }
+                echo '</li>';
             }
             echo '</ul></p></div>';
         }
@@ -1325,7 +1331,7 @@ class Record
 
         /* DOI */
         if (!empty($this->doi)) {
-            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://dx.doi.org/'.$this->doi.'">'.$this->doi.'</a></p>';
+            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://dx.doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">'.$this->doi.'</a></p>';
         }
 
         /* Source */
@@ -1359,11 +1365,11 @@ class Record
             echo '<p class="uk-text-small">'.$t->gettext('Acesso online ao documento').'</p>';
             if (!empty($this->url)) {
                 foreach ($this->url as $url) {
-                    echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank">'.$t->gettext('Acesso online à fonte').'</a>';
+                    echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer">'.$t->gettext('Acesso online à fonte').'</a>';
                 }
             }
             if (!empty($this->doi)) {
-                echo '<a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/'.$this->doi.'" target="_blank">DOI</a>';
+                echo '<a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
             }
 
             $sfx_array[] = 'rft.atitle='.$this->name.'';
@@ -1380,7 +1386,7 @@ class Record
             if (!empty($r["_source"]['ispartof_data'][0])) {
                 $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';
             }                                             
-            echo ' <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank">'.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
+            echo ' <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
         echo '</div>';
 
     }      
@@ -1400,7 +1406,7 @@ class Record
                 echo '<p>'.$t->gettext('Métricas').'</p>';
                 echo '<div uk-grid>';
                     echo '<div data-badge-popover="right" data-badge-type="1" data-doi="'.$doi.'" data-hide-no-mentions="true" class="altmetric-embed"></div>';
-                    echo '<div><a href="https://plu.mx/plum/a/?doi='.$doi.'" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>';
+                    echo '<div><a href="https://plu.mx/plum/a/?doi='.$doi.'" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true" target="_blank" rel="noopener noreferrer"></a></div>';
                     if ($doi != "Não informado") {
                         echo '<div><object data="http://api.elsevier.com/content/abstract/citation-count?doi='.$doi.'&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>';
                     }

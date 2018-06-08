@@ -122,7 +122,7 @@ if (isset($_GET["sort"])) {
                     $notFilters = str_replace($name_field[0].":", "", $notFilters);
                     $diff["notFilter"] = array_diff($_GET["notFilter"], $notFiltersArray);
                     $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                    echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Excluindo: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                    echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
                     unset($notFiltersArray);
                 }
             }                 
@@ -161,7 +161,7 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("releasedEvent", 50, $t->gettext('Nome do evento'), null, "_term", $_GET["search"]);
                                 $facets->facet("country", 200, $t->gettext('País de publicação'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]);
-                                $facets->facet("funder", 50, $t->gettext('Agência de fomento'), null, "_term", $_GET["search"]);
+                                $facets->facet("funder.name", 50, $t->gettext('Agência de fomento'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.indexacao", 50, $t->gettext('Indexado em'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
@@ -169,27 +169,22 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("author.person.affiliation.name", 50, $t->gettext('Afiliação dos autores externos normalizada'), null, "_term", $_GET["search"]);
                                 $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);                                    
                                 $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);  
-                                //$facets->facet("author.person.affiliation.pais_tematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
+                                $facets->facet("author.person.affiliation.locationTematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                             <?php 
-                                $facets->facet("USP.serial_metrics.qualis.2012.area", 50, $t->gettext('Qualis 2010/2012 - Área'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2012.nota", 50, $t->gettext('Qualis 2010/2012 - Nota'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2012.area_nota", 50, $t->gettext('Qualis 2010/2012 - Área / Nota'), null, "_term", $_GET["search"]);
-                            ?>                                
-                            <?php 
-                                $facets->facet("USP.serial_metrics.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.qualis.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.qualis.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.qualis.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
                             ?>
                             <?php
-                                $facets->facet("USP.WOS.coverage", 50, $t->gettext('Índices da Web of Science'), null, "_term", $_GET["search"]);
-                                $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
-                                $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
-                                $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.citescore", 100, "Scopus - Citescore - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.SJR", 100, "Scopus - SJR - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.SNIP", 100, "Scopus - SNIP - 2016");
+                                //$facets->facet("USP.WOS.coverage", 50, $t->gettext('Índices da Web of Science'), null, "_term", $_GET["search"]);
+                                //$facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
+                                //$facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
+                                //$facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
+                                $facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
+                                $facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
+                                $facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
                                 //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
                                 
                             ?>

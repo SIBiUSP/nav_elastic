@@ -122,7 +122,7 @@
                 
                 
                 
-                <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
+                <li class="uk-active"><a href="http://sibi.usp.br" target="_blank" rel="noopener noreferrer">SIBiUSP</a></li>
             </ul>
         </div>            
     </div>
@@ -145,7 +145,7 @@
                     <li class="uk-nav-divider"></li>
                     <li class="uk-active"><a href="contact.php"><?php echo $t->gettext('Contato'); ?></a></li>
                     <li class="uk-active"><a href="sobre.php"><?php echo $t->gettext('Sobre'); ?></a></li>
-                    <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
+                    <li class="uk-active"><a href="http://sibi.usp.br" target="_blank" rel="noopener noreferrer">SIBiUSP</a></li>
                 </ul>
 
             </div>

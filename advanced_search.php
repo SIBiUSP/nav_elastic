@@ -58,7 +58,7 @@
                                 <br/>
                                 <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="search[]" data-validation="required"></textarea>
                                 <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
-                                <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank">Consultar referência</a>
+                                <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank" rel="noopener noreferrer">Consultar referência</a>
                             </fieldset>
                         </form>
                         <form role="form" action="result.php" method="get">
