@@ -224,13 +224,13 @@ class PageSingle
         $count_files = count(glob('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'/*',GLOB_BRACE));
         $rights = '{"rights":"'.$_POST["rights"].'"},';
         
-        if (!empty($_POST["embargo_date"])){
+        if (!empty($_POST["embargo_date"])) {
             $embargo_date = '{"embargo_date":"'.$_POST["embargo_date"].'"},';
         } else {
             $embargo_date = '{"embargo_date":""},';
         }
         
-        if ($_FILES['upload_file']['type'] == 'application/pdf'){
+        if ($_FILES['upload_file']['type'] == 'application/pdf') {
             $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pdf");
         } else {
             $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pptx");
@@ -299,16 +299,16 @@ class PageSingle
         }
 
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
-            $periodicos_array = explode(",",$record["isPartOf"]["USP"]["dados_do_periodico"]);
+            $periodicos_array = explode(",", $record["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
                 if (strpos($periodicos_array_new, 'v.') !== false) {
                     echo '
-                    <meta name="citation_volume" content="'.trim(str_replace("v.","",$periodicos_array_new)).'">';
+                    <meta name="citation_volume" content="'.trim(str_replace("v.", "", $periodicos_array_new)).'">';
                 } elseif (strpos($periodicos_array_new, 'n.') !== false) {
                     echo '
-                    <meta name="citation_issue" content="'.trim(str_replace("n.","",$periodicos_array_new)).'">';
+                    <meta name="citation_issue" content="'.trim(str_replace("n.", "", $periodicos_array_new)).'">';
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
-                    $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
+                    $pages_array = explode("-", str_replace("p.", "", $periodicos_array_new));
                     echo '<meta name="citation_firstpage" content="'.trim($pages_array[0]).'">';
                     if (!empty($pages_array[1])) {
                         echo '<meta name="citation_lastpage" content="'.trim($pages_array[1]).'">'; 
@@ -449,7 +449,7 @@ class PageSingle
                 "pageEnd": "'.$end_page.'", 
                 "pageStart": "'.$first_page.'", 
                 "headline": "'.$record["name"].'", 
-                "author": ['.implode(",",$autor_json).']
+                "author": ['.implode(",", $autor_json).']
             }
                             
                             ';                   
@@ -580,17 +580,17 @@ class Results
         global $url_base;
         $files_upload = glob('upload/'.$id[0].'/'.$id[1].'/'.$id[2].'/'.$id[3].'/'.$id[4].'/'.$id[5].'/'.$id[6].'/'.$id[7].'/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
         $links_upload = "";
-        if (!empty($files_upload)){       
-            foreach($files_upload as $file) {
+        if (!empty($files_upload)) {       
+            foreach ($files_upload as $file) {
                 $delete = "";    
-                if (!empty($session)){
+                if (!empty($session)) {
                     $delete = '<form method="POST" action="single.php?_id='.$id.'">
                                    <input type="hidden" name="delete_file" value="'.$file.'">
                                    <button type="submit" uk-close></button>
                                </form>';
                 }
 
-                if( strpos( $file, '.pdf' ) !== false ) {
+                if (strpos($file, '.pdf') !== false ) {
                     $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$url_base.'/pdf.php?_id='.$id.'&file='.$file.'" target="_blank" rel="noopener noreferrer"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
                 } else {
                     $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$url_base.'/pdf.php?_id='.$id.'&file='.$file.'" target="_blank" rel="noopener noreferrer"><img src="'.$url_base.'/inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
