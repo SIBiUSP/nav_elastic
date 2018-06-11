@@ -18,6 +18,8 @@
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
 
+    echo "Registros restantes: $total<br/><br/>";
+
     foreach ($cursor["hits"]["hits"] as $r) {
 
         $doi_data = query_doi($r["_source"]["doi"]);

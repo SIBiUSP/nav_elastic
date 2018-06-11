@@ -399,7 +399,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                             foreach ($cursor["_source"]["item"] as $item) {
                                 echo '<tr>';
-                                echo '<td><small><a target="_blank" href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. $item["Z30_SUB_LIBRARY"] .'" target="_blank" rel="noopener noreferrer nofollow">'.$item["Z30_SUB_LIBRARY"].'</a></small></td>';
+                                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. $item["Z30_SUB_LIBRARY"] .'" target="_blank" rel="noopener noreferrer nofollow">'.$item["Z30_SUB_LIBRARY"].'</a></small></td>';
                                 echo '<td><small>'.$item["Z30_BARCODE"].'</small></td>';
                                 echo '<td><small>'.$item["Z30_CALL_NO"].'</small></td>';
                                 echo '</tr>';
@@ -659,7 +659,57 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             </ul>
                             </p>
                         </div>
-                        <!-- Citation - End -->                           
+                        <!-- Citation - End --> 
+
+                        <!-- References - CrossRef - Start -->
+                        <?php if (!empty($cursor["_source"]["USP"]["crossref"]["message"]["reference"])) : ?>
+                        <div class="uk-alert-primary" uk-alert>
+                        <h5><?php echo $t->gettext('Referências citadas na obra'); ?></h5>
+                        <a class="uk-alert-close" uk-close></a>
+                        <table class="uk-table uk-table-justify uk-table-divider uk-table-striped">
+                            <tbody>
+                                <?php 
+                                foreach ($cursor["_source"]["USP"]["crossref"]["message"]["reference"] as $crossRefReference) {
+                                    echo "<tr><th>";
+                                    if (isset($crossRefReference["unstructured"])) {
+                                        print_r($crossRefReference["unstructured"]); 
+                                    } else {
+                                        if (isset($crossRefReference["author"])) {
+                                            echo ''.$t->gettext("Autor: ").''.$crossRefReference["author"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["article-title"])) {
+                                            echo ''.$t->gettext("Título: ").''.$crossRefReference["article-title"].'<br/>';
+                                        }                                        
+                                        if (isset($crossRefReference["journal-title"])) {
+                                            echo ''.$t->gettext("Título do periódico: ").''.$crossRefReference["journal-title"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["volume"])) {
+                                            echo ''.$t->gettext("Volume: ").''.$crossRefReference["volume"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["issue"])) {
+                                            echo ''.$t->gettext("Fascículo: ").''.$crossRefReference["issue"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["first-page"])) {
+                                            echo ''.$t->gettext("Primeira página: ").''.$crossRefReference["first-page"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["year"])) {
+                                            echo ''.$t->gettext("Ano: ").''.$crossRefReference["year"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["DOI"])) {
+                                            echo ''.$t->gettext("DOI: ").'<a href="https://dx.doi.org/'.$crossRefReference["DOI"].'" target="_blank" rel="noopener noreferrer">'.$crossRefReference["DOI"].'</a><br/>';
+                                        }                                        
+                                        //print_r($crossRefReference);
+                                    }
+
+                                    echo "</th></tr>";
+                                }  
+                                ?>
+                            </tbody>
+                        </table>
+
+                        </div>
+                        <?php endif; ?>
+                        <!-- References - CrossRef - End -->                          
                             
                 </div>
             </div>

@@ -217,6 +217,7 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("authorUSP.codpes", 100, "Número USP", null, "_term", $_GET["search"]);
                                 $facets->facet("isPartOf.issn", 100, "ISSN", null, "_term", $_GET["search"]);
                                 $facets->facet("doi", 100, "DOI", null, "_term", $_GET["search"]);
+                                $facets->facet("USP.crossref.message.funder.name", 50, $t->gettext('Agência de fomento obtida na CrossRef'), null, "_term", $_GET["search"]);                                
                             ?>
                             </ul>
                         <?php endif; ?>
