@@ -51,7 +51,7 @@
         }
     
         if (!empty($cursor["_source"]["doi"])) {
-            $mpdf->WriteHTML('<p>DOI: <a href="https://dx.doi.org/'.$cursor["_source"]["doi"].'">'.$cursor["_source"]["doi"].'</a></p>');
+            $mpdf->WriteHTML('<p>DOI: <a href="https://doi.org/'.$cursor["_source"]["doi"].'">'.$cursor["_source"]["doi"].'</a></p>');
         }
     
         $mpdf->WriteHTML('<h3>Download em: <a href="http://bdpi.usp.br/single.php?_id='.$_GET['_id'].'">http://bdpi.usp.br/single.php?_id='.$_GET['_id'].'</a></h3>');

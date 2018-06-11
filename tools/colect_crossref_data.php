@@ -35,7 +35,7 @@
     {
             global $client; 
             global $index;
-            $url = "https://api.crossref.org/v1/works/http://dx.doi.org/$doi";
+            $url = "https://api.crossref.org/v1/works/https://doi.org/$doi";
             $json = file_get_contents($url);
             $data = json_decode($json, true);
         
