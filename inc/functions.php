@@ -438,7 +438,7 @@ class PageSingle
                 '.$description.'                 
                 ';
                 if (!empty($record['doi'])) {            
-                    echo '"sameAs": "http://dx.doi.org/'.$record['doi'].'",';
+                    echo '"sameAs": "https://doi.org/'.$record['doi'].'",';
                 }
                 echo '
                 "about": [
@@ -1331,7 +1331,7 @@ class Record
 
         /* DOI */
         if (!empty($this->doi)) {
-            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://dx.doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">'.$this->doi.'</a></p>';
+            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">'.$this->doi.'</a></p>';
         }
 
         /* Source */
@@ -1369,7 +1369,7 @@ class Record
             }
         }
         if (!empty($this->doi)) {
-            echo '<a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
+            echo '<a class="uk-button uk-button-primary uk-button-small" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
         }
 
         $sfx_array[] = 'rft.atitle='.$this->name.'';

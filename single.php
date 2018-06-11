@@ -696,7 +696,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             echo ''.$t->gettext("Ano: ").''.$crossRefReference["year"].'<br/>';
                                         }
                                         if (isset($crossRefReference["DOI"])) {
-                                            echo ''.$t->gettext("DOI: ").'<a href="https://dx.doi.org/'.$crossRefReference["DOI"].'" target="_blank" rel="noopener noreferrer">'.$crossRefReference["DOI"].'</a><br/>';
+                                            echo ''.$t->gettext("DOI: ").'<a href="https://doi.org/'.$crossRefReference["DOI"].'" target="_blank" rel="noopener noreferrer">'.$crossRefReference["DOI"].'</a><br/>';
                                         }                                        
                                         //print_r($crossRefReference);
                                     }
