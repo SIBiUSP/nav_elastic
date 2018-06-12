@@ -100,7 +100,8 @@ class paginaInicial {
 
     }
     
-    static function facet_inicio($field) {
+    static function facet_inicio($field) 
+    {
         global $type;
         $query = '{
             "aggs": {
@@ -112,9 +113,9 @@ class paginaInicial {
                 }
             }
         }';
-        $response = elasticsearch::elastic_search($type,null,0,$query);
+        $response = elasticsearch::elastic_search($type, null, 0, $query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-            echo '<li><a href="result.php?search[]='.$field.'.keyword:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
+            echo '<li><a href="result.php?filter[]='.$field.':&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></li>';
         }   
 
     }    
