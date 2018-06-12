@@ -113,28 +113,53 @@
 		    
 	    </div>	    
 	    
-	    <div class="uk-width-1-1@s uk-width-1-1@m">
-	    
-		    <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
-		    				    
-			<p class="uk-margin-top" uk-margin>
-				<a class="uk-button uk-button-default uk-button-small" href="index.php">Começar novamente</a>	
-				<?php 
-				
-						
-					foreach($_GET["search"] as $filters) {
-						$filters_array[] = $filters;
-						$name_field = explode(":",$filters);	
-						$filters = str_replace($name_field[0].":","",$filters);				
-						$diff["search"] = array_diff($_GET["search"],$filters_array);						
-						$url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-						echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
-						unset($filters_array); 	
-					}		
-				?>
-				
-			</p>
-		    <?php endif;?> 
+        <div class="uk-width-1-1@s uk-width-1-1@m">
+
+        <!-- List of filters - Start -->
+        <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
+        <p class="uk-margin-top" uk-margin>
+            <a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>	
+            <?php 
+            if (!empty($_GET["search"])) {
+                foreach ($_GET["search"] as $querySearch) {
+                    $querySearchArray[] = $querySearch;
+                    $name_field = explode(":", $querySearch);
+                    $querySearch = str_replace($name_field[0].":", "", $querySearch);
+                    $diff["search"] = array_diff($_GET["search"], $querySearchArray);
+                    $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                    echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                    unset($querySearchArray); 	
+                }
+            }
+                
+            if (!empty($_GET["filter"])) {
+                foreach ($_GET["filter"] as $filters) {
+                    $filters_array[] = $filters;
+                    $name_field = explode(":", $filters);
+                    $filters = str_replace($name_field[0].":", "", $filters);
+                    $diff["filter"] = array_diff($_GET["filter"], $filters_array);
+                    $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                    echo '<a class="uk-button uk-button-primary uk-button-small" href="http://'.$url_push.'">Filtrado por: '.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                    unset($filters_array);
+                }
+            }
+            
+            if (!empty($_GET["notFilter"])) {
+                foreach ($_GET["notFilter"] as $notFilters) {
+                    $notFiltersArray[] = $notFilters;
+                    $name_field = explode(":", $notFilters);
+                    $notFilters = str_replace($name_field[0].":", "", $notFilters);
+                    $diff["notFilter"] = array_diff($_GET["notFilter"], $notFiltersArray);
+                    $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                    echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                    unset($notFiltersArray);
+                }
+            }                 
+            ?>
+            
+        </p>
+        <?php endif;?> 
+        <!-- List of filters - End -->
 	    
 	    
 	    </div>	    
