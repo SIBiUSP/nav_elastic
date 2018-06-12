@@ -36,7 +36,7 @@
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
             <div class="uk-container">
-                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(inc/images/Partitura_foto-Cecília-Bastos-01-5.jpg);">
+                <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(inc/images/Partitura.jpg);">
                     <?php include('inc/navbar_inverted.php'); ?>
                     <div class="uk-overlay uk-overlay-primary">
                     <h2 style="color:#fcb421"><?php echo $branch; ?></h2>                    
