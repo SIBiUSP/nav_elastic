@@ -167,9 +167,8 @@ if (isset($_GET["sort"])) {
                             <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
                             <?php 
                                 $facets->facet("author.person.affiliation.name", 50, $t->gettext('Afiliação dos autores externos normalizada'), null, "_term", $_GET["search"]);
-                                $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);                                    
-                                $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);  
-                                $facets->facet("author.person.affiliation.locationTematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
+                                $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
+                                $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                             <?php 
@@ -209,7 +208,8 @@ if (isset($_GET["sort"])) {
                             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                             <hr>
                             <?php
-                                $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);                            
+                                $facets->facet("author.person.affiliation.locationTematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);
                                 $facets->facet("authorUSP.regime_de_trabalho", 50, $t->gettext('Regime de trabalho'), null, "_term", $_GET["search"]);
                                 $facets->facet("authorUSP.funcao", 50, $t->gettext('Função'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.CAT.date", 100, "Data de registro e alterações", "desc", "_term", $_GET["search"]);
@@ -217,7 +217,8 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("authorUSP.codpes", 100, "Número USP", null, "_term", $_GET["search"]);
                                 $facets->facet("isPartOf.issn", 100, "ISSN", null, "_term", $_GET["search"]);
                                 $facets->facet("doi", 100, "DOI", null, "_term", $_GET["search"]);
-                                $facets->facet("USP.crossref.message.funder.name", 50, $t->gettext('Agência de fomento obtida na CrossRef'), null, "_term", $_GET["search"]);                                
+                                $facets->facet("USP.crossref.message.funder.name", 50, $t->gettext('Agência de fomento obtida na CrossRef'), null, "_term", $_GET["search"]);
+                                $facets->rebuild_facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
                             ?>
                             </ul>
                         <?php endif; ?>
