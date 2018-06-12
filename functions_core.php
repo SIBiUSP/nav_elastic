@@ -409,12 +409,15 @@ class Facets
 
         $response = elasticsearch::elastic_search($type, null, 0, $query);
 
-        echo '<li">';
-        echo '<a href="#">'.$nome_do_campo.'</a>';
-        echo ' <ul class="uk-list">';
+        echo '<li class="uk-parent">';
+        echo '<a href="#" style="color:#333">'.$nome_do_campo.'</a>';
+        echo ' <ul class="uk-nav-sub">';
         foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
-            echo '<li class="uk-h6">';
-            echo '<a href="autoridades.php?term='.$facets['key'].'">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a>';
+            echo '<li">';
+            echo "<div uk-grid>";
+            echo '<div class="uk-width-2-3 uk-text-small" style="color:#333">';
+            echo '<a href="admin/autoridades.php?term='.$facets['key'].'" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a>';
+            echo '</div>';
             echo '</li>';
         };
         echo   '</ul>
@@ -467,7 +470,7 @@ class Facets
                 echo '<li>
                     <div uk-grid>
                     <div class="uk-width-3-3 uk-text-small" style="color:#333">';
-                    echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':['.$facets_array[0].' TO '.$facets_array[1].']">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+                    echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]='.$field.':['.$facets_array[0].' TO '.$facets_array[1].']">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
                     echo '</div>';
 
                 echo '</div></li>';
