@@ -711,6 +711,7 @@ class authorities {
         $clean_term = rawurlencode($clean_term);
         $clean_term_p = $term;
         $clean_term = str_replace("%C2%A0", "%20", $clean_term);
+        $clean_term = str_replace("&", "e", $clean_term);
 
         // Query tematres
         $ch = curl_init();
