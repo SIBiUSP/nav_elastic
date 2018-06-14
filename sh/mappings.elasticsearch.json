@@ -1,6 +1,6 @@
-DELETE /sibi
+DELETE /bdpi
 
-PUT /sibi
+PUT /bdpi
 {
   "settings": {
     "number_of_shards" :   4,
@@ -30,7 +30,7 @@ PUT /sibi
   }
 }
 
-PUT /sibi/producao/_mapping
+PUT /bdpi/producao/_mapping
 {
 "producao": {
 	"properties": {
