@@ -77,9 +77,9 @@
                         </p>
                         <h3 class="uk-h4"><?php echo $t->gettext('Redes sociais'); ?></h3>
                         <p>
-                            <a href="https://www.facebook.com/sibiusp/?fref=ts" uk-icon="icon: facebook"></a>
-                            <a href="https://twitter.com/sibiusp" uk-icon="icon: twitter"></a>                           
-                            <a href="https://github.com/sibiusp" uk-icon="icon: github"></a>
+                            <a href="https://www.facebook.com/sibiusp/?fref=ts" uk-icon="icon: facebook" target="_blank" rel="noopener noreferrer"></a>
+                            <a href="https://twitter.com/sibiusp" uk-icon="icon: twitter" target="_blank" rel="noopener noreferrer"></a>                           
+                            <a href="https://github.com/sibiusp" uk-icon="icon: github" target="_blank" rel="noopener noreferrer"></a>
                         </p>
                     </div>
                 </div>

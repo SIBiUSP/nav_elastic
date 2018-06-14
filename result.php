@@ -35,7 +35,7 @@ if (isset($_GET["sort"])) {
 
     <?php if ($year_result_graph == true) : ?>
         <!-- D3.js Libraries and CSS -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
+        <script type="text/javascript" src="inc/jquery/3.2.2/d3.v3.min.js"></script>
         <!-- UV Charts -->
         <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
     <?php endif; ?>
@@ -122,7 +122,7 @@ if (isset($_GET["sort"])) {
                     $notFilters = str_replace($name_field[0].":", "", $notFilters);
                     $diff["notFilter"] = array_diff($_GET["notFilter"], $notFiltersArray);
                     $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                    echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Excluindo: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                    echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
                     unset($notFiltersArray);
                 }
             }                 
@@ -161,35 +161,29 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("releasedEvent", 50, $t->gettext('Nome do evento'), null, "_term", $_GET["search"]);
                                 $facets->facet("country", 200, $t->gettext('País de publicação'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]);
-                                $facets->facet("funder", 50, $t->gettext('Agência de fomento'), null, "_term", $_GET["search"]);
+                                $facets->facet("funder.name", 50, $t->gettext('Agência de fomento'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.indexacao", 50, $t->gettext('Indexado em'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
                             <?php 
                                 $facets->facet("author.person.affiliation.name", 50, $t->gettext('Afiliação dos autores externos normalizada'), null, "_term", $_GET["search"]);
-                                $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);                                    
-                                $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);  
-                                //$facets->facet("author.person.affiliation.pais_tematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
+                                $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
+                                $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                             <?php 
-                                $facets->facet("USP.serial_metrics.qualis.2012.area", 50, $t->gettext('Qualis 2010/2012 - Área'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2012.nota", 50, $t->gettext('Qualis 2010/2012 - Nota'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2012.area_nota", 50, $t->gettext('Qualis 2010/2012 - Área / Nota'), null, "_term", $_GET["search"]);
-                            ?>                                
-                            <?php 
-                                $facets->facet("USP.serial_metrics.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.serial_metrics.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.qualis.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.qualis.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.qualis.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
                             ?>
                             <?php
-                                $facets->facet("USP.WOS.coverage", 50, $t->gettext('Índices da Web of Science'), null, "_term", $_GET["search"]);
-                                $facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
-                                $facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
-                                $facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.citescore", 100, "Scopus - Citescore - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.SJR", 100, "Scopus - SJR - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2016.SNIP", 100, "Scopus - SNIP - 2016");
+                                //$facets->facet("USP.WOS.coverage", 50, $t->gettext('Índices da Web of Science'), null, "_term", $_GET["search"]);
+                                //$facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
+                                //$facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
+                                //$facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
+                                $facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
+                                $facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
+                                $facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
                                 //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
                                 
                             ?>
@@ -214,7 +208,8 @@ if (isset($_GET["sort"])) {
                             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                             <hr>
                             <?php
-                                $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);                            
+                                $facets->facet("author.person.affiliation.locationTematres", 50, $t->gettext('País Tematres'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);
                                 $facets->facet("authorUSP.regime_de_trabalho", 50, $t->gettext('Regime de trabalho'), null, "_term", $_GET["search"]);
                                 $facets->facet("authorUSP.funcao", 50, $t->gettext('Função'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.CAT.date", 100, "Data de registro e alterações", "desc", "_term", $_GET["search"]);
@@ -222,6 +217,8 @@ if (isset($_GET["sort"])) {
                                 $facets->facet("authorUSP.codpes", 100, "Número USP", null, "_term", $_GET["search"]);
                                 $facets->facet("isPartOf.issn", 100, "ISSN", null, "_term", $_GET["search"]);
                                 $facets->facet("doi", 100, "DOI", null, "_term", $_GET["search"]);
+                                $facets->facet("USP.crossref.message.funder.name", 50, $t->gettext('Agência de fomento obtida na CrossRef'), null, "_term", $_GET["search"]);
+                                $facets->rebuild_facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
                             ?>
                             </ul>
                         <?php endif; ?>
@@ -252,12 +249,17 @@ if (isset($_GET["sort"])) {
                                 <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                 <input class="uk-input" type="text" id="date" readonly style="border:0; color:#f6931f;" name="search[]">
                                 </p>        
-                                <div id="limitar-data" class="uk-margin-bottom"></div>        
+                                <div id="limitar-data" class="uk-margin-bottom"></div>
                                 <?php if (!empty($_GET["search"])) : ?>
                                     <?php foreach($_GET["search"] as $search_expression): ?>
                                         <input type="hidden" name="search[]" value="<?php echo str_replace('"', '&quot;', $search_expression); ?>">
                                     <?php endforeach; ?>
                                 <?php endif; ?>
+                                <?php if (!empty($_GET["filter"])) : ?>
+                                    <?php foreach($_GET["filter"] as $filter_expression): ?>
+                                        <input type="hidden" name="filter[]" value="<?php echo str_replace('"', '&quot;', $filter_expression); ?>">
+                                    <?php endforeach; ?>
+                                <?php endif; ?>                                
                                 <button class="uk-button uk-button-primary uk-button-small"><?php echo $t->gettext('Limitar datas'); ?></button>
                             </fieldset>        
                         </form>

@@ -31,7 +31,7 @@
 			<div class="slides">
 				<section data-background="http://www.imagens.usp.br/wp-content/uploads/9072_09082011caph038.jpg">
 						<h3>Tutorial BDPI</h3>
-						<p style="font-size: 60%"><a href="http://bdpi.usp.br">Biblioteca Digital da Produção Intelectual</a></p>
+						<p style="font-size: 60%"><a href="http://bdpi.usp.br" target="_blank" rel="noopener noreferrer nofollow">Biblioteca Digital da Produção Intelectual</a></p>
 						<p style="font-size: 50%">
 							Universidade de São Paulo<br/>
 							Sistema Integrado de Bibliotecas<br/>
@@ -51,7 +51,7 @@
 				</section>
 				<section>
 						<h4>Busca simples</h4>
-						<a href="http://bdpi.usp.br"><img src="images/bdpi_busca_simples.png" height="250px"></a>
+						<a href="http://bdpi.usp.br" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_busca_simples.png" height="250px"></a>
 						<ul>
 								<li style="font-size: 50%">Operador padrão: E</li>
 								<li style="font-size: 50%">Ignora maiúsculas e minúsculas</li>
@@ -100,7 +100,7 @@
 				</section>
 				<section>
 						<h4>Resultado da Busca</h4>
-						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_resultado_busca.png" height="500px"></a>
+						<a href="http://bdpi.usp.br/result.php" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_resultado_busca.png" height="500px"></a>
 						<ul>
 								<li style="font-size: 50%">Ordenação por data</li>
 								<li style="font-size: 50%">Facetas são filtros para novas buscas</li>
@@ -109,7 +109,7 @@
 				</section>
 				<section>
 						<h4>Facetas</h4>
-						<p><a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_facetas.png" height="400px"></a></p>
+						<p><a href="http://bdpi.usp.br/result.php" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_facetas.png" height="400px"></a></p>
 						<ul>
 								<li style="font-size: 50%">Ordenação por quantidade de ocorrências</li>
 								<li style="font-size: 50%">Possibilita limitar os resultados</li>
@@ -118,7 +118,7 @@
 				</section>
 				<section>
 						<h4>Enriquecimento de Registros com dados de APIs</h4>
-						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_metricas.png" height="500px"></a>
+						<a href="http://bdpi.usp.br/result.php" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_metricas.png" height="500px"></a>
 						<ul>
 								<li style="font-size: 50%">Fontes: QUALIS, Web of Scielo, Scopus, AMiner, OpenCitations</li>
 								<li style="font-size: 50%">Preenchumento automático, seguindo critérios definidos para cada fonte</li>
@@ -127,7 +127,7 @@
 				</section>
 				<section>
 						<h4>Enriquecimento de Registros com dados de APIs -2</h4>
-						<a href="http://bdpi.usp.br/result.php"><img src="images/bdpi_metricas2.png" height="500px"></a>
+						<a href="http://bdpi.usp.br/result.php" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_metricas2.png" height="500px"></a>
 						<ul>
 								<li style="font-size: 50%">Complementação com dados obtidos no momento da consulta</li>
 								<li style="font-size: 50%">Fontes: Altmetric.com, PlumX, Citações na Scopus</li>
@@ -143,14 +143,14 @@
 				</section>
 				<section>
 						<h4>Exemplares físicos</h4>
-						<a href="http://bdpi.usp.br/single.php?_id=002187951"><img src="images/bdpi_exemplares.png" height="170px"></a>
+						<a href="http://bdpi.usp.br/single.php?_id=002187951" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_exemplares.png" height="170px"></a>
 						<ul>
 								<li style="font-size: 50%">Caso as Bibliotecas possuam exemplares físicos do material, a informação sobre os exemplares será exibida</li>
 						</ul>
 				</section>				
 				<section>
 						<h4>Como citar</h4>
-						<a href="http://bdpi.usp.br/single.php?_id=002790839"><img src="images/bdpi_como_citar.png" height="500px"></a>
+						<a href="http://bdpi.usp.br/single.php?_id=002790839" target="_blank" rel="noopener noreferrer nofollow"><img src="images/bdpi_como_citar.png" height="500px"></a>
 						<ul>
 								<li style="font-size: 50%">Referências geradas automaticamente nos formatos: ABNT, APA, NLM e Vancouver</li>
 						</ul>

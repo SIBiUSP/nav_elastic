@@ -224,13 +224,13 @@ class PageSingle
         $count_files = count(glob('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'/*',GLOB_BRACE));
         $rights = '{"rights":"'.$_POST["rights"].'"},';
         
-        if (!empty($_POST["embargo_date"])){
+        if (!empty($_POST["embargo_date"])) {
             $embargo_date = '{"embargo_date":"'.$_POST["embargo_date"].'"},';
         } else {
             $embargo_date = '{"embargo_date":""},';
         }
         
-        if ($_FILES['upload_file']['type'] == 'application/pdf'){
+        if ($_FILES['upload_file']['type'] == 'application/pdf') {
             $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pdf");
         } else {
             $uploadfile = $uploaddir . basename($_GET['_id'] . "_" . ($count_files+1) . ".pptx");
@@ -294,21 +294,21 @@ class PageSingle
         } 
         echo '
         <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
-        if (!empty($record["isPartOf"])) {
+        if (!empty($record["isPartOf"]["name"])) {
             echo '<meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
         }
 
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
-            $periodicos_array = explode(",",$record["isPartOf"]["USP"]["dados_do_periodico"]);
+            $periodicos_array = explode(",", $record["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
                 if (strpos($periodicos_array_new, 'v.') !== false) {
                     echo '
-                    <meta name="citation_volume" content="'.trim(str_replace("v.","",$periodicos_array_new)).'">';
+                    <meta name="citation_volume" content="'.trim(str_replace("v.", "", $periodicos_array_new)).'">';
                 } elseif (strpos($periodicos_array_new, 'n.') !== false) {
                     echo '
-                    <meta name="citation_issue" content="'.trim(str_replace("n.","",$periodicos_array_new)).'">';
+                    <meta name="citation_issue" content="'.trim(str_replace("n.", "", $periodicos_array_new)).'">';
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
-                    $pages_array = explode("-",str_replace("p.","",$periodicos_array_new));
+                    $pages_array = explode("-", str_replace("p.", "", $periodicos_array_new));
                     echo '<meta name="citation_firstpage" content="'.trim($pages_array[0]).'">';
                     if (!empty($pages_array[1])) {
                         echo '<meta name="citation_lastpage" content="'.trim($pages_array[1]).'">'; 
@@ -438,7 +438,7 @@ class PageSingle
                 '.$description.'                 
                 ';
                 if (!empty($record['doi'])) {            
-                    echo '"sameAs": "http://dx.doi.org/'.$record['doi'].'",';
+                    echo '"sameAs": "https://doi.org/'.$record['doi'].'",';
                 }
                 echo '
                 "about": [
@@ -449,7 +449,7 @@ class PageSingle
                 "pageEnd": "'.$end_page.'", 
                 "pageStart": "'.$first_page.'", 
                 "headline": "'.$record["name"].'", 
-                "author": ['.implode(",",$autor_json).']
+                "author": ['.implode(",", $autor_json).']
             }
                             
                             ';                   
@@ -556,7 +556,7 @@ class Results
             foreach ($xml->item as $item) {
                 $bib_fisica = explode("-", $item->{'sub-library'});
                 echo '<tr>';
-                echo '<td><small><a target="_blank" href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'">'.$item->{'sub-library'}.'</a></small></td>';
+                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'" target="_blank" rel="noopener noreferrer">'.$item->{'sub-library'}.'</a></small></td>';
                 echo '<td><small>'.$item->{'barcode'}.'</small></td>';
                 echo '<td><small>'.$item->{'item-status'}.'</small></td>';
                 echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
@@ -580,20 +580,20 @@ class Results
         global $url_base;
         $files_upload = glob('upload/'.$id[0].'/'.$id[1].'/'.$id[2].'/'.$id[3].'/'.$id[4].'/'.$id[5].'/'.$id[6].'/'.$id[7].'/'.$id.'/*.{pdf,pptx}', GLOB_BRACE);    
         $links_upload = "";
-        if (!empty($files_upload)){       
-            foreach($files_upload as $file) {
+        if (!empty($files_upload)) {       
+            foreach ($files_upload as $file) {
                 $delete = "";    
-                if (!empty($session)){
+                if (!empty($session)) {
                     $delete = '<form method="POST" action="single.php?_id='.$id.'">
                                    <input type="hidden" name="delete_file" value="'.$file.'">
                                    <button type="submit" uk-close></button>
                                </form>';
                 }
 
-                if( strpos( $file, '.pdf' ) !== false ) {
-                    $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$url_base.'/pdf.php?_id='.$id.'&file='.$file.'" target="_blank"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+                if (strpos($file, '.pdf') !== false ) {
+                    $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$url_base.'/pdf.php?_id='.$id.'&file='.$file.'" target="_blank" rel="noopener noreferrer"><img src="'.$url_base.'/inc/images/pdf.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
                 } else {
-                    $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$url_base.'/pdf.php?_id='.$id.'&file='.$file.'" target="_blank"><img src="'.$url_base.'/inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
+                    $links_upload[] = '<div class="uk-width-1-4@m"><div class="uk-panel"><a onclick="_gaq.push([\'_trackEvent\',\'Download\',\'PDF\',this.href]);" href="'.$url_base.'/pdf.php?_id='.$id.'&file='.$file.'" target="_blank" rel="noopener noreferrer"><img src="'.$url_base.'/inc/images/pptx.png"  height="70" width="70"></img></a>'.$delete.'</div></div>';
                 }
             }
         }
@@ -616,7 +616,8 @@ class USP
 {
 
     /* Consulta o Vocabulário Controlado da USP */
-    static function consultar_vcusp($termo) {
+    static function consultar_vcusp($termo) 
+    {
         echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
         $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
 
@@ -627,15 +628,15 @@ class USP
                 $string_up_array[] = '<a href="result.php?search[]=about:&quot;'.$string_up->{'string'}.'&quot;">'.$string_up->{'string'}.'</a>';    
             };
             echo 'Você também pode pesquisar pelos termos mais genéricos: ';
-            print_r(implode(" -> ",$string_up_array));
+            print_r(implode(" -> ", $string_up_array));
             echo '<br/>';
             $termo_xml_down = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchDown&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
-            if (!empty($termo_xml_down->{'result'}->{'term'})){
+            if (!empty($termo_xml_down->{'result'}->{'term'})) {
                 foreach (($termo_xml_down->{'result'}->{'term'}) as $string_down) {
                     $string_down_array[] = '<a href="result.php?search[]=about:&quot;'.$string_down->{'string'}.'&quot;">'.$string_down->{'string'}.'</a>';     
                 };
                 echo 'Ou pesquisar pelo assuntos mais específicos: ';
-                print_r(implode(" - ",$string_down_array));            
+                print_r(implode(" - ", $string_down_array));            
             }
 
 
@@ -1073,7 +1074,9 @@ class Record
         $this->name = $record["_source"]["name"];
         $this->base = $record["_source"]["base"][0];
         $this->type = ucfirst(strtolower($record["_source"]["type"]));
-        $this->datePublished = $record["_source"]["datePublished"];
+        if (isset($record["_source"]["datePublished"])) {
+            $this->datePublished = $record["_source"]["datePublished"];
+        }
         if (isset($record["_source"]["dateCreated"])) {
             $this->dateCreated = $record["_source"]["dateCreated"];
         }        
@@ -1135,47 +1138,47 @@ class Record
         echo '<li>';
         echo '<div class="uk-grid-divider uk-padding-small" uk-grid>';
         echo '<div class="uk-width-1-5@m">';
-            echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].''.$_SERVER['QUERY_STRING'].'&filter[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a></p>';
-            echo '<p>Unidades USP: ';
-            if (!empty($this->unidadeUSPArray)) {
-                $unique =  array_unique($this->unidadeUSPArray);
-                foreach ($unique as $unidadeUSP) {
-                    echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.' </a>';
-                }
+        echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].''.$_SERVER['QUERY_STRING'].'&filter[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a></p>';
+        echo '<p>Unidades USP: ';
+        if (!empty($this->unidadeUSPArray)) {
+            $unique =  array_unique($this->unidadeUSPArray);
+            foreach ($unique as $unidadeUSP) {
+                echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.' </a>';
             }
-            echo '</p>';
-            if (!empty($this->isbn)) {
-                $cover_link = 'http://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
-                echo  '<p><img src="'.$cover_link.'"></p>';
-            } 
+        }
+        echo '</p>';
+        if (!empty($this->isbn)) {
+            $cover_link = 'http://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
+            echo  '<p><img src="'.$cover_link.'"></p>';
+        } 
         echo '</div>';
         echo '<div class="uk-width-4-5@m">';
-            echo '<article class="uk-article">';
-            echo '<p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
-            
-            /* Authors */
-            echo '<p class="uk-article-meta uk-margin-remove">'.$t->gettext('Autores').': '; 
-            foreach ($this->authorArray as $authors) {
-                if (!empty($authors["person"]["potentialAction"])) {
-                    $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
-                } else {
-                    $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
-                }
-            } 
-            $array_aut = implode("; ", $authors_array);
-            print_r($array_aut);
-            echo '</p>';
-
-            /* IsPartOf */    
-            if (!empty($this->isPartOfArray["name"])) {
-                echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
-            } 
-            
-            /* Subjects */
-            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
-            foreach ($this->aboutArray as $subject) {
-                echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+        echo '<article class="uk-article">';
+        echo '<p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
+        
+        /* Authors */
+        echo '<p class="uk-article-meta uk-margin-remove">'.$t->gettext('Autores').': '; 
+        foreach ($this->authorArray as $authors) {
+            if (!empty($authors["person"]["potentialAction"])) {
+                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+            } else {
+                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
             }
+        } 
+        $array_aut = implode("; ", $authors_array);
+        print_r($array_aut);
+        echo '</p>';
+
+        /* IsPartOf */    
+        if (!empty($this->isPartOfArray["name"])) {
+            echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
+        } 
+        
+        /* Subjects */
+        echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
+        foreach ($this->aboutArray as $subject) {
+            echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+        }
         
         if (!empty($this->url)||!empty($this->doi)) {
             $this->onlineAccess($t);
@@ -1249,7 +1252,7 @@ class Record
         echo '</ul></p></div>';
         
         /* BDTD Subject */
-        if ($this->aboutBDTDArray > 0){
+        if ($this->aboutBDTDArray > 0) {
             echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Palavras-chave do autor').':';
             echo '<ul class="uk-list uk-list-striped uk-text-small">';
             foreach ($this->aboutBDTDArray as $subject_BDTD) {
@@ -1259,11 +1262,19 @@ class Record
         }
 
         /* Funder */
-        if ($this->funderArray > 0){
+        if ($this->funderArray > 0) {
             echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Agências de fomento').': ';
             echo '<ul class="uk-list uk-list-striped uk-text-small">';
             foreach ($this->funderArray as $funder) {                
-                echo '<li><a href="'.$url_base.'/result.php?search[]=funder:&quot;'.$funder.'&quot;">'.$funder.'</a></li>';
+                echo '<li><a href="'.$url_base.'/result.php?search[]=funder:&quot;'.$funder["name"].'&quot;">'.$funder["name"].'</a>';
+                if (!empty($funder["projectNumber"]) && $funder["name"] == "Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP)") {
+                    foreach ($funder["projectNumber"] as $projectNumber) {
+                        $projectNumber = str_replace(" ", "", $projectNumber);
+                        preg_match("/\d\d\/\d{5}-\d/", $projectNumber, $projectNumberMatchArray);                        
+                        echo '<p>Processo FAPESP: <a href="http://bv.fapesp.br/pt/processo/'.$projectNumberMatchArray[0].'" target="_blank" rel="noopener noreferrer">'.$projectNumber.'</a></p>';
+                    }
+                }
+                echo '</li>';
             }
             echo '</ul></p></div>';
         }
@@ -1322,7 +1333,7 @@ class Record
 
         /* DOI */
         if (!empty($this->doi)) {
-            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://dx.doi.org/'.$this->doi.'">'.$this->doi.'</a></p>';
+            echo '<p class="uk-text-small uk-margin-remove">DOI: <a href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">'.$this->doi.'</a></p>';
         }
 
         /* Source */
@@ -1353,31 +1364,31 @@ class Record
     {
         
         echo '<div class="uk-alert-primary" uk-alert>';
-            echo '<p class="uk-text-small">'.$t->gettext('Acesso online ao documento').'</p>';
-            if (!empty($this->url)) {
-                foreach ($this->url as $url) {
-                    echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank">'.$t->gettext('Acesso online à fonte').'</a>';
-                }
+        echo '<p class="uk-text-small">'.$t->gettext('Acesso online ao documento').'</p>';
+        if (!empty($this->url)) {
+            foreach ($this->url as $url) {
+                echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer">'.$t->gettext('Acesso online à fonte').'</a>';
             }
-            if (!empty($this->doi)) {
-                echo '<a class="uk-button uk-button-primary uk-button-small" href="http://dx.doi.org/'.$this->doi.'" target="_blank">DOI</a>';
-            }
+        }
+        if (!empty($this->doi)) {
+            echo '<a class="uk-button uk-button-primary uk-button-small" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
+        }
 
-            $sfx_array[] = 'rft.atitle='.$this->name.'';
-            $sfx_array[] = 'rft.year='.$this->datePublished.'';
-            if (!empty($this->isPartOfArray["name"])) {
-                $sfx_array[] = 'rft.jtitle='.$this->isPartOfArray["name"].'';
-            }
-            if (!empty($this->doi)) {
-                $sfx_array[] = 'rft_id=info:doi/'.$this->doi.'';
-            }
-            if (!empty($this->issnArray[0])) {
-                $sfx_array[] = 'rft.issn='.$this->issnArray[0].'';
-            }
-            if (!empty($r["_source"]['ispartof_data'][0])) {
-                $sfx_array[] = 'rft.volume='.trim(str_replace("v.","",$r["_source"]['ispartof_data'][0])).'';
-            }                                             
-            echo ' <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank">'.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
+        $sfx_array[] = 'rft.atitle='.$this->name.'';
+        $sfx_array[] = 'rft.year='.$this->datePublished.'';
+        if (!empty($this->isPartOfArray["name"])) {
+            $sfx_array[] = 'rft.jtitle='.$this->isPartOfArray["name"].'';
+        }
+        if (!empty($this->doi)) {
+            $sfx_array[] = 'rft_id=info:doi/'.$this->doi.'';
+        }
+        if (!empty($this->issnArray[0])) {
+            $sfx_array[] = 'rft.issn='.$this->issnArray[0].'';
+        }
+        if (!empty($r["_source"]['ispartof_data'][0])) {
+            $sfx_array[] = 'rft.volume='.trim(str_replace("v.", "", $r["_source"]['ispartof_data'][0])).'';
+        }                                             
+        echo ' <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>'; 
         echo '</div>';
 
     }      
@@ -1394,21 +1405,21 @@ class Record
 
         if ($doi != "Não informado") {
             echo '<div class="uk-alert-warning" uk-alert>';
-                echo '<p>'.$t->gettext('Métricas').'</p>';
-                echo '<div uk-grid>';
-                    echo '<div data-badge-popover="right" data-badge-type="1" data-doi="'.$doi.'" data-hide-no-mentions="true" class="altmetric-embed"></div>';
-                    echo '<div><a href="https://plu.mx/plum/a/?doi='.$doi.'" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>';
-                    if ($doi != "Não informado") {
-                        echo '<div><object data="http://api.elsevier.com/content/abstract/citation-count?doi='.$doi.'&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>';
-                    }
-                    echo '<div><span class="__dimensions_badge_embed__" data-doi="'.$doi.'" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>';
-                    if (!empty($completeRecord["_source"]["USP"]["opencitation"]["num_citations"])) {
-                        echo '<div>Citações no OpenCitations: '.$completeRecord["_source"]["USP"]["opencitation"]["num_citations"].'</div>';
-                    }
-                    if (isset($completeRecord["_source"]["USP"]["aminer"]["num_citation"])) {
-                        echo '<div>Citações no AMiner: '.$completeRecord["_source"]["USP"]["aminer"]["num_citation"].'</div>';
-                    }
-                echo '</div>';
+            echo '<p>'.$t->gettext('Métricas').'</p>';
+            echo '<div uk-grid>';
+            echo '<div data-badge-popover="right" data-badge-type="1" data-doi="'.$doi.'" data-hide-no-mentions="true" class="altmetric-embed"></div>';
+            echo '<div><a href="https://plu.mx/plum/a/?doi='.$doi.'" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true" target="_blank" rel="noopener noreferrer"></a></div>';
+            if ($doi != "Não informado") {
+                echo '<div><object data="http://api.elsevier.com/content/abstract/citation-count?doi='.$doi.'&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>';
+            }
+            echo '<div><span class="__dimensions_badge_embed__" data-doi="'.$doi.'" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>';
+            if (!empty($completeRecord["_source"]["USP"]["opencitation"]["num_citations"])) {
+                echo '<div>Citações no OpenCitations: '.$completeRecord["_source"]["USP"]["opencitation"]["num_citations"].'</div>';
+            }
+            if (isset($completeRecord["_source"]["USP"]["aminer"]["num_citation"])) {
+                echo '<div>Citações no AMiner: '.$completeRecord["_source"]["USP"]["aminer"]["num_citation"].'</div>';
+            }
+            echo '</div>';
             echo '</div>';
         } else {
             if (isset($r["_source"]["USP"]["aminer"]["num_citation"])) {
@@ -1427,16 +1438,16 @@ class Record
     public function citation($t, $record)
     {
         /* Citeproc-PHP*/
-        require_once 'inc/citeproc-php/CiteProc.php';
+        include_once 'inc/citeproc-php/CiteProc.php';
         $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
         $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
         $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
         $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
         $lang = "br";
-        $citeproc_abnt = new citeproc($csl_abnt,$lang);
-        $citeproc_apa = new citeproc($csl_apa,$lang);
-        $citeproc_nlm = new citeproc($csl_nlm,$lang);
-        $citeproc_vancouver = new citeproc($csl_nlm,$lang);
+        $citeproc_abnt = new citeproc($csl_abnt, $lang);
+        $citeproc_apa = new citeproc($csl_apa, $lang);
+        $citeproc_nlm = new citeproc($csl_nlm, $lang);
+        $citeproc_vancouver = new citeproc($csl_nlm, $lang);
         $mode = "reference";        
         echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
             echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';

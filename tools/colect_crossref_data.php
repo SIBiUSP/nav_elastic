@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <?php
 
-    include('../inc/config.php'); 
-    include('../inc/functions.php');
+    require '../inc/config.php'; 
+    require '../inc/functions.php';
 
-    $query["query"]["query_string"]["query"] = "+_exists_:doi -_exists_:USP.crossref"; 
+    $query["query"]["query_string"]["query"] = "+_exists_:doi -_exists_:USP.crossref";
     $query['sort'] = [
         ['datePublished.keyword' => ['order' => 'desc']],
     ];    
@@ -18,26 +18,29 @@
     $cursor = $client->search($params);
     $total = $cursor["hits"]["total"];
 
+    echo "Registros restantes: $total<br/><br/>";
+
     foreach ($cursor["hits"]["hits"] as $r) {
 
         $doi_data = query_doi($r["_source"]["doi"]);
         
         $body["doc"]["USP"]["crossref"] = $doi_data;
         $body["doc_as_upsert"] = true;
-        $resultado_crossref = elasticsearch::store_record($r["_id"],$type,$body);
+        $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
         print_r($resultado_crossref);
     }
 
 
-    function query_doi ($doi) {
+    function query_doi($doi) 
+    {
             global $client; 
             global $index;
-            $url = "https://api.crossref.org/v1/works/http://dx.doi.org/$doi";
+            $url = "https://api.crossref.org/v1/works/https://doi.org/$doi";
             $json = file_get_contents($url);
-            $data = json_decode($json, TRUE);
+            $data = json_decode($json, true);
         
             return ($data); 
-        }   
+    }   
 
 
 ?>

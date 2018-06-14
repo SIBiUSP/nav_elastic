@@ -181,17 +181,17 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank">Ver no Dedalus</a>                    
+                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="noopener noreferrer nofollow">Ver no Dedalus</a>                    
                             </li>
                         </ul>
                         <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>                   
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" >RIS (EndNote)</a>
+                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
                             </li>
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" >Tabela (TSV)</a>
+                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
                             </li>                            
                         </ul>
 
@@ -205,7 +205,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 <p><?php echo $t->gettext('Métricas'); ?>:</p>
                                 <div uk-grid>
                                     <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                    <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true"></a></div>
+                                    <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true" target="_blank" rel="noopener noreferrer nofollow"></a></div>
                                     <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
                                     <div><span class="__dimensions_badge_embed__" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
                                     <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["num_citations"])) :?>
@@ -257,7 +257,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             if ($use_api_oadoi == true) {
                                 if (!empty($cursor["_source"]['doi'])) {
                                     $oadoi = metrics::get_oadoi($cursor["_source"]['doi']);
-                                    echo '<div class="uk-alert-primary uk-h6 uk-padding-small">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org">oaDOI API</a>)';
+                                    echo '<div class="uk-alert-primary uk-h6 uk-padding-small">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org" target="_blank" rel="noopener noreferrer nofollow">oaDOI API</a>)';
                                     echo '<ul>';
                                     if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
                                         echo '<li>Este periódico é de assinatura</li>';
@@ -371,10 +371,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 <li class="uk-h6">
                                     <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["citescore"]["title"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Citescore - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["citescore"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">SJR - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SJR"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">SNIP - 2016: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["SNIP"]); ?></p>                               
-                                    <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2016"][0]["open_access"]); ?></p> 
+                                    <p class="uk-text-small uk-margin-remove">Citescore - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["citescore"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">SJR - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["SJR"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">SNIP - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["SNIP"]); ?></p>                               
+                                    <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["open_access"]); ?></p> 
                                 </li>
                             </div>
                         <?php endif; ?>  
@@ -384,7 +384,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         <!-- Query itens on Aleph - Start -->                            
                         <?php
-                        if (!empty($cursor["_source"]["itens"])) {
+                        if (!empty($cursor["_source"]["item"])) {
                             echo '<div id="exemplares'.$cursor["_id"].'">';
                             echo "<table class=\"uk-table uk-table-small uk-text-small uk-table-striped\">";
                             echo "<caption>Exemplares físicos disponíveis nas Bibliotecas da USP</caption>";
@@ -392,20 +392,16 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             echo "<tr>";
                             echo "<th><small>Biblioteca</small></th>";
                             echo "<th><small>Cód. de barras</small></th>";
-                            echo "<th><small>Status</small></th>";
                             echo "<th><small>Núm. de chamada</small></th>";
-                            echo "<th><small>Disponibilidade</small></th>";
                             echo "</tr>";  
                             echo "</thead>";
                             echo "<tbody>";                               
 
-                            foreach ($cursor["_source"]["itens"] as $item) {
+                            foreach ($cursor["_source"]["item"] as $item) {
                                 echo '<tr>';
-                                echo '<td><small>'.$item["sub-library"].'</small></td>';
-                                echo '<td><small>'.$item["barcode"].'</small></td>';
-                                echo '<td><small>'.$item["item-status"].'</small></td>';
-                                echo '<td><small>'.$item["call-no-1"].'</small></td>';
-                                echo '<td><small>'.$item["loan-status"].'</small></td>';
+                                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. $item["Z30_SUB_LIBRARY"] .'" target="_blank" rel="noopener noreferrer nofollow">'.$item["Z30_SUB_LIBRARY"].'</a></small></td>';
+                                echo '<td><small>'.$item["Z30_BARCODE"].'</small></td>';
+                                echo '<td><small>'.$item["Z30_CALL_NO"].'</small></td>';
                                 echo '</tr>';
                             }
 
@@ -498,10 +494,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         if (isset($_SESSION['oauthuserdata'])) {
                                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                                 echo '<tr>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
+                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
                                                 echo '<th>'.$value["name"].'</th>';
                                                 echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank">Direct link</a></th>';
+                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
                                                 if ($isOfThisUnit == true) {
                                                     echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream-'.$value["uuid"].'">Excluir</button></th>';
                                                     echo '<div id="modal-deleteBitstream-'.$value["uuid"].'" uk-modal>';
@@ -545,18 +541,18 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                 echo '<th></th>';
                                             } else {
                                                 echo '<tr>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
+                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
                                                 echo '<th>'.$value["name"].'</th>';
                                                 echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank">Direct link</a></th>';  
+                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';  
                                             }
                                                                                 
                                         } else {
                                             echo '<tr>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
+                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
                                             echo '<th>'.$value["name"].'</th>';
                                             echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank">Direct link</a></th>';
+                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
 
                                         }
     
@@ -566,10 +562,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         if (isset($_SESSION['oauthuserdata'])) {
 
                                             echo '<tr>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
+                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
                                             echo '<th>'.$value["name"].'</th>';
                                             echo '<th><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></th>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank">Direct link</a></th>';
+                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
                                             
                                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
     
@@ -663,7 +659,57 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             </ul>
                             </p>
                         </div>
-                        <!-- Citation - End -->                           
+                        <!-- Citation - End --> 
+
+                        <!-- References - CrossRef - Start -->
+                        <?php if (!empty($cursor["_source"]["USP"]["crossref"]["message"]["reference"])) : ?>
+                        <div class="uk-alert-primary" uk-alert>
+                        <h5><?php echo $t->gettext('Referências citadas na obra'); ?></h5>
+                        <a class="uk-alert-close" uk-close></a>
+                        <table class="uk-table uk-table-justify uk-table-divider uk-table-striped">
+                            <tbody>
+                                <?php 
+                                foreach ($cursor["_source"]["USP"]["crossref"]["message"]["reference"] as $crossRefReference) {
+                                    echo "<tr><th>";
+                                    if (isset($crossRefReference["unstructured"])) {
+                                        print_r($crossRefReference["unstructured"]); 
+                                    } else {
+                                        if (isset($crossRefReference["author"])) {
+                                            echo ''.$t->gettext("Autor: ").''.$crossRefReference["author"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["article-title"])) {
+                                            echo ''.$t->gettext("Título: ").''.$crossRefReference["article-title"].'<br/>';
+                                        }                                        
+                                        if (isset($crossRefReference["journal-title"])) {
+                                            echo ''.$t->gettext("Título do periódico: ").''.$crossRefReference["journal-title"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["volume"])) {
+                                            echo ''.$t->gettext("Volume: ").''.$crossRefReference["volume"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["issue"])) {
+                                            echo ''.$t->gettext("Fascículo: ").''.$crossRefReference["issue"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["first-page"])) {
+                                            echo ''.$t->gettext("Primeira página: ").''.$crossRefReference["first-page"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["year"])) {
+                                            echo ''.$t->gettext("Ano: ").''.$crossRefReference["year"].'<br/>';
+                                        }
+                                        if (isset($crossRefReference["DOI"])) {
+                                            echo ''.$t->gettext("DOI: ").'<a href="https://doi.org/'.$crossRefReference["DOI"].'" target="_blank" rel="noopener noreferrer">'.$crossRefReference["DOI"].'</a><br/>';
+                                        }                                        
+                                        //print_r($crossRefReference);
+                                    }
+
+                                    echo "</th></tr>";
+                                }  
+                                ?>
+                            </tbody>
+                        </table>
+
+                        </div>
+                        <?php endif; ?>
+                        <!-- References - CrossRef - End -->                          
                             
                 </div>
             </div>

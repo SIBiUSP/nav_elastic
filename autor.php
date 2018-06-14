@@ -371,7 +371,7 @@ if (!empty($_GET)) {
                     <td><a href="single.php?_id=<?php echo  $r['_id'];?>"><?php echo  $r['_id'];?></a></td>
                     <td>
                         <?php if (!empty($r["_source"]['doi'])) : ?>
-                            <a href="http://dx.doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank"><?php echo $r["_source"]['doi'];?></a>
+                            <a href="https://doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank" rel="noopener noreferrer"><?php echo $r["_source"]['doi'];?></a>
                         <?php endif; ?>    
                     </td>
                     <td><?php echo $r["_source"]['name'];?></td>

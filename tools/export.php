@@ -180,159 +180,165 @@ if ($_GET["format"] == "table") {
     
 } elseif ($_GET["format"] == "csvThesis") {
 
-        $file="export_bdpi.tsv";
-        header('Content-type: text/tab-separated-values; charset=utf-8');
-        header("Content-Disposition: attachment; filename=$file");
+    $file="export_bdpi.tsv";
+    header('Content-type: text/tab-separated-values; charset=utf-8');
+    header("Content-Disposition: attachment; filename=$file");
+
+    // Set directory to ROOT
+    chdir('../');
+    // Include essencial files
+    include 'inc/config.php'; 
+    include 'inc/functions.php';
     
-        // Set directory to ROOT
-        chdir('../');
-        // Include essencial files
-        include('inc/config.php'); 
-        include('inc/functions.php');
-    
-        if (!empty($_GET)) {
-            $result_get = get::analisa_get($_GET);
-            $query = $result_get['query'];  
-            $limit = $result_get['limit'];
-            $page = $result_get['page'];
-            $skip = $result_get['skip'];
-    
-            if (isset($_GET["sort"])) {
-                $query['sort'] = [
-                    ['name.keyword' => ['order' => 'asc']],
-                ];
-            } else {
-                $query['sort'] = [
-                    ['datePublished.keyword' => ['order' => 'desc']],
-                ];
+    if (!empty($_GET)) {
+        $result_get = get::analisa_get($_GET);
+        $query = $result_get['query'];  
+        $limit = $result_get['limit'];
+        $page = $result_get['page'];
+        $skip = $result_get['skip'];
+
+        if (isset($_GET["sort"])) {
+            $query['sort'] = [
+                ['name.keyword' => ['order' => 'asc']],
+            ];
+        } else {
+            $query['sort'] = [
+                ['datePublished.keyword' => ['order' => 'desc']],
+            ];
+        }
+
+        $params = [];
+        $params["index"] = $index;
+        $params["type"] = $type;
+        $params["size"] = 4000;
+        $params["from"] = $skip;
+        $params["body"] = $query; 
+
+        $cursor = $client->search($params);
+        $total = $cursor["hits"]["total"];
+        
+
+        echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\tURL\n";
+
+        foreach ($cursor["hits"]["hits"] as $r) {
+
+            $fields[] = $r['_id'];
+            $fields[] = "Não foi possível coletar";
+
+            foreach ($r["_source"]['authorUSP'] as $numUSP_aut) {
+                if (isset($numUSP_aut["codpes"])) {
+                    $fields[] = $numUSP_aut["codpes"];
+                } else {
+                    $fields[] = "Não preenchido corretamente";
+                }
+                
+                $fields[] = $numUSP_aut["name"];
             }
-    
-            $params = [];
-            $params["index"] = $index;
-            $params["type"] = $type;
-            $params["size"] = 4000;
-            $params["from"] = $skip;
-            $params["body"] = $query; 
-    
-            $cursor = $client->search($params);
-            $total = $cursor["hits"]["total"];
-           
-    
-            echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\tURL\n";
-
-            foreach ($cursor["hits"]["hits"] as $r) {
-    
-                $fields[] = $r['_id'];
-                $fields[] = "Não foi possível coletar";
-
-                foreach ($r["_source"]['authorUSP'] as $numUSP_aut) {
-                    if (isset($numUSP_aut["codpes"])) {
-                        $fields[] = $numUSP_aut["codpes"];
-                    } else {
-                        $fields[] = "Não preenchido corretamente";
-                    }
-                    
-                    $fields[] = $numUSP_aut["name"];
-                }
-                
-                
-                foreach ($r["_source"]['author'] as $authors) {
-                    if (empty($authors["person"]["potentialAction"])) {
-                        $fields[] = $authors["person"]["name"];
-                    } else {
-                        $orientadores_array[] = $authors["person"]["name"]; 
-                    }
-                }
-                if (isset($orientadores_array)) {
-                    $array_orientadores = implode("; ", $orientadores_array);
-                    unset($orientadores_array);
-                    $fields[] = $array_orientadores;       
-                } else {
-                    $fields[] = "Não preenchido";
-                }
-               
-                if (isset($r["_source"]['USP']['codpesOrientador'])) {
-                    foreach ($r["_source"]['USP']['codpesOrientador'] as $codpesOrientador) {
-                        $array_codpesOrientador[] = $codpesOrientador;
-                    }
-                }    
-                if (isset($array_codpesOrientador)) {
-                    $array_codpesOrientadores = implode("; ", $array_codpesOrientador);
-                    unset($array_codpesOrientador);
-                    $fields[] = $array_codpesOrientadores;       
-                } else {
-                    $fields[] = "Não preenchido";
-                }
-                
-
-
-                if (isset($r["_source"]['USP']['areaconcentracao'])) {
-                    $fields[] = $r["_source"]['USP']['areaconcentracao'];
-                } else {
-                    $fields[] = "Não preenchido";
-                }
-                
-                $fields[] = $r["_source"]['inSupportOf'];
-                $fields[] = $r["_source"]['language'][0];
-                $fields[] = $r["_source"]['name'];
-
-                if (isset($r["_source"]['description'][0])) {
-                    $fields[] = $r["_source"]['description'][0];
-                } else {
-                    $fields[] = "Não preenchido";
-                }    
-                
-                foreach ($r["_source"]['about'] as $subject) {
-                    $subject_array[]=$subject;
-                } 
-                $array_subject = implode("; ", $subject_array);
-                unset($subject_array);
-                $fields[] = $array_subject;                
-                
-                if (isset($r["_source"]['alternateName'])) {
-                    $fields[] = $r["_source"]['alternateName'];
-                } else {
-                    $fields[] = "Não preenchido";
-                }
-
-                if (isset($r["_source"]['descriptionEn'])) {
-                    foreach ($r["_source"]['descriptionEn'] as $descriptionEn) {
-                        $descriptionEn_array[] = $descriptionEn;   
-                    }
-                    $array_descriptionEn = implode(" ", $descriptionEn_array);
-                    unset($descriptionEn_array);
-                    $fields[] = $array_descriptionEn;                      
-                } else {
-                    $fields[] = "Não preenchido";
-                }
-                
-                $fields[] = $r["_source"]['datePublished'];
-
-                $fields[] = $r["_source"]['publisher']['organization']['location'];
-
-                $fields[] = $r["_source"]['dateCreated'];
-
-                if (isset($r["_source"]['url'])) {
-                    foreach ($r["_source"]['url'] as $url) {
-                        $url_array[] = $url;                        
-                    }
-                    $array_url = implode("| ", $url_array);
-                    unset($url_array);
-                    $fields[] = $array_url;                      
-                }    
-                
-                
-                // $content[] = implode("\t", $fields);
-                
-                echo implode("\t", $fields)."\n";
-                flush();
-
-                unset($fields);
             
+            
+            foreach ($r["_source"]['author'] as $authors) {
+                if (empty($authors["person"]["potentialAction"])) {
+                    $fields[] = $authors["person"]["name"];
+                } else {
+                    $orientadores_array[] = $authors["person"]["name"]; 
+                }
             }
-            // echo implode("\n", $content);            
-    
-        }        
+            if (isset($orientadores_array)) {
+                $array_orientadores = implode("; ", $orientadores_array);
+                unset($orientadores_array);
+                $fields[] = $array_orientadores;       
+            } else {
+                $fields[] = "Não preenchido";
+            }
+            
+            if (isset($r["_source"]['USP']['codpesOrientador'])) {
+                foreach ($r["_source"]['USP']['codpesOrientador'] as $codpesOrientador) {
+                    $array_codpesOrientador[] = $codpesOrientador;
+                }
+            }    
+            if (isset($array_codpesOrientador)) {
+                $array_codpesOrientadores = implode("; ", $array_codpesOrientador);
+                unset($array_codpesOrientador);
+                $fields[] = $array_codpesOrientadores;       
+            } else {
+                $fields[] = "Não preenchido";
+            }
+            
+
+
+            if (isset($r["_source"]['USP']['areaconcentracao'])) {
+                $fields[] = $r["_source"]['USP']['areaconcentracao'];
+            } else {
+                $fields[] = "Não preenchido";
+            }
+            if (isset($r["_source"]['inSupportOf'])) {
+                $fields[] = $r["_source"]['inSupportOf'];
+            } else {
+                $fields[] = "Não preenchido";
+            }
+            
+            $fields[] = $r["_source"]['language'][0];
+            $fields[] = $r["_source"]['name'];
+
+            if (isset($r["_source"]['description'][0])) {
+                $fields[] = $r["_source"]['description'][0];
+            } else {
+                $fields[] = "Não preenchido";
+            }    
+            
+            foreach ($r["_source"]['about'] as $subject) {
+                $subject_array[]=$subject;
+            }
+            $array_subject = implode("; ", $subject_array);
+            unset($subject_array);
+            $fields[] = $array_subject;                
+            
+            if (isset($r["_source"]['alternateName'])) {
+                $fields[] = $r["_source"]['alternateName'];
+            } else {
+                $fields[] = "Não preenchido";
+            }
+
+            if (isset($r["_source"]['descriptionEn'])) {
+                foreach ($r["_source"]['descriptionEn'] as $descriptionEn) {
+                    $descriptionEn_array[] = $descriptionEn;   
+                }
+                $array_descriptionEn = implode(" ", $descriptionEn_array);
+                unset($descriptionEn_array);
+                $fields[] = $array_descriptionEn;                      
+            } else {
+                $fields[] = "Não preenchido";
+            }
+            
+            $fields[] = $r["_source"]['datePublished'];
+
+            $fields[] = $r["_source"]['publisher']['organization']['location'];
+
+            if (isset($r["_source"]['dateCreated'])) {
+                $fields[] = $r["_source"]['dateCreated'];
+            }
+
+            if (isset($r["_source"]['url'])) {
+                foreach ($r["_source"]['url'] as $url) {
+                    $url_array[] = $url;                        
+                }
+                $array_url = implode("| ", $url_array);
+                unset($url_array);
+                $fields[] = $array_url;                      
+            }    
+            
+            
+            // $content[] = implode("\t", $fields);
+            
+            echo implode("\t", $fields)."\n";
+            flush();
+
+            unset($fields);
+        
+        }
+        // echo implode("\n", $content);            
+
+    }        
 
 } elseif($_GET["format"] == "ris") {
 

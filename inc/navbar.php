@@ -83,7 +83,7 @@
 
                 </li>
                 <li class="uk-active">
-                    <a href="<?php echo $url_base; ?>/tutorial/" target="_blank"><?php echo $t->gettext('Tutorial'); ?></a>
+                    <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
                 </li>                
              </ul>
         </div>
@@ -100,7 +100,7 @@
                 </li>
                 <li class="uk-active">
                     <?php if(empty($_SESSION['oauthuserdata'])): ?>
-                    <li><a href="aut/oauth.php"><?php echo $t->gettext('Usuário'); ?></a></li>                    
+                    <li><a href="aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>                    
                     <?php else: ?>
                     <a href="" class="" aria-expanded="false"><?php echo $t->gettext('Usuário'); ?></a>
                     <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
@@ -122,7 +122,7 @@
                 
                 
                 
-                <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
+                <li class="uk-active"><a href="http://sibi.usp.br" target="_blank" rel="noopener noreferrer">SIBiUSP</a></li>
             </ul>
         </div>            
     </div>
@@ -145,7 +145,7 @@
                     <li class="uk-nav-divider"></li>
                     <li class="uk-active"><a href="contact.php"><?php echo $t->gettext('Contato'); ?></a></li>
                     <li class="uk-active"><a href="sobre.php"><?php echo $t->gettext('Sobre'); ?></a></li>
-                    <li class="uk-active"><a href="http://sibi.usp.br">SIBiUSP</a></li>
+                    <li class="uk-active"><a href="http://sibi.usp.br" target="_blank" rel="noopener noreferrer">SIBiUSP</a></li>
                 </ul>
 
             </div>
