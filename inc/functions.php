@@ -1108,6 +1108,11 @@ class Record
         } else {
             $this->funderArray = 0;
         }
+        if (isset($record["_source"]["USP"]["crossref"]["message"]["funder"])) {
+            $this->funderCrossrefArray = $record["_source"]["USP"]["crossref"]["message"]["funder"];
+        } else {
+            $this->funderCrossrefArray = 0;
+        }        
         $this->USPArray = $record["_source"]["USP"];
         if (isset($record["_source"]["authorUSP"])) {
             $this->authorUSPArray = $record["_source"]["authorUSP"];
@@ -1278,6 +1283,37 @@ class Record
             }
             echo '</ul></p></div>';
         }
+
+        /* Funder - Crossref */
+        if (isset($_SESSION['oauthuserdata'])) { 
+            if ($this->funderCrossrefArray > 0) {
+                echo '<div class="uk-alert-danger" uk-alert><p class="uk-text-small uk-margin-remove">'.$t->gettext('Agências de fomento coletadas na CrossRef').': ';
+                echo '<ul class="uk-list uk-list-striped uk-text-small">';
+                foreach ($this->funderCrossrefArray as $funder) {                
+                    echo '<li>';
+                    echo 'Agência de fomento: '.$funder["name"].'</a><br/>';
+                    if (isset($funder["award"])) {
+                        foreach ($funder["award"] as $projectNumber) {
+                            echo 'Projeto: '.$projectNumber.'</a><br/>';
+                        }
+                    }
+                    echo "ALEPHSEQ - 536:<br/>";
+                    if (isset($funder["award"])) {
+                        foreach ($funder["award"] as $projectNumber) {
+                            $projectNumberArray[] = '$$f'.$projectNumber.'';
+                        }
+                        echo '<p><b>$$a'.$funder["name"].''.implode("", $projectNumberArray).'</b></p>';
+                        $projectNumberArray = [];
+
+                    } else {
+ 
+                        echo '<p><b>$$a'.$funder["name"].'</b></p>';
+                    }                  
+                    echo '</li>';
+                }
+                echo '</ul></p></div>';
+            }
+        }        
 
         /* Language */
         echo '<div><p class="uk-text-small uk-margin-remove">'.$t->gettext('Idioma').': ';
