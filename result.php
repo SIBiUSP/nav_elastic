@@ -266,21 +266,21 @@ if (isset($_GET["sort"])) {
                         <!-- Limitar por data - Fim -->
 
                         <hr>
-                    <!--
-                        <h3 class="uk-panel-title">< ?php echo $t->gettext('Visualização em rede'); ?></h3>
-                    <p>< ?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
+                    
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Visualização em rede'); ?></h3>
+                    <p><?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
                     <hr>
                     <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">                    
 
-                    < ?php 
+                    <?php 
                         $value = ''.$_SERVER["QUERY_STRING"].'&gexf_field=unidadeUSP';
                         $sha1_unidade = sha1($value);
                     ?>
                     <script>                    
                     function gexf_unidadeUSP() {
-                        $.get("tools/gexf/update_bdpi.php?< ?=$value?>");
+                        $.get("tools/gexf/update_bdpi.php?<?=$value?>");
                         setTimeout(function(){
-                            document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-< ?=$sha1_unidade?>.gexf";
+                            document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
                         }, 15000);                        
                     }
                     </script>
@@ -298,20 +298,21 @@ if (isset($_GET["sort"])) {
                                 </div>
                             </div>
                             <div class="uk-modal-footer">
+                                <p><a href="tools/gexf/data/bdpi-<?php echo $sha1_unidade; ?>.gexf" download>Download GEXF</a></p>
                             </div>
                         </div>
                     </div>
                    
-                    < ?php 
+                    <?php 
                         $value_authors = ''.$_SERVER["QUERY_STRING"].'&gexf_field=authorUSP.name';
                         $sha1_authors = sha1($value_authors);
                     ?>
 
                     <script>                    
                     function gexf_authors() {
-                        $.get("tools/gexf/update_bdpi.php?< ?=$value_authors?>");
+                        $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
                         setTimeout(function(){
-                            document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-< ?=$sha1_authors?>.gexf";
+                            document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
                         }, 15000);                        
                     }
                     </script>
@@ -330,19 +331,20 @@ if (isset($_GET["sort"])) {
                                 </div>
                             </div>
                             <div class="uk-modal-footer">
+                                <p><a href="tools/gexf/data/bdpi-<?php echo $sha1_authors; ?>.gexf" download>Download GEXF</a></p>
                             </div>
                         </div>
                     </div>
                     
-                    < ?php 
+                    <?php 
                         $value_about = ''.$_SERVER["QUERY_STRING"].'&gexf_field=about';
                         $sha1_about = sha1($value_about);
                     ?>
                     <script type="text/javascript">                    
                         function gexf_about() {
-                            $.get("tools/gexf/update_bdpi.php?< ?=$value_about?>");
+                            $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
                             setTimeout(function(){
-                                document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-< ?=$sha1_about?>.gexf";
+                                document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
                             }, 15000);                        
                         }
                     </script>
@@ -361,11 +363,12 @@ if (isset($_GET["sort"])) {
                                 </div>
                             </div>
                             <div class="uk-modal-footer">
+                                <p><a href="tools/gexf/data/bdpi-<?php echo $sha1_about; ?>.gexf" download>Download GEXF</a></p>
                             </div>                                
                         </div>
                     </div>
                     
-                    -->
+                   
                     </ul> 
                 <hr>                                
 
