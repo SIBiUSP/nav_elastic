@@ -22,25 +22,14 @@
 
     foreach ($cursor["hits"]["hits"] as $r) {
 
-        $doi_data = query_doi($r["_source"]["doi"]);
-        
-        $body["doc"]["USP"]["crossref"] = $doi_data;
+        $clientCrossref = new RenanBr\CrossRefClient();
+        $clientCrossref->setUserAgent('GroovyBib/1.1 (https://bdpi.usp.br/; mailto:tiago.murakami@dt.sibi.usp.br)');
+        $work = $clientCrossref->request('works/'.$r["_source"]["doi"].'');
+        echo "<br/><br/><br/><br/>";
+        $body["doc"]["USP"]["crossref"] = $work;
         $body["doc_as_upsert"] = true;
         $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
         print_r($resultado_crossref);
     }
-
-
-    function query_doi($doi) 
-    {
-            global $client; 
-            global $index;
-            $url = "https://api.crossref.org/v1/works/https://doi.org/$doi";
-            $json = file_get_contents($url);
-            $data = json_decode($json, true);
-        
-            return ($data); 
-    }   
-
 
 ?>
