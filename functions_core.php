@@ -413,10 +413,11 @@ class Facets
         echo '<a href="#" style="color:#333">'.$nome_do_campo.'</a>';
         echo ' <ul class="uk-nav-sub">';
         foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
+            $termCleaned = str_replace("&", "*", $facets['key']);
             echo '<li">';
             echo "<div uk-grid>";
             echo '<div class="uk-width-2-3 uk-text-small" style="color:#333">';
-            echo '<a href="admin/autoridades.php?term='.$facets['key'].'" style="color:#0040ff;font-size: 90%">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a>';
+            echo '<a href="admin/autoridades.php?term=&quot;'.$termCleaned.'&quot;" style="color:#0040ff;font-size: 90%">'.$termCleaned.' ('.number_format($facets['doc_count'], 0, ',', '.').')</a>';
             echo '</div>';
             echo '</li>';
         };
