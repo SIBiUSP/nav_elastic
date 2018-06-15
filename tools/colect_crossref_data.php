@@ -12,7 +12,7 @@
     $params = [];
     $params["index"] = $index;
     $params["type"] = $type;
-    $params["size"] = 10;
+    $params["size"] = 100;
     $params["body"] = $query; 
 
     $cursor = $client->search($params);
@@ -30,6 +30,7 @@
         $body["doc_as_upsert"] = true;
         $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
         print_r($resultado_crossref);
+        sleep(25);
     }
 
 ?>
