@@ -222,7 +222,7 @@ class get
 
         if (!empty($get['search'])) {
             $search = implode(" ", $get['search']);
-            $query["query"]["bool"]["must"]["query_string"]["query"] = $search;
+            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(".keyword", "", $search);
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
