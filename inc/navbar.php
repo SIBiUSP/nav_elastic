@@ -113,7 +113,7 @@
                                     <p>Aqui você pode:</p>
                                     <ul>
                                     <li><a href="result.php?search[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;">Pesquisar por sua produção</a></li>
-                                    <li><a href="tools/export.php?search[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=ris">Exportar resultados em formato RIS</a></li>
+                                    <li><a href="tools/export.php?search[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=ris">Exportar sua produçao em formato RIS</a></li>
                                     <?php 
                                     if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                         echo '<li><a href="admin/index.php">Administração</a></li>';
