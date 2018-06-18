@@ -12,7 +12,7 @@
     $params = [];
     $params["index"] = $index;
     $params["type"] = $type;
-    $params["size"] = 100;
+    $params["size"] = 1000;
     $params["body"] = $query; 
 
     $cursor = $client->search($params);
