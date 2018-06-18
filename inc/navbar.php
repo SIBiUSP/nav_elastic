@@ -83,7 +83,15 @@
 
                 </li>
                 <li class="uk-active">
+                <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
+                    <?php if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) : ?>
+                        <a href="<?php echo $url_base; ?>/tutorial_staff/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial Staff'); ?></a>
+                    <?php else: ?>                        
+                        <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
+                    <?php endif; ?> 
+                <?php else: ?>
                     <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
+                <?php endif; ?> 
                 </li>                
              </ul>
         </div>
@@ -99,7 +107,7 @@
                     <a href="<?php echo $url_base; ?>/sobre.php"><?php echo $t->gettext('Sobre'); ?></a>     
                 </li>
                 <li class="uk-active">
-                    <?php if(empty($_SESSION['oauthuserdata'])): ?>
+                    <?php if (empty($_SESSION['oauthuserdata'])) : ?>
                     <li><a href="aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>                    
                     <?php else: ?>                    
                     <li class="uk-active"><a href="#modal-user" uk-toggle><?php echo $t->gettext('Menu usuário'); ?></a></li>
@@ -118,7 +126,8 @@
                                     if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                         echo '<li><a href="admin/index.php">Administração</a></li>';
                                     } 
-                                    ?>                                    
+                                    ?>
+                                    <li><a href="dashboard.php">Acessar a Dashboard</a></li>                                    
                                     <li><a href="aut/logout.php">Logout</a></li>
                                     </ul>                                      
                                 </div>            
