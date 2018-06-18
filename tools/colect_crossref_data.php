@@ -30,7 +30,7 @@
         $body["doc_as_upsert"] = true;
         $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
         print_r($resultado_crossref);
-        sleep(25);
+        sleep(60);
     }
 
 ?>
