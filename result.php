@@ -99,7 +99,7 @@ if (isset($_GET["sort"])) {
                     $diff["search"] = array_diff($_GET["search"], $querySearchArray);
                     $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
                     echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
-                    unset($querySearchArray); 	
+                    unset($querySearchArray);
                 }
             }
                 
@@ -380,7 +380,7 @@ if (isset($_GET["sort"])) {
                 </fieldset>
                 <!-- Gerar relatório - Fim -->
                         
-                <?php if(!empty($_SESSION['oauthuserdata'])): ?>
+                <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                 <hr>
                 <!-- Exportar resultados -->
                 <h3 class="uk-panel-title"><?php echo $t->gettext('Exportar'); ?></h3>
