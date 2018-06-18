@@ -101,16 +101,31 @@
                 <li class="uk-active">
                     <?php if(empty($_SESSION['oauthuserdata'])): ?>
                     <li><a href="aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>                    
-                    <?php else: ?>
-                    <a href="" class="" aria-expanded="false"><?php echo $t->gettext('Usuário'); ?></a>
-                    <div class="uk-navbar-dropdown uk-navbar-dropdown-bottom-right" style="top: 80.1333px; left: 913.503px;">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-nav-header">Acesso</li>
-                            <li><a href="#"><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></a></li>
-                            <li><a href="admin.php">Administração</a></li>
-                            <li><a href="aut/logout.php">Logout</a></li>                            
-                        </ul>
+                    <?php else: ?>                    
+                    <li class="uk-active"><a href="#modal-user" uk-toggle><?php echo $t->gettext('Menu usuário'); ?></a></li>
+                    <div id="modal-user" class="uk-modal-full" uk-modal>
+                        <div class="uk-modal-dialog uk-modal-body">
+                            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                            <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
+                                <div class="uk-background-cover" style="background-image: url('http://www.imagens.usp.br/wp-content/uploads/Pra%C3%A7a-do-rel%C3%B3gio-Foto-Marcos-Santos-USP-Imagens-5.jpg');" uk-height-viewport></div>
+                                <div class="uk-padding">
+                                    <h3><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></h3>                                    
+                                    <p>Aqui você pode:</p>
+                                    <ul>
+                                    <li><a href="result.php?search[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;">Pesquisar por sua produção</a></li>
+                                    <li><a href="tools/export.php?search[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=ris">Exportar resultados em formato RIS</a></li>
+                                    <?php 
+                                    if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
+                                        echo '<li><a href="admin/index.php">Administração</a></li>';
+                                    } 
+                                    ?>                                    
+                                    <li><a href="aut/logout.php">Logout</a></li>
+                                    </ul>                                      
+                                </div>            
+                            </div>
+                        </div>
                     </div>
+
                     <?php endif; ?>                
                 </li>
                 
