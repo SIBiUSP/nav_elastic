@@ -378,7 +378,7 @@ class PageSingle
               {
                 "@id": "http://bdpi.usp.br",
                 "@type": "Library",
-                "name": "Base de Produção Intelectual da USP",
+                "name": "Biblioteca Digital de Produção Intelectual da Universidade de São Paulo",
                 "priceRange": "0",
                 "address":"Rua da Praça do Relógio, 109 - Bloco L  Térreo - Cidade Universitária, São Paulo, SP",
                 "image":"http://bdpi.usp.br/images/logo_sibi.jpg",
@@ -1112,7 +1112,12 @@ class Record
             $this->funderCrossrefArray = $record["_source"]["USP"]["crossref"]["message"]["funder"];
         } else {
             $this->funderCrossrefArray = 0;
-        }        
+        } 
+        if (isset($record["_source"]["USP"]["crossref"]["message"])) {
+            $this->crossrefArray = $record["_source"]["USP"]["crossref"]["message"];
+        } else {
+            $this->crossrefArray = 0;
+        }                   
         $this->USPArray = $record["_source"]["USP"];
         if (isset($record["_source"]["authorUSP"])) {
             $this->authorUSPArray = $record["_source"]["authorUSP"];
@@ -1350,6 +1355,37 @@ class Record
                     echo '<li>'.$t->gettext('Data de publicação').': <a href="'.$url_base.'/result.php?search[]=datePublished:&quot;'.$this->datePublished.'&quot;">'.$this->datePublished.'</a></li>';
                 }
             echo '</ul></p>';            
+        }
+        if (isset($_SESSION['oauthuserdata'])) {
+            if ($this->crossrefArray > 0) {
+                echo '<div class="uk-alert-danger" uk-alert><p class="uk-text-small uk-margin-remove">'.$t->gettext('Informações sobre o periódico coletadas na CrossRef').': ';
+                echo '<ul class="uk-list uk-list-striped uk-text-small">';
+                if (!empty($this->crossrefArray["container-title"])) {
+                    echo '<li>Título do periódico: '.$this->crossrefArray["container-title"][0].'</li>';
+                }
+                if (!empty($this->crossrefArray["issn-type"])) {
+                    echo '<li>ISSN:<br/>';
+                    foreach ($this->crossrefArray["issn-type"] as $crossrefISSN) {
+                        echo ''.$crossrefISSN["type"].': '.$crossrefISSN["value"].'<br/>';                    }
+                    echo '</li>';
+                }
+                if (!empty($this->crossrefArray["volume"])) {
+                    echo '<li>Volume: '.$this->crossrefArray["volume"].'</li>';
+                }                   
+                if (!empty($this->crossrefArray["journal-issue"]["issue"])) {
+                    echo '<li>Fascículo: '.$this->crossrefArray["journal-issue"]["issue"][0].'</li>';
+                }
+                if (!empty($this->crossrefArray["journal-issue"]["published-print"]["date-parts"])) {
+                    echo '<li>Ano de publicação: '.$this->crossrefArray["journal-issue"]["published-print"]["date-parts"][0][0].'</li>';
+                }                
+                if (!empty($this->crossrefArray["page"])) {
+                    echo '<li>Paginação: '.$this->crossrefArray["page"].'</li>';
+                }                    
+                if (!empty($this->crossrefArray["publisher"])) {
+                    echo '<li>Editora: '.$this->crossrefArray["publisher"].'</li>';
+                }
+                echo '</ul></p></div>';
+            }
         }
         
         /* Data da defesa */
