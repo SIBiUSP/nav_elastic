@@ -12,7 +12,7 @@
     $params = [];
     $params["index"] = $index;
     $params["type"] = $type;
-    $params["size"] = 50;
+    $params["size"] = 500;
     $params["body"] = $query; 
 
     $cursor = $client->search($params);
@@ -35,7 +35,9 @@
             $body["doc_as_upsert"] = true;
             $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
             print_r($resultado_crossref);
-            sleep(61);          
+            sleep(11);
+            ob_flush();
+            flush();          
 
         } else {
             $body["doc"]["USP"]["crossref"]["notFound"] = true;
@@ -43,6 +45,8 @@
             $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
             print_r($resultado_crossref);
             sleep(2);
+            ob_flush();
+            flush();
         }
 
     }
