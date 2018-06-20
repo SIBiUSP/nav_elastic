@@ -12,7 +12,7 @@
     $params = [];
     $params["index"] = $index;
     $params["type"] = $type;
-    $params["size"] = 1000;
+    $params["size"] = 50;
     $params["body"] = $query; 
 
     $cursor = $client->search($params);
@@ -24,13 +24,27 @@
 
         $clientCrossref = new RenanBr\CrossRefClient();
         $clientCrossref->setUserAgent('GroovyBib/1.1 (https://bdpi.usp.br/; mailto:tiago.murakami@dt.sibi.usp.br)');
-        $work = $clientCrossref->request('works/'.$r["_source"]["doi"].'');
-        echo "<br/><br/><br/><br/>";
-        $body["doc"]["USP"]["crossref"] = $work;
-        $body["doc_as_upsert"] = true;
-        $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
-        print_r($resultado_crossref);
-        sleep(60);
+        $exists = $clientCrossref->exists('works/'.$r["_source"]["doi"].'');
+        var_dump($exists);
+
+        if ($exists == true) {
+
+            $work = $clientCrossref->request('works/'.$r["_source"]["doi"].'');
+            echo "<br/><br/><br/><br/>";
+            $body["doc"]["USP"]["crossref"] = $work;
+            $body["doc_as_upsert"] = true;
+            $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
+            print_r($resultado_crossref);
+            sleep(61);          
+
+        } else {
+            $body["doc"]["USP"]["crossref"]["notFound"] = true;
+            $body["doc_as_upsert"] = true;
+            $resultado_crossref = elasticsearch::store_record($r["_id"], $type, $body);
+            print_r($resultado_crossref);
+            sleep(2);
+        }
+
     }
 
 ?>
