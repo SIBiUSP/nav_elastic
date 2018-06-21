@@ -594,7 +594,7 @@ class ui {
             echo '<li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
         } else {
             $_GET["page"] = $page-1 ;
-            echo '<li><a href="result.php?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
+            echo '<li><a href="'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
         }
         echo '</ul>';
         echo '</div>';
@@ -612,7 +612,7 @@ class ui {
         echo '<ul class="uk-pagination uk-flex-center">';
         if ($total/$limit > $page) {
             $_GET["page"] = $page+1;
-            echo '<li class="uk-margin-auto-left"><a href="result.php?'.http_build_query($_GET).'">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
+            echo '<li class="uk-margin-auto-left"><a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
         } else {
             echo '<li class="uk-margin-auto-left"><a href="#">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
         }
