@@ -388,6 +388,7 @@ if (isset($_GET["sort"])) {
                 <ul>
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>">Exportar resultados em formato tabela</a></li>
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=ris'; ?>">Exportar resultados em formato RIS</a></li>
+                    <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=bibtex'; ?>">Exportar resultados em formato Bibtex</a></li>
                 </ul>
                 <!-- Exportar resultados - Fim -->        
                                                     
