@@ -1087,9 +1087,16 @@ class Exporters
             $recordContent[] = 'doi = {'.$cursor["_source"]['doi'].'}';
         }        
 
-        if (!empty($cursor["_source"]["isPartOf"]["name"])) {
-            $recordContent[] = 'journal   = {'.$cursor["_source"]["isPartOf"]["name"].'}';
+        if (!empty($cursor["_source"]["releasedEvent"])) {
+            if (!empty($cursor["_source"]["isPartOf"]["name"])) {
+                $recordContent[] = 'booktitle   = {'.$cursor["_source"]["isPartOf"]["name"].'}';
+            }
+        } else {
+            if (!empty($cursor["_source"]["isPartOf"]["name"])) {
+                $recordContent[] = 'journal   = {'.$cursor["_source"]["isPartOf"]["name"].'}';
+            }
         }
+
 
         $sha256 = hash('sha256', ''.implode("", $recordContent).'');
 
