@@ -1131,10 +1131,8 @@ class Exporters
             $record[] = '}';
             break;
         case "TESE":
-            $record[] = '@mastersthesis{mastersthesis'.substr($sha256, 0, 8).',';
-            if (!empty($cursor["_source"]['publisher']['organization']['name'])) {
-                $recordContent[] = 'school = {'.$cursor["_source"]['publisher']['organization']['name'].'}';
-            }                      
+            $record[] = '@mastersthesis{mastersthesis'.substr($sha256, 0, 8).','; 
+            $recordContent[] = 'school = {Universidade de São Paulo}';              
             $record[] = implode(",\\n", $recordContent);
             $record[] = '}';
             break;            
