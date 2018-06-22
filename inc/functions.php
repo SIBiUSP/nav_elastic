@@ -1092,9 +1092,7 @@ class Exporters
         }              
 
         if (!empty($cursor["_source"]["releasedEvent"])) {
-            if (!empty($cursor["_source"]["isPartOf"]["name"])) {
-                $recordContent[] = 'booktitle   = {'.$cursor["_source"]["isPartOf"]["name"].'}';
-            }
+            $recordContent[] = 'booktitle   = {'.$cursor["_source"]["releasedEvent"].'}';
         } else {
             if (!empty($cursor["_source"]["isPartOf"]["name"])) {
                 $recordContent[] = 'journal   = {'.$cursor["_source"]["isPartOf"]["name"].'}';
