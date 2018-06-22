@@ -1076,6 +1076,10 @@ class Exporters
             $recordContent[] = 'year = {'.$cursor["_source"]['datePublished'].'}';
         }
 
+        if (!empty($cursor["_source"]['doi'])) {
+            $recordContent[] = 'doi = {'.$cursor["_source"]['doi'].'}';
+        }        
+
         if (!empty($cursor["_source"]["isPartOf"]["name"])) {
             $recordContent[] = 'journal   = {'.$cursor["_source"]["isPartOf"]["name"].'}';
         }
@@ -1108,6 +1112,11 @@ class Exporters
             $record[] = implode(",\\n", $recordContent);
             $record[] = '}';
             break;
+        case "TESE":
+            $record[] = '@mastersthesis{mastersthesis'.substr($sha256, 0, 8).',';
+            $record[] = implode(",\\n", $recordContent);
+            $record[] = '}';
+            break;            
         default:
             $record[] = '@misc{misc'.substr($sha256, 0, 8).',';
             $record[] = implode(",\\n", $recordContent);
