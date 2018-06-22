@@ -1007,9 +1007,16 @@ class Exporters
             $record[] = "AU  - ".$autores["person"]["name"]."";
         }
 
-        if (!empty($cursor["_source"]["isPartOf"]["name"])) {
-            $record[] = "T2  - ".$cursor["_source"]["isPartOf"]["name"]."";
-        }
+        if (!empty($cursor["_source"]["releasedEvent"])) {
+            $record[] = "T2  - ".$cursor["_source"]["releasedEvent"]."";
+            if (!empty($cursor["_source"]["isPartOf"]["name"])) {
+                $record[] = "J2  - ".$cursor["_source"]["isPartOf"]["name"]."";
+            }            
+        } else {
+            if (!empty($cursor["_source"]["isPartOf"]["name"])) {
+                $record[] = "T2  - ".$cursor["_source"]["isPartOf"]["name"]."";
+            }
+        }      
 
         if (!empty($cursor["_source"]['isPartOf']['issn'])) {
             $record[] = "SN  - ".$cursor["_source"]['isPartOf']['issn'][0]."";
