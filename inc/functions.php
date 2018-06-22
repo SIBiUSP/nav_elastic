@@ -1085,7 +1085,11 @@ class Exporters
 
         if (!empty($cursor["_source"]['doi'])) {
             $recordContent[] = 'doi = {'.$cursor["_source"]['doi'].'}';
-        }        
+        }
+        
+        if (!empty($cursor["_source"]['publisher']['organization']['name'])) {
+            $recordContent[] = 'publisher = {'.$cursor["_source"]['publisher']['organization']['name'].'}';
+        }              
 
         if (!empty($cursor["_source"]["releasedEvent"])) {
             if (!empty($cursor["_source"]["isPartOf"]["name"])) {
@@ -1128,6 +1132,9 @@ class Exporters
             break;
         case "TESE":
             $record[] = '@mastersthesis{mastersthesis'.substr($sha256, 0, 8).',';
+            if (!empty($cursor["_source"]['publisher']['organization']['name'])) {
+                $recordContent[] = 'school = {'.$cursor["_source"]['publisher']['organization']['name'].'}';
+            }                      
             $record[] = implode(",\\n", $recordContent);
             $record[] = '}';
             break;            
