@@ -164,8 +164,8 @@ if (isset($_GET["format"])) {
                     $fields[] = "";
                 } 
                 
-                if (!empty($r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore'])) {
-                    $fields[] = $r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore'];
+                if (!empty($r["_source"]['USP']['citescore']['citescore']['2017'][0]['citescore'])) {
+                    $fields[] = $r["_source"]['USP']['citescore']['citescore']['2017'][0]['citescore'];
                 } else {
                     $fields[] = "";
                 }              
