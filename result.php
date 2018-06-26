@@ -441,7 +441,17 @@ if (isset($_GET["sort"])) {
                         </div>   
                     <?php endif; ?>
                 <?php endforeach; ?>
-            <?php endif; ?>    
+            <?php endif; ?>
+            <?php if(isset($_GET["filter"])) : ?>    
+                <?php foreach ($_GET["filter"] as $expressao_busca) : ?>    
+                    <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
+                        <div class="uk-alert-primary" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <?php $assunto = str_replace("about:", "", $expressao_busca); USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
+                        </div>   
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>                    
             <!-- Vocabulário controlado - Fim -->
                 
             <!-- Navegador de resultados - Início -->
