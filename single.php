@@ -293,6 +293,50 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     //API::metrics_update($_GET['_id'], $metrics);      
                                 }
                             }
+
+                            if (isset($cursor["_source"]["USP"]["unpaywall"])) {
+                                echo '<div class="uk-alert-danger uk-h6 uk-padding-small">Versões disponíveis em Acesso Aberto do: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://unpaywall.org" target="_blank" rel="noopener noreferrer nofollow">Unpaywall API</a>)';
+                                echo '<ul>';
+                                if (!empty($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"])) {
+                                    echo '<li>Melhor URL em Acesso Aberto:<ul>';
+                                    if (isset($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_landing_page"])) {
+                                        echo '<li><b><a href="'.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_landing_page"].'">Página do artigo</a></b></li>';
+                                    }
+                                    if (isset($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"])) {
+                                        echo '<li><b><a href="'.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"].'">Link para o PDF</a></b></li>';
+                                    }
+                                    echo '<li>Evidência: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["evidence"].'</li>';
+                                    echo '<li>Licença: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["license"].'</li>';
+                                    echo '<li>Versão: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["version"].'</li>';
+                                    echo '<li>Tipo de hospedagem: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["host_type"].'</li>';
+                                    echo '</ul></li>';
+                                } 
+                                echo "<br/><br/>";
+                                if (!empty($cursor["_source"]["USP"]["unpaywall"]["oa_locations"])) {
+                                    echo '<li>Outras alternativas de URLs em Acesso Aberto:<ul>';
+                                    foreach ($cursor["_source"]["USP"]["unpaywall"]["oa_locations"] as $oa_locations) {
+                                        echo '<li><ul>';
+                                        if (isset($oa_locations["url_for_landing_page"])) {
+                                            echo '<li><b><a href="'.$oa_locations["url_for_landing_page"].'">Página do artigo</a></b></li>';
+                                        }
+                                        if (isset($oa_locations["url_for_pdf"])) {
+                                            echo '<li><b><a href="'.$oa_locations["url_for_pdf"].'">Link para o PDF</a></b></li>';
+                                        }
+                                        echo '<li>Evidência: '.$oa_locations["evidence"].'</li>';
+                                        echo '<li>Licença: '.$oa_locations["license"].'</li>';
+                                        echo '<li>Versão: '.$oa_locations["version"].'</li>';
+                                        echo '<li>Tipo de hospedagem: '.$oa_locations["host_type"].'</li>';
+                                        echo '</ul></li>';                                        
+                                        //print_r($oa_locations);
+                                        echo "<br/><br/>";
+                                    }
+                                    echo '</ul></li>';
+                                    
+                                } else {
+                                    echo "Não possui versão em Acesso aberto";
+                                }
+                                echo '</ul></div>';                                
+                            }
                         }
                         ?>                            
 
