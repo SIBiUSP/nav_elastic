@@ -296,6 +296,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                             if (isset($cursor["_source"]["USP"]["unpaywall"])) {
                                 echo '<div class="uk-alert-danger uk-h6 uk-padding-small">Versões disponíveis em Acesso Aberto do: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://unpaywall.org" target="_blank" rel="noopener noreferrer nofollow">Unpaywall API</a>)';
+                                echo '<p>Título do periódico: '.$cursor["_source"]["USP"]["unpaywall"]["journal_name"].'</p>';
+                                echo '<p>ISSN: '.$cursor["_source"]["USP"]["unpaywall"]["journal_issns"].'</p>';
                                 echo '<ul>';
                                 if (!empty($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"])) {
                                     echo '<li>Melhor URL em Acesso Aberto:<ul>';
