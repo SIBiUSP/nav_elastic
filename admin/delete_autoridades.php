@@ -32,7 +32,7 @@ foreach ($cursor["hits"]["hits"] as $r) {
     //print_r($query_update);
 
 
-    $resultado = elasticsearch::elastic_update($r["_id"], $type, $query_update);  
+    //$resultado = elasticsearch::elastic_update($r["_id"], $type, $query_update);  
     print_r($resultado);
     echo '<br/><br/>';
 
