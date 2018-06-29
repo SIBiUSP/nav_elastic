@@ -181,9 +181,9 @@ if (isset($_GET["sort"])) {
                                 //$facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
                                 //$facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
                                 //$facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
-                                $facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
-                                $facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
+                                //$facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
+                                //$facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
+                                //$facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
                                 //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
                                 
                             ?>
@@ -453,6 +453,19 @@ if (isset($_GET["sort"])) {
                 <?php endforeach; ?>
             <?php endif; ?>                    
             <!-- Vocabulário controlado - Fim -->
+
+            <!-- Informações sobre autores USP - Início -->
+            <?php if(isset($_GET["search"])) : ?>    
+                <?php foreach ($_GET["search"] as $expressao_busca_codpes) : ?>    
+                    <?php if (preg_match("/\bcodpes\b/i", $expressao_busca_codpes, $matches)) : ?>
+                        <div class="uk-alert-primary" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <?php USP::consultar_codpes($expressao_busca_codpes); ?>
+                        </div>   
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>           
+            <!-- Informações sobre autores USP - Fim -->            
                 
             <!-- Navegador de resultados - Início -->
             <?php ui::pagination($page, $total, $limit, $t); ?>
