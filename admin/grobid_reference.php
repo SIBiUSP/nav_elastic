@@ -68,7 +68,7 @@ foreach ($response["hits"]["hits"] as $r) {
                 if (!isset($ref["year"]) AND isset($xmlGrobid->{'monogr'}->{'imprint'}->{'date'}->attributes()->{'when'})) {
                     $ref["year"] = (string)$xmlGrobid->{'monogr'}->{'imprint'}->{'date'}->attributes()->{'when'}[0];
                 }
-                $body_upsert["doc"]["USP"]["crossref"]["message"][$i]["reference"]["original"] = $ref;
+                $ref["original"] = $ref;
             }            
         }
         if (isset($ref["journal-title"])) {
@@ -76,7 +76,7 @@ foreach ($response["hits"]["hits"] as $r) {
             if (!empty($result_tematres["found_term"])) {
                 $ref["original"]["journal-title"] = $ref["journal-title"];
                 $ref["journal-title"] = $result_tematres["found_term"];
-                $body_upsert["doc"]["USP"]["crossref"]["message"][$i]["reference"]["original"] = $ref;
+                $ref["original"] = $ref;
             }
         }
         
@@ -85,8 +85,7 @@ foreach ($response["hits"]["hits"] as $r) {
             $ref["original"]["year"] = $ref["year"];
             $ref["year"] = $refYearMatch[0];
         }
-        $body_upsert["doc"]["USP"]["crossref"]["message"]["reference"][$i] = $ref;
-        $i++;
+        $body_upsert["doc"]["USP"]["crossref"]["message"]["reference"][] = $ref;
 
     }
 
