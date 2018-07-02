@@ -1174,7 +1174,9 @@ class Record
             $this->dateCreated = $record["_source"]["dateCreated"];
         }        
         $this->languageArray = $record["_source"]["language"];
-        $this->countryArray = $record["_source"]["country"];
+        if (isset($record["_source"]["country"])) {
+            $this->countryArray = $record["_source"]["country"];
+        }
         $this->authorArray = $record["_source"]["author"];
         if (isset($record["_source"]["description"])) {
             $this->descriptionArray = $record["_source"]["description"];
@@ -1210,8 +1212,10 @@ class Record
             $this->crossrefArray = $record["_source"]["USP"]["crossref"]["message"];
         } else {
             $this->crossrefArray = 0;
-        }                   
-        $this->USPArray = $record["_source"]["USP"];
+        }
+        if (isset($record["_source"]["USP"])) {                   
+            $this->USPArray = $record["_source"]["USP"];
+        }
         if (isset($record["_source"]["authorUSP"])) {
             $this->authorUSPArray = $record["_source"]["authorUSP"];
         }
