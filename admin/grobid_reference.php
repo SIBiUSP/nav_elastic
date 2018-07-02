@@ -65,10 +65,10 @@ foreach ($response["hits"]["hits"] as $r) {
                         } 
                     }                  
                 }
-                if (!isset($ref["year"]) AND isset($xmlGrobid->{'monogr'}->{'imprint'}->{'date'}->attributes()->{'when'})) {
+                if (!isset($ref["year"]) AND isset($xmlGrobid->{'monogr'}->{'imprint'}->{'date'})) {
                     $ref["year"] = (string)$xmlGrobid->{'monogr'}->{'imprint'}->{'date'}->attributes()->{'when'}[0];
                 }
-                $ref["original"] = $ref;
+                //$ref["original"] = $ref;
             }            
         }
         if (isset($ref["journal-title"])) {
