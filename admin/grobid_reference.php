@@ -25,7 +25,7 @@ $params = [];
 $params["index"] = $index;
 $params["type"] = $type;
 $params["_source"] = ["_id","USP.crossref.message.reference"];
-$params["size"] = 100;        
+$params["size"] = 250;        
 $params["body"] = $body;   
 
 $response = $client->search($params);
