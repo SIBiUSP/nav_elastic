@@ -66,7 +66,7 @@ foreach ($response["hits"]["hits"] as $r) {
                     }                  
                 }
                 if (!isset($ref["year"]) AND isset($xmlGrobid->{'monogr'}->{'imprint'}->{'date'})) {
-                    $ref["year"] = (string)$xmlGrobid->{'monogr'}->{'imprint'}->{'date'}->attributes()->{'when'}[0];
+                    $ref["year"] = substr((string)$xmlGrobid->{'monogr'}->{'imprint'}->{'date'}->attributes()->{'when'}[0], 0, 4);
                 }
                 //$ref["original"] = $ref;
             }            
