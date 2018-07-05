@@ -50,13 +50,7 @@
                                         <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
                                         <option value="base:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
                                         <option value="base:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
-                                    </select>
-                                <input type="hidden" name="fields[]" value="name">
-                                <input type="hidden" name="fields[]" value="author.person.name">
-                                <input type="hidden" name="fields[]" value="authorUSP.name">
-                                <input type="hidden" name="fields[]" value="about">
-                                <input type="hidden" name="fields[]" value="description">
-                                <input type="hidden" name="fields[]" value="unidadeUSP">                                                                 
+                                    </select>                                                          
                                 </div>
                             </div>
                              <div class="uk-margin">
@@ -123,8 +117,10 @@
                                     </select>                                   
                                 </div>                             
                              </div>
-
-                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom"><?php echo $t->gettext('Buscar'); ?></button>
+                             <div class="uk-child-width-1-2 uk-text-center" uk-grid>
+                                <div><button class="uk-button uk-button-primary"><?php echo $t->gettext('Buscar'); ?></button></div>
+                                <div><button class="uk-button uk-button-danger" type="reset" value="Reset"><?php echo $t->gettext('Limpar formulário'); ?></button></div>
+                            </div>                      
                         </form>
                     </div>
                 </div>

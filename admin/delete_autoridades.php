@@ -1,8 +1,9 @@
 <?php
-include('inc/config.php'); 
-include('inc/functions.php');
 
-$query["query"]["query_string"]["query"] = "+_exists_:USP.opencitation";    
+require '../inc/config.php'; 
+require '../inc/functions.php';
+
+$query["query"]["query_string"]["query"] = "+_exists_:USP.citescore";    
 $query['sort'] = [
     ['datePublished.keyword' => ['order' => 'desc']],
 ];      
@@ -10,7 +11,7 @@ $query['sort'] = [
 $params = [];
 $params["index"] = $index;
 $params["type"] = $type;
-$params["size"] = 1000;
+$params["size"] = 2500;
 $params["body"] = $query;
 
 $cursor = $client->search($params);
@@ -18,20 +19,22 @@ $total = $cursor["hits"]["total"];
 print_r($total);
 echo '<br/><br/>';
 
+//print_r($cursor);
+
 
 foreach ($cursor["hits"]["hits"] as $r) {
 
-  unset($r["_source"]["USP"]["opencitation"]);
+    $r["_source"]["USP"]["citescore"] = [];   
 
-  //print_r($r["_source"]);
+    $query_update["doc"] = $r["_source"];
+    $query_update["doc_as_upsert"] = true; 
 
-  $query_update["doc"] = $r["_source"];
-  $query_update["doc_as_upsert"] = true;  
+    //print_r($query_update);
 
-  elasticsearch::elastic_delete($r["_id"],$type); 
-  $resultado = elasticsearch::elastic_update($r["_id"],$type,$query_update);  
-  print_r($resultado);
-  echo '<br/><br/>';
+
+    //$resultado = elasticsearch::elastic_update($r["_id"], $type, $query_update);  
+    print_r($resultado);
+    echo '<br/><br/>';
 
 }
 

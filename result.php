@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <?php
 
-    require 'inc/config.php'; 
-    require 'inc/functions.php';
+require 'inc/config.php'; 
+require 'inc/functions.php';
 
-    $result_get = get::analisa_get($_GET);
-    $limit = $result_get['limit'];
-    $page = $result_get['page'];
+if (isset($fields)) {
+    $_GET["fields"] = $fields;
+}    
+
+$result_get = get::analisa_get($_GET);
+$limit = $result_get['limit'];
+$page = $result_get['page'];
 
 if (isset($_GET["sort"])) {        
     $result_get['query']["sort"][$_GET["sort"]]["unmapped_type"] = "long";
@@ -17,15 +21,15 @@ if (isset($_GET["sort"])) {
     $result_get['query']['sort']['datePublished.keyword']['order'] = "desc";
 }
 
-    $params = [];
-    $params["index"] = $index;
-    $params["type"] = $type;
-    $params["size"] = $limit;
-    $params["from"] = $result_get['skip'];
-    $params["body"] = $result_get['query']; 
+$params = [];
+$params["index"] = $index;
+$params["type"] = $type;
+$params["size"] = $limit;
+$params["from"] = $result_get['skip'];
+$params["body"] = $result_get['query']; 
 
-    $cursor = $client->search($params);
-    $total = $cursor["hits"]["total"];  
+$cursor = $client->search($params);
+$total = $cursor["hits"]["total"];  
 
 ?>
 <html>
@@ -181,9 +185,9 @@ if (isset($_GET["sort"])) {
                                 //$facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
                                 //$facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
                                 //$facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
-                                $facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
-                                $facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
-                                $facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
+                                //$facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
+                                //$facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
+                                //$facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
                                 //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
                                 
                             ?>
@@ -388,6 +392,7 @@ if (isset($_GET["sort"])) {
                 <ul>
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>">Exportar resultados em formato tabela</a></li>
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=ris'; ?>">Exportar resultados em formato RIS</a></li>
+                    <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=bibtex'; ?>">Exportar resultados em formato Bibtex</a></li>
                 </ul>
                 <!-- Exportar resultados - Fim -->        
                                                     
@@ -440,8 +445,31 @@ if (isset($_GET["sort"])) {
                         </div>   
                     <?php endif; ?>
                 <?php endforeach; ?>
-            <?php endif; ?>    
+            <?php endif; ?>
+            <?php if(isset($_GET["filter"])) : ?>    
+                <?php foreach ($_GET["filter"] as $expressao_busca) : ?>    
+                    <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
+                        <div class="uk-alert-primary" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <?php $assunto = str_replace("about:", "", $expressao_busca); USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
+                        </div>   
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>                    
             <!-- Vocabulário controlado - Fim -->
+
+            <!-- Informações sobre autores USP - Início 
+            < ?php if(isset($_GET["search"])) : ?>    
+                < ?php foreach ($_GET["search"] as $expressao_busca_codpes) : ?>    
+                    < ?php if (preg_match("/\bcodpes\b/i", $expressao_busca_codpes, $matches)) : ?>
+                        <div class="uk-alert-primary" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        < ?php USP::consultar_codpes($expressao_busca_codpes); ?>
+                        </div>   
+                    < ?php endif; ?>
+                < ?php endforeach; ?>
+            < ?php endif; ?>           
+            Informações sobre autores USP - Fim -->            
                 
             <!-- Navegador de resultados - Início -->
             <?php ui::pagination($page, $total, $limit, $t); ?>

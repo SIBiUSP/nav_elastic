@@ -45,11 +45,12 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
             /* Verify if item exists on DSpace */
             if (!empty($itemID)) {
 
-                function removeElementWithValue($array, $key, $value) {
-                    foreach($array as $subKey => $subArray){
-                         if($subArray[$key] == $value){
-                              unset($array[$subKey]);
-                         }
+                function removeElementWithValue($array, $key, $value) 
+                {
+                    foreach ($array as $subKey => $subArray) {
+                        if ($subArray[$key] == $value) {
+                            unset($array[$subKey]);
+                        }
                     }
                     return $array;
                 }
@@ -188,10 +189,13 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>                   
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
+                                <a class="uk-button uk-button-primary" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
                             </li>
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://bdpi.usp.br/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
+                                <a class="uk-button uk-button-primary" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=bibtex" rel="noopener noreferrer nofollow">Bibtex</a>
+                            </li>                            
+                            <li>
+                                <a class="uk-button uk-button-primary" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
                             </li>                            
                         </ul>
 
@@ -199,8 +203,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php if (!empty($cursor["_source"]['doi'])) : ?>
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
                         <hr>                        
-                        <?php if ($show_metrics == true) : ?>
-                            <?php if (!empty($cursor["_source"]['doi'])) : ?>
+                            <?php if ($show_metrics == true) : ?>
+                                <?php if (!empty($cursor["_source"]['doi'])) : ?>
                             <div class="uk-alert-warning" uk-alert>
                                 <p><?php echo $t->gettext('Métricas'); ?>:</p>
                                 <div uk-grid>
@@ -240,7 +244,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 <?php endif; ?>  
 
                             <?php endif; ?>
-                        <?php endif; ?>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <!-- Métricas - Fim -->   
                     </div>
@@ -279,7 +283,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
                                         $metrics[] = '"oadoi_oa_color": "'.$oadoi['results'][0]['oa_color'].'"';
                                     }
-                                    if (!empty($oadoi['results'][0]['license'])) {                                        
+                                    if (!empty($oadoi['results'][0]['license'])) {  
                                         echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
                                     }
                                     echo '</ul></div>';
@@ -289,6 +293,52 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     }
                                     //API::metrics_update($_GET['_id'], $metrics);      
                                 }
+                            }
+
+                            if (isset($cursor["_source"]["USP"]["unpaywall"])) {
+                                echo '<div class="uk-alert-danger uk-h6 uk-padding-small">Versões disponíveis em Acesso Aberto do: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://unpaywall.org" target="_blank" rel="noopener noreferrer nofollow">Unpaywall API</a>)';
+                                echo '<p>Título do periódico: '.$cursor["_source"]["USP"]["unpaywall"]["journal_name"].'</p>';
+                                echo '<p>ISSN: '.$cursor["_source"]["USP"]["unpaywall"]["journal_issns"].'</p>';
+                                echo '<ul>';
+                                if (!empty($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"])) {
+                                    echo '<li>Melhor URL em Acesso Aberto:<ul>';
+                                    if (isset($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_landing_page"])) {
+                                        echo '<li><b><a href="'.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_landing_page"].'">Página do artigo</a></b></li>';
+                                    }
+                                    if (isset($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"])) {
+                                        echo '<li><b><a href="'.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"].'">Link para o PDF</a></b></li>';
+                                    }
+                                    echo '<li>Evidência: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["evidence"].'</li>';
+                                    echo '<li>Licença: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["license"].'</li>';
+                                    echo '<li>Versão: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["version"].'</li>';
+                                    echo '<li>Tipo de hospedagem: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["host_type"].'</li>';
+                                    echo '</ul></li>';
+                                } 
+                                echo "<br/><br/>";
+                                if (!empty($cursor["_source"]["USP"]["unpaywall"]["oa_locations"])) {
+                                    echo '<li>Outras alternativas de URLs em Acesso Aberto:<ul>';
+                                    foreach ($cursor["_source"]["USP"]["unpaywall"]["oa_locations"] as $oa_locations) {
+                                        echo '<li><ul>';
+                                        if (isset($oa_locations["url_for_landing_page"])) {
+                                            echo '<li><b><a href="'.$oa_locations["url_for_landing_page"].'">Página do artigo</a></b></li>';
+                                        }
+                                        if (isset($oa_locations["url_for_pdf"])) {
+                                            echo '<li><b><a href="'.$oa_locations["url_for_pdf"].'">Link para o PDF</a></b></li>';
+                                        }
+                                        echo '<li>Evidência: '.$oa_locations["evidence"].'</li>';
+                                        echo '<li>Licença: '.$oa_locations["license"].'</li>';
+                                        echo '<li>Versão: '.$oa_locations["version"].'</li>';
+                                        echo '<li>Tipo de hospedagem: '.$oa_locations["host_type"].'</li>';
+                                        echo '</ul></li>';   
+                                        //print_r($oa_locations);
+                                        echo "<br/><br/>";
+                                    }
+                                    echo '</ul></li>';
+                                    
+                                } else {
+                                    echo "Não possui versão em Acesso aberto";
+                                }
+                                echo '</ul></div>';                                
                             }
                         }
                         ?>                            
@@ -430,9 +480,6 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         } else {
                             $isOfThisUnit = false;
                         }
-
-                    
-                        
                         ?>
 
                         
