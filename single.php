@@ -45,11 +45,12 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
             /* Verify if item exists on DSpace */
             if (!empty($itemID)) {
 
-                function removeElementWithValue($array, $key, $value) {
-                    foreach($array as $subKey => $subArray){
-                         if($subArray[$key] == $value){
-                              unset($array[$subKey]);
-                         }
+                function removeElementWithValue($array, $key, $value) 
+                {
+                    foreach ($array as $subKey => $subArray) {
+                        if ($subArray[$key] == $value) {
+                            unset($array[$subKey]);
+                        }
                     }
                     return $array;
                 }
@@ -202,8 +203,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php if (!empty($cursor["_source"]['doi'])) : ?>
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
                         <hr>                        
-                        <?php if ($show_metrics == true) : ?>
-                            <?php if (!empty($cursor["_source"]['doi'])) : ?>
+                            <?php if ($show_metrics == true) : ?>
+                                <?php if (!empty($cursor["_source"]['doi'])) : ?>
                             <div class="uk-alert-warning" uk-alert>
                                 <p><?php echo $t->gettext('Métricas'); ?>:</p>
                                 <div uk-grid>
@@ -243,7 +244,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 <?php endif; ?>  
 
                             <?php endif; ?>
-                        <?php endif; ?>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <!-- Métricas - Fim -->   
                     </div>
@@ -282,7 +283,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
                                         $metrics[] = '"oadoi_oa_color": "'.$oadoi['results'][0]['oa_color'].'"';
                                     }
-                                    if (!empty($oadoi['results'][0]['license'])) {                                        
+                                    if (!empty($oadoi['results'][0]['license'])) {  
                                         echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
                                     }
                                     echo '</ul></div>';
@@ -328,7 +329,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         echo '<li>Licença: '.$oa_locations["license"].'</li>';
                                         echo '<li>Versão: '.$oa_locations["version"].'</li>';
                                         echo '<li>Tipo de hospedagem: '.$oa_locations["host_type"].'</li>';
-                                        echo '</ul></li>';                                        
+                                        echo '</ul></li>';   
                                         //print_r($oa_locations);
                                         echo "<br/><br/>";
                                     }
@@ -479,9 +480,6 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         } else {
                             $isOfThisUnit = false;
                         }
-
-                    
-                        
                         ?>
 
                         
