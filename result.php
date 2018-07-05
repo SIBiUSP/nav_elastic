@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <?php
 
-    require 'inc/config.php'; 
-    require 'inc/functions.php';
+require 'inc/config.php'; 
+require 'inc/functions.php';
 
-    $result_get = get::analisa_get($_GET);
-    $limit = $result_get['limit'];
-    $page = $result_get['page'];
+if (isset($fields)) {
+    $_GET["fields"] = $fields;
+}    
+
+$result_get = get::analisa_get($_GET);
+$limit = $result_get['limit'];
+$page = $result_get['page'];
 
 if (isset($_GET["sort"])) {        
     $result_get['query']["sort"][$_GET["sort"]]["unmapped_type"] = "long";
@@ -17,15 +21,15 @@ if (isset($_GET["sort"])) {
     $result_get['query']['sort']['datePublished.keyword']['order'] = "desc";
 }
 
-    $params = [];
-    $params["index"] = $index;
-    $params["type"] = $type;
-    $params["size"] = $limit;
-    $params["from"] = $result_get['skip'];
-    $params["body"] = $result_get['query']; 
+$params = [];
+$params["index"] = $index;
+$params["type"] = $type;
+$params["size"] = $limit;
+$params["from"] = $result_get['skip'];
+$params["body"] = $result_get['query']; 
 
-    $cursor = $client->search($params);
-    $total = $cursor["hits"]["total"];  
+$cursor = $client->search($params);
+$total = $cursor["hits"]["total"];  
 
 ?>
 <html>
