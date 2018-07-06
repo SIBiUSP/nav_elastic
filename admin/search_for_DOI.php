@@ -25,7 +25,7 @@ $params = [];
 $params["index"] = $index;
 $params["type"] = $type;
 $params["_source"] = ["_id","name","author"];
-$params["size"] = 10;        
+$params["size"] = 20;        
 $params["body"] = $body;   
 
 $response = $client->search($params);
@@ -68,6 +68,9 @@ foreach ($response["hits"]["hits"] as $r) {
     sleep(11);
     ob_flush();
     flush();
+    unset($doiFound);
+    unset($bodyUpdate);
+    unset($percent);
 
 }
 
