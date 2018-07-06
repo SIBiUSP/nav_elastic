@@ -1230,7 +1230,10 @@ class Record
         }
         if (isset($record["_source"]["doi"])) {
             $this->doi = $record["_source"]["doi"];
-        } 
+        }
+        if (isset($record["_source"]["USP"]["titleSearchCrossrefDOI"])) {
+            $this->searchDOICrossRef = $record["_source"]["USP"]["titleSearchCrossrefDOI"];
+        }          
         if (isset($record["_source"]["issn"])) {
             $this->issnArray = $record["_source"]["issn"];
         } else {
@@ -1349,6 +1352,15 @@ class Record
         if (!empty($this->doi)) {
             echo '<li>DOI: <a href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">'.$this->doi.'</a></li>';
         }
+
+        /* DOI */
+        if (isset($_SESSION['oauthuserdata'])) {
+            if (!empty($this->searchDOICrossRef)) {
+                echo '<div class="uk-alert-danger" uk-alert><li>DOI com base em busca na CrossRef: <a href="https://doi.org/'.$this->searchDOICrossRef.'" target="_blank" rel="noopener noreferrer">'.$this->searchDOICrossRef.'</a></li></div>';
+            }
+        }        
+
+       
 
         /* Subject */
         
