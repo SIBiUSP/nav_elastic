@@ -1434,7 +1434,7 @@ class Record
             echo '<li>'.$t->gettext('Imprenta').':';
             echo '<ul>';
                 if (!empty($this->publisherArray["organization"]["name"])) {
-                    echo '<li>'.$t->gettext('Editora').': <a href="'.$url_base.'/result.php?search[]=publisher.organization.name:&quot;'.$this->publisherArray["organization"]["name"].'&quot;">'.$this->publisherArray["organization"]["name"].'</a></li>';
+                    echo '<li>'.$t->gettext('Editora').': <a href="'.$url_base.'/result.php?filter[]=publisher.organization.name:&quot;'.$this->publisherArray["organization"]["name"].'&quot;">'.$this->publisherArray["organization"]["name"].'</a></li>';
                 }
                 if (!empty($this->publisherArray["organization"]["location"])) {
                     echo '<li>'.$t->gettext('Local').': <a href="'.$url_base.'/result.php?search[]=publisher.organization.location:&quot;'.$this->publisherArray["organization"]["location"].'&quot;">'.$this->publisherArray["organization"]["location"].'</a></li>';
@@ -1498,7 +1498,7 @@ class Record
                     echo '<li>Título do periódico: <a href="'.$url_base.'/result.php?search[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></li>';
             }    
             if (!empty($this->isPartOfArray['issn'][0])) {
-                echo '<li>ISSN: <a href="'.$url_base.'/result.php?search[]=issn:&quot;'.$this->isPartOfArray['issn'][0].'&quot;">'.$this->isPartOfArray['issn'][0].'</a></li>';
+                echo '<li>ISSN: <a href="'.$url_base.'/result.php?filter[]=issn:&quot;'.$this->isPartOfArray['issn'][0].'&quot;">'.$this->isPartOfArray['issn'][0].'</a></li>';
             }                                    
             if (!empty($this->isPartOfArray["USP"]["dados_do_periodico"])) {
                 echo '<li>Volume/Número/Paginação/Ano: '.$this->isPartOfArray["USP"]["dados_do_periodico"].'</li>';
