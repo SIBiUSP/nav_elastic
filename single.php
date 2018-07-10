@@ -526,7 +526,6 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         }                      
 
                         if (!empty($bitstreamsDSpace)) {
-                            print_r($bitstreamsDSpace);
                             echo '<div class="uk-alert-primary" uk-alert>
                             <h4>Download do texto completo</h4>
 
