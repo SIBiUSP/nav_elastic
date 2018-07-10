@@ -60,6 +60,13 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             <fieldset data-uk-margin>
                             <legend>Enviar um arquivo</legend>
                             <input type="file" name="file">
+                            <select class="uk-select" name="version">
+                                <option disabled selected value>Selecione a versão</option>
+                                <option value="publishedVersion">publishedVersion</option>
+                                <option value="submittedVersion">submittedVersion</option>
+                                <option value="acceptedVersion">acceptedVersion</option>                                
+                                <option value="updatedVersion">updatedVersion</option>
+                            </select>                                   
                             <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
                             <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>                                    
                         </fieldset>
@@ -67,7 +74,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 }
             
                 if (isset($_FILES['file'])) {
-                    $userBitstream = $_POST["codpes"];
+                    $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
+                    echo "<br/><br/>";
+                    print_r($userBitstream);
+                    echo "<br/><br/>";
                     $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $cookies);
                     if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                         $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
@@ -516,9 +526,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         }                      
 
                         if (!empty($bitstreamsDSpace)) {
+                            print_r($bitstreamsDSpace);
                             echo '<div class="uk-alert-primary" uk-alert>
                             <h4>Download do texto completo</h4>
-                            <a class="uk-alert-close" uk-close></a>
 
                             <table class="uk-table uk-table-justify uk-table-divider">
                             <thead>
