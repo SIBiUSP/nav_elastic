@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <?php
-
+/**
+ * PHP version 7
+ * Result page
+ *
+ * The page for display results of search.
+ *
+ * @category Search
+ * @package  Nav_Elastic
+ * @author   Tiago Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  https://www.gnu.org/licenses/gpl-3.0.txt GNU/GPLv3
+ * @link     https://github.com/SIBiUSP/nav_elastic
+ */
 require 'inc/config.php'; 
 require 'inc/functions.php';
 
