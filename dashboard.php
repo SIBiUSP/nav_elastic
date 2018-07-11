@@ -18,8 +18,8 @@
 
 		<?php include('inc/navbar.php'); ?>
         <div class="uk-container uk-margin-large-top">
-            <h1>Dashboard</h1>           
-            <iframe src="http://<?php echo $kibana; ?>:5601/app/kibana#/dashboard/<?php echo $dashboardHash; ?>?embed=true&_g=()" height="8500" width="100%"></iframe>
+            <h1>Dashboard</h1> 
+            <iframe src="/app/kibana#/dashboard/<?php echo $dashboardHash; ?>?embed=true&_g=()" height="8500" width="100%"></iframe>
         </div>
         <?php include('inc/footer.php'); ?>
         
