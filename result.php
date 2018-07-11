@@ -12,18 +12,18 @@
  * @license  https://www.gnu.org/licenses/gpl-3.0.txt GNU/GPLv3
  * @link     https://github.com/SIBiUSP/nav_elastic
  */
-require 'inc/config.php'; 
+require 'inc/config.php';
 require 'inc/functions.php';
 
 if (isset($fields)) {
     $_GET["fields"] = $fields;
-}    
+}
 
 $result_get = get::analisa_get($_GET);
 $limit = $result_get['limit'];
 $page = $result_get['page'];
 
-if (isset($_GET["sort"])) {        
+if (isset($_GET["sort"])) {
     $result_get['query']["sort"][$_GET["sort"]]["unmapped_type"] = "long";
     $result_get['query']["sort"][$_GET["sort"]]["missing"] = "_last";
     $result_get['query']["sort"][$_GET["sort"]]["order"] = "desc";
@@ -37,16 +37,16 @@ $params["index"] = $index;
 $params["type"] = $type;
 $params["size"] = $limit;
 $params["from"] = $result_get['skip'];
-$params["body"] = $result_get['query']; 
+$params["body"] = $result_get['query'];
 
 $cursor = $client->search($params);
-$total = $cursor["hits"]["total"];  
+$total = $cursor["hits"]["total"];
 
 ?>
 <html>
 <head>
-    <?php require 'inc/meta-header.php'; ?>       
-    <title><?php echo $branch_abrev; ?> - Resultado da busca</title>    
+    <?php require 'inc/meta-header.php'; ?>
+    <title><?php echo $branch_abrev; ?> - Resultado da busca</title>
 
     <?php if ($year_result_graph == true) : ?>
         <!-- D3.js Libraries and CSS -->
@@ -57,11 +57,11 @@ $total = $cursor["hits"]["total"];
 
     <!-- Altmetric Script -->
     <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-    
+
     <!-- PlumX Script -->
     <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
 
-    
+
 </head>
     <body>
         <?php require 'inc/navbar.php'; ?>
@@ -71,8 +71,8 @@ $total = $cursor["hits"]["total"];
         if (file_exists("inc/analyticstracking.php")) {
             include_once "inc/analyticstracking.php";
         }
-        ?>        
- 
+        ?>
+
         <div class="uk-container">
         <div class="uk-width-1-1@s uk-width-1-1@m">
             <nav class="uk-navbar-container uk-margin" uk-navbar>
@@ -89,7 +89,7 @@ $total = $cursor["hits"]["total"];
                     <input type="hidden" name="fields[]" value="author.person.name">
                     <input type="hidden" name="fields[]" value="authorUSP.name">
                     <input type="hidden" name="fields[]" value="about">
-                    <input type="hidden" name="fields[]" value="description"> 	    
+                    <input type="hidden" name="fields[]" value="description">
                     <input class="uk-search-input" type="search" name="search[]" placeholder="<?php echo $t->gettext('Nova pesquisa...'); ?>" autofocus>
                     </form>
                 </div>
@@ -104,8 +104,8 @@ $total = $cursor["hits"]["total"];
         <!-- List of filters - Start -->
         <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
         <p class="uk-margin-top" uk-margin>
-            <a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>	
-            <?php 
+            <a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>
+            <?php
             if (!empty($_GET["search"])) {
                 foreach ($_GET["search"] as $querySearch) {
                     $querySearchArray[] = $querySearch;
@@ -117,7 +117,7 @@ $total = $cursor["hits"]["total"];
                     unset($querySearchArray);
                 }
             }
-                
+
             if (!empty($_GET["filter"])) {
                 foreach ($_GET["filter"] as $filters) {
                     $filters_array[] = $filters;
@@ -129,7 +129,7 @@ $total = $cursor["hits"]["total"];
                     unset($filters_array);
                 }
             }
-            
+
             if (!empty($_GET["notFilter"])) {
                 foreach ($_GET["notFilter"] as $notFilters) {
                     $notFiltersArray[] = $notFilters;
@@ -140,11 +140,11 @@ $total = $cursor["hits"]["total"];
                     echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
                     unset($notFiltersArray);
                 }
-            }                 
+            }
             ?>
-            
+
         </p>
-        <?php endif;?> 
+        <?php endif;?>
         <!-- List of filters - End -->
         </div>
 
@@ -157,10 +157,10 @@ $total = $cursor["hits"]["total"];
                             <?php
                                 $facets = new Facets();
                                 $facets->query = $result_get['query'];
-                            
+
                             if (!isset($_GET["search"])) {
-                                $_GET["search"] = null; 
-                            }                            
+                                $_GET["search"] = null;
+                            }
 
                                 $facets->facet("base", 10, $t->gettext('Bases'), null, "_term", $_GET["search"]);
                                 $facets->facet("type", 100, $t->gettext('Tipo de material'), null, "_term", $_GET["search"]);
@@ -180,13 +180,13 @@ $total = $cursor["hits"]["total"];
                                 $facets->facet("USP.indexacao", 50, $t->gettext('Indexado em'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
-                            <?php 
+                            <?php
                                 $facets->facet("author.person.affiliation.name", 50, $t->gettext('Afiliação dos autores externos normalizada'), null, "_term", $_GET["search"]);
                                 $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
                                 $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);
                             ?>
                             <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
-                            <?php 
+                            <?php
                                 $facets->facet("USP.qualis.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.qualis.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.qualis.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
@@ -200,16 +200,16 @@ $total = $cursor["hits"]["total"];
                                 //$facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
                                 //$facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
                                 //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
-                                
+
                             ?>
                             <!--
-                            <li class="uk-nav-header">< ?php echo $t->gettext('Métricas no nível do artigo'); ?></li> 
+                            <li class="uk-nav-header">< ?php echo $t->gettext('Métricas no nível do artigo'); ?></li>
                             < ?php
                                 $facets->facet_range("USP.aminer.num_citation",100,$t->gettext('Citações no AMiner'),"INT");
                                 $facets->facet_range("USP.opencitation.num_citations",100,$t->gettext('Citações no OpenCitations'),"INT");
                             ?>
-                            -->                                   
-                            <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
+                            -->
+                            <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>
                             <?php
                                 $facets->facet("inSupportOf", 30, $t->gettext('Tipo de tese'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.areaconcentracao", 100, "Área de concentração", null, "_term", $_GET["search"]);
@@ -218,7 +218,7 @@ $total = $cursor["hits"]["total"];
                                 $facets->facet("USP.about_BDTD", 50, $t->gettext('Palavras-chave do autor'), null, "_term", $_GET["search"]);
                             ?>
                         </ul>
-                        <?php if (!empty($_SESSION['oauthuserdata'])) : ?> 
+                        <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                             <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                             <hr>
@@ -263,7 +263,7 @@ $total = $cursor["hits"]["total"];
                                 <p>
                                 <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                 <input class="uk-input" type="text" id="date" readonly style="border:0; color:#f6931f;" name="search[]">
-                                </p>        
+                                </p>
                                 <div id="limitar-data" class="uk-margin-bottom"></div>
                                 <?php if (!empty($_GET["search"])) : ?>
                                     <?php foreach($_GET["search"] as $search_expression): ?>
@@ -274,29 +274,29 @@ $total = $cursor["hits"]["total"];
                                     <?php foreach($_GET["filter"] as $filter_expression): ?>
                                         <input type="hidden" name="filter[]" value="<?php echo str_replace('"', '&quot;', $filter_expression); ?>">
                                     <?php endforeach; ?>
-                                <?php endif; ?>                                
+                                <?php endif; ?>
                                 <button class="uk-button uk-button-primary uk-button-small"><?php echo $t->gettext('Limitar datas'); ?></button>
-                            </fieldset>        
+                            </fieldset>
                         </form>
                         <!-- Limitar por data - Fim -->
 
                         <hr>
-                    
+
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Visualização em rede'); ?></h3>
                     <p><?php echo $t->gettext('Os gráficos demoram 15 segundos para carregar'); ?></p>
                     <hr>
-                    <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">                    
+                    <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
 
-                    <?php 
+                    <?php
                         $value = ''.$_SERVER["QUERY_STRING"].'&gexf_field=unidadeUSP';
                         $sha1_unidade = sha1($value);
                     ?>
-                    <script>                    
+                    <script>
                     function gexf_unidadeUSP() {
                         $.get("tools/gexf/update_bdpi.php?<?=$value?>");
                         setTimeout(function(){
                             document.getElementById("ifr").src="tools/gexf/index.html#data/bdpi-<?=$sha1_unidade?>.gexf";
-                        }, 15000);                        
+                        }, 15000);
                     }
                     </script>
                     <li><a class="" href="#modal-full-network" onClick='gexf_unidadeUSP()' uk-toggle>Rede de Coautoria entre Unidades USP</a></li>
@@ -308,8 +308,8 @@ $total = $cursor["hits"]["total"];
                                 <h4>Rede de Coautoria entre Unidades USP</h4>
                             </div>
                             <div class="uk-modal-body">
-                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>                            
-                                    <iframe id='ifr' height="800px" width="80vh"></iframe> 
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                    <iframe id='ifr' height="800px" width="80vh"></iframe>
                                 </div>
                             </div>
                             <div class="uk-modal-footer">
@@ -317,18 +317,18 @@ $total = $cursor["hits"]["total"];
                             </div>
                         </div>
                     </div>
-                   
-                    <?php 
+
+                    <?php
                         $value_authors = ''.$_SERVER["QUERY_STRING"].'&gexf_field=authorUSP.name';
                         $sha1_authors = sha1($value_authors);
                     ?>
 
-                    <script>                    
+                    <script>
                     function gexf_authors() {
                         $.get("tools/gexf/update_bdpi.php?<?=$value_authors?>");
                         setTimeout(function(){
                             document.getElementById("ifr-authors").src="tools/gexf/index.html#data/bdpi-<?=$sha1_authors?>.gexf";
-                        }, 15000);                        
+                        }, 15000);
                     }
                     </script>
                     <li><a class="" href="#modal-authors" onClick='gexf_authors()' uk-toggle>Rede de Coautoria entre Autores com vínculo com a USP</a></li>
@@ -341,8 +341,8 @@ $total = $cursor["hits"]["total"];
                                 <h4>Rede de Coautoria entre Autores com vínculo com a USP</h4>
                             </div>
                             <div class="uk-modal-body">
-                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>                            
-                                    <iframe id='ifr-authors' height="800px" width="100vh"></iframe> 
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                    <iframe id='ifr-authors' height="800px" width="100vh"></iframe>
                                 </div>
                             </div>
                             <div class="uk-modal-footer">
@@ -350,17 +350,17 @@ $total = $cursor["hits"]["total"];
                             </div>
                         </div>
                     </div>
-                    
-                    <?php 
+
+                    <?php
                         $value_about = ''.$_SERVER["QUERY_STRING"].'&gexf_field=about';
                         $sha1_about = sha1($value_about);
                     ?>
-                    <script type="text/javascript">                    
+                    <script type="text/javascript">
                         function gexf_about() {
                             $.get("tools/gexf/update_bdpi.php?<?=$value_about?>");
                             setTimeout(function(){
                                 document.getElementById("ifr-about").src="tools/gexf/index.html#data/bdpi-<?=$sha1_about?>.gexf";
-                            }, 15000);                        
+                            }, 15000);
                         }
                     </script>
                     <li><a class="" href="#modal-about" onClick='gexf_about()' uk-toggle>Rede de Assuntos</a></li>
@@ -372,29 +372,29 @@ $total = $cursor["hits"]["total"];
                             <div class="uk-modal-header">
                                 <h4>Rede de Assuntos</h4>
                             </div>
-                            <div class="uk-modal-body">                            
+                            <div class="uk-modal-body">
                                 <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
-                                    <iframe id='ifr-about' height="800px" width="100vh"></iframe> 
+                                    <iframe id='ifr-about' height="800px" width="100vh"></iframe>
                                 </div>
                             </div>
                             <div class="uk-modal-footer">
                                 <p><a href="tools/gexf/data/bdpi-<?php echo $sha1_about; ?>.gexf" download>Download GEXF</a></p>
-                            </div>                                
+                            </div>
                         </div>
                     </div>
-                    
-                   
-                    </ul> 
-                <hr>                                
+
+
+                    </ul>
+                <hr>
 
                 <!-- Gerar relatório - Início -->
                 <fieldset>
-                    <legend>Gerar relatório</legend>                  
+                    <legend>Gerar relatório</legend>
                     <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button uk-button-primary">Gerar relatório</a>
                     </div>
                 </fieldset>
                 <!-- Gerar relatório - Fim -->
-                        
+
                 <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                 <hr>
                 <!-- Exportar resultados -->
@@ -405,14 +405,14 @@ $total = $cursor["hits"]["total"];
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=ris'; ?>">Exportar resultados em formato RIS</a></li>
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=bibtex'; ?>">Exportar resultados em formato Bibtex</a></li>
                 </ul>
-                <!-- Exportar resultados - Fim -->        
-                                                    
+                <!-- Exportar resultados - Fim -->
+
                 <?php endif; ?>
-                                        
+
             </div>
-            
+
             <div class="uk-width-3-4@s uk-width-4-6@m">
-            
+
             <!-- Gráfico do ano - Início -->
             <?php if ($year_result_graph == true && $total > 0 ) : ?>
                 <div class="uk-alert-primary" uk-alert>
@@ -441,75 +441,75 @@ $total = $cursor["hits"]["total"];
                                 height: 110
                             }
                         })
-                    </script>                        
+                    </script>
                     </div>
             <?php endif; ?>
-                <!-- Gráfico do ano - Fim -->    
-            
+                <!-- Gráfico do ano - Fim -->
+
             <!-- Vocabulário controlado - Início -->
-            <?php if(isset($_GET["search"])) : ?>    
-                <?php foreach ($_GET["search"] as $expressao_busca) : ?>    
+            <?php if(isset($_GET["search"])) : ?>
+                <?php foreach ($_GET["search"] as $expressao_busca) : ?>
                     <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
                         <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
                         <?php $assunto = str_replace("about:", "", $expressao_busca); USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
-                        </div>   
+                        </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <?php if(isset($_GET["filter"])) : ?>    
-                <?php foreach ($_GET["filter"] as $expressao_busca) : ?>    
+            <?php if(isset($_GET["filter"])) : ?>
+                <?php foreach ($_GET["filter"] as $expressao_busca) : ?>
                     <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
                         <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
                         <?php $assunto = str_replace("about:", "", $expressao_busca); USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
-                        </div>   
+                        </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
-            <?php endif; ?>                    
+            <?php endif; ?>
             <!-- Vocabulário controlado - Fim -->
 
-            <!-- Informações sobre autores USP - Início 
-            < ?php if(isset($_GET["search"])) : ?>    
-                < ?php foreach ($_GET["search"] as $expressao_busca_codpes) : ?>    
+            <!-- Informações sobre autores USP - Início
+            < ?php if(isset($_GET["search"])) : ?>
+                < ?php foreach ($_GET["search"] as $expressao_busca_codpes) : ?>
                     < ?php if (preg_match("/\bcodpes\b/i", $expressao_busca_codpes, $matches)) : ?>
                         <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
                         < ?php USP::consultar_codpes($expressao_busca_codpes); ?>
-                        </div>   
+                        </div>
                     < ?php endif; ?>
                 < ?php endforeach; ?>
-            < ?php endif; ?>           
-            Informações sobre autores USP - Fim -->            
-                
+            < ?php endif; ?>
+            Informações sobre autores USP - Fim -->
+
             <!-- Navegador de resultados - Início -->
             <?php ui::pagination($page, $total, $limit, $t); ?>
-            <!-- Navegador de resultados - Fim -->                    
-                
+            <!-- Navegador de resultados - Fim -->
+
             <hr class="uk-grid-divider">
 
                 <!-- Resultados -->
-                <div class="uk-width-1-1 uk-margin-top uk-description-list-divider">                        
-                    <ul class="uk-list uk-list-divider">   
-                        <?php 
+                <div class="uk-width-1-1 uk-margin-top uk-description-list-divider">
+                    <ul class="uk-list uk-list-divider">
+                        <?php
                         foreach ($cursor["hits"]["hits"] as $r) {
                             $record = new Record($r, $show_metrics);
                             $record->simpleRecordMetadata($t);
                         }
                         ?>
-                    </ul> 
-                    
+                    </ul>
+
                 <hr class="uk-grid-divider">
 
                 <!-- Navegador de resultados - Início -->
                 <?php ui::pagination($page, $total, $limit, $t); ?>
-                <!-- Navegador de resultados - Fim --> 
-                
+                <!-- Navegador de resultados - Fim -->
+
             </div>
         </div>
         <hr class="uk-grid-divider">
         </div>
-        <?php require 'inc/footer.php'; ?>          
+        <?php require 'inc/footer.php'; ?>
         </div>
 
         <script>
@@ -517,10 +517,10 @@ $total = $cursor["hits"]["total"];
             var url = window.location.href.split('&page')[0];
             window.location=url +'&page='+ (pageIndex+1);
         });
-        </script> 
-        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>   
+        </script>
+        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
 
-    <?php require 'inc/offcanvas.php'; ?> 
-        
+    <?php require 'inc/offcanvas.php'; ?>
+
     </body>
 </html>
