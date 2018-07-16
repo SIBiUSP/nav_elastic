@@ -384,6 +384,44 @@ $total = $cursor["hits"]["total"];
                     </div>
 
 
+
+
+                    <?php
+                        $value_affiliation = ''.$_SERVER["QUERY_STRING"].'&gexf_field=author.person.affiliation.name';
+                        $sha1_affiliation = sha1($value_affiliation);
+                    ?>
+                    <script type="text/javascript">
+                        function gexf_affiliation() {
+                            $.get("tools/gexf/update_bdpi.php?<?=$value_affiliation?>");
+                            setTimeout(function(){
+                                document.getElementById("ifr-affiliation").src="tools/gexf/index.html#data/bdpi-<?=$sha1_affiliation?>.gexf";
+                            }, 15000);
+                        }
+                    </script>
+                    <li><a class="" href="#modal-affiliation" onClick='gexf_affiliation()' uk-toggle>Rede de Colaboração</a></li>
+
+                    <div id="modal-affiliation" class="uk-modal-full" uk-modal>
+                        <div class="uk-modal-dialog">
+                            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+
+                            <div class="uk-modal-header">
+                                <h4>Rede de Colaboração</h4>
+                            </div>
+                            <div class="uk-modal-body">
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                    <iframe id='ifr-affiliation' height="800px" width="100vh"></iframe>
+                                </div>
+                            </div>
+                            <div class="uk-modal-footer">
+                                <p><a href="tools/gexf/data/bdpi-<?php echo $sha1_affiliation; ?>.gexf" download>Download GEXF</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
                     </ul>
                 <hr>
 
