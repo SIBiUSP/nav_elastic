@@ -651,6 +651,8 @@ class USP
 function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho)
 {
     global $client;
+    global $type;
+    global $index;
     
     //if (!empty($sort)){
     //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -665,8 +667,8 @@ function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_d
 
 
     $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
+        'index' => $index,
+        'type' => $type,
         'size'=> 0,          
         'body' => $query
     ];
@@ -699,6 +701,8 @@ function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_d
 function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho)
 {
     global $client;
+    global $index;
+    global $type;
     //if (!empty($sort)){
     //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     //}
@@ -710,8 +714,8 @@ function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display
     $query["aggregations"]["counts"]["terms"]["size"] = $tamanho; 
     
     $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
+        'index' => $index,
+        'type' => $type,
         'size'=> 0,          
         'body' => $query
     ];
