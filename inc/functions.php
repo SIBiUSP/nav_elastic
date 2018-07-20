@@ -110,7 +110,7 @@ class Homepage
                         {"_uid" : {"order" : "desc"}}
                         ]
                     }';
-        $response = elasticsearch::elastic_search($type, null, 11, $query);
+        $response = elasticsearch::elastic_search($type, null, 10, $query);
 
         foreach ($response["hits"]["hits"] as $r) {
             echo '<article class="uk-comment">
@@ -136,7 +136,13 @@ class Homepage
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
             if (!empty($r["_source"]['author'])) { 
                 foreach ($r["_source"]['author'] as $autores) {
-                    echo '<li><a href="result.php?search[]=author.person.name:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
+                    if (!empty($autores["person"]["orcid"])) {
+                        $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                    } else {
+                        $orcidLink = '';
+                    }
+                    echo '<li><a href="result.php?search[]=author.person.name:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a>'.$orcidLink.'</li>';
+                    unset($orcidLink);
                 }
                 echo '</ul></div>';     
             };
@@ -1273,11 +1279,17 @@ class Record
         /* Authors */
         echo '<p class="uk-article-meta uk-margin-remove">'.$t->gettext('Autores').': '; 
         foreach ($this->authorArray as $authors) {
-            if (!empty($authors["person"]["potentialAction"])) {
-                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+            if (!empty($authors["person"]["orcid"])) {
+                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
-                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                $orcidLink = '';
             }
+            if (!empty($authors["person"]["potentialAction"])) {
+                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>'.$orcidLink.'';
+            } else {
+                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'';
+            }
+            unset($orcidLink);
         } 
         $array_aut = implode("; ", $authors_array);
         print_r($array_aut);
@@ -1328,13 +1340,19 @@ class Record
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
         foreach ($this->authorArray as $authors) {
-            if (!empty($authors["person"]["affiliation"]["name"])) {
-                $authorsList[] =  '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - <span class="uk-text-muted">'.$authors["person"]["affiliation"]["name"].'</span></a></li>';
-            } elseif (!empty($authors["person"]["potentialAction"])) {
-                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' <span class="uk-text-muted">('.$authors["person"]["potentialAction"].')</span></a></li>';
+            if (!empty($authors["person"]["orcid"])) {
+                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
-                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
-            }                                
+                $orcidLink = '';
+            }
+            if (!empty($authors["person"]["affiliation"]["name"])) {
+                $authorsList[] =  '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - <span class="uk-text-muted">'.$authors["person"]["affiliation"]["name"].'</span></a>'.$orcidLink.'</li>';
+            } elseif (!empty($authors["person"]["potentialAction"])) {
+                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' <span class="uk-text-muted">('.$authors["person"]["potentialAction"].')</span></a>'.$orcidLink.'</li>';
+            } else {
+                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'</li>';
+            }
+            unset($orcidLink);                                
         }
         echo '<li>'.$t->gettext('Autores').': <ul>'.implode("", $authorsList).'</ul></li>'; 
         /* USP Authors */
