@@ -1568,7 +1568,7 @@ class Record
         if (!empty($this->doi)) {
             $sfx_array[] = 'rft_id=info:doi/'.$this->doi.'';
         }
-        if (!empty($this->issnArray[0])) {
+        if (!empty($this->issnArray[0]) && ($this->issnArray[0] != "Não informado")) {
             $sfx_array[] = 'rft.issn='.$this->issnArray[0].'';
         }
         if (!empty($r["_source"]['ispartof_data'][0])) {
