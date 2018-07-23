@@ -67,6 +67,8 @@ foreach ($cursor["hits"]["hits"] as $r) {
         flush();
     }
 
+    unset($body);
+
 }  
 
 ?>
