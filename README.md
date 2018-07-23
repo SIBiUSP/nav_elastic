@@ -56,3 +56,8 @@ Uikit - https://getuikit.com
 Elasticsearch - https://www.elastic.co/products/elasticsearch
 
 OAI-PMH (Package Metadata Harvesting) 2.0 Data Provider - https://github.com/danielneis/oai_pmh
+
+
+## Find new versions in composer
+
+composer update --dry-run
