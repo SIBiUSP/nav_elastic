@@ -424,7 +424,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <!-- JCR - Fim --> 
 
                         <!-- Citescore - Início -->
-                        <?php if (!empty($cursor["_source"]["USP"]["citescore"])) : ?>
+                        <?php if (!empty($cursor["_source"]["USP"]["citescore"]["title"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o Citescore</h5>
