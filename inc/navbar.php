@@ -125,7 +125,7 @@
                                     <li><a href="<?php echo $url_base; ?>/tools/export.php?search[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=bibtex">Exportar sua produçao em formato Bibtex</a></li>
                                     <?php 
                                     if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                        echo '<li><a href="<?php echo $url_base; ?>/admin/index.php">Administração</a></li>';
+                                        echo '<li><a href="'.$url_base.'/admin/index.php">Administração</a></li>';
                                     } 
                                     ?>
                                     <li><a href="<?php echo $url_base; ?>/dashboard.php">Acessar a Dashboard</a></li>                                    
