@@ -1200,6 +1200,9 @@ class Record
         if (isset($record["_source"]["isPartOf"])) {
             $this->isPartOfArray = $record["_source"]["isPartOf"];
         }
+        if (isset($record["_source"]["releasedEvent"])) {
+            $this->releasedEvent = $record["_source"]["releasedEvent"];
+        }
         if (isset($record["_source"]["about"])) {
             $this->aboutArray = $record["_source"]["about"];
         }
@@ -1299,6 +1302,11 @@ class Record
         if (!empty($this->isPartOfArray["name"])) {
             echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
         } 
+
+        /*  releasedEvent */    
+        if (!empty($this->releasedEvent)) {
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a></p>';
+        }         
         
         /* Subjects */
         echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
@@ -1538,7 +1546,12 @@ class Record
                 echo '<li>Volume/Número/Paginação/Ano: '.$this->isPartOfArray["USP"]["dados_do_periodico"].'</li>';
             }
             echo '</ul></li>';
-        }  
+        } 
+        
+        /*  releasedEvent */    
+        if (!empty($this->releasedEvent)) {
+            echo '<li>'.$t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a></li>';
+        }            
 
         if (!empty($this->url)||!empty($this->doi)) {
             $this->onlineAccess($t);
