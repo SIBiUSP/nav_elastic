@@ -1309,9 +1309,11 @@ class Record
         }         
         
         /* Subjects */
-        echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
-        foreach ($this->aboutArray as $subject) {
-            echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+        if (!empty($this->aboutArray)) {
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
+            foreach ($this->aboutArray as $subject) {
+                echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+            }
         }
         
         if (!empty($this->url)||!empty($this->doi)) {
@@ -1393,11 +1395,12 @@ class Record
        
 
         /* Subject */
-        
-        foreach ($this->aboutArray as $subject) {
-            $subjectList[] = '<a href="'.$url_base.'/result.php?search[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a>';
+        if (isset($this->aboutArray)) {
+            foreach ($this->aboutArray as $subject) {
+                $subjectList[] = '<a href="'.$url_base.'/result.php?search[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a>';
+            }
+            echo '<li>'.$t->gettext('Assuntos').': '.implode("; ", $subjectList).'</li>';
         }
-        echo '<li>'.$t->gettext('Assuntos').': '.implode("; ", $subjectList).'</li>';
         
         /* BDTD Subject */
         if ($this->aboutBDTDArray > 0) {            
