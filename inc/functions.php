@@ -1346,7 +1346,7 @@ class Record
         echo '<p class="uk-article-meta">';    
         echo '<a href="<?php echo $url_base ?>/result.php?search[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a>';
         echo '</p>';
-        echo '<h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href="">'.$this->name.' ('.$this->datePublished.')</a></h1>';
+        echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
         foreach ($this->authorArray as $authors) {
