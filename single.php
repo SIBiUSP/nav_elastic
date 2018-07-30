@@ -406,22 +406,23 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php endif; ?>
                         <!-- Qualis  - Fim -->
                             
-                        <!-- JCR - Início -->
-                        <?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
+                        <!-- JCR - Início 
+                        < ?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o JCR</h5>
+                                < ?php print_r($cursor["_source"]["USP"]["JCR"]); ?>
                                 <li class="uk-h6">
-                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Journal_Impact_Factor"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["IF_without_Journal_Self_Cites"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Eigenfactor_Score"]); ?></p>                               
-                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["JCR_Rank"]); ?></p> 
+                                    <p class="uk-text-small uk-margin-remove">Título: < ?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: < ?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Journal_Impact_Factor"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["IF_without_Journal_Self_Cites"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Eigenfactor_Score"]); ?></p>                               
+                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["JCR_Rank"]); ?></p> 
                                 </li>
                             </div>
-                        <?php endif; ?>  
-                        <!-- JCR - Fim --> 
+                        < ?php endif; ?>  
+                        JCR - Fim --> 
 
                         <!-- Citescore - Início -->
                         <?php if (!empty($cursor["_source"]["USP"]["citescore"]["title"])) : ?>
