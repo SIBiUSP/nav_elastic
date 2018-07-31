@@ -15,6 +15,14 @@
 require 'inc/config.php';
 require 'inc/functions.php';
 
+if (isset($_GET["search"])) {
+    foreach ($_GET["search"] as $getSearch) {
+        $getCleaned[] = htmlspecialchars($getSearch, ENT_QUOTES);
+    }
+    unset($_GET["search"]);
+    $_GET["search"] = $getCleaned;
+}
+
 if (isset($fields)) {
     $_GET["fields"] = $fields;
 }
