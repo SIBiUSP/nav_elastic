@@ -44,6 +44,7 @@ if (isset($_GET["format"])) {
             $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tQualis 2013/2016\tJCR - Journal Impact Factor - 2016\tCitescore - 2016";
             
             foreach ($cursor["hits"]["hits"] as $r) {
+                unset($fields);
 
                 $fields[] = $r['_id'];
             

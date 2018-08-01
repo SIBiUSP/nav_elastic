@@ -110,7 +110,7 @@ class Homepage
                         {"_uid" : {"order" : "desc"}}
                         ]
                     }';
-        $response = elasticsearch::elastic_search($type, null, 11, $query);
+        $response = elasticsearch::elastic_search($type, null, 10, $query);
 
         foreach ($response["hits"]["hits"] as $r) {
             echo '<article class="uk-comment">
@@ -136,7 +136,13 @@ class Homepage
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
             if (!empty($r["_source"]['author'])) { 
                 foreach ($r["_source"]['author'] as $autores) {
-                    echo '<li><a href="result.php?search[]=author.person.name:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a></li>';
+                    if (!empty($autores["person"]["orcid"])) {
+                        $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                    } else {
+                        $orcidLink = '';
+                    }
+                    echo '<li><a href="result.php?search[]=author.person.name:&quot;'.$autores["person"]["name"].'&quot;">'.$autores["person"]["name"].'</a>'.$orcidLink.'</li>';
+                    unset($orcidLink);
                 }
                 echo '</ul></div>';     
             };
@@ -651,6 +657,8 @@ class USP
 function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho)
 {
     global $client;
+    global $type;
+    global $index;
     
     //if (!empty($sort)){
     //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
@@ -665,8 +673,8 @@ function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_d
 
 
     $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
+        'index' => $index,
+        'type' => $type,
         'size'=> 0,          
         'body' => $query
     ];
@@ -699,6 +707,8 @@ function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_d
 function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho)
 {
     global $client;
+    global $index;
+    global $type;
     //if (!empty($sort)){
     //    $sort_query = '"order" : { "'.$sort.'" : "'.$sort_orientation.'" },';  
     //}
@@ -710,8 +720,8 @@ function generateCSV($consulta, $campo, $sort, $sort_orientation, $facet_display
     $query["aggregations"]["counts"]["terms"]["size"] = $tamanho; 
     
     $params = [
-        'index' => 'sibi',
-        'type' => 'producao',
+        'index' => $index,
+        'type' => $type,
         'size'=> 0,          
         'body' => $query
     ];
@@ -1190,6 +1200,9 @@ class Record
         if (isset($record["_source"]["isPartOf"])) {
             $this->isPartOfArray = $record["_source"]["isPartOf"];
         }
+        if (isset($record["_source"]["releasedEvent"])) {
+            $this->releasedEvent = $record["_source"]["releasedEvent"];
+        }
         if (isset($record["_source"]["about"])) {
             $this->aboutArray = $record["_source"]["about"];
         }
@@ -1230,7 +1243,10 @@ class Record
         }
         if (isset($record["_source"]["doi"])) {
             $this->doi = $record["_source"]["doi"];
-        } 
+        }
+        if (isset($record["_source"]["USP"]["titleSearchCrossrefDOI"])) {
+            $this->searchDOICrossRef = $record["_source"]["USP"]["titleSearchCrossrefDOI"];
+        }          
         if (isset($record["_source"]["issn"])) {
             $this->issnArray = $record["_source"]["issn"];
         } else {
@@ -1266,11 +1282,17 @@ class Record
         /* Authors */
         echo '<p class="uk-article-meta uk-margin-remove">'.$t->gettext('Autores').': '; 
         foreach ($this->authorArray as $authors) {
-            if (!empty($authors["person"]["potentialAction"])) {
-                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>';
+            if (!empty($authors["person"]["orcid"])) {
+                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
-                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
+                $orcidLink = '';
             }
+            if (!empty($authors["person"]["potentialAction"])) {
+                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>'.$orcidLink.'';
+            } else {
+                $authors_array[]='<a href="result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'';
+            }
+            unset($orcidLink);
         } 
         $array_aut = implode("; ", $authors_array);
         print_r($array_aut);
@@ -1280,11 +1302,18 @@ class Record
         if (!empty($this->isPartOfArray["name"])) {
             echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
         } 
+
+        /*  releasedEvent */    
+        if (!empty($this->releasedEvent)) {
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a></p>';
+        }         
         
         /* Subjects */
-        echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
-        foreach ($this->aboutArray as $subject) {
-            echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+        if (!empty($this->aboutArray)) {
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
+            foreach ($this->aboutArray as $subject) {
+                echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+            }
         }
         
         if (!empty($this->url)||!empty($this->doi)) {
@@ -1317,17 +1346,23 @@ class Record
         echo '<p class="uk-article-meta">';    
         echo '<a href="<?php echo $url_base ?>/result.php?search[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a>';
         echo '</p>';
-        echo '<h1 class="uk-article-title uk-margin-remove-top" style="font-size:150%"><a class="uk-link-reset" href="">'.$this->name.' ('.$this->datePublished.')</a></h1>';
+        echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
         foreach ($this->authorArray as $authors) {
-            if (!empty($authors["person"]["affiliation"]["name"])) {
-                $authorsList[] =  '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - <span class="uk-text-muted">'.$authors["person"]["affiliation"]["name"].'</span></a></li>';
-            } elseif (!empty($authors["person"]["potentialAction"])) {
-                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' <span class="uk-text-muted">('.$authors["person"]["potentialAction"].')</span></a></li>';
+            if (!empty($authors["person"]["orcid"])) {
+                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
-                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a></li>';
-            }                                
+                $orcidLink = '';
+            }
+            if (!empty($authors["person"]["affiliation"]["name"])) {
+                $authorsList[] =  '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - <span class="uk-text-muted">'.$authors["person"]["affiliation"]["name"].'</span></a>'.$orcidLink.'</li>';
+            } elseif (!empty($authors["person"]["potentialAction"])) {
+                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' <span class="uk-text-muted">('.$authors["person"]["potentialAction"].')</span></a>'.$orcidLink.'</li>';
+            } else {
+                $authorsList[] = '<li><a href="'.$url_base.'/result.php?search[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'</li>';
+            }
+            unset($orcidLink);                                
         }
         echo '<li>'.$t->gettext('Autores').': <ul>'.implode("", $authorsList).'</ul></li>'; 
         /* USP Authors */
@@ -1350,12 +1385,22 @@ class Record
             echo '<li>DOI: <a href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">'.$this->doi.'</a></li>';
         }
 
+        /* DOI */
+        if (isset($_SESSION['oauthuserdata'])) {
+            if (!empty($this->searchDOICrossRef)) {
+                echo '<div class="uk-alert-danger" uk-alert><li>DOI com base em busca na CrossRef: <a href="https://doi.org/'.$this->searchDOICrossRef.'" target="_blank" rel="noopener noreferrer">'.$this->searchDOICrossRef.'</a></li></div>';
+            }
+        }        
+
+       
+
         /* Subject */
-        
-        foreach ($this->aboutArray as $subject) {
-            $subjectList[] = '<a href="'.$url_base.'/result.php?search[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a>';
+        if (isset($this->aboutArray)) {
+            foreach ($this->aboutArray as $subject) {
+                $subjectList[] = '<a href="'.$url_base.'/result.php?search[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a>';
+            }
+            echo '<li>'.$t->gettext('Assuntos').': '.implode("; ", $subjectList).'</li>';
         }
-        echo '<li>'.$t->gettext('Assuntos').': '.implode("; ", $subjectList).'</li>';
         
         /* BDTD Subject */
         if ($this->aboutBDTDArray > 0) {            
@@ -1434,7 +1479,7 @@ class Record
             echo '<li>'.$t->gettext('Imprenta').':';
             echo '<ul>';
                 if (!empty($this->publisherArray["organization"]["name"])) {
-                    echo '<li>'.$t->gettext('Editora').': <a href="'.$url_base.'/result.php?search[]=publisher.organization.name:&quot;'.$this->publisherArray["organization"]["name"].'&quot;">'.$this->publisherArray["organization"]["name"].'</a></li>';
+                    echo '<li>'.$t->gettext('Editora').': <a href="'.$url_base.'/result.php?filter[]=publisher.organization.name:&quot;'.$this->publisherArray["organization"]["name"].'&quot;">'.$this->publisherArray["organization"]["name"].'</a></li>';
                 }
                 if (!empty($this->publisherArray["organization"]["location"])) {
                     echo '<li>'.$t->gettext('Local').': <a href="'.$url_base.'/result.php?search[]=publisher.organization.location:&quot;'.$this->publisherArray["organization"]["location"].'&quot;">'.$this->publisherArray["organization"]["location"].'</a></li>';
@@ -1498,13 +1543,18 @@ class Record
                     echo '<li>Título do periódico: <a href="'.$url_base.'/result.php?search[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></li>';
             }    
             if (!empty($this->isPartOfArray['issn'][0])) {
-                echo '<li>ISSN: <a href="'.$url_base.'/result.php?search[]=issn:&quot;'.$this->isPartOfArray['issn'][0].'&quot;">'.$this->isPartOfArray['issn'][0].'</a></li>';
+                echo '<li>ISSN: <a href="'.$url_base.'/result.php?filter[]=issn:&quot;'.$this->isPartOfArray['issn'][0].'&quot;">'.$this->isPartOfArray['issn'][0].'</a></li>';
             }                                    
             if (!empty($this->isPartOfArray["USP"]["dados_do_periodico"])) {
                 echo '<li>Volume/Número/Paginação/Ano: '.$this->isPartOfArray["USP"]["dados_do_periodico"].'</li>';
             }
             echo '</ul></li>';
-        }  
+        } 
+        
+        /*  releasedEvent */    
+        if (!empty($this->releasedEvent)) {
+            echo '<li>'.$t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a></li>';
+        }            
 
         if (!empty($this->url)||!empty($this->doi)) {
             $this->onlineAccess($t);
@@ -1534,7 +1584,7 @@ class Record
         if (!empty($this->doi)) {
             $sfx_array[] = 'rft_id=info:doi/'.$this->doi.'';
         }
-        if (!empty($this->issnArray[0])) {
+        if (!empty($this->issnArray[0]) && ($this->issnArray[0] != "Não informado")) {
             $sfx_array[] = 'rft.issn='.$this->issnArray[0].'';
         }
         if (!empty($r["_source"]['ispartof_data'][0])) {

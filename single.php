@@ -60,6 +60,13 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             <fieldset data-uk-margin>
                             <legend>Enviar um arquivo</legend>
                             <input type="file" name="file">
+                            <select class="uk-select" name="version">
+                                <option disabled selected value>Selecione a versão</option>
+                                <option value="publishedVersion">publishedVersion</option>
+                                <option value="submittedVersion">submittedVersion</option>
+                                <option value="acceptedVersion">acceptedVersion</option>                                
+                                <option value="updatedVersion">updatedVersion</option>
+                            </select>                                   
                             <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
                             <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>                                    
                         </fieldset>
@@ -67,7 +74,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 }
             
                 if (isset($_FILES['file'])) {
-                    $userBitstream = $_POST["codpes"];
+                    $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
+                    echo "<br/><br/>";
+                    print_r($userBitstream);
+                    echo "<br/><br/>";
                     $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $cookies);
                     if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                         $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
@@ -396,25 +406,26 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php endif; ?>
                         <!-- Qualis  - Fim -->
                             
-                        <!-- JCR - Início -->
-                        <?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
+                        <!-- JCR - Início 
+                        < ?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o JCR</h5>
+                                < ?php print_r($cursor["_source"]["USP"]["JCR"]); ?>
                                 <li class="uk-h6">
-                                    <p class="uk-text-small uk-margin-remove">Título: <?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Journal_Impact_Factor"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["IF_without_Journal_Self_Cites"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["Eigenfactor_Score"]); ?></p>                               
-                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2016: <?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2016"][0]["JCR_Rank"]); ?></p> 
+                                    <p class="uk-text-small uk-margin-remove">Título: < ?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">ISSN: < ?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Journal_Impact_Factor"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["IF_without_Journal_Self_Cites"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Eigenfactor_Score"]); ?></p>                               
+                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["JCR_Rank"]); ?></p> 
                                 </li>
                             </div>
-                        <?php endif; ?>  
-                        <!-- JCR - Fim --> 
+                        < ?php endif; ?>  
+                        JCR - Fim --> 
 
                         <!-- Citescore - Início -->
-                        <?php if (!empty($cursor["_source"]["USP"]["citescore"])) : ?>
+                        <?php if (!empty($cursor["_source"]["USP"]["citescore"]["title"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o Citescore</h5>
@@ -423,8 +434,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <p class="uk-text-small uk-margin-remove">ISSN: <?php print_r($cursor["_source"]["USP"]["citescore"]["issn"][0]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">Citescore - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["citescore"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">SJR - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["SJR"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">SNIP - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["SNIP"]); ?></p>                               
-                                    <p class="uk-text-small uk-margin-remove">Open Access: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["open_access"]); ?></p> 
+                                    <p class="uk-text-small uk-margin-remove">SNIP - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["SNIP"]); ?></p>
                                 </li>
                             </div>
                         <?php endif; ?>  
@@ -518,7 +528,6 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         if (!empty($bitstreamsDSpace)) {
                             echo '<div class="uk-alert-primary" uk-alert>
                             <h4>Download do texto completo</h4>
-                            <a class="uk-alert-close" uk-close></a>
 
                             <table class="uk-table uk-table-justify uk-table-divider">
                             <thead>
@@ -756,7 +765,26 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         </div>
                         <?php endif; ?>
-                        <!-- References - CrossRef - End -->                          
+                        <!-- References - CrossRef - End -->      
+
+                        <!-- Other works of same authors - Start -->
+                        <?php 
+                        foreach ($cursor["_source"]["authorUSP"] as $authorUSPArray) {
+                            $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
+                        }
+
+                        $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
+                        $queryOtherWorks["query"]["bool"]["must_not"]["term"]["name.keyword"] = $cursor["_source"]["name"];
+                        $resultOtherWorks = elasticsearch::elastic_search($type, ["_id","name"], 10, $queryOtherWorks);
+                        echo '<div class="uk-alert-primary" uk-alert>';
+                        echo '<h5>Últimas obras dos mesmos autores vinculados com a USP cadastradas na BDPI:</h5><ul>';
+                        foreach ($resultOtherWorks["hits"]["hits"] as $othersTitles) {
+                            //print_r($othersTitles);
+                            echo '<li><a href="'.$url_base.'/item/'.$othersTitles["_id"].'" target="_blank">'.$othersTitles["_source"]["name"].'</a></li>';
+                        }                        
+                        echo '</ul></div>';
+                        ?>
+                        <!-- Other works of same authors - End -->                                            
                             
                 </div>
             </div>

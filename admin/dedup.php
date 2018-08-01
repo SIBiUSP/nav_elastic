@@ -3,8 +3,8 @@
     // Set directory to ROOT
     chdir('../');
     // Include essencial files
-    include('inc/config.php'); 
-    include('inc/functions.php'); 
+    require 'inc/config.php'; 
+    require 'inc/functions.php'; 
 
     $query["query"]["query_string"]["query"] = "-_exists_:dedup";    
     $query['sort'] = [
@@ -28,7 +28,7 @@
         //print_r($r);
         echo 'Título: '.$r["_source"]["name"].' e ano: '.$r["_source"]["datePublished"].' e sysno: '.$r["_id"].'';
         echo '<br/>';
-        query_bdpi($r["_source"]["name"],$r["_source"]["datePublished"],$r["_id"],$r["_source"]["type"]);
+        query_bdpi($r["_source"]["name"], $r["_source"]["datePublished"], $r["_id"], $r["_source"]["type"]);
 
 
     }
@@ -45,7 +45,7 @@
                     "should": [	
                         {
                             "multi_match" : {
-                                "query":      "'.str_replace('"','',$query_title).'",
+                                "query":      "'.str_replace('"', '', $query_title).'",
                                 "type":       "cross_fields",
                                 "fields":     [ "name" ],
                                 "minimum_should_match": "90%" 
@@ -87,7 +87,7 @@
 
         //print_r($cursor);
 
-        if ($cursor["hits"]["total"] > 0){
+        if ($cursor["hits"]["total"] > 0) {
 
             echo "Sim";
             print_r($cursor);
@@ -115,7 +115,7 @@
         } else {
             $doc["doc"]["dedup"]["data"] = date("Ymd");
             $doc["doc_as_upsert"] = true;
-            $result_elastic = elasticsearch::elastic_update($sysno,$type,$doc);
+            $result_elastic = elasticsearch::elastic_update($sysno, $type, $doc);
             print_r($result_elastic);            
 
         }

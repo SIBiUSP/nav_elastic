@@ -25,10 +25,10 @@
         <h2>Área de administração e gerenciamento</h2>
         <div class="uk-grid" uk-grid>
             <div class="uk-width-2-4@">
-                <p><a href="admin/autoridades.php">Atualizar autoridades</a></p>                     
+                <p><a href="autoridades.php">Atualizar autoridades</a></p>                     
             </div>
             <div class="uk-width-2-4@m">                    
-                <p><a href="admin/translate_en.php">Atualizar tradução para o Inglês</a></p>                    
+                <p><a href="translate_en.php">Atualizar tradução para o Inglês</a></p>                    
             </div>
         </div>         
         <hr class="uk-grid-divider">
