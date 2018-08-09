@@ -117,6 +117,7 @@ class elasticsearch
 
         $params["type"] = $type;
         $params["id"] = $_id;
+        $params["client"]["ignore"] = 404;
 
         $response = $client->delete($params);
         return $response;
