@@ -224,7 +224,6 @@ class get
         if (!empty($get['search'])) {
             foreach ($get['search'] as $getSearch) {
                 if (strpos($getSearch, 'base.keyword') !== false) {
-                    $baseSearch = trim($getSearchArray[0]);
                     $query["query"]["bool"]["filter"][$i_filter]["term"]["base.keyword"] = "Produção científica";
                     $i_filter++;
                 } else {
