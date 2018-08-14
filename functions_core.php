@@ -224,9 +224,7 @@ class get
         if (!empty($get['search'])) {
             foreach ($get['search'] as $getSearch) {
                 if (strpos($getSearch, 'base.keyword') !== false) {
-                    echo "sim";
                     $baseSearch = trim($getSearchArray[0]);
-                    //var_dump($getSearchArray);
                     $query["query"]["bool"]["filter"][$i_filter]["term"]["base.keyword"] = "Produção científica";
                     $i_filter++;
                 } else {
@@ -240,10 +238,6 @@ class get
         $query["query"]["bool"]["must"]["query_string"]["default_operator"] = "AND";
         $query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
         $query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
-
-        echo "<br/><br/><br/><br/>";
-        print_r(json_encode($query, true));
-        echo "<br/><br/><br/><br/>";
 
         return compact('page', 'query', 'limit', 'skip');
     }
