@@ -25,7 +25,7 @@ if (!empty($_GET)) {
     $params = [];
     $params["index"] = $index;
     $params["type"] = $type;
-    $params["size"] = 10;
+    $params["size"] = 1000;
     $params["from"] = $skip;
     $params["body"] = $query; 
 
