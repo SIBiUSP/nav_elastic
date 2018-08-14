@@ -363,6 +363,7 @@ if (!empty($_GET)) {
                     <th>Qualis 2013/2016</th>
                     <th>JCR - Journal Impact Factor - 2016</th>
                     <th>Citescore - 2016</th>
+                    <th>Internacionalização</th>
                 </tr>
             </thead>
             <tbody>
@@ -495,7 +496,13 @@ if (!empty($_GET)) {
                                  echo $r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore']; 
                               } 
                         ?>
-                    </td>                                                                                                                                                                               
+                    </td>
+                    <td>
+                        <?php if (!empty($r["_source"]['USP']['internacionalizacao'])) {
+                                 echo $r["_source"]['USP']['internacionalizacao']; 
+                              } 
+                        ?>
+                    </td>                                                                                                                                                                                                      
                                   
                 </tr>
                 <?php endforeach;?>
