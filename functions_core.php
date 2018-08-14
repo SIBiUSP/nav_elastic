@@ -199,8 +199,8 @@ class get
         $next = ($page + 1);
         $prev = ($page - 1);
 
-        if (!empty($get['filter'])) {
-            $i_filter = 0;
+        $i_filter = 0;    
+        if (!empty($get['filter'])) {            
             foreach ($get['filter'] as $filter) {
                 $filter_array = explode(":", $filter);
                 $filter_array_term = str_replace('"', "", (string)$filter_array[1]);
@@ -221,8 +221,17 @@ class get
         }
 
         if (!empty($get['search'])) {
-            $search = implode(" ", $get['search']);
-            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(".keyword", "", $search);
+            foreach ($get['search'] as $getSearch) {
+                if (strpos($getSearch, 'base.keyword') !== false) {
+                    echo "sim";
+                    $baseSearch = trim($getSearchArray[0]);
+                    //var_dump($getSearchArray);
+                    $query["query"]["bool"]["filter"][$i_filter]["term"]["base.keyword"] = "Produção científica";
+                    $i_filter++;
+                } else {
+                    $query["query"]["bool"]["must"]["query_string"]["query"] = $getSearch;
+                }
+            }            
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
@@ -231,7 +240,9 @@ class get
         $query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
         $query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
 
-        //print_r(json_encode($query, true));
+        echo "<br/><br/><br/><br/>";
+        print_r(json_encode($query, true));
+        echo "<br/><br/><br/><br/>";
 
         return compact('page', 'query', 'limit', 'skip');
     }
