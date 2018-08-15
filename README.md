@@ -35,9 +35,13 @@ git submodule update
 
 ## System requirements
 
-php5-curl
+php7.2-curl
 
-php5-json > 1.3.7
+php7.2-intl
+
+php7.2-json > 1.3.7
+
+php7.2-mbstring
 
 
 ## Developers 
