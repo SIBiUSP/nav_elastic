@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="<?php echo $url_base; ?>/inc/jquery/jquery-ui.css">
 
 <!-- Validador -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script> 
+<script src="<?php echo $url_base; ?>/inc/jquery/jquery.form-validator.min.js"></script> 
 
 <!-- Uikit 3 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.18/css/uikit.min.css" />
