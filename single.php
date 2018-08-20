@@ -769,20 +769,22 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         <!-- Other works of same authors - Start -->
                         <?php 
-                        foreach ($cursor["_source"]["authorUSP"] as $authorUSPArray) {
-                            $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
+                        if (isset($cursor["_source"]["authorUSP"])) {
+                            foreach ($cursor["_source"]["authorUSP"] as $authorUSPArray) {
+                                $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
+                            }
+    
+                            $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
+                            $queryOtherWorks["query"]["bool"]["must_not"]["term"]["name.keyword"] = $cursor["_source"]["name"];
+                            $resultOtherWorks = elasticsearch::elastic_search($type, ["_id","name"], 10, $queryOtherWorks);
+                            echo '<div class="uk-alert-primary" uk-alert>';
+                            echo '<h5>Últimas obras dos mesmos autores vinculados com a USP cadastradas na BDPI:</h5><ul>';
+                            foreach ($resultOtherWorks["hits"]["hits"] as $othersTitles) {
+                                //print_r($othersTitles);
+                                echo '<li><a href="'.$url_base.'/item/'.$othersTitles["_id"].'" target="_blank">'.$othersTitles["_source"]["name"].'</a></li>';
+                            }                        
+                            echo '</ul></div>';
                         }
-
-                        $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
-                        $queryOtherWorks["query"]["bool"]["must_not"]["term"]["name.keyword"] = $cursor["_source"]["name"];
-                        $resultOtherWorks = elasticsearch::elastic_search($type, ["_id","name"], 10, $queryOtherWorks);
-                        echo '<div class="uk-alert-primary" uk-alert>';
-                        echo '<h5>Últimas obras dos mesmos autores vinculados com a USP cadastradas na BDPI:</h5><ul>';
-                        foreach ($resultOtherWorks["hits"]["hits"] as $othersTitles) {
-                            //print_r($othersTitles);
-                            echo '<li><a href="'.$url_base.'/item/'.$othersTitles["_id"].'" target="_blank">'.$othersTitles["_source"]["name"].'</a></li>';
-                        }                        
-                        echo '</ul></div>';
                         ?>
                         <!-- Other works of same authors - End -->                                            
                             
