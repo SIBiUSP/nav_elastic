@@ -227,9 +227,10 @@ class get
                     $query["query"]["bool"]["filter"][$i_filter]["term"]["base.keyword"] = "Produção científica";
                     $i_filter++;
                 } else {
-                    $query["query"]["bool"]["must"]["query_string"]["query"] = $getSearch;
+                    $getSearchArray[] = $getSearch;                    
                 }
-            }            
+            }
+            $query["query"]["bool"]["must"]["query_string"]["query"] = implode(" ", $getSearchArray);  
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
