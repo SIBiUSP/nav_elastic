@@ -64,14 +64,14 @@
                         <form role="form" action="result.php" method="get">
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Número USP'); ?></legend>
-                                <input class="uk-input" id='searchCodpes' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                <input class="uk-input" id='searchCodpes' type="text" placeholder="Insira um número USP" name="filter[]" data-validation="required">
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpes').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpes').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
                         </form>
                         <form role="form" action="autor.php" method="get">
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em ABNT por autor USP'); ?></legend>
-                                <input class="uk-input" id='searchCodpesABNT' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                <input class="uk-input" id='searchCodpesABNT' type="text" placeholder="Insira um número USP" name="filter[]" data-validation="required">
                                 <input type="hidden" name="format" value="abnt">
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesABNT').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesABNT').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
@@ -79,7 +79,7 @@
                         <form role="form" action="autor.php" method="get">
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em Formato Tabela por autor USP'); ?></legend>
-                                <input class="uk-input" id='searchCodpesTable' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                <input class="uk-input" id='searchCodpesTable' type="text" placeholder="Insira um número USP" name="filter[]" data-validation="required">
                                 <input type="hidden" name="format" value="table">
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesTable').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesTable').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
@@ -96,7 +96,7 @@
                         <form role="form" action="autor.php" method="get">
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Resultados em Formato RIS por autor USP'); ?></legend>
-                                <input class="uk-input" id='searchCodpesRIS' type="text" placeholder="Insira um número USP" name="search[]" data-validation="required">
+                                <input class="uk-input" id='searchCodpesRIS' type="text" placeholder="Insira um número USP" name="filter[]" data-validation="required">
                                 <input type="hidden" name="format" value="RIS">
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('searchCodpesRIS').value = 'authorUSP.codpes:' + String.fromCharCode(34) + document.getElementById('searchCodpesRIS').value.trim() + String.fromCharCode(34)"><?php echo $t->gettext('Buscar'); ?></button>
                             </fieldset>
