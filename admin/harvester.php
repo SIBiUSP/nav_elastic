@@ -149,7 +149,7 @@ if (isset($_GET["oai"])) {
             //$id = $rec->{'header'}->{'identifier'};
             //print_r($id);
 
-            $body["doc"]["base"][] = "Livros";
+            $body["doc"]["base"] = "Harvester";
             $body["doc"]["name"] = (string)$rows->title[0];
             $body["doc_as_upsert"] = true;
 
@@ -228,14 +228,67 @@ if (isset($_GET["oai"])) {
             unset($author);
 
             $resultado = elasticsearch::elastic_update($id, $type, $body);
-            print_r($resultado);            
+            //print_r($resultado); 
+
 
             //print_r($body);
 
-            unset($body);    
+            unset($body); 
+            flush();   
 
             //break; 
         }        
+
+    } elseif ($_GET["metadataFormat"] == "mods") {
+
+        if (isset($_GET["set"])) {
+            $recs = $myEndpoint->listRecords('mods', null, null, $_GET["set"]);
+        } else {
+            $recs = $myEndpoint->listRecords('mods');           
+        }
+
+        foreach ($recs as $rec) {
+
+            //print_r($rec);
+ 
+            $body["doc"]["base"] = $_GET["name"];
+            $body["doc"]["name"] = (string)$rec->metadata->modsCollection->mods->titleInfo->title;
+
+            $i = 0;
+            foreach ($rec->metadata->modsCollection->mods->name as $authors) {
+                $body["doc"]["author"][$i]["person"]["name"] = $authors->namePart{0} . ', ' . $authors->namePart[1];
+                $i++;
+            }
+            
+            foreach ($rec->metadata->modsCollection->mods->identifier as $identifier) {
+                $identifiers[] =  $identifier;
+            }
+
+            $body["doc"]["language"][] = (string)$rec->metadata->modsCollection->mods->language->languageTerm;
+
+            $body["doc"]["isPartOf"]["name"] = (string)$rec->metadata->modsCollection->mods->relatedItem->titleInfo->title;
+
+            $body["doc"]["datePublished"] = (string)$rec->metadata->modsCollection->mods->relatedItem->originInfo->dateIssued;
+
+            $fl_array = preg_grep("/^(\d+)?\.(\d+).*$/", $identifiers);
+            foreach ($fl_array as $fl_array_i) {
+                $body["doc"]["doi"] = (string)$fl_array_i[0];
+            }
+
+            $body["doc"]["type"] = (string)$rec->metadata->modsCollection->mods->genre;
+
+            $body["doc_as_upsert"] = true;
+            $id = str_replace(".", "_", (string)$rec->header->identifier);
+            $id = str_replace(":", "_", $id);
+
+            $resultado = elasticsearch::elastic_update($id, $type, $body);
+
+            unset($id);
+            unset($body);
+            flush(); 
+
+            //break; 
+        }
 
     } else {
         
