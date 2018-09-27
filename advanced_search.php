@@ -111,7 +111,7 @@
                                             data-popterms-target="#vocab"> Selecione um termo do Vocabulário Controlado da USP</a>
                                 </label>            
                                 <br/>
-                                <input id="vocab" class="uk-input" type="text" name="search[]" data-validation="required">
+                                <input id="vocab" class="uk-input" type="text" name="filter[]" data-validation="required">
                                 <button class="uk-button uk-button-default" type="submit" onclick="document.getElementById('vocab').value = 'about:' + String.fromCharCode(34) + document.getElementById('vocab').value.trim() + String.fromCharCode(34)" ><?php echo $t->gettext('Buscar'); ?></button>
                                                                             
                             </fieldset>
