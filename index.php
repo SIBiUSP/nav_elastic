@@ -46,10 +46,6 @@
                                 <label class="uk-form-label" for="form-stacked-text">Buscar por título, autor, meio de expressão ou gênero e forma - <a href="result.php">ou clique aqui para ver todos os registros</a></label>
                                 <div class="uk-form-controls">
                                     <input class="uk-input" style="background-color: #fff; color:#333" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Buscar por título, autor, meio de expressão ou gênero e forma'); ?>" name="search[]" data-validation="required">
-                                <input type="hidden" name="fields[]" value="name">
-                                <input type="hidden" name="fields[]" value="author.person.name">
-                                <input type="hidden" name="fields[]" value="USP.about.genero_e_forma">
-                                <input type="hidden" name="fields[]" value="USP.meio_de_expressao">
                                 </div>
                             </div>
 

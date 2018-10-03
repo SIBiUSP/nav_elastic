@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-    include('inc/config.php'); 
-    include('inc/functions.php');
-    include('inc/functions_result.php');
+    require 'inc/config.php'; 
+    require 'inc/functions.php';
+    require 'inc/functions_result.php';
 
     $url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
