@@ -5,7 +5,7 @@ require 'inc/config.php';
 require 'inc/functions.php';
 
 
-if (isset($_GET["oai"])) {
+if (isset($_GET["oai"])) {    
 
     $oaiUrl = $_GET["oai"];
     $client_harvester = new \Phpoaipmh\Client(''.$oaiUrl.'');
@@ -136,7 +136,7 @@ if (isset($_GET["oai"])) {
 
             $data = $rec->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
             $rows = $data->children('http://purl.org/dc/elements/1.1/');
-            var_dump($rows);
+            //var_dump($rows);
 
             //$data = $rec->metadata->children( 'http://www.dspace.org/xmlns/dspace/dim' );
             //$rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );
@@ -149,11 +149,40 @@ if (isset($_GET["oai"])) {
             //$id = $rec->{'header'}->{'identifier'};
             //print_r($id);
 
-            $body["doc"]["base"] = "Harvester";
-            $body["doc"]["name"] = (string)$rows->title[0];
-            $body["doc_as_upsert"] = true;
+            $i = 0;
+            foreach ($rows->creator as $authors) {
+                $body["doc"]["author"][$i]["person"]["name"] = $authors;
+                $i++;
+            }            
 
+            $body["doc"]["base"] = $_GET["name"];
+            $body["doc"]["unidadeUSP"] = (array)$rec->header->setSpec;
+            $body["doc"]["type"] = (string)$rows->type[0];
+            $body["doc"]["name"] = (string)$rows->title[0];
+            $body["doc"]["doi"] = str_replace("doi:", "", (string)$rows->identifier[1]);
+            $body["doc"]["url"] = (string)$rows->identifier[0];
+            $body["doc"]["language"][] = (string)$rows->language[0];
+            foreach ($rows->subject as $subject) {
+                $body["doc"]["about"][] = (string)$subject;
+            }
+            foreach ($rows->description as $description) {
+                $body["doc"]["description"][] = (string)$description;
+            }
+            foreach ($rows->publisher as $publisher) {
+                $body["doc"]["publisher"]["organization"]["name"] = (string)$publisher;
+            }                                      
+            $body["doc_as_upsert"] = true;
+            $id = str_replace(".", "_", (string)$rec->header->identifier);
+            $id = str_replace(":", "_", $id);
+            print_r($id);
             print_r($body);
+
+            $resultado = elasticsearch::elastic_update($id, $type, $body);  
+            var_dump($resultado);
+
+            unset($id);
+            unset($body);
+            flush();  
 
             //break; 
         }
@@ -215,10 +244,10 @@ if (isset($_GET["oai"])) {
                     if ($field->attributes()->element == "language" && $field->attributes()->qualifier == "iso") {
                         $body["doc"]["language"][] = (string)$field;
                     }       
-                                                               
+                                                                
                 }
             }         
-              
+                
             $id = (string)$rec->header->identifier;
             $body["doc"]["base"][] = $_GET["name"];
             $body["doc"]["unidadeUSP"] = (array)$rec->header->setSpec;
@@ -250,7 +279,7 @@ if (isset($_GET["oai"])) {
         foreach ($recs as $rec) {
 
             //print_r($rec);
- 
+
             $body["doc"]["base"] = $_GET["name"];
             $body["doc"]["name"] = (string)$rec->metadata->modsCollection->mods->titleInfo->title;
 
@@ -290,8 +319,83 @@ if (isset($_GET["oai"])) {
             //break; 
         }
 
-    } else {
+    } elseif ($_GET["metadataFormat"] == "oai_marcxml") {
+
+        if (isset($_GET["set"])) {
+            $recs = $myEndpoint->listRecords('oai_marcxml', null, null, $_GET["set"]);
+        } else {
+            $recs = $myEndpoint->listRecords('oai_marcxml');
+        }
+
+        foreach ($recs as $rec) {
+
+            //print_r($rec);
+
+            $body["doc"]["base"] = $_GET["name"];
+
+
+            foreach ($rec->metadata->collection->record->datafield as $datafield) {
+
+                switch ($datafield->attributes()->tag) {
+                    case 245:
+                        $body["doc"]["name"] = (string)$datafield->attributes()->subfield{0};
+                        break;
+                    case 1:
+                        echo "i equals 1";
+                        break;
+                    case 2:
+                        echo "i equals 2";
+                        break;
+                }
+                 
+
+            }
+
+
+
+            
+
+            $i = 0;
+            foreach ($rec->metadata->modsCollection->mods->name as $authors) {
+                $body["doc"]["author"][$i]["person"]["name"] = $authors->namePart{0} . ', ' . $authors->namePart[1];
+                $i++;
+            }
+            
+            foreach ($rec->metadata->modsCollection->mods->identifier as $identifier) {
+                $identifiers[] =  $identifier;
+            }
+
+            $body["doc"]["language"][] = (string)$rec->metadata->modsCollection->mods->language->languageTerm;
+
+            $body["doc"]["isPartOf"]["name"] = (string)$rec->metadata->modsCollection->mods->relatedItem->titleInfo->title;
+
+            $body["doc"]["datePublished"] = (string)$rec->metadata->modsCollection->mods->relatedItem->originInfo->dateIssued;
+
+            $fl_array = preg_grep("/^(\d+)?\.(\d+).*$/", $identifiers);
+            foreach ($fl_array as $fl_array_i) {
+                $body["doc"]["doi"] = (string)$fl_array_i[0];
+            }
+
+            $body["doc"]["type"] = (string)$rec->metadata->modsCollection->mods->genre;
+
+            $body["doc_as_upsert"] = true;
+            $id = str_replace(".", "_", (string)$rec->header->identifier);
+            $id = str_replace(":", "_", $id);
+
+            print_r($body);
+
+            //$resultado = elasticsearch::elastic_update($id, $type, $body);
+
+            unset($id);
+            unset($body);
+            flush();
+            ob_flush(); 
+        }
+
+            //break; 
         
+    } else {
+
         $recs = $myEndpoint->listRecords('rfc1807');
         var_dump($recs);
         foreach ($recs as $rec) {
@@ -309,7 +413,7 @@ if (isset($_GET["oai"])) {
                     $query["doc"]["ano"] = substr((string)$rec->{'metadata'}->{'rfc1807'}->{'date'}, 0, 4);
                     // $query["doc"]["doi"] = (string)$rec->{'metadata'}->{'article'}->{'front'}->{'article-meta'}->{'article-id'}[1];
                     $query["doc"]["resumo"] = str_replace('"', '', (string)$rec->{'metadata'}->{'rfc1807'}->{'abstract'});
-    
+
                 // Palavras-chave
                 if (isset($rec->{'metadata'}->{'rfc1807'}->{'keyword'})) {
                     foreach ($rec->{'metadata'}->{'rfc1807'}->{'keyword'} as $palavra_chave) {
@@ -361,12 +465,8 @@ if (isset($_GET["oai"])) {
 
                     unset($query);
                     flush();
-
-
             }
         }        
-
-
     } 
 
 } elseif (isset($_GET["delete"])) {
