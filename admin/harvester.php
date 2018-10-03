@@ -151,7 +151,7 @@ if (isset($_GET["oai"])) {
 
             $i = 0;
             foreach ($rows->creator as $authors) {
-                $body["doc"]["author"][$i]["person"]["name"] = $authors;
+                $body["doc"]["author"][$i]["person"]["name"] = (string)$authors;
                 $i++;
             }            
 
@@ -160,8 +160,9 @@ if (isset($_GET["oai"])) {
             $body["doc"]["type"] = (string)$rows->type[0];
             $body["doc"]["name"] = (string)$rows->title[0];
             $body["doc"]["doi"] = str_replace("doi:", "", (string)$rows->identifier[1]);
-            $body["doc"]["url"] = (string)$rows->identifier[0];
+            $body["doc"]["url"][] = (string)$rows->identifier[0];
             $body["doc"]["language"][] = (string)$rows->language[0];
+            $body["doc"]["datePublished"] = substr((string)$rows->date[0], 0, 4);
             foreach ($rows->subject as $subject) {
                 $body["doc"]["about"][] = (string)$subject;
             }
@@ -174,11 +175,11 @@ if (isset($_GET["oai"])) {
             $body["doc_as_upsert"] = true;
             $id = str_replace(".", "_", (string)$rec->header->identifier);
             $id = str_replace(":", "_", $id);
-            print_r($id);
-            print_r($body);
+            //print_r($id);
+            //print_r($body);
 
             $resultado = elasticsearch::elastic_update($id, $type, $body);  
-            var_dump($resultado);
+            print_r($resultado);
 
             unset($id);
             unset($body);
