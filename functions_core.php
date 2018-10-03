@@ -178,7 +178,7 @@ class get
         if (!empty($get['fields'])) {
             $query["query"]["bool"]["must"]["query_string"]["fields"] = $get['fields'];
         } else {
-            $query["query"]["bool"]["must"]["query_string"]["fields"][] = "_all";
+            //$query["query"]["bool"]["must"]["query_string"]["fields"][] = "_all";
         }
 
         /* codpes */
@@ -230,7 +230,8 @@ class get
                     $getSearchArray[] = $getSearch;                    
                 }
             }
-            $query["query"]["bool"]["must"]["query_string"]["query"] = implode(" ", $getSearchArray);  
+            $getSearchResult = implode(" ", $getSearchArray);            
+            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
