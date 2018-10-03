@@ -178,7 +178,7 @@ class get
         if (!empty($get['fields'])) {
             $query["query"]["bool"]["must"]["query_string"]["fields"] = $get['fields'];
         } else {
-            //$query["query"]["bool"]["must"]["query_string"]["fields"][] = "_all";
+            $query["query"]["bool"]["must"]["query_string"]["default_field"] = "*";
         }
 
         /* codpes */
@@ -230,13 +230,14 @@ class get
                     $getSearchArray[] = $getSearch;                    
                 }
             }
-            $getSearchResult = implode(" ", $getSearchArray);            
-            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
+            $getSearchResult = implode(" ", $getSearchArray);           
+            //$query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
+            $query["query"]["bool"]["must"]["query_string"]["query"] = $getSearchResult;
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
 
-        $query["query"]["bool"]["must"]["query_string"]["default_operator"] = "AND";
+        $query["query"]["bool"]["must"]["query_string"]["default_operator"] = "OR";
         $query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
         $query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
 
