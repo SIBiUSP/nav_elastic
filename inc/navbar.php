@@ -84,11 +84,11 @@
                 </li>
                 <li class="uk-active">
                 <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
-                    <?php if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) : ?>
+                    <!-- < ?php if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) : ?> -->
                         <a href="<?php echo $url_base; ?>/tutorial_staff/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial Staff'); ?></a>
-                    <?php else: ?>                        
-                        <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
-                    <?php endif; ?> 
+                    <!-- < ?php else: ?> -->                        
+                    <!--    <a href="< php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer">< ?php echo $t->gettext('Tutorial'); ?></a> -->
+                    <!-- < ?php endif; ?> -->
                 <?php else: ?>
                     <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
                 <?php endif; ?> 
