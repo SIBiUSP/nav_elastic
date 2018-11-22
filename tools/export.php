@@ -41,7 +41,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
 
-            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tQualis 2013/2016\tJCR - Journal Impact Factor - 2016\tCitescore - 2016\tInternacionalização";
+            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização";
             
             foreach ($cursor["hits"]["hits"] as $r) {
                 unset($fields);
@@ -149,28 +149,8 @@ if (isset($_GET["format"])) {
                         unset($departament_array);
                     }
 
-                }
-                
-                if (!empty($r["_source"]['USP']['serial_metrics']['qualis']['2016'])) {
-                    foreach ($r["_source"]['USP']['serial_metrics']['qualis']['2016'] as $qualis) {
-                        $qualis_array[]= $qualis["area_nota"];                
-                    }
-                    $fields[] = implode(";", $qualis_array);
-                    unset($qualis_array);
-                } 
-                
-                if (!empty($r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor'])) {
-                    $fields[] = $r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor'];
-                } else {
-                    $fields[] = "";
-                } 
-                
-                if (!empty($r["_source"]['USP']['citescore']['citescore']['2017'][0]['citescore'])) {
-                    $fields[] = $r["_source"]['USP']['citescore']['citescore']['2017'][0]['citescore'];
-                } else {
-                    $fields[] = "";
-                }
-                
+                }                
+
                 if (!empty($r["_source"]['USP']['internacionalizacao'])) {
                     $fields[] = $r["_source"]['USP']['internacionalizacao'];
                 } else {
