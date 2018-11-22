@@ -231,14 +231,14 @@ class get
                 }
             }
             $getSearchResult = implode(" ", $getSearchArray);           
-            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
-            //$query["query"]["bool"]["must"]["query_string"]["query"] = $getSearchResult;
+            //$query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
+            $query["query"]["bool"]["must"]["query_string"]["query"] = $getSearchResult;
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
 
-        //$query["query"]["bool"]["must"]["query_string"]["default_operator"] = "AND";
-        //$query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
+        $query["query"]["bool"]["must"]["query_string"]["default_operator"] = "AND";
+        $query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
         $query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
 
         return compact('page', 'query', 'limit', 'skip');
