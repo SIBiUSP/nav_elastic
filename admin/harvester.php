@@ -253,9 +253,12 @@ if (isset($_GET["oai"])) {
             $body["doc"]["base"][] = $_GET["name"];
             $body["doc"]["unidadeUSP"] = (array)$rec->header->setSpec;
             $body["doc"]["identifier"] = (string)$rec->header->identifier;
-            $body["doc"]["author"][] = $author;            
+            if (isset($author)) {
+                $body["doc"]["author"][] = $author;
+                unset($author);
+            }                        
             $body["doc_as_upsert"] = true;
-            unset($author);
+            
 
             $resultado = elasticsearch::elastic_update($id, $type, $body);
             //print_r($resultado); 
