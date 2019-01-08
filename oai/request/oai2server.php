@@ -187,15 +187,16 @@ class OAI2Server {
         }
     }
 
-    public function ListIdentifiers() {
+    public function ListIdentifiers() 
+    {
         $this->ListRecords();
     }
 
-    public function ListRecords() {
-
+    public function ListRecords() 
+    {        
         $maxItems = 50;
         $deliveredRecords = 0;
-        if (!empty($this->args['metadataPrefix'])){
+        if (!empty($this->args['metadataPrefix'])) {
             $metadataPrefix = $this->args['metadataPrefix'];
         } else {
             $metadataPrefix = 'oai_dc';
@@ -209,18 +210,14 @@ class OAI2Server {
             if (count($this->args['resumptionToken']) > 1) {                
                 $this->errors[] = new OAI2Exception('badArgument');
             } else {
-                //if ((int)$val+$this->token_valid < time()) {
-                //    $this->errors[] = new OAI2Exception('badResumptionToken');
-                //} else {
-                    if (!file_exists($this->token_prefix.$this->args['resumptionToken'])) {
-                        $this->errors[] = new OAI2Exception('badResumptionToken');
+                if (!file_exists($this->token_prefix.$this->args['resumptionToken'])) {
+                    $this->errors[] = new OAI2Exception('badResumptionToken');
+                } else {
+                    if ($readings = $this->readResumptionToken($this->token_prefix.$this->args['resumptionToken'])) {
+                        list($deliveredRecords, $metadataPrefix, $from, $until, $set) = $readings;
                     } else {
-                        if ( $readings = $this->readResumptionToken($this->token_prefix.$this->args['resumptionToken'])) {
-                            list($deliveredRecords, $metadataPrefix, $from, $until, $set) = $readings;
-                        } else {
-                            $this->errors[] = new OAI2Exception('badResumptionToken');
-                        }
-                //    }
+                        $this->errors[] = new OAI2Exception('badResumptionToken');
+                    }
                 }
             }
         } else {
@@ -233,12 +230,12 @@ class OAI2Server {
                 }
             }
             if (isset($this->args['from'])) {
-                if(!$this->checkDateFormat($this->args['from'])) {
+                if (!$this->checkDateFormat($this->args['from'])) {
                     $this->errors[] = new OAI2Exception('badArgument');
                 }
             }
             if (isset($this->args['until'])) {
-                if(!$this->checkDateFormat($this->args['until'])) {
+                if (!$this->checkDateFormat($this->args['until'])) {
                     $this->errors[] = new OAI2Exception('badArgument');
                 }
             }
@@ -261,17 +258,17 @@ class OAI2Server {
                                         (($this->identifyResponse['deletedRecord'] == 'transient') ||
                                          ($this->identifyResponse['deletedRecord'] == 'persistent')));
 
-                    if($this->verb == 'ListRecords') {
+                    if ($this->verb == 'ListRecords') {
                         $cur_record = $this->response->addToVerbNode('record');
-                        $cur_header = $this->response->createHeader($identifier, $datestamp,$setspec,$cur_record);
+                        $cur_header = $this->response->createHeader($identifier, $datestamp, $setspec, $cur_record);
                         if (!$status_deleted) {
                             $this->add_metadata($cur_record, $record);
-                        }	
+                        }
                     } else { // for ListIdentifiers, only identifiers will be returned.
-                        $cur_header = $this->response->createHeader($identifier, $datestamp,$setspec);
+                        $cur_header = $this->response->createHeader($identifier, $datestamp, $setspec);
                     }
                     if ($status_deleted) {
-                        $cur_header->setAttribute("status","deleted");
+                        $cur_header->setAttribute("status", "deleted");
                     }
                 }
 
@@ -279,10 +276,8 @@ class OAI2Server {
                 if ($records_count - $deliveredRecords > $maxItems) {
 
                     $deliveredRecords +=  $maxItems;
-                    $restoken = $this->createResumptionToken($deliveredRecords,$from,$until,$set);
-
-                    $expirationDatetime = gmstrftime('%Y-%m-%dT%TZ', time()+$this->token_valid);	
-
+                    $restoken = $this->createResumptionToken($deliveredRecords, $from, $until, $set);
+                    $expirationDatetime = gmstrftime('%Y-%m-%dT%TZ', time()+$this->token_valid);
                 } elseif (isset($args['resumptionToken'])) {
                     // Last delivery, return empty ResumptionToken
                     $restoken = null;
@@ -290,7 +285,7 @@ class OAI2Server {
                 }
 
                 if (isset($restoken)) {
-                    $this->response->createResumptionToken($restoken,$expirationDatetime,$records_count,$deliveredRecords);
+                    $this->response->createResumptionToken($restoken, $expirationDatetime, $records_count, $deliveredRecords);
                 }
 
             } catch (OAI2Exception $e) {
@@ -299,9 +294,10 @@ class OAI2Server {
         }
     }
 
-    private function add_metadata($cur_record, $record) {
+    private function add_metadata($cur_record, $record) 
+    {
 
-        $meta_node =  $this->response->addChild($cur_record ,"metadata");
+        $meta_node =  $this->response->addChild($cur_record, "metadata");
 
         $schema_node = $this->response->addChild($meta_node, $record['metadata']['container_name']);
         foreach ($record['metadata']['container_attributes'] as $name => $value) {
@@ -315,13 +311,14 @@ class OAI2Server {
         }
     }
 
-    private function createResumptionToken($delivered_records,$from,$until,$set) {
+    private function createResumptionToken($delivered_records,$from,$until,$set) 
+    {
 
         list($usec, $sec) = explode(" ", microtime());
         $token = ((int)($usec*1000) + (int)($sec*1000));
 
         $fp = fopen ($this->token_prefix.$token, 'w');
-        if($fp==false) {
+        if ($fp==false) {
             exit("Cannot write. Writer permission needs to be changed.");
         }
         

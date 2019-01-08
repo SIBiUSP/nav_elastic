@@ -1,7 +1,7 @@
 <?php
 
-include('../../inc/config.php');
-require_once('oai2server.php');
+require '../../inc/config.php';
+require 'oai2server.php';
 
 /**
  * Identifier settings. It needs to have proper values to reflect the settings of the data provider.
@@ -16,7 +16,7 @@ require_once('oai2server.php');
  *
  */
 $identifyResponse = array();
-$identifyResponse["repositoryName"] = 'BDPI OAI2 PMH';
+$identifyResponse["repositoryName"] = 'Biblioteca Digital da Produção Intelectual da USP';
 $identifyResponse["baseURL"] = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].'';
 $identifyResponse["protocolVersion"] = '2.0';
 $identifyResponse['adminEmail'] = 'tiago.murakami@dt.sibi.usp.br';
@@ -39,10 +39,10 @@ if (!isset($uri)) {
     $uri = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].'';
 }
 
-$oai2 = new OAI2Server($uri, $args, $identifyResponse,
+$oai2 = new OAI2Server ($uri, $args, $identifyResponse,
     array(
         'ListMetadataFormats' =>
-        function($identifier = '') {
+        function ($identifier = '') {
             if (!empty($identifier) && $identifier != 'a.b.c') {
                 throw new OAI2Exception('idDoesNotExist');
             }
@@ -55,7 +55,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         },
 
         'ListSets' =>
-        function($resumptionToken = '') {
+        function ($resumptionToken = '') {
             return
                 array (
                     array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes')
@@ -63,7 +63,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         },
 
         'ListRecords' =>
-        function($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {            
+        function ($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {            
             global $client;
             global $index;
             global $type;         
@@ -72,17 +72,18 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 throw new OAI2Exception('noRecordsMatch');
             }
 
-            if (!empty($set)) {                
-                $query["query"]["query_string"]["query"] = '+unidadeUSP:"'.$set.'"';
+            if (!empty($set)) {
+                $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
+                $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
             } else {
-                $query["query"]["query_string"]["query"] = "*";
+                $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
             } 
     
-            if (!empty($from)||!empty($until)){
+            if (!empty($from)||!empty($until)) {
                 $filter[]= '{ "range" : { "datestamp" : { "gte" : "'.$from.'", "lt" :  "'.$until.'" } } }';
             }
     
-            if (!empty($filter)){
+            if (!empty($filter)) {
                 $filter_query = ''.implode(",", $filter).'';
             } else {
                 $filter_query = "";
@@ -93,7 +94,8 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             $params = [];
             $params["index"] = $index;
             $params["type"] = $type;
-            $params["size"] = 50;            
+            $params["size"] = 50;
+            $params["scroll"] = "30s";            
             $params["from"] = $deliveredRecords;
             $params["body"] = $query;
 
@@ -109,7 +111,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             foreach ($record["hits"]["hits"] as $hit) {
 
                 if (!empty($hit['_source']['name'])) {
-                    $fields['dc:title'] = str_replace("&","", $hit['_source']['name']);
+                    $fields['dc:title'] = str_replace("&", "", $hit['_source']['name']);
                 } 
 
                 if (!empty($hit['_source']['type'])) {    
@@ -121,20 +123,24 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
                 }    
 
                 if (!empty($hit['_source']['author'])) {    
-                    foreach ($hit['_source']['author'] as $k => $authors){
+                    foreach ($hit['_source']['author'] as $k => $authors) {
                         $fields['dc:creator_'.$k] = $authors["person"]["name"];
                     }
                 }
 
                 if (!empty($hit['_source']['about'])) {
-                    foreach ($hit['_source']['about'] as $k => $subject){
+                    foreach ($hit['_source']['about'] as $k => $subject) {
                         $fields['dc:subject_'.$k] = $subject;
                     }  
                 }
 
                 $records[$i]["identifier"] = $hit['_id'];
                 $records[$i]["datestamp"] = $now;
-                $records[$i]["set"] = 'all';
+                if (!empty($set)) {
+                    $records[$i]["set"] = "$set";
+                } else {
+                    $records[$i]["set"] = 'all';
+                }
                 $records[$i]["metadata"]["container_name"] = 'oai_dc:dc';
                 $records[$i]["metadata"]["container_attributes"]["xmlns:oai_dc"] = "http://www.openarchives.org/OAI/2.0/oai_dc/";
                 $records[$i]["metadata"]["container_attributes"]["xmlns:dc"] = "http://purl.org/dc/elements/1.1/";
@@ -156,7 +162,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
         },
 
         'GetRecord' =>
-        function($identifier, $metadataPrefix) {
+        function ($identifier, $metadataPrefix) {
             global $client;
             global $index;
             global $type;             
@@ -184,7 +190,7 @@ $oai2 = new OAI2Server($uri, $args, $identifyResponse,
             //    $fields['dc:creator_'.$k] = $authors;
             //}
     
-            foreach ($record['_source']['about'] as $k => $subject){
+            foreach ($record['_source']['about'] as $k => $subject) {
                 $fields['dc:subject_'.$k] = $subject;
             }
 
