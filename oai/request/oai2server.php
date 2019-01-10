@@ -256,7 +256,7 @@ class OAI2Server {
                         if (!$status_deleted) {
                             $this->add_metadata($cur_record, $record);
                         }
-                    } else { // for ListIdentifiers, only identifiers will be returned.
+                    } else { 
                         $cur_header = $this->response->createHeader($identifier, $datestamp, $setspec);
                     }
                     if ($status_deleted) {

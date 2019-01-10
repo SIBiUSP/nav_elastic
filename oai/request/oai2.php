@@ -104,11 +104,10 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
 
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id_token,  //...using our previously obtained _scroll_id
-                    "scroll" => "30s"           // and the same timeout window
+                    "scroll_id" => $scroll_id_token,  
+                    "scroll" => "30s"
                     ]
                 );
-                //print_r($cursor);
             }  
 
             $response_array = [];
