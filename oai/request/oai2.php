@@ -63,7 +63,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
         },
 
         'ListRecords' =>
-        function ($metadataPrefix, $from = '', $until = '', $set = '', $count = false, $deliveredRecords = 0, $maxItems = 0) {            
+        function ($metadataPrefix, $from = '', $until = '', $set = '', $scroll_id_token = '', $count = false, $scroll_id_get_token = false) {
             global $client;
             global $index;
             global $type;         
@@ -74,7 +74,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
 
             if (!empty($set)) {
                 $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
-                $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
+                //$query["query"]["bool"]["must"]["query_string"]["query"] = "*";
             } else {
                 $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
             } 
@@ -95,20 +95,30 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "30s";            
-            $params["from"] = $deliveredRecords;
+            $params["scroll"] = "30s"; 
             $params["body"] = $query;
 
-            $record = $client->search($params);
-     
-            if ($count) {
-                return $record["hits"]["total"];
+            if (empty($scroll_id_token)) {                
+                $cursor = $client->search($params);
+            } else {
+
+                $cursor = $client->scroll(
+                    [
+                    "scroll_id" => $scroll_id_token,  //...using our previously obtained _scroll_id
+                    "scroll" => "30s"           // and the same timeout window
+                    ]
+                );
+                //print_r($cursor);
             }  
-    
+
+            $response_array = [];
+            $response_array["count"] = $cursor["hits"]["total"];
+            $response_array["scroll_id_new"] = $cursor['_scroll_id'];             
+
             $records = array();
             $now = date('Y-m-d-H:s');
             $i = 0;
-            foreach ($record["hits"]["hits"] as $hit) {
+            foreach ($cursor["hits"]["hits"] as $hit) {
 
                 if (!empty($hit['_source']['name'])) {
                     $fields['dc:title'] = str_replace("&", "", $hit['_source']['name']);
@@ -157,7 +167,8 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 $i++;
                 unset($fields);
             }
-            return $records;                          
+            $response_array["records"] = $records;
+            return $response_array;                          
 
         },
 

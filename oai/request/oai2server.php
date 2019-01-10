@@ -48,34 +48,37 @@ class OAI2Server {
 
     }
 
-    public function response() {
+    public function response() 
+    {
         if (empty($this->errors)) {
             return $this->response->doc;
         } else {
             $errorResponse = new OAI2XMLResponse($this->uri, $this->verb, $this->args);
             $oai_node = $errorResponse->doc->documentElement;
-            foreach($this->errors as $e) {
-                $node = $errorResponse->addChild($oai_node,"error",$e->getMessage());
-                $node->setAttribute("code",$e->getOAI2Code());
+            foreach ($this->errors as $e) {
+                $node = $errorResponse->addChild($oai_node, "error", $e->getMessage());
+                $node->setAttribute("code", $e->getOAI2Code());
             }
             return $errorResponse->doc;
         }
     }
 
-    public function Identify() {
+    public function Identify() 
+    {
 
         if (count($this->args) > 0) {
-            foreach($this->args as $key => $val) {
+            foreach ($this->args as $key => $val) {
                 $this->errors[] = new OAI2Exception('badArgument');
             }
         } else {
-            foreach($this->identifyResponse as $key => $val) {
+            foreach ($this->identifyResponse as $key => $val) {
                 $this->response->addToVerbNode($key, $val);
             }
         }
     }
 
-    public function ListMetadataFormats() {
+    public function ListMetadataFormats() 
+    {
 
         foreach ($this->args as $argument => $value) {
             if ($argument != 'identifier') {
@@ -90,11 +93,11 @@ class OAI2Server {
         if (empty($this->errors)) {
             try {
                 if ($formats = call_user_func($this->listMetadataFormatsCallback, $identifier)) {
-                    foreach($formats as $key => $val) {
+                    foreach ($formats as $key => $val) {
                         $cmf = $this->response->addToVerbNode("metadataFormat");
-                        $this->response->addChild($cmf,'metadataPrefix',$key);
-                        $this->response->addChild($cmf,'schema',$val['schema']);
-                        $this->response->addChild($cmf,'metadataNamespace',$val['metadataNamespace']);
+                        $this->response->addChild($cmf, 'metadataPrefix', $key);
+                        $this->response->addChild($cmf, 'schema', $val['schema']);
+                        $this->response->addChild($cmf, 'metadataNamespace', $val['metadataNamespace']);
                     }
                 } else {
                     $this->errors[] = new OAI2Exception('noMetadataFormats');
@@ -105,7 +108,8 @@ class OAI2Server {
         }
     }
 
-    public function ListSets() {
+    public function ListSets() 
+    {
 
         if (isset($this->args['resumptionToken'])) {
             if (count($this->args) > 1) {
@@ -122,18 +126,18 @@ class OAI2Server {
         if (empty($this->errors)) {
             if ($sets = call_user_func($this->listSetsCallback, $resumptionToken)) {
 
-                foreach($sets as $set) {
+                foreach ($sets as $set) {
 
                     $setNode = $this->response->addToVerbNode("set");
 
-                    foreach($set as $key => $val) {
-                        if($key=='setDescription') {
-                            $desNode = $this->response->addChild($setNode,$key);
+                    foreach ( $set as $key => $val) {
+                        if ($key=='setDescription') {
+                            $desNode = $this->response->addChild($setNode, $key);
                             $des = $this->response->doc->createDocumentFragment();
                             $des->appendXML($val);
                             $desNode->appendChild($des);
                         } else {
-                            $this->response->addChild($setNode,$key,$val);
+                            $this->response->addChild($setNode, $key, $val);
                         }
                     }
                 }
@@ -143,7 +147,8 @@ class OAI2Server {
         }
     }
 
-    public function GetRecord() {
+    public function GetRecord() 
+    {
 
         if (!isset($this->args['metadataPrefix'])) {
             $this->errors[] = new OAI2Exception('badArgument');
@@ -174,7 +179,7 @@ class OAI2Server {
                     $cur_record = $this->response->addToVerbNode('record');
                     $cur_header = $this->response->createHeader($identifier, $datestamp, $set, $cur_record);
                     if ($status_deleted) {
-                        $cur_header->setAttribute("status","deleted");
+                        $cur_header->setAttribute("status", "deleted");
                     } else {
                         $this->add_metadata($cur_record, $record);
                     }
@@ -193,9 +198,7 @@ class OAI2Server {
     }
 
     public function ListRecords() 
-    {        
-        $maxItems = 50;
-        $deliveredRecords = 0;
+    {      
         if (!empty($this->args['metadataPrefix'])) {
             $metadataPrefix = $this->args['metadataPrefix'];
         } else {
@@ -206,20 +209,8 @@ class OAI2Server {
         $until = isset($this->args['until']) ? $this->args['until'] : '';
         $set = isset($this->args['set']) ? $this->args['set'] : '';
         
-        if (isset($this->args['resumptionToken'])) {  
-            if (count($this->args['resumptionToken']) > 1) {                
-                $this->errors[] = new OAI2Exception('badArgument');
-            } else {
-                if (!file_exists($this->token_prefix.$this->args['resumptionToken'])) {
-                    $this->errors[] = new OAI2Exception('badResumptionToken');
-                } else {
-                    if ($readings = $this->readResumptionToken($this->token_prefix.$this->args['resumptionToken'])) {
-                        list($deliveredRecords, $metadataPrefix, $from, $until, $set) = $readings;
-                    } else {
-                        $this->errors[] = new OAI2Exception('badResumptionToken');
-                    }
-                }
-            }
+        if (isset($this->args['resumptionToken'])) {
+            $scroll_id_token = $this->args['resumptionToken'];  
         } else {
             if (!isset($this->args['metadataPrefix'])) {
                 $this->errors[] = new OAI2Exception('badArgument');
@@ -239,16 +230,17 @@ class OAI2Server {
                     $this->errors[] = new OAI2Exception('badArgument');
                 }
             }
+            $this->args['resumptionToken'] = "";
         }
 
         if (empty($this->errors)) {
             try {
 
-                $records_count = call_user_func($this->listRecordsCallback, $metadataPrefix, $from, $until, $set, true);
+                $records = call_user_func($this->listRecordsCallback, $metadataPrefix, $from, $until, $set, $this->args['resumptionToken'], false, false);
+                $records_count = $records["count"];
+                $new_scroll_id_token = $records["scroll_id_new"];
 
-                $records = call_user_func($this->listRecordsCallback, $metadataPrefix, $from, $until, $set, false, $deliveredRecords, $maxItems);
-
-                foreach ($records as $record) {
+                foreach ($records["records"] as $record) {
 
                     $identifier = $record['identifier'];
                     $datestamp = $this->formatDatestamp($record['datestamp']);
@@ -272,20 +264,19 @@ class OAI2Server {
                     }
                 }
 
-                // Will we need a new ResumptionToken?
-                if ($records_count - $deliveredRecords > $maxItems) {
-
-                    $deliveredRecords +=  $maxItems;
-                    $restoken = $this->createResumptionToken($deliveredRecords, $from, $until, $set);
+                if (empty($this->args['resumptionToken'])) {
+                    $restoken = $new_scroll_id_token;
                     $expirationDatetime = gmstrftime('%Y-%m-%dT%TZ', time()+$this->token_valid);
-                } elseif (isset($args['resumptionToken'])) {
-                    // Last delivery, return empty ResumptionToken
+                } elseif (!empty($this->args['resumptionToken']) && count($records["records"]) == 50) {
+                    $restoken = $new_scroll_id_token;
+                    $expirationDatetime = gmstrftime('%Y-%m-%dT%TZ', time()+$this->token_valid);
+                } else {
                     $restoken = null;
                     $expirationDatetime = null;
                 }
 
                 if (isset($restoken)) {
-                    $this->response->createResumptionToken($restoken, $expirationDatetime, $records_count, $deliveredRecords);
+                    $this->response->createResumptionToken($restoken, $expirationDatetime, $records_count, $new_scroll_id_token);
                 }
 
             } catch (OAI2Exception $e) {
