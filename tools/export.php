@@ -176,6 +176,74 @@ if (isset($_GET["format"])) {
             echo implode("\n", $content);            
 
         }
+
+
+    } elseif ($_GET["format"] == "corrigedoi") {
+
+        $file = "corrigedoi.tsv";
+        header('Content-type: text/tab-separated-values; charset=utf-8');
+        header("Content-Disposition: attachment; filename=$file");
+
+        // Set directory to ROOT
+        chdir('../');
+        // Include essencial files
+        include 'inc/config.php'; 
+        include 'inc/functions.php';
+
+        if (!empty($_GET)) {
+            $query["query"]["query_string"]["query"] = "-_exists_:doi AND _exists_:USP.titleSearchCrossrefDOI";
+
+            $params = [];
+            $params["index"] = $index;
+            $params["type"] = $type;
+            $params["size"] = 50;
+            $params["scroll"] = "30s";
+            $params["_source"] = ["doi","USP.titleSearchCrossrefDOI"]; 
+            $params["body"] = $query; 
+
+            $cursor = $client->search($params);
+            $total = $cursor["hits"]["total"];
+
+            $content[] = "Sysno\tDOI Crossref\tDOI";
+
+            while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
+                $scroll_id = $cursor['_scroll_id'];
+                $cursor = $client->scroll(
+                    [
+                    "scroll_id" => $scroll_id,  
+                    "scroll" => "30s"
+                    ]
+                );                
+            
+                foreach ($cursor["hits"]["hits"] as $r) {
+                    unset($fields);
+
+                    $fields[] = $r['_id'];
+
+                    if (!empty($r["_source"]['USP']['titleSearchCrossrefDOI'])) {
+                        $fields[] = $r["_source"]['USP']['titleSearchCrossrefDOI'];
+                    } else {
+                        $fields[] = "";
+                    }                         
+                
+                    if (!empty($r["_source"]['doi'])) {
+                        $fields[] = $r["_source"]['doi'];
+                    } else {
+                        $fields[] = "";
+                    }     
+                    
+                    $content[] = implode("\t", $fields);
+                    unset($fields);
+
+                
+                }
+            }
+            echo implode("\n", $content);            
+
+        }
+            
+
+
         
     } elseif ($_GET["format"] == "csvThesis") {
 
