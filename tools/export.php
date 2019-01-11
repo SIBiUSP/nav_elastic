@@ -204,7 +204,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
 
-            $content[] = "Sysno\tDOI Crossref\tDOI";
+            $content[] = "Sysno\tDOI Crossref";
 
             while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
                 $scroll_id = $cursor['_scroll_id'];
@@ -224,13 +224,7 @@ if (isset($_GET["format"])) {
                         $fields[] = $r["_source"]['USP']['titleSearchCrossrefDOI'];
                     } else {
                         $fields[] = "";
-                    }                         
-                
-                    if (!empty($r["_source"]['doi'])) {
-                        $fields[] = $r["_source"]['doi'];
-                    } else {
-                        $fields[] = "";
-                    }     
+                    } 
                     
                     $content[] = implode("\t", $fields);
                     unset($fields);
