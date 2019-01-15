@@ -554,7 +554,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                 echo '<th>'.$value["name"].'</th>';
                                                 echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
                                                 echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
-                                                if ($isOfThisUnit == true) {
+                                                //if ($isOfThisUnit == true) {
                                                     echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream-'.$value["uuid"].'">Excluir</button></th>';
                                                     echo '<div id="modal-deleteBitstream-'.$value["uuid"].'" uk-modal>';
                                                     echo '<div class="uk-modal-dialog uk-modal-body">';
@@ -593,7 +593,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                     </div>'; 
     
     
-                                                }
+                                                //}
                                                 echo '<th></th>';
                                             } else {
                                                 echo '<tr>';
