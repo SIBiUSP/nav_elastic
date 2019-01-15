@@ -499,7 +499,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         if (isset($_SESSION['oauthuserdata'])) {
                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                if ($isOfThisUnit == true) {
+                                //if ($isOfThisUnit == true) {
                                     if ($testDSpace == "true") {
                                         if (!empty($uploadForm)) {
                                             echo '<div class="uk-alert-danger" uk-alert>';
@@ -519,7 +519,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
         
                                     }                                  
 
-                                }
+                                //}
 
                             }
 
