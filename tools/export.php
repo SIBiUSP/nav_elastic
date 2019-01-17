@@ -279,7 +279,7 @@ if (isset($_GET["format"])) {
             $total = $cursor["hits"]["total"];
             
 
-            echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\tURL\n";
+            echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\tURL\n"; 
 
             while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
                 $scroll_id = $cursor['_scroll_id'];
@@ -448,6 +448,10 @@ if (isset($_GET["format"])) {
         $params["body"] = $query; 
 
         $cursor = $client->search($params);
+        foreach ($cursor["hits"]["hits"] as $r) { 
+            /* Exportador RIS */
+            $record_blob[] = Exporters::RIS($r);
+        }        
         
         while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
             $scroll_id = $cursor['_scroll_id'];
@@ -507,6 +511,11 @@ if (isset($_GET["format"])) {
         $params["body"] = $query; 
 
         $cursor = $client->search($params);
+        foreach ($cursor["hits"]["hits"] as $r) { 
+            /* Exportador RIS */
+            $record_blob[] = Exporters::bibtex($r);
+        }
+
         while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
             $scroll_id = $cursor['_scroll_id'];
             $cursor = $client->scroll(
