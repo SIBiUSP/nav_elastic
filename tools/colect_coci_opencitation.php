@@ -43,9 +43,7 @@ foreach ($cursor["hits"]["hits"] as $r) {
         $body["doc"]["USP"]["opencitation"]["coci"]["citations"]["not_found"] = true;
     }
     $body["doc_as_upsert"] = true;
-    print_r($body);
     $resultado_opencitation_references = elasticsearch::store_record($r["_id"], $type, $body);
-    print_r($resultado_opencitation_citations);
     ob_flush();
     flush();
     unset($body);
