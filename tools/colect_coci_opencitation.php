@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <?php
 
-require '../inc/config.php'; 
-require '../inc/functions.php'; 
+require '../inc/config.php';
+require '../inc/functions.php';
 
-$query["query"]["query_string"]["query"] = "+_exists_:doi -_exists_:USP.opencitation.coci";    
+$query["query"]["query_string"]["query"] = "+_exists_:doi -_exists_:USP.opencitation.coci";
 $query['sort'] = [
     ['datePublished.keyword' => ['order' => 'desc']],
-];      
+];
 
 $params = [];
 $params["index"] = $index;
@@ -33,42 +33,23 @@ foreach ($cursor["hits"]["hits"] as $r) {
 
     if (!empty($dataReferences)) {
         $body["doc"]["USP"]["opencitation"]["coci"]["references"] = $dataReferences;
-        $body["doc_as_upsert"] = true;
-        print_r($body);
-        $resultado_opencitation_references = elasticsearch::store_record($r["_id"], $type, $body);
-        print_r($resultado_opencitation_references);
-        ob_flush();
-        flush();             
     } else {
         $body["doc"]["USP"]["opencitation"]["coci"]["references"]["not_found"] = true;
-        $body["doc_as_upsert"] = true;
-        print_r($body);
-        $resultado_opencitation_references = elasticsearch::store_record($r["_id"], $type, $body);
-        print_r($resultado_opencitation_references);
-        ob_flush();
-        flush();
     }
 
     if (!empty($dataCitations)) {
         $body["doc"]["USP"]["opencitation"]["coci"]["citations"] = $dataCitations;
-        $body["doc_as_upsert"] = true;
-        print_r($body);
-        $resultado_opencitation_citations = elasticsearch::store_record($r["_id"], $type, $body);
-        print_r($resultado_opencitation_citations);
-        ob_flush();
-        flush();             
     } else {
         $body["doc"]["USP"]["opencitation"]["coci"]["citations"]["not_found"] = true;
-        $body["doc_as_upsert"] = true;
-        print_r($body);
-        $resultado_opencitation_citations = elasticsearch::store_record($r["_id"], $type, $body);
-        print_r($resultado_opencitation_citations);
-        ob_flush();
-        flush();
     }
-
+    $body["doc_as_upsert"] = true;
+    print_r($body);
+    $resultado_opencitation_references = elasticsearch::store_record($r["_id"], $type, $body);
+    print_r($resultado_opencitation_citations);
+    ob_flush();
+    flush();
     unset($body);
 
-}  
+}
 
 ?>
