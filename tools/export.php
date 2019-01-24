@@ -1,5 +1,18 @@
 <?php
 
+/* Citeproc-PHP*/
+require '../inc/citeproc-php/CiteProc.php';
+$csl_abnt = file_get_contents('../inc/citeproc-php/style/abnt.csl');
+$csl_apa = file_get_contents('../inc/citeproc-php/style/apa.csl');
+$csl_nlm = file_get_contents('../inc/citeproc-php/style/nlm.csl');
+$csl_vancouver = file_get_contents('../inc/citeproc-php/style/vancouver.csl');
+$lang = "br";
+$citeproc_abnt = new citeproc($csl_abnt, $lang);
+$citeproc_apa = new citeproc($csl_apa, $lang);
+$citeproc_nlm = new citeproc($csl_nlm, $lang);
+$citeproc_vancouver = new citeproc($csl_nlm, $lang);
+$mode = "reference";
+
 if (isset($_GET["format"])) {
 
     if ($_GET["format"] == "table") {
@@ -41,7 +54,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
 
-            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês";
+            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês\tABNT\tAPA";
 
             while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
                 $scroll_id = $cursor['_scroll_id'];
@@ -67,7 +80,14 @@ if (isset($_GET["format"])) {
 
 
                     foreach ($r["_source"]['author'] as $authors) {
-                        $authors_array[]= $authors["person"]["name"];
+                        if (!empty($authors["person"]["potentialAction"])) {
+                          $authors_array[]= ''.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')';
+                        } else {
+                          $authors_array[]= $authors["person"]["name"];
+                        }
+
+
+
                     }
                     $fields[] = implode(";", $authors_array);
                     unset($authors_array);
@@ -201,6 +221,11 @@ if (isset($_GET["format"])) {
                     } else {
                         $fields[] = "";
                     }
+
+                    $data_citation = citation::citation_query($r["_source"]);
+                    $fields[] = $citeproc_abnt->render($data_citation, $mode);
+
+                    $fields[] = $citeproc_apa->render($data_citation, $mode);
 
 
                     $content[] = implode("\t", $fields);
