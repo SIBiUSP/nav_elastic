@@ -11,12 +11,12 @@ if (isset($_GET["format"])) {
         // Set directory to ROOT
         chdir('../');
         // Include essencial files
-        include 'inc/config.php'; 
+        include 'inc/config.php';
         include 'inc/functions.php';
 
         if (!empty($_GET)) {
             $result_get = get::analisa_get($_GET);
-            $query = $result_get['query'];  
+            $query = $result_get['query'];
             $limit = $result_get['limit'];
             $page = $result_get['page'];
             $skip = $result_get['skip'];
@@ -36,38 +36,38 @@ if (isset($_GET["format"])) {
             $params["type"] = $type;
             $params["size"] = 50;
             $params["scroll"] = "30s";
-            $params["body"] = $query; 
+            $params["body"] = $query;
 
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
 
-            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização";
+            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês";
 
             while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
                 $scroll_id = $cursor['_scroll_id'];
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id,  
+                    "scroll_id" => $scroll_id,
                     "scroll" => "30s"
                     ]
-                );                
-            
+                );
+
                 foreach ($cursor["hits"]["hits"] as $r) {
                     unset($fields);
 
                     $fields[] = $r['_id'];
-                
+
                     if (!empty($r["_source"]['doi'])) {
                         $fields[] = $r["_source"]['doi'];
                     } else {
                         $fields[] = "";
                     }
-                
+
                     $fields[] = $r["_source"]['name'];
-                    
+
 
                     foreach ($r["_source"]['author'] as $authors) {
-                        $authors_array[]= $authors["person"]["name"];                
+                        $authors_array[]= $authors["person"]["name"];
                     }
                     $fields[] = implode(";", $authors_array);
                     unset($authors_array);
@@ -76,66 +76,72 @@ if (isset($_GET["format"])) {
                         $fields[] = $r["_source"]['isPartOf']["name"];
                     } else {
                         $fields[] = "";
-                    } 
+                    }
 
                     if (!empty($r["_source"]['isPartOf']['USP']['dados_do_periodico'])) {
                         $fields[] = $r["_source"]['isPartOf']['USP']['dados_do_periodico'];
                     } else {
                         $fields[] = "";
-                    } 
+                    }
 
                     if (!empty($r["_source"]['datePublished'])) {
                         $fields[] = $r["_source"]['datePublished'];
                     } else {
                         $fields[] = "";
-                    } 
-                    
+                    }
+
                     if (!empty($r["_source"]['isPartOf']['issn'])) {
                         foreach ($r["_source"]['isPartOf']['issn'] as $issn) {
-                            $issn_array[]= $issn;                
+                            $issn_array[]= $issn;
                         }
                         $fields[] = implode(";", $issn_array);
                         unset($issn_array);
                     } else {
                         $fields[] = "";
-                    } 
-                    
+                    }
+
                     if (!empty($r["_source"]['publisher']['organization']['location'])) {
                         $fields[] = $r["_source"]['publisher']['organization']['location'];
                     } else {
                         $fields[] = "";
                     }
-                    
+
                     if (!empty($r["_source"]['publisher']['organization']['name'])) {
                         $fields[] = $r["_source"]['publisher']['organization']['name'];
                     } else {
                         $fields[] = "";
-                    } 
-                    
+                    }
+
                     if (!empty($r["_source"]['releasedEvent'])) {
                         $fields[] = $r["_source"]['releasedEvent'];
                     } else {
                         $fields[] = "";
-                    }  
-                    
+                    }
+
                     if (!empty($r["_source"]['type'])) {
                         $fields[] = $r["_source"]['type'];
                     } else {
                         $fields[] = "";
-                    } 
-                    
+                    }
+
+                    if (!empty($r["_source"]['inSupportOf'])) {
+                        $fields[] = $r["_source"]['inSupportOf'];
+                    } else {
+                        $fields[] = "";
+                    }
+
                     if (!empty($r["_source"]['authorUSP'])) {
 
                         foreach ($r["_source"]['authorUSP'] as $authorsUSP) {
-                            $authorsUSP_array[]= $authorsUSP["name"];                
+                            $authorsUSP_array[]= $authorsUSP["name"];
                         }
                         $fields[] = implode(";", $authorsUSP_array);
                         unset($authorsUSP_array);
 
                         foreach ($r["_source"]['authorUSP'] as $numUSP) {
                             if (!empty($numUSP["codpes"])) {
-                                $numUSP_array[]= $numUSP["codpes"]; 
-                            }               
+                                $numUSP_array[]= $numUSP["codpes"];
+                            }
                         }
                         if (!empty($numUSP_array)) {
                             $fields[] = implode(";", $numUSP_array);
@@ -151,29 +157,59 @@ if (isset($_GET["format"])) {
                         foreach ($r["_source"]['authorUSP'] as $departament_aut) {
                             if (!empty($departament_aut["departament"])) {
                                 $departament_array[]= $departament_aut["departament"];
-                            }                
+                            }
                         }
                         if (!empty($departament_array)) {
                             $fields[] = implode(";", $departament_array);
                             unset($departament_array);
+                        } else {
+                            $fields[] = "";
                         }
 
-                    }                
+                    }
 
                     if (!empty($r["_source"]['USP']['internacionalizacao'])) {
                         $fields[] = $r["_source"]['USP']['internacionalizacao'];
                     } else {
                         $fields[] = "";
-                    }                
+                    }
 
-                    
+                    if (!empty($r["_source"]['about'])) {
+                        foreach ($r["_source"]['about'] as $about) {
+                            $about_array[]= $about;
+                        }
+                        $fields[] = implode(";", $about_array);
+                        unset($about_array);
+                    } else {
+                        $fields[] = "";
+                    }
+
+                    if (!empty($r["_source"]['url'])) {
+                        $fields[] = $r["_source"]['url'][0];
+                    } else {
+                        $fields[] = "";
+                    }
+
+                    if (!empty($r["_source"]['description'])) {
+                        $fields[] = $r["_source"]['description'][0];
+                    } else {
+                        $fields[] = "";
+                    }
+
+                    if (!empty($r["_source"]['descriptionEn'])) {
+                        $fields[] = $r["_source"]['descriptionEn'][0];
+                    } else {
+                        $fields[] = "";
+                    }
+
+
                     $content[] = implode("\t", $fields);
                     unset($fields);
 
-                
+
                 }
             }
-            echo implode("\n", $content);            
+            echo implode("\n", $content);
 
         }
 
@@ -187,7 +223,7 @@ if (isset($_GET["format"])) {
         // Set directory to ROOT
         chdir('../');
         // Include essencial files
-        include 'inc/config.php'; 
+        include 'inc/config.php';
         include 'inc/functions.php';
 
         if (!empty($_GET)) {
@@ -198,8 +234,8 @@ if (isset($_GET["format"])) {
             $params["type"] = $type;
             $params["size"] = 50;
             $params["scroll"] = "30s";
-            $params["_source"] = ["doi","USP.titleSearchCrossrefDOI"]; 
-            $params["body"] = $query; 
+            $params["_source"] = ["doi","USP.titleSearchCrossrefDOI"];
+            $params["body"] = $query;
 
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
@@ -210,11 +246,11 @@ if (isset($_GET["format"])) {
                 $scroll_id = $cursor['_scroll_id'];
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id,  
+                    "scroll_id" => $scroll_id,
                     "scroll" => "30s"
                     ]
-                );                
-            
+                );
+
                 foreach ($cursor["hits"]["hits"] as $r) {
                     unset($fields);
 
@@ -224,21 +260,21 @@ if (isset($_GET["format"])) {
                         $fields[] = $r["_source"]['USP']['titleSearchCrossrefDOI'];
                     } else {
                         $fields[] = "";
-                    } 
-                    
+                    }
+
                     $content[] = implode("\t", $fields);
                     unset($fields);
 
-                
+
                 }
             }
-            echo implode("\n", $content);            
+            echo implode("\n", $content);
 
         }
-            
 
 
-        
+
+
     } elseif ($_GET["format"] == "csvThesis") {
 
         $file="export_bdpi.tsv";
@@ -248,12 +284,12 @@ if (isset($_GET["format"])) {
         // Set directory to ROOT
         chdir('../');
         // Include essencial files
-        include 'inc/config.php'; 
+        include 'inc/config.php';
         include 'inc/functions.php';
-        
+
         if (!empty($_GET)) {
             $result_get = get::analisa_get($_GET);
-            $query = $result_get['query'];  
+            $query = $result_get['query'];
             $limit = $result_get['limit'];
             $page = $result_get['page'];
             $skip = $result_get['skip'];
@@ -272,23 +308,23 @@ if (isset($_GET["format"])) {
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "30s";  
-            $params["body"] = $query; 
+            $params["scroll"] = "30s";
+            $params["body"] = $query;
 
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
-            
 
-            echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\tURL\n"; 
+
+            echo "Sysno\tNúmero de chamada completo\tNúmero USP\tNome Citação (946a)\tNome Citação (100a)\tNome Orientador (700a)\tNúm USP Orientador (946o)\tÁrea de concentração\tPrograma Grau\tIdioma\tTítulo\tResumo português\tAssuntos português\tTítulo inglês\tResumo inglês\tAno de impressão\tLocal de impressão\tData defesa\tURL\n";
 
             while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
                 $scroll_id = $cursor['_scroll_id'];
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id,  
+                    "scroll_id" => $scroll_id,
                     "scroll" => "30s"
                     ]
-                );  
+                );
 
                 foreach ($cursor["hits"]["hits"] as $r) {
 
@@ -301,39 +337,39 @@ if (isset($_GET["format"])) {
                         } else {
                             $fields[] = "Não preenchido corretamente";
                         }
-                        
+
                         $fields[] = $numUSP_aut["name"];
                     }
-                    
-                    
+
+
                     foreach ($r["_source"]['author'] as $authors) {
                         if (empty($authors["person"]["potentialAction"])) {
                             $fields[] = $authors["person"]["name"];
                         } else {
-                            $orientadores_array[] = $authors["person"]["name"]; 
+                            $orientadores_array[] = $authors["person"]["name"];
                         }
                     }
                     if (isset($orientadores_array)) {
                         $array_orientadores = implode("; ", $orientadores_array);
                         unset($orientadores_array);
-                        $fields[] = $array_orientadores;       
+                        $fields[] = $array_orientadores;
                     } else {
                         $fields[] = "Não preenchido";
                     }
-                    
+
                     if (isset($r["_source"]['USP']['codpesOrientador'])) {
                         foreach ($r["_source"]['USP']['codpesOrientador'] as $codpesOrientador) {
                             $array_codpesOrientador[] = $codpesOrientador;
                         }
-                    }    
+                    }
                     if (isset($array_codpesOrientador)) {
                         $array_codpesOrientadores = implode("; ", $array_codpesOrientador);
                         unset($array_codpesOrientador);
-                        $fields[] = $array_codpesOrientadores;       
+                        $fields[] = $array_codpesOrientadores;
                     } else {
                         $fields[] = "Não preenchido";
                     }
-                    
+
 
 
                     if (isset($r["_source"]['USP']['areaconcentracao'])) {
@@ -346,7 +382,7 @@ if (isset($_GET["format"])) {
                     } else {
                         $fields[] = "Não preenchido";
                     }
-                    
+
                     $fields[] = $r["_source"]['language'][0];
                     $fields[] = $r["_source"]['name'];
 
@@ -354,15 +390,15 @@ if (isset($_GET["format"])) {
                         $fields[] = $r["_source"]['description'][0];
                     } else {
                         $fields[] = "Não preenchido";
-                    }    
-                    
+                    }
+
                     foreach ($r["_source"]['about'] as $subject) {
                         $subject_array[]=$subject;
                     }
                     $array_subject = implode("; ", $subject_array);
                     unset($subject_array);
-                    $fields[] = $array_subject;                
-                    
+                    $fields[] = $array_subject;
+
                     if (isset($r["_source"]['alternateName'])) {
                         $fields[] = $r["_source"]['alternateName'];
                     } else {
@@ -371,15 +407,15 @@ if (isset($_GET["format"])) {
 
                     if (isset($r["_source"]['descriptionEn'])) {
                         foreach ($r["_source"]['descriptionEn'] as $descriptionEn) {
-                            $descriptionEn_array[] = $descriptionEn;   
+                            $descriptionEn_array[] = $descriptionEn;
                         }
                         $array_descriptionEn = implode(" ", $descriptionEn_array);
                         unset($descriptionEn_array);
-                        $fields[] = $array_descriptionEn;                      
+                        $fields[] = $array_descriptionEn;
                     } else {
                         $fields[] = "Não preenchido";
                     }
-                    
+
                     $fields[] = $r["_source"]['datePublished'];
 
                     $fields[] = $r["_source"]['publisher']['organization']['location'];
@@ -390,26 +426,26 @@ if (isset($_GET["format"])) {
 
                     if (isset($r["_source"]['url'])) {
                         foreach ($r["_source"]['url'] as $url) {
-                            $url_array[] = $url;                        
+                            $url_array[] = $url;
                         }
                         $array_url = implode("| ", $url_array);
                         unset($url_array);
-                        $fields[] = $array_url;                      
-                    }    
-                    
-                    
+                        $fields[] = $array_url;
+                    }
+
+
                     // $content[] = implode("\t", $fields);
-                    
+
                     echo implode("\t", $fields)."\n";
                     flush();
 
                     unset($fields);
-                
-                }
-            }    
-            // echo implode("\n", $content);            
 
-        }        
+                }
+            }
+            // echo implode("\n", $content);
+
+        }
 
     } elseif ($_GET["format"] == "ris") {
 
@@ -420,12 +456,12 @@ if (isset($_GET["format"])) {
         // Set directory to ROOT
         chdir('../');
         // Include essencial files
-        include 'inc/config.php'; 
+        include 'inc/config.php';
         include 'inc/functions.php';
 
 
         $result_get = get::analisa_get($_GET);
-        $query = $result_get['query'];  
+        $query = $result_get['query'];
         $limit = $result_get['limit'];
         $page = $result_get['page'];
         $skip = $result_get['skip'];
@@ -445,24 +481,24 @@ if (isset($_GET["format"])) {
         $params["type"] = $type;
         $params["size"] = 50;
         $params["scroll"] = "30s";
-        $params["body"] = $query; 
+        $params["body"] = $query;
 
         $cursor = $client->search($params);
-        foreach ($cursor["hits"]["hits"] as $r) { 
+        foreach ($cursor["hits"]["hits"] as $r) {
             /* Exportador RIS */
             $record_blob[] = Exporters::RIS($r);
-        }        
-        
+        }
+
         while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
             $scroll_id = $cursor['_scroll_id'];
             $cursor = $client->scroll(
                 [
-                "scroll_id" => $scroll_id,  
+                "scroll_id" => $scroll_id,
                 "scroll" => "30s"
                 ]
-            );          
+            );
 
-            foreach ($cursor["hits"]["hits"] as $r) { 
+            foreach ($cursor["hits"]["hits"] as $r) {
                 /* Exportador RIS */
                 $record_blob[] = Exporters::RIS($r);
             }
@@ -471,24 +507,24 @@ if (isset($_GET["format"])) {
             $record_array = explode('\n', $record);
             echo implode("\n", $record_array);
         }
-        
+
     } elseif ($_GET["format"] == "bibtex") {
 
         $file="export_bdpi.bib";
         header('Content-type: text/plain');
         header("Content-Disposition: attachment; filename=$file");
 
-        
-        
+
+
         // Set directory to ROOT
         chdir('../');
         // Include essencial files
-        include 'inc/config.php'; 
+        include 'inc/config.php';
         include 'inc/functions.php';
 
 
         $result_get = get::analisa_get($_GET);
-        $query = $result_get['query'];  
+        $query = $result_get['query'];
         $limit = $result_get['limit'];
         $page = $result_get['page'];
         $skip = $result_get['skip'];
@@ -508,10 +544,10 @@ if (isset($_GET["format"])) {
         $params["type"] = $type;
         $params["size"] = 50;
         $params["scroll"] = "30s";
-        $params["body"] = $query; 
+        $params["body"] = $query;
 
         $cursor = $client->search($params);
-        foreach ($cursor["hits"]["hits"] as $r) { 
+        foreach ($cursor["hits"]["hits"] as $r) {
             /* Exportador RIS */
             $record_blob[] = Exporters::bibtex($r);
         }
@@ -520,12 +556,12 @@ if (isset($_GET["format"])) {
             $scroll_id = $cursor['_scroll_id'];
             $cursor = $client->scroll(
                 [
-                "scroll_id" => $scroll_id,  
+                "scroll_id" => $scroll_id,
                 "scroll" => "30s"
                 ]
-            );            
+            );
 
-            foreach ($cursor["hits"]["hits"] as $r) { 
+            foreach ($cursor["hits"]["hits"] as $r) {
                 /* Exportador RIS */
                 $record_blob[] = Exporters::bibtex($r);
             }
@@ -536,7 +572,7 @@ if (isset($_GET["format"])) {
             echo "\n";
             echo "\n";
             echo implode("\n", $record_array);
-        }    
+        }
 
     }
 
