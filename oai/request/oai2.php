@@ -66,8 +66,8 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
         function ($metadataPrefix, $from = '', $until = '', $set = '', $scroll_id_token = '', $count = false, $scroll_id_get_token = false) {
             global $client;
             global $index;
-            global $type;         
-        
+            global $type;
+
             if ($metadataPrefix != 'oai_dc') {
                 throw new OAI2Exception('noRecordsMatch');
             }
@@ -77,42 +77,42 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 //$query["query"]["bool"]["must"]["query_string"]["query"] = "*";
             } else {
                 $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
-            } 
-    
+            }
+
             if (!empty($from)||!empty($until)) {
                 $filter[]= '{ "range" : { "datestamp" : { "gte" : "'.$from.'", "lt" :  "'.$until.'" } } }';
             }
-    
+
             if (!empty($filter)) {
                 $filter_query = ''.implode(",", $filter).'';
             } else {
                 $filter_query = "";
             }
-            
-            $query["sort"]["_uid"]["order"] = 'desc';            
+
+            $query["sort"]["_uid"]["order"] = 'desc';
 
             $params = [];
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "30s"; 
+            $params["scroll"] = "120s";
             $params["body"] = $query;
 
-            if (empty($scroll_id_token)) {                
+            if (empty($scroll_id_token)) {
                 $cursor = $client->search($params);
             } else {
 
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id_token,  
-                    "scroll" => "30s"
+                    "scroll_id" => $scroll_id_token,
+                    "scroll" => "120s"
                     ]
                 );
-            }  
+            }
 
             $response_array = [];
             $response_array["count"] = $cursor["hits"]["total"];
-            $response_array["scroll_id_new"] = $cursor['_scroll_id'];             
+            $response_array["scroll_id_new"] = $cursor['_scroll_id'];
 
             $records = array();
             $now = date('Y-m-d-H:s');
@@ -121,17 +121,17 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
 
                 if (!empty($hit['_source']['name'])) {
                     $fields['dc:title'] = str_replace("&", "", $hit['_source']['name']);
-                } 
+                }
 
-                if (!empty($hit['_source']['type'])) {    
+                if (!empty($hit['_source']['type'])) {
                     $fields['dc:type'] = $hit['_source']['type'];
                 }
 
                 if (!empty($hit['_source']['language'][0])) {
                     $fields['dc:language'] = $hit['_source']['language'][0];
-                }    
+                }
 
-                if (!empty($hit['_source']['author'])) {    
+                if (!empty($hit['_source']['author'])) {
                     foreach ($hit['_source']['author'] as $k => $authors) {
                         $fields['dc:creator_'.$k] = $authors["person"]["name"];
                     }
@@ -140,7 +140,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 if (!empty($hit['_source']['about'])) {
                     foreach ($hit['_source']['about'] as $k => $subject) {
                         $fields['dc:subject_'.$k] = $subject;
-                    }  
+                    }
                 }
 
                 $records[$i]["identifier"] = $hit['_id'];
@@ -154,7 +154,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 $records[$i]["metadata"]["container_attributes"]["xmlns:oai_dc"] = "http://www.openarchives.org/OAI/2.0/oai_dc/";
                 $records[$i]["metadata"]["container_attributes"]["xmlns:dc"] = "http://purl.org/dc/elements/1.1/";
                 $records[$i]["metadata"]["container_attributes"]["xmlns:xsi"] = "http://www.w3.org/2001/XMLSchema-instance";
-                $records[$i]["metadata"]["container_attributes"]["xsi:schemaLocation"] = 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd';                
+                $records[$i]["metadata"]["container_attributes"]["xsi:schemaLocation"] = 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
                 if (!empty($fields)) {
                     $records[$i]["metadata"]["fields"] = $fields;
                 } else {
@@ -167,7 +167,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 unset($fields);
             }
             $response_array["records"] = $records;
-            return $response_array;                          
+            return $response_array;
 
         },
 
@@ -175,7 +175,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
         function ($identifier, $metadataPrefix) {
             global $client;
             global $index;
-            global $type;             
+            global $type;
 
             if ($metadataPrefix != 'oai_dc') {
                 throw new OAI2Exception('noRecordsMatch');
@@ -191,15 +191,15 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             if (!empty($record['_source']['name'])) {
                 $fields['dc:title'] = $record['_source']['name'];
             }
-    
+
             $fields['dc:type'] = $record['_source']['type'];
-    
-            $fields['dc:language'] = $record['_source']['language'][0];    
-            
+
+            $fields['dc:language'] = $record['_source']['language'][0];
+
             //foreach ($record['_source']['authors'] as $k => $authors){
             //    $fields['dc:creator_'.$k] = $authors;
             //}
-    
+
             foreach ($record['_source']['about'] as $k => $subject) {
                 $fields['dc:subject_'.$k] = $subject;
             }
@@ -227,7 +227,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
 );
 
 $response = $oai2->response();
-if (isset($return)) {        
+if (isset($return)) {
     return $response;
 } else {
     $response->formatOutput = true;
