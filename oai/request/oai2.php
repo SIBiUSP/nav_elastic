@@ -131,6 +131,16 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                     $fields['dc:language'] = $hit['_source']['language'][0];
                 }
 
+                if (!empty($hit['_source']['doi'])) {
+                    $fields['dc:identifier'] = $hit['_source']['doi'];
+                }
+
+                if (!empty($hit['_source']['url'])) {
+                  foreach ($hit['_source']['url'] as $urlIdentifier) {
+                      $fields['dc:identifier'] = $urlIdentifier;
+                  }
+                }
+
                 if (!empty($hit['_source']['author'])) {
                     foreach ($hit['_source']['author'] as $k => $authors) {
                         $fields['dc:creator_'.$k] = $authors["person"]["name"];
