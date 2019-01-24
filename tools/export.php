@@ -56,6 +56,176 @@ if (isset($_GET["format"])) {
 
             $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês\tABNT\tAPA";
 
+            foreach ($cursor["hits"]["hits"] as $r) {
+                unset($fields);
+
+                $fields[] = $r['_id'];
+
+                if (!empty($r["_source"]['doi'])) {
+                    $fields[] = $r["_source"]['doi'];
+                } else {
+                    $fields[] = "";
+                }
+
+                $fields[] = $r["_source"]['name'];
+
+
+                foreach ($r["_source"]['author'] as $authors) {
+                    if (!empty($authors["person"]["potentialAction"])) {
+                      $authors_array[]= ''.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')';
+                    } else {
+                      $authors_array[]= $authors["person"]["name"];
+                    }
+
+
+
+                }
+                $fields[] = implode(";", $authors_array);
+                unset($authors_array);
+
+                if (!empty($r["_source"]['isPartOf']["name"])) {
+                    $fields[] = $r["_source"]['isPartOf']["name"];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['isPartOf']['USP']['dados_do_periodico'])) {
+                    $fields[] = $r["_source"]['isPartOf']['USP']['dados_do_periodico'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['datePublished'])) {
+                    $fields[] = $r["_source"]['datePublished'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['isPartOf']['issn'])) {
+                    foreach ($r["_source"]['isPartOf']['issn'] as $issn) {
+                        $issn_array[]= $issn;
+                    }
+                    $fields[] = implode(";", $issn_array);
+                    unset($issn_array);
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['publisher']['organization']['location'])) {
+                    $fields[] = $r["_source"]['publisher']['organization']['location'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['publisher']['organization']['name'])) {
+                    $fields[] = $r["_source"]['publisher']['organization']['name'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['releasedEvent'])) {
+                    $fields[] = $r["_source"]['releasedEvent'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['type'])) {
+                    $fields[] = $r["_source"]['type'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['inSupportOf'])) {
+                    $fields[] = $r["_source"]['inSupportOf'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['authorUSP'])) {
+
+                    foreach ($r["_source"]['authorUSP'] as $authorsUSP) {
+                        $authorsUSP_array[]= $authorsUSP["name"];
+                    }
+                    $fields[] = implode(";", $authorsUSP_array);
+                    unset($authorsUSP_array);
+
+                    foreach ($r["_source"]['authorUSP'] as $numUSP) {
+                        if (!empty($numUSP["codpes"])) {
+                            $numUSP_array[]= $numUSP["codpes"];
+                        }
+                    }
+                    if (!empty($numUSP_array)) {
+                        $fields[] = implode(";", $numUSP_array);
+                        unset($numUSP_array);
+                    }
+
+                    foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
+                        $unidadesUSP_array[]= $unidadesUSP_aut["unidadeUSP"];
+                    }
+                    $fields[] = implode(";", $unidadesUSP_array);
+                    unset($unidadesUSP_array);
+
+                    foreach ($r["_source"]['authorUSP'] as $departament_aut) {
+                        if (!empty($departament_aut["departament"])) {
+                            $departament_array[]= $departament_aut["departament"];
+                        }
+                    }
+                    if (!empty($departament_array)) {
+                        $fields[] = implode(";", $departament_array);
+                        unset($departament_array);
+                    } else {
+                        $fields[] = "";
+                    }
+
+                }
+
+                if (!empty($r["_source"]['USP']['internacionalizacao'])) {
+                    $fields[] = $r["_source"]['USP']['internacionalizacao'];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['about'])) {
+                    foreach ($r["_source"]['about'] as $about) {
+                        $about_array[]= $about;
+                    }
+                    $fields[] = implode(";", $about_array);
+                    unset($about_array);
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['url'])) {
+                    $fields[] = $r["_source"]['url'][0];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['description'])) {
+                    $fields[] = $r["_source"]['description'][0];
+                } else {
+                    $fields[] = "";
+                }
+
+                if (!empty($r["_source"]['descriptionEn'])) {
+                    $fields[] = $r["_source"]['descriptionEn'][0];
+                } else {
+                    $fields[] = "";
+                }
+
+                $data_citation = citation::citation_query($r["_source"]);
+                $fields[] = $citeproc_abnt->render($data_citation, $mode);
+
+                $fields[] = $citeproc_apa->render($data_citation, $mode);
+
+
+                $content[] = implode("\t", $fields);
+                unset($fields);
+
+
+            }
+
+
             while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
                 $scroll_id = $cursor['_scroll_id'];
                 $cursor = $client->scroll(
