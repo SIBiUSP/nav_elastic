@@ -29,10 +29,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
     <head>
         <?php require 'inc/meta-header.php'; ?>
         <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
-        
+
         <?php
-        /* DSpace */ 
-        if (isset($dspaceRest)) { 
+        /* DSpace */
+        if (isset($dspaceRest)) {
 
             $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
@@ -41,11 +41,11 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
             /* Search for existing record on DSpace */
             $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
-            
+
             /* Verify if item exists on DSpace */
             if (!empty($itemID)) {
 
-                function removeElementWithValue($array, $key, $value) 
+                function removeElementWithValue($array, $key, $value)
                 {
                     foreach ($array as $subKey => $subArray) {
                         if ($subArray[$key] == $value) {
@@ -54,7 +54,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                     }
                     return $array;
                 }
-                  
+
                 if (isset($_SESSION['oauthuserdata'])) {
                     $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <fieldset data-uk-margin>
@@ -64,15 +64,15 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 <option disabled selected value>Selecione a versão</option>
                                 <option value="publishedVersion">publishedVersion</option>
                                 <option value="submittedVersion">submittedVersion</option>
-                                <option value="acceptedVersion">acceptedVersion</option>                                
+                                <option value="acceptedVersion">acceptedVersion</option>
                                 <option value="updatedVersion">updatedVersion</option>
-                            </select>                                   
+                            </select>
                             <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
-                            <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>                                    
+                            <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
                         </fieldset>
                         </form>';
                 }
-            
+
                 if (isset($_FILES['file'])) {
                     $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
                     echo "<br/><br/>";
@@ -86,7 +86,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                     //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
                     $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                     echo "<script type='text/javascript'>
-                    $(document).ready(function(){  
+                    $(document).ready(function(){
                             //Reload the page
                             window.location = window.location.href;
                     });
@@ -94,36 +94,36 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 }
                 if (isset($_POST['deleteBitstream'])) {
                     $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $cookies);
-                    if (isset($cursor["_source"]["USP"]["fullTextFiles"])) { 
+                    if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                         $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
                         $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
                         //$body["doc"]["USP"]["fullTextFiles"] = [];
                         $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                         print_r($resultUpdateFilesElastic);
                     }
-                    
+
                     echo '<div class="uk-alert-danger" uk-alert>
                     <a class="uk-alert-close" uk-close></a>
                     <p>Arquivo excluído com sucesso</p>
                     </div>';
 
                     echo "<script type='text/javascript'>
-                    $(document).ready(function(){  
+                    $(document).ready(function(){
                             //Reload the page
                             window.location = window.location.href;
                     });
                     </script>";
 
-    
+
                 }
 
                 if (isset($_POST['makePrivateBitstream'])) {
-                    
+
                     /* Delete Annonymous Policy */
                     $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $cookies);
                     /* Add Restricted Policy */
                     $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
-    
+
                 }
 
                 if (isset($_POST['makePublicBitstream'])) {
@@ -132,9 +132,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                     $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $cookies);
                     /* Add Public Policy */
                     $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
-    
-                }                  
-                
+
+                }
+
                 $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
 
             } else {
@@ -142,38 +142,38 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 $createForm  = '<form action="' . $actual_link . '" method="post">
                         <input type="hidden" name="createRecord" value="true" />
                         <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
-                        </form>';                
-                
+                        </form>';
+
                 if (isset($_POST["createRecord"])) {
                     if ($_POST["createRecord"] == "true") {
-                        
+
                         $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
                         $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
-                        
+
                         echo "<script type='text/javascript'>
-                        $(document).ready(function(){  
+                        $(document).ready(function(){
                                 //Reload the page
                                 window.location = window.location.href;
                         });
                         </script>";
-                    } 
+                    }
                 }
 
             }
-           
+
         }
         ?>
 
         <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
-        <?php 
+        <?php
         if ($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
                 PageSingle::jsonLD($cursor["_source"]);
-        } 
+        }
         ?>
         <!-- Altmetric Script -->
-        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>        
+        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
         <!-- PlumX Script -->
-        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>        
+        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
     </head>
     <body>
         <?php
@@ -187,32 +187,32 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
         <div class="uk-container uk-margin-large-bottom">
             <div class="uk-grid uk-margin-top" uk-grid>
                 <div class="uk-width-1-4@m">
-                    <div class="uk-card uk-card-body">                                     
+                    <div class="uk-card uk-card-body">
                         <h5 class="uk-panel-title">Ver registro no DEDALUS</h5>
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>
                             <li>
-                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="noopener noreferrer nofollow">Ver no Dedalus</a>                    
+                                <a class="uk-button uk-button-primary" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="noopener noreferrer nofollow">Ver no Dedalus</a>
                             </li>
                         </ul>
                         <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
-                            <hr>                   
+                            <hr>
                             <li>
                                 <a class="uk-button uk-button-primary" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
                             </li>
                             <li>
                                 <a class="uk-button uk-button-primary" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=bibtex" rel="noopener noreferrer nofollow">Bibtex</a>
-                            </li>                            
+                            </li>
                             <li>
                                 <a class="uk-button uk-button-primary" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
-                            </li>                            
+                            </li>
                         </ul>
 
                         <!-- Métricas - Início -->
                         <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>                        
-                        <hr>                        
+                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>
+                        <hr>
                             <?php if ($show_metrics == true) : ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
                             <div class="uk-alert-warning" uk-alert>
@@ -220,24 +220,24 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 <div uk-grid>
                                     <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
                                     <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true" target="_blank" rel="noopener noreferrer nofollow"></a></div>
-                                    <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=image/jpeg"></object></div>
+                                    <div><object data="http://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></div>
                                     <div><span class="__dimensions_badge_embed__" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
                                     <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["num_citations"])) :?>
                                         <div>Citações no OpenCitations: <?php echo $cursor["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
                                     <?php endif; ?>
                                     <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
                                         <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
-                                    <?php endif; ?>                                                            
+                                    <?php endif; ?>
                                     <div>
                                         <!--
-                                        < ?php 
+                                        < ?php
                                             $citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
                                             if (!empty($citations_scopus['abstract-citations-response'])) {
                                                 echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
                                                 echo '<br/><br/>';
-                                            } 
+                                            }
                                         ? >
-                                        -->                                                
+                                        -->
                                     </div>
                                 </div>
                             </div>
@@ -246,27 +246,27 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <?php if($cursor["_source"]["USP"]["aminer"]["num_citation"] > 0) :?>
                                     <div class="uk-alert-warning" uk-alert>
                                         <p><?php echo $t->gettext('Métricas'); ?>:</p>
-                                        <div uk-grid>                                                    
+                                        <div uk-grid>
                                             <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
                                         </div>
                                     </div>
-                                    <?php endif; ?> 
-                                <?php endif; ?>  
+                                    <?php endif; ?>
+                                <?php endif; ?>
 
                             <?php endif; ?>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <!-- Métricas - Fim -->   
+                        <!-- Métricas - Fim -->
                     </div>
                 </div>
                 <div class="uk-width-3-4@m">
                     <article class="uk-article">
-                        <?php 
+                        <?php
                         $record = new Record($cursor, $show_metrics);
                         $record->completeRecordMetadata($t, $url_base);
-                        ?>                              
-                     
-                        <?php 
+                        ?>
+
+                        <?php
                         if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) {
                             if ($use_api_oadoi == true) {
                                 if (!empty($cursor["_source"]['doi'])) {
@@ -283,25 +283,25 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     } else {
                                         echo '<li>Este artigo NÃO é de acesso aberto<br/>';
                                     }
-                                    if (!empty($oadoi['results'][0]['is_free_to_read'])) { 
+                                    if (!empty($oadoi['results'][0]['is_free_to_read'])) {
                                         $metrics[] = '"oadoi_is_free_to_read": '.$oadoi['results'][0]['is_free_to_read'].'';
-                                    }    
-                                    if (!empty($oadoi['results'][0]['free_fulltext_url'])) { 
+                                    }
+                                    if (!empty($oadoi['results'][0]['free_fulltext_url'])) {
                                         echo '<li><a href="'.$oadoi['results'][0]['free_fulltext_url'].'">URL de acesso aberto</a></li>';
                                     }
-                                    if (!empty($oadoi['results'][0]['oa_color'])) {  
+                                    if (!empty($oadoi['results'][0]['oa_color'])) {
                                         echo '<li>Cor do Acesso Aberto: '.$oadoi['results'][0]['oa_color'].'</li>';
                                         $metrics[] = '"oadoi_oa_color": "'.$oadoi['results'][0]['oa_color'].'"';
                                     }
-                                    if (!empty($oadoi['results'][0]['license'])) {  
+                                    if (!empty($oadoi['results'][0]['license'])) {
                                         echo '<li>Licença: '.$oadoi['results'][0]['license'].'</li>';
                                     }
                                     echo '</ul></div>';
-                                    
+
                                     if (!empty($oadoi['results'][0]['is_subscription_journal'])) {
                                         $metrics[] = '"oadoi_is_subscription_journal": '.$oadoi['results'][0]['is_subscription_journal'].'';
                                     }
-                                    //API::metrics_update($_GET['_id'], $metrics);      
+                                    //API::metrics_update($_GET['_id'], $metrics);
                                 }
                             }
 
@@ -323,7 +323,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     echo '<li>Versão: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["version"].'</li>';
                                     echo '<li>Tipo de hospedagem: '.$cursor["_source"]["USP"]["unpaywall"]["best_oa_location"]["host_type"].'</li>';
                                     echo '</ul></li>';
-                                } 
+                                }
                                 echo "<br/><br/>";
                                 if (!empty($cursor["_source"]["USP"]["unpaywall"]["oa_locations"])) {
                                     echo '<li>Outras alternativas de URLs em Acesso Aberto:<ul>';
@@ -339,32 +339,32 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         echo '<li>Licença: '.$oa_locations["license"].'</li>';
                                         echo '<li>Versão: '.$oa_locations["version"].'</li>';
                                         echo '<li>Tipo de hospedagem: '.$oa_locations["host_type"].'</li>';
-                                        echo '</ul></li>';   
+                                        echo '</ul></li>';
                                         //print_r($oa_locations);
                                         echo "<br/><br/>";
                                     }
                                     echo '</ul></li>';
-                                    
+
                                 } else {
                                     echo "Não possui versão em Acesso aberto";
                                 }
-                                echo '</ul></div>';                                
+                                echo '</ul></div>';
                             }
                         }
-                        ?>                            
+                        ?>
 
                         <!-- Opencitation - Início -->
-                        <?php 
+                        <?php
                         if (!empty($cursor["_source"]["USP"]["opencitation"]["citation"])) {
                             echo '<div class="uk-alert-primary uk-h6">';
                             echo "<p>Citações recebidas (Fonte: OpenCitation)</p>";
-                            echo '<ul class="uk-list uk-list-bullet">'; 
+                            echo '<ul class="uk-list uk-list-bullet">';
                             foreach ($cursor["_source"]["USP"]["opencitation"]["citation"] as $opencitation) {
                                 echo '<li><a href="'.$opencitation["citing"].'">'.$opencitation["title"].'</a></li>';
                             }
                             echo '</ul>';
                             echo '</div>';
-                        } 
+                        }
                         ?>
                         <!-- Opencitation - Fim -->
 
@@ -384,7 +384,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2012"] as $metrics_2012) : ?>
                                             <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2012["area_nota"]); ?></p>
                                         <?php endforeach; ?>
-                                    <?php endif; ?>  
+                                    <?php endif; ?>
 
                                     <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2015"])) : ?>
                                         <p>Qualis 2015</p>
@@ -398,15 +398,15 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         <?php foreach ($cursor["_source"]["USP"]["serial_metrics"]["qualis"]["2016"] as $metrics_2016) : ?>
                                             <p class="uk-text-small uk-margin-remove">Área / Nota: <?php print_r($metrics_2016["area_nota"]); ?></p>
                                         <?php endforeach; ?>
-                                    <?php endif; ?> 
+                                    <?php endif; ?>
 
                                 </li>
                             </div>
-                            <?php endif; ?>                           
+                            <?php endif; ?>
                         <?php endif; ?>
                         <!-- Qualis  - Fim -->
-                            
-                        <!-- JCR - Início 
+
+                        <!-- JCR - Início
                         < ?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
@@ -417,12 +417,12 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <p class="uk-text-small uk-margin-remove">ISSN: < ?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">Journal Impact Factor - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Journal_Impact_Factor"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">Impact Factor without Journal Self Cites - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["IF_without_Journal_Self_Cites"]); ?></p>
-                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Eigenfactor_Score"]); ?></p>                               
-                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["JCR_Rank"]); ?></p> 
+                                    <p class="uk-text-small uk-margin-remove">Eigenfactor Score - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["Eigenfactor_Score"]); ?></p>
+                                    <p class="uk-text-small uk-margin-remove">JCR Rank - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["JCR_Rank"]); ?></p>
                                 </li>
                             </div>
-                        < ?php endif; ?>  
-                        JCR - Fim --> 
+                        < ?php endif; ?>
+                        JCR - Fim -->
 
                         <!-- Citescore - Início -->
                         <?php if (!empty($cursor["_source"]["USP"]["citescore"]["title"])) : ?>
@@ -437,12 +437,12 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <p class="uk-text-small uk-margin-remove">SNIP - 2017: <?php print_r($cursor["_source"]["USP"]["citescore"]["citescore"]["2017"][0]["SNIP"]); ?></p>
                                 </li>
                             </div>
-                        <?php endif; ?>  
-                        <!-- Citescore - Fim -->                        
-                        
+                        <?php endif; ?>
+                        <!-- Citescore - Fim -->
+
                         <hr>
 
-                        <!-- Query itens on Aleph - Start -->                            
+                        <!-- Query itens on Aleph - Start -->
                         <?php
                         if (!empty($cursor["_source"]["item"])) {
                             echo '<div id="exemplares'.$cursor["_id"].'">';
@@ -453,9 +453,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             echo "<th><small>Biblioteca</small></th>";
                             echo "<th><small>Cód. de barras</small></th>";
                             echo "<th><small>Núm. de chamada</small></th>";
-                            echo "</tr>";  
+                            echo "</tr>";
                             echo "</thead>";
-                            echo "<tbody>";                               
+                            echo "<tbody>";
 
                             foreach ($cursor["_source"]["item"] as $item) {
                                 echo '<tr>';
@@ -466,12 +466,12 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             }
 
                             echo "</tbody></table></div>";
-                            
+
                         } else {
                             if ($dedalus_single == true) {
                                 Results::load_itens_aleph($cursor["_id"]);
-                            }     
-                        }                        
+                            }
+                        }
                         ?>
                         <!-- Query itens on Aleph - End -->
 
@@ -492,9 +492,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         }
                         ?>
 
-                        
 
-                        <!-- Query bitstreams on Dspace - Start -->   
+
+                        <!-- Query bitstreams on Dspace - Start -->
                         <?php
 
                         if (isset($_SESSION['oauthuserdata'])) {
@@ -508,22 +508,22 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             echo $uploadForm;
                                             echo '</div>';
                                         }
-                
+
                                         if (!empty($createForm)) {
                                             echo '<div class="uk-alert-danger" uk-alert>';
                                             echo '<a class="uk-alert-close" uk-close></a>';
                                             echo '<h5>Gestão do documento digital</h5>';
                                             echo $createForm;
                                             echo '</div>';
-                                        }                              
-        
-                                    }                                  
+                                        }
+
+                                    }
 
                                 //}
 
                             }
 
-                        }                      
+                        }
 
                         if (!empty($bitstreamsDSpace)) {
                             echo '<div class="uk-alert-primary" uk-alert>
@@ -543,7 +543,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             foreach ($bitstreamsDSpace as $key => $value) {
 
                                 $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $cookies);
-                                
+
                                 foreach ($bitstreamPolicy as $bitstreamPolicyUnit) {
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID) {
 
@@ -569,10 +569,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                     echo '</p>';
                                                     echo '</div>';
                                                     echo '</div>';
-    
-    
+
+
                                                     echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Private-'.$value["uuid"].'">Tornar privado</button></th>';
-                                                
+
                                                     echo '<div id="modal-Private-'.$value["uuid"].'" uk-modal>
                                                         <div class="uk-modal-dialog uk-modal-body">
                                                             <h2 class="uk-modal-title">Tornar privado</h2>
@@ -590,9 +590,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                                 </form>
                                                             </p>
                                                         </div>
-                                                    </div>'; 
-    
-    
+                                                    </div>';
+
+
                                                 //}
                                                 echo '<th></th>';
                                             } else {
@@ -600,9 +600,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                 echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
                                                 echo '<th>'.$value["name"].'</th>';
                                                 echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';  
+                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
                                             }
-                                                                                
+
                                         } else {
                                             echo '<tr>';
                                             echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
@@ -611,10 +611,10 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
 
                                         }
-    
+
                                     } elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID) {
-    
-                                  
+
+
                                         if (isset($_SESSION['oauthuserdata'])) {
 
                                             echo '<tr>';
@@ -622,11 +622,11 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                             echo '<th>'.$value["name"].'</th>';
                                             echo '<th><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></th>';
                                             echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
-                                            
+
                                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-    
+
                                                 echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream-'.$value["uuid"].'">Excluir</button></th>';
-                                                
+
                                                 echo '<div id="modal-deleteBitstream-'.$value["uuid"].'" uk-modal>
                                                     <div class="uk-modal-dialog uk-modal-body">
                                                         <h2 class="uk-modal-title">Excluir arquivo</h2>
@@ -640,9 +640,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                         </p>
                                                     </div>
                                                 </div>';
-    
+
                                                 echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Public-'.$value["uuid"].'">Tornar público</button></th>';
-                                                
+
                                                 echo '<div id="modal-Public-'.$value["uuid"].'" uk-modal>
                                                     <div class="uk-modal-dialog uk-modal-body">
                                                         <h2 class="uk-modal-title">Tornar público</h2>
@@ -660,24 +660,24 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                                             </form>
                                                         </p>
                                                     </div>
-                                                </div>'; 
-    
+                                                </div>';
+
                                                 echo '<th></th>';
-                                            }                                    
-                                        }                                    
-    
+                                            }
+                                        }
+
                                     } else {
-    
-                                    }                                    
+
+                                    }
 
                                 }
 
-                            }                               
+                            }
                             echo '</tbody></table></div>';
-                        }                     
+                        }
                         ?>
-                        <!-- Query bitstreams on Dspace - End -->                               
-                            
+                        <!-- Query bitstreams on Dspace - End -->
+
                         <!-- Citation - Start -->
                         <div class="uk-text-small" style="color:black;">
                             <h5><?php echo $t->gettext('Como citar'); ?></h5>
@@ -689,33 +689,33 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                     <?php
                                         $data = citation::citation_query($cursor["_source"]);
                                         print_r($citeproc_abnt->render($data, $mode));
-                                    ?>                                    
+                                    ?>
                                 </li>
                                 <li class="uk-margin-top">
                                     <p><strong>APA</strong></p>
                                     <?php
                                         $data = citation::citation_query($cursor["_source"]);
                                         print_r($citeproc_apa->render($data, $mode));
-                                    ?>                                    
+                                    ?>
                                 </li>
                                 <li class="uk-margin-top">
                                     <p><strong>NLM</strong></p>
                                     <?php
                                         $data = citation::citation_query($cursor["_source"]);
                                         print_r($citeproc_nlm->render($data, $mode));
-                                    ?>                                    
+                                    ?>
                                 </li>
                                 <li class="uk-margin-top">
                                     <p><strong>Vancouver</strong></p>
                                     <?php
                                         $data = citation::citation_query($cursor["_source"]);
                                         print_r($citeproc_vancouver->render($data, $mode));
-                                    ?>                                    
-                                </li>                                      
+                                    ?>
+                                </li>
                             </ul>
                             </p>
                         </div>
-                        <!-- Citation - End --> 
+                        <!-- Citation - End -->
 
                         <!-- References - CrossRef - Start -->
                         <?php if (!empty($cursor["_source"]["USP"]["crossref"]["message"]["reference"])) : ?>
@@ -724,18 +724,18 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <a class="uk-alert-close" uk-close></a>
                         <table class="uk-table uk-table-justify uk-table-divider uk-table-striped">
                             <tbody>
-                                <?php 
+                                <?php
                                 foreach ($cursor["_source"]["USP"]["crossref"]["message"]["reference"] as $crossRefReference) {
                                     echo "<tr><th>";
                                     if (isset($crossRefReference["unstructured"])) {
-                                        print_r($crossRefReference["unstructured"]); 
+                                        print_r($crossRefReference["unstructured"]);
                                     } else {
                                         if (isset($crossRefReference["author"])) {
                                             echo ''.$t->gettext("Autor: ").''.$crossRefReference["author"].'<br/>';
                                         }
                                         if (isset($crossRefReference["article-title"])) {
                                             echo ''.$t->gettext("Título: ").''.$crossRefReference["article-title"].'<br/>';
-                                        }                                        
+                                        }
                                         if (isset($crossRefReference["journal-title"])) {
                                             echo ''.$t->gettext("Título do periódico: ").''.$crossRefReference["journal-title"].'<br/>';
                                         }
@@ -753,27 +753,27 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                         }
                                         if (isset($crossRefReference["DOI"])) {
                                             echo ''.$t->gettext("DOI: ").'<a href="https://doi.org/'.$crossRefReference["DOI"].'" target="_blank" rel="noopener noreferrer">'.$crossRefReference["DOI"].'</a><br/>';
-                                        }                                        
+                                        }
                                         //print_r($crossRefReference);
                                     }
 
                                     echo "</th></tr>";
-                                }  
+                                }
                                 ?>
                             </tbody>
                         </table>
 
                         </div>
                         <?php endif; ?>
-                        <!-- References - CrossRef - End -->      
+                        <!-- References - CrossRef - End -->
 
                         <!-- Other works of same authors - Start -->
-                        <?php 
+                        <?php
                         if (isset($cursor["_source"]["authorUSP"])) {
                             foreach ($cursor["_source"]["authorUSP"] as $authorUSPArray) {
                                 $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
                             }
-    
+
                             $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
                             $queryOtherWorks["query"]["bool"]["must_not"]["term"]["name.keyword"] = $cursor["_source"]["name"];
                             $resultOtherWorks = elasticsearch::elastic_search($type, ["_id","name"], 10, $queryOtherWorks);
@@ -782,23 +782,23 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                             foreach ($resultOtherWorks["hits"]["hits"] as $othersTitles) {
                                 //print_r($othersTitles);
                                 echo '<li><a href="'.$url_base.'/item/'.$othersTitles["_id"].'" target="_blank">'.$othersTitles["_source"]["name"].'</a></li>';
-                            }                        
+                            }
                             echo '</ul></div>';
                         }
                         ?>
-                        <!-- Other works of same authors - End -->                                            
-                            
+                        <!-- Other works of same authors - End -->
+
                 </div>
             </div>
-            <hr class="uk-grid-divider">        
-            <?php require 'inc/footer.php'; ?> 
+            <hr class="uk-grid-divider">
+            <?php require 'inc/footer.php'; ?>
         </div>
-  
+
 
         <?php require 'inc/offcanvas.php'; ?>
         <?php ob_flush(); flush(); ?>
-        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>   
+        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
         <?php  DSpaceREST::logoutREST($cookies); ?>
-        
+
     </body>
 </html>
