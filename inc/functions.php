@@ -1247,6 +1247,9 @@ class Record
         if (isset($record["_source"]["USP"]["titleSearchCrossrefDOI"])) {
             $this->searchDOICrossRef = $record["_source"]["USP"]["titleSearchCrossrefDOI"];
         }
+        if (isset($record["_source"]["award"])) {
+            $this->awardArray = $record["_source"]["award"];
+        }
         if (isset($record["_source"]["issn"])) {
             $this->issnArray = $record["_source"]["issn"];
         } else {
@@ -1529,6 +1532,14 @@ class Record
         /* Phisical description */
         if (!empty($this->numberOfPages)) {
             echo '<li>Descrição física: '.$this->numberOfPages.'</a></li>';
+        }
+
+        /* Award */
+        if (isset($this->awardArray)) {
+            foreach ($this->awardArray as $award) {
+                $awardList[] = '<a href="'.$url_base.'/result.php?filter[]=award:&quot;'.$award.'&quot;">'.$award.'</a>';
+            }
+            echo '<li>'.$t->gettext('Premiações recebidas').': '.implode("; ", $awardList).'</li>';
         }
 
         /* ISBN */
