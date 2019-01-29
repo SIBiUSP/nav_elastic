@@ -58,7 +58,9 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
         function ($resumptionToken = '') {
             return
                 array (
-                    array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes')
+                    array('setSpec'=>'PI', 'setName'=>'Produção Intelectual'),
+                    array('setSpec'=>'TD', 'setName'=>'Teses e Dissertações'),
+                    array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes'),
                 );
         },
 
@@ -72,9 +74,14 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 throw new OAI2Exception('noRecordsMatch');
             }
 
-            if (!empty($set)) {
-                $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
-                //$query["query"]["bool"]["must"]["query_string"]["query"] = "*";
+           if (!empty($set)) {
+               if ($set == "PI") {
+                   $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Produção científica";
+               } elseif ($set == "TD") {
+                   $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Teses e dissertações";
+               } else {
+                   $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
+               }
             } else {
                 $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
             }
