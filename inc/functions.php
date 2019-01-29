@@ -293,31 +293,36 @@ class PageSingle
     public static function metadataGoogleScholar($record)
     {
         echo '<meta name="citation_title" content="'.$record["name"].'">';
+        echo "\n";
         if (!empty($record['author'])) {
             foreach ($record['author'] as $autores) {
-                echo '<meta name="citation_author" content="'.$autores["person"]["name"].'">';
+                echo '    <meta name="citation_author" content="'.$autores["person"]["name"].'">';
+                echo "\n";
             }
         }
-        echo '
-        <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
+        echo '    <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
+        echo "\n";
         if (!empty($record["isPartOf"]["name"])) {
-            echo '<meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
+            echo '    <meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
+            echo "\n";
         }
 
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
             $periodicos_array = explode(",", $record["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
                 if (strpos($periodicos_array_new, 'v.') !== false) {
-                    echo '
-                    <meta name="citation_volume" content="'.trim(str_replace("v.", "", $periodicos_array_new)).'">';
+                    echo '    <meta name="citation_volume" content="'.trim(str_replace("v.", "", $periodicos_array_new)).'">';
+                    echo "\n";
                 } elseif (strpos($periodicos_array_new, 'n.') !== false) {
-                    echo '
-                    <meta name="citation_issue" content="'.trim(str_replace("n.", "", $periodicos_array_new)).'">';
+                    echo '    <meta name="citation_issue" content="'.trim(str_replace("n.", "", $periodicos_array_new)).'">';
+                    echo "\n";
                 } elseif (strpos($periodicos_array_new, 'p.') !== false) {
                     $pages_array = explode("-", str_replace("p.", "", $periodicos_array_new));
-                    echo '<meta name="citation_firstpage" content="'.trim($pages_array[0]).'">';
+                    echo '    <meta name="citation_firstpage" content="'.trim($pages_array[0]).'">';
+                    echo "\n";
                     if (!empty($pages_array[1])) {
-                        echo '<meta name="citation_lastpage" content="'.trim($pages_array[1]).'">';
+                        echo '    <meta name="citation_lastpage" content="'.trim($pages_array[1]).'">';
+                        echo "\n";
                     }
                 }
 
@@ -381,15 +386,6 @@ class PageSingle
             {
             "@context":"http://schema.org",
             "@graph": [
-              {
-                "@id": "http://bdpi.usp.br",
-                "@type": "Library",
-                "name": "Biblioteca Digital de Produção Intelectual da Universidade de São Paulo",
-                "priceRange": "0",
-                "address":"Rua da Praça do Relógio, 109 - Bloco L  Térreo - Cidade Universitária, São Paulo, SP",
-                "image":"http://bdpi.usp.br/images/logo_sibi.jpg",
-                "telephone":"011 2648-0948"
-              },
               ';
 
 

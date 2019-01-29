@@ -26,156 +26,160 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
-    <head>
-        <?php require 'inc/meta-header.php'; ?>
-        <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
+<head>
+    <!-- Altmetric Script -->
+    <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 
-        <?php
-        /* DSpace */
-        if (isset($dspaceRest)) {
+    <!-- PlumX Script -->
+    <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
 
-            $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  <?php require 'inc/meta-header.php'; ?>
+  <?php
+  /* DSpace */
+  if (isset($dspaceRest)) {
 
-            /* Login in DSpace */
-            $cookies = DSpaceREST::loginREST();
+      $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-            /* Search for existing record on DSpace */
-            $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
+      /* Login in DSpace */
+      $cookies = DSpaceREST::loginREST();
 
-            /* Verify if item exists on DSpace */
-            if (!empty($itemID)) {
+      /* Search for existing record on DSpace */
+      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
 
-                function removeElementWithValue($array, $key, $value)
-                {
-                    foreach ($array as $subKey => $subArray) {
-                        if ($subArray[$key] == $value) {
-                            unset($array[$subKey]);
-                        }
-                    }
-                    return $array;
-                }
+      /* Verify if item exists on DSpace */
+      if (!empty($itemID)) {
 
-                if (isset($_SESSION['oauthuserdata'])) {
-                    $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-                            <fieldset data-uk-margin>
-                            <legend>Enviar um arquivo</legend>
-                            <input type="file" name="file">
-                            <select class="uk-select" name="version">
-                                <option disabled selected value>Selecione a versão</option>
-                                <option value="publishedVersion">publishedVersion</option>
-                                <option value="submittedVersion">submittedVersion</option>
-                                <option value="acceptedVersion">acceptedVersion</option>
-                                <option value="updatedVersion">updatedVersion</option>
-                            </select>
-                            <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
-                            <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
-                        </fieldset>
-                        </form>';
-                }
+          function removeElementWithValue($array, $key, $value)
+          {
+              foreach ($array as $subKey => $subArray) {
+                  if ($subArray[$key] == $value) {
+                      unset($array[$subKey]);
+                  }
+              }
+              return $array;
+          }
 
-                if (isset($_FILES['file'])) {
-                    $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
-                    echo "<br/><br/>";
-                    print_r($userBitstream);
-                    echo "<br/><br/>";
-                    $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $cookies);
-                    if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
-                        $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
-                    }
-                    $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
-                    //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
-                    $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-                    echo "<script type='text/javascript'>
-                    $(document).ready(function(){
-                            //Reload the page
-                            window.location = window.location.href;
-                    });
-                    </script>";
-                }
-                if (isset($_POST['deleteBitstream'])) {
-                    $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $cookies);
-                    if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
-                        $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
-                        $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
-                        //$body["doc"]["USP"]["fullTextFiles"] = [];
-                        $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-                        print_r($resultUpdateFilesElastic);
-                    }
+          if (isset($_SESSION['oauthuserdata'])) {
+              $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                      <fieldset data-uk-margin>
+                      <legend>Enviar um arquivo</legend>
+                      <input type="file" name="file">
+                      <select class="uk-select" name="version">
+                          <option disabled selected value>Selecione a versão</option>
+                          <option value="publishedVersion">publishedVersion</option>
+                          <option value="submittedVersion">submittedVersion</option>
+                          <option value="acceptedVersion">acceptedVersion</option>
+                          <option value="updatedVersion">updatedVersion</option>
+                      </select>
+                      <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
+                      <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
+                  </fieldset>
+                  </form>';
+          }
 
-                    echo '<div class="uk-alert-danger" uk-alert>
-                    <a class="uk-alert-close" uk-close></a>
-                    <p>Arquivo excluído com sucesso</p>
-                    </div>';
+          if (isset($_FILES['file'])) {
+              $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
+              echo "<br/><br/>";
+              print_r($userBitstream);
+              echo "<br/><br/>";
+              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $cookies);
+              if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+                  $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+              }
+              $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
+              //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
+              $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+              echo "<script type='text/javascript'>
+              $(document).ready(function(){
+                      //Reload the page
+                      window.location = window.location.href;
+              });
+              </script>";
+          }
+          if (isset($_POST['deleteBitstream'])) {
+              $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $cookies);
+              if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+                  $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+                  $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
+                  //$body["doc"]["USP"]["fullTextFiles"] = [];
+                  $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+                  print_r($resultUpdateFilesElastic);
+              }
 
-                    echo "<script type='text/javascript'>
-                    $(document).ready(function(){
-                            //Reload the page
-                            window.location = window.location.href;
-                    });
-                    </script>";
+              echo '<div class="uk-alert-danger" uk-alert>
+              <a class="uk-alert-close" uk-close></a>
+              <p>Arquivo excluído com sucesso</p>
+              </div>';
+
+              echo "<script type='text/javascript'>
+              $(document).ready(function(){
+                      //Reload the page
+                      window.location = window.location.href;
+              });
+              </script>";
 
 
-                }
+          }
 
-                if (isset($_POST['makePrivateBitstream'])) {
+          if (isset($_POST['makePrivateBitstream'])) {
 
-                    /* Delete Annonymous Policy */
-                    $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $cookies);
-                    /* Add Restricted Policy */
-                    $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
+              /* Delete Annonymous Policy */
+              $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $cookies);
+              /* Add Restricted Policy */
+              $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
 
-                }
+          }
 
-                if (isset($_POST['makePublicBitstream'])) {
+          if (isset($_POST['makePublicBitstream'])) {
 
-                    /* Delete Annonymous Policy */
-                    $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $cookies);
-                    /* Add Public Policy */
-                    $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
+              /* Delete Annonymous Policy */
+              $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $cookies);
+              /* Add Public Policy */
+              $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
 
-                }
+          }
 
-                $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+          $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
 
-            } else {
+      } else {
 
-                $createForm  = '<form action="' . $actual_link . '" method="post">
-                        <input type="hidden" name="createRecord" value="true" />
-                        <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
-                        </form>';
+          $createForm  = '<form action="' . $actual_link . '" method="post">
+                  <input type="hidden" name="createRecord" value="true" />
+                  <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
+                  </form>';
 
-                if (isset($_POST["createRecord"])) {
-                    if ($_POST["createRecord"] == "true") {
+          if (isset($_POST["createRecord"])) {
+              if ($_POST["createRecord"] == "true") {
 
-                        $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
-                        $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
+                  $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
+                  $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
 
-                        echo "<script type='text/javascript'>
-                        $(document).ready(function(){
-                                //Reload the page
-                                window.location = window.location.href;
-                        });
-                        </script>";
-                    }
-                }
+                  echo "<script type='text/javascript'>
+                  $(document).ready(function(){
+                          //Reload the page
+                          window.location = window.location.href;
+                  });
+                  </script>";
+              }
+          }
 
-            }
+      }
 
-        }
-        ?>
+  }
+  ?>
 
-        <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
-        <?php
-        if ($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
-                PageSingle::jsonLD($cursor["_source"]);
-        }
-        ?>
-        <!-- Altmetric Script -->
-        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-        <!-- PlumX Script -->
-        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
+    <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
+
+    <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
+
+    <?php
+    if ($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
+            PageSingle::jsonLD($cursor["_source"]);
+    }
+    ?>
+
     </head>
-    <body>
+<body>
         <?php
         if (file_exists("inc/analyticstracking.php")) {
             include_once "inc/analyticstracking.php";
