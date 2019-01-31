@@ -463,7 +463,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                             foreach ($cursor["_source"]["item"] as $item) {
                                 echo '<tr>';
-                                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. $item["Z30_SUB_LIBRARY"] .'" target="_blank" rel="noopener noreferrer nofollow">'.$item["Z30_SUB_LIBRARY"].'</a></small></td>';
+                                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?search='. $item["Z30_SUB_LIBRARY"] .'" target="_blank" rel="noopener noreferrer nofollow">'.$item["Z30_SUB_LIBRARY"].'</a></small></td>';
                                 echo '<td><small>'.$item["Z30_BARCODE"].'</small></td>';
                                 echo '<td><small>'.$item["Z30_CALL_NO"].'</small></td>';
                                 echo '</tr>';
