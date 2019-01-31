@@ -20,7 +20,7 @@
         <div class="uk-container uk-margin-large-top">
             <h1>Dashboard</h1>
             <?php if (isset($_GET["unidadeUSP"])): ?>
-                <iframe src="/app/kibana#/dashboard/<?php echo str_replace("FM", $_GET["unidadeUSP"], $dashboardHashUnidade; ?>?embed=true&_g=()" height="11500" width="100%"></iframe>
+                <iframe src="/app/kibana#/dashboard/<?php echo str_replace("FM", $_GET["unidadeUSP"], $dashboardHashUnidade); ?>?embed=true&_g=()" height="11500" width="100%"></iframe>
             <?php else: ?>
                 <iframe src="/app/kibana#/dashboard/<?php echo $dashboardHash; ?>?embed=true&_g=()" height="11500" width="100%"></iframe>
             <?php endif; ?>
