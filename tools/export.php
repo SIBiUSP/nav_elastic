@@ -769,11 +769,98 @@ if (isset($_GET["format"])) {
             echo implode("\n", $record_array);
         }
 
-    }
+    } elseif ($_GET["format"] == "field") {
 
-} else {
-    echo "Formato não definido";
-}
+      $file = "export_field.tsv";
+      header('Content-type: text/tab-separated-values; charset=utf-8');
+      header("Content-Disposition: attachment; filename=$file");
+
+      // Set directory to ROOT
+      chdir('../');
+      // Include essencial files
+      include 'inc/config.php';
+      include 'inc/functions.php';
+
+      if (!empty($_GET)) {
+          $result_get = get::analisa_get($_GET);
+          $query = $result_get['query'];
+          $limit = $result_get['limit'];
+          $page = $result_get['page'];
+          $skip = $result_get['skip'];
+
+          if (isset($_GET["sort"])) {
+              $query['sort'] = [
+                  ['name.keyword' => ['order' => 'asc']],
+              ];
+          } else {
+              $query['sort'] = [
+                  ['datePublished.keyword' => ['order' => 'desc']],
+              ];
+          }
+
+          $params = [];
+          $params["index"] = $index;
+          $params["type"] = $type;
+          $params["size"] = 50;
+          $params["scroll"] = "30s";
+          $params["_source"] = ["_id", $_GET['field']];
+          $params["body"] = $query;
+
+          $cursor = $client->search($params);
+          $total = $cursor["hits"]["total"];
+
+          $content[] = "ID\t" . $_GET["field"];
+
+          foreach ($cursor["hits"]["hits"] as $r) {
+              unset($fields);
+
+              $fields[] = $r['_id'];
+
+              if (isset( $r["_source"][$_GET["field"]])) {
+                  $fields[] = $r["_source"][$_GET["field"]];
+              }
+
+              $content[] = implode("\t", $fields);
+              unset($fields);
+
+
+          }
+
+
+          while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
+              $scroll_id = $cursor['_scroll_id'];
+              $cursor = $client->scroll(
+                  [
+                  "scroll_id" => $scroll_id,
+                  "scroll" => "30s"
+                  ]
+              );
+
+              foreach ($cursor["hits"]["hits"] as $r) {
+                  unset($fields);
+
+                  $fields[] = $r['_id'];
+
+                  if (isset( $r["_source"][$_GET["field"]])) {
+                      $fields[] = $r["_source"][$_GET["field"]];
+                  }
+
+                  $content[] = implode("\t", $fields);
+                  unset($fields);
+
+
+              }
+          }
+          echo implode("\n", $content);
+
+      }
+
+
+
+
+    } else {
+      echo "Formato não definido";
+    }}
 
 
 
