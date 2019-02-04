@@ -803,6 +803,5 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
         <?php ob_flush(); flush(); ?>
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
         <?php  DSpaceREST::logoutREST($cookies); ?>
-
     </body>
 </html>
