@@ -1597,7 +1597,7 @@ class Record
         if (!empty($r["_source"]['ispartof_data'][0])) {
             $sfx_array[] = 'rft.volume='.trim(str_replace("v.", "", $r["_source"]['ispartof_data'][0])).'';
         }
-        echo ' <a class="uk-text-small" href="http://143.107.154.66:3410/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="http://143.107.154.66:3410/sfxlcl41/sfx.gif"></a>';
+        echo ' <a class="uk-text-small" href="http://www.sibi.usp.br/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="http://www.sibi.usp.br/sfxlcl41/sfx.gif"></a>';
         echo '</div>';
 
     }
