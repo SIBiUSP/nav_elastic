@@ -1,6 +1,6 @@
 <div class="uk-position-top">
 <div class="uk-visible@m">
-    <div class="uk-container uk-navbar-container uk-margin uk-navbar-transparent" uk-navbar="dropbar: true; dropbar-mode: push; mode: click" uk-navbar>      
+    <div class="uk-container uk-navbar-container uk-margin uk-navbar-transparent" uk-navbar="dropbar: true; dropbar-mode: push; mode: click" uk-navbar>
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
                 <li class="uk-active"><a href="<?php echo $url_base; ?>/index.php"><?php echo $t->gettext('Início'); ?></a></li>
@@ -14,7 +14,7 @@
                         <div class="uk-modal-dialog uk-modal-body">
                             <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
                             <div class="uk-grid-collapse uk-child-width-1-4@s uk-flex-middle" uk-grid>
-                                <div class="uk-background-cover" style="background-image: url('http://www.imagens.usp.br/wp-content/uploads/Pra%C3%A7a-do-rel%C3%B3gio-Foto-Marcos-Santos-USP-Imagens-5.jpg');" uk-height-viewport></div>
+                                <div class="uk-background-cover" style="background-image: url('<?php echo $url_base; ?>/inc/images/PracaDoRelogio-MarcosSantos.jpg');" uk-height-viewport></div>
                                 <div class="uk-padding">
                                     <h3><?php echo $t->gettext('Unidades USP'); ?></h3>
                                     <a href="result.php?filter[]=unidadeUSP:&quot;EACH&quot;" class="uk-text-small" style="color:#333"><?php echo $t->gettext('Escola de Artes, Ciências e Humanidades (EACH)'); ?></a><br/>
@@ -76,7 +76,7 @@
                                     <a href="result.php?filter[]=unidadeUSP:&quot;MAC&quot;" class="uk-text-small" style="color:#333"><?php echo $t->gettext('Museu de Arte Contemporânea (MAC)'); ?></a><br/>
                                     <a href="result.php?filter[]=unidadeUSP:&quot;MZ&quot;" class="uk-text-small" style="color:#333"><?php echo $t->gettext('Museu de Zoologia (MZ)'); ?></a><br/>
                                     <a href="result.php?filter[]=unidadeUSP:&quot;MP&quot;" class="uk-text-small" style="color:#333"><?php echo $t->gettext('Museu Paulista (MP)'); ?></a>
-                                </div>            
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,13 +86,13 @@
                 <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                     <!-- < ?php if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) : ?> -->
                         <a href="<?php echo $url_base; ?>/tutorial_staff/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial Staff'); ?></a>
-                    <!-- < ?php else: ?> -->                        
+                    <!-- < ?php else: ?> -->
                     <!--    <a href="< php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer">< ?php echo $t->gettext('Tutorial'); ?></a> -->
                     <!-- < ?php endif; ?> -->
                 <?php else: ?>
                     <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
-                <?php endif; ?> 
-                </li>                
+                <?php endif; ?>
+                </li>
              </ul>
         </div>
         <div class="uk-navbar-center">
@@ -102,54 +102,54 @@
             <ul class="uk-navbar-nav">
                 <li class="uk-active">
                     <a href="<?php echo $url_base; ?>/contact.php"><?php echo $t->gettext('Contato'); ?></a>
-                </li>               
+                </li>
                 <li class="uk-active">
-                    <a href="<?php echo $url_base; ?>/sobre.php"><?php echo $t->gettext('Sobre'); ?></a>     
+                    <a href="<?php echo $url_base; ?>/sobre.php"><?php echo $t->gettext('Sobre'); ?></a>
                 </li>
                 <li class="uk-active">
                     <?php if (empty($_SESSION['oauthuserdata'])) : ?>
-                    <li><a href="aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>                    
-                    <?php else: ?>                    
+                    <li><a href="aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>
+                    <?php else: ?>
                     <li class="uk-active"><a href="#modal-user" uk-toggle><?php echo $_SESSION['oauthuserdata']->{'nomeUsuario'}; ?></a></li>
                     <div id="modal-user" class="uk-modal-full" uk-modal>
                         <div class="uk-modal-dialog uk-modal-body">
                             <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
                             <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
-                                <div class="uk-background-cover" style="background-image: url('http://www.imagens.usp.br/wp-content/uploads/Pra%C3%A7a-do-rel%C3%B3gio-Foto-Marcos-Santos-USP-Imagens-5.jpg');" uk-height-viewport></div>
+                                <div class="uk-background-cover" style="background-image: url('<?php echo $url_base; ?>/inc/images/PracaDoRelogio-MarcosSantos.jpg');" uk-height-viewport></div>
                                 <div class="uk-padding">
-                                    <h3><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></h3>                                    
+                                    <h3><?php echo 'Bem vindo, '.$_SESSION['oauthuserdata']->{'nomeUsuario'}.'';?></h3>
                                     <p>Aqui você pode:</p>
                                     <ul>
                                     <li><a href="<?php echo $url_base; ?>/result.php?filter[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;">Pesquisar por sua produção</a></li>
                                     <li><a href="<?php echo $url_base; ?>/tools/export.php?filter[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=ris">Exportar sua produçao em formato RIS</a></li>
                                     <li><a href="<?php echo $url_base; ?>/tools/export.php?filter[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=bibtex">Exportar sua produçao em formato Bibtex</a></li>
-                                    <?php 
+                                    <?php
                                     if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                         echo '<li><a href="'.$url_base.'/admin/index.php">Administração</a></li>';
-                                    } 
+                                    }
                                     ?>
-                                    <li><a href="<?php echo $url_base; ?>/dashboard.php">Acessar a Dashboard</a></li>                                    
+                                    <li><a href="<?php echo $url_base; ?>/dashboard.php">Acessar a Dashboard</a></li>
                                     <li><a href="<?php echo $url_base; ?>/aut/logout.php">Logout</a></li>
-                                    </ul>                                      
-                                </div>            
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <?php endif; ?>                
+                    <?php endif; ?>
                 </li>
-                
+
                 <?php if ($_SESSION['localeToUse'] == 'en_US') : ?>
                     <li><a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=pt_BR">Português</a></li>
                 <?php else : ?>
                     <li><a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=en_US">English</a></li>
-                <?php endif ; ?>                
-                
-                
-                
+                <?php endif ; ?>
+
+
+
                 <li class="uk-active"><a href="http://sibi.usp.br" target="_blank" rel="noopener noreferrer">SIBiUSP</a></li>
             </ul>
-        </div>            
+        </div>
     </div>
 </div>
 
@@ -178,4 +178,4 @@
     </div>
 </div>
 
-</div> 
+</div>
