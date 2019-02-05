@@ -37,7 +37,7 @@ $lang_tematres = "pt_BR" ;
  */
 
 $CFG_VOCABS[1]["ALIAS"]="Vocabulário Controlado do SIBiUSP";
-$CFG_VOCABS[1]["URL_BASE"]="http://vocab.sibi.usp.br/pt-br/services.php";
+$CFG_VOCABS[1]["URL_BASE"]="https://vocab.sibi.usp.br/pt-br/services.php";
 $CFG_VOCABS[1]["ALPHA"]=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 
 /*fetch params*/
@@ -45,7 +45,7 @@ session_start();
 
 
 /*  In almost cases, you don't need to touch nothing here!!
- *  Absolute path to the directory where are located /common/include. 
+ *  Absolute path to the directory where are located /common/include.
  */
 
 date_default_timezone_set('America/Buenos_Aires');
@@ -75,14 +75,14 @@ if ( !defined('WEBTHES_PATH') )
 	$CFG_URL_PARAM["URIfetchTerm"]='fetchTerm/';
 	$CFG_URL_PARAM["search"]='index.php?task=search&amp;arg=';
 	$CFG_URL_PARAM["letter"]='index.php?task=letter&amp;arg=';
-	$CFG_URL_PARAM["url_site"]=getURLbase();	
-	
+	$CFG_URL_PARAM["url_site"]=getURLbase();
+
 	//search strings with more than x chars
 	$CFG["MIN_CHAR_SEARCH"]=2;
 
 	//enables params for task
 	$CFG["ENABLE_TASK"]=array('fetchTerm','letter','fetchLast','search','fetchVocabularyData');
-		
+
 
 
 ?>

@@ -35,7 +35,7 @@ $lang_tematres = "es_AR" ;
  */
 
 $CFG_VOCABS[1]["ALIAS"]="Vocabulário Controlado do SIBiUSP";
-$CFG_VOCABS[1]["URL_BASE"]="http://vocab.sibi.usp.br/pt-br/services.php";
+$CFG_VOCABS[1]["URL_BASE"]="https://vocab.sibi.usp.br/pt-br/services.php";
 $CFG_VOCABS[1]["ALPHA"]=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 
 
