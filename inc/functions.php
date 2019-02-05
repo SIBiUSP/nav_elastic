@@ -1270,7 +1270,7 @@ class Record
         }
         echo '</p>';
         if (!empty($this->isbn)) {
-            $cover_link = 'http://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
+            $cover_link = 'https://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
             echo  '<p><img src="'.$cover_link.'"></p>';
         }
         echo '</div>';
