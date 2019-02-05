@@ -9,7 +9,7 @@
         <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
-        <meta property="og:url" content="http://bdpi.usp.br">
+        <meta property="og:url" content="//bdpi.usp.br">
         <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
         <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
         <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">

@@ -54,7 +54,7 @@
             $mpdf->WriteHTML('<p>DOI: <a href="https://doi.org/'.$cursor["_source"]["doi"].'">'.$cursor["_source"]["doi"].'</a></p>');
         }
     
-        $mpdf->WriteHTML('<h3>Download em: <a href="http://bdpi.usp.br/single.php?_id='.$_GET['_id'].'">http://bdpi.usp.br/single.php?_id='.$_GET['_id'].'</a></h3>');
+        $mpdf->WriteHTML('<h3>Download em: <a href="//bdpi.usp.br/single.php?_id='.$_GET['_id'].'">//bdpi.usp.br/single.php?_id='.$_GET['_id'].'</a></h3>');
     
     
         // Import the last page of the source PDF file

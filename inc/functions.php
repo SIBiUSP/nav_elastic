@@ -447,7 +447,7 @@ class PageSingle
                     "Works",
                     "Catalog"
                 ],
-                "image":"http://bdpi.usp.br/images/logo_sibi.jpg",
+                "image":"//bdpi.usp.br/images/logo_sibi.jpg",
                 "pageEnd": "'.$end_page.'",
                 "pageStart": "'.$first_page.'",
                 "headline": "'.$record["name"].'",
@@ -558,7 +558,7 @@ class Results
             foreach ($xml->item as $item) {
                 $bib_fisica = explode("-", $item->{'sub-library'});
                 echo '<tr>';
-                echo '<td><small><a href="http://www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'" target="_blank" rel="noopener noreferrer">'.$item->{'sub-library'}.'</a></small></td>';
+                echo '<td><small><a href="//www.sibi.usp.br/bibliotecas/fisicas/?char='. (string)$bib_fisica[0] .'" target="_blank" rel="noopener noreferrer">'.$item->{'sub-library'}.'</a></small></td>';
                 echo '<td><small>'.$item->{'barcode'}.'</small></td>';
                 echo '<td><small>'.$item->{'item-status'}.'</small></td>';
                 echo '<td><small>'.$item->{'call-no-1'}.'</small></td>';
@@ -1597,7 +1597,7 @@ class Record
         if (!empty($r["_source"]['ispartof_data'][0])) {
             $sfx_array[] = 'rft.volume='.trim(str_replace("v.", "", $r["_source"]['ispartof_data'][0])).'';
         }
-        echo ' <a class="uk-text-small" href="http://www.sibi.usp.br/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="http://www.sibi.usp.br/sfxlcl41/sfx.gif"></a>';
+        echo ' <a class="uk-text-small" href="//www.sibi.usp.br/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="http://www.sibi.usp.br/sfxlcl41/sfx.gif"></a>';
         echo '</div>';
 
     }

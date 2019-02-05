@@ -12,5 +12,5 @@ id=$(curl -XGET 'http://localhost:9200/sibi/producao/_search?pretty=true&fields=
 #IFS=$'\s'       # make newlines the only separator
 for line in $id;
     do
-        echo "http://bdpi.usp.br/single.php?_id=$line" >> ../data/sitemap_1_5000.txt
+        echo "//bdpi.usp.br/single.php?_id=$line" >> ../data/sitemap_1_5000.txt
     done
