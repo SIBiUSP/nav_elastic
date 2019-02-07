@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 chdir('../');
-require 'inc/config.php';             
+require 'inc/config.php';
 require 'inc/functions.php';
 
 
-if (isset($_GET["oai"])) {    
+if (isset($_GET["oai"])) {
 
     $oaiUrl = $_GET["oai"];
     $client_harvester = new \Phpoaipmh\Client(''.$oaiUrl.'');
@@ -15,14 +15,14 @@ if (isset($_GET["oai"])) {
     // Result will be a SimpleXMLElement object
     $identify = $myEndpoint->identify();
     echo '<pre>';
- 
+
     // Store repository data - Início
 
     $body_repository["doc"]["name"] = (string)$identify->Identify->repositoryName;
     $body_repository["doc"]["metadataFormat"] = $_GET["metadataFormat"];
     if (isset($_GET["qualis2015"])) {
         $body_repository["doc"]["qualis2015"] = $_GET["qualis2015"];
-    }    
+    }
     $body_repository["doc"]["date"] = (string)$identify->responseDate;
     $body_repository["doc"]["url"] = (string)$identify->request;
     $body_repository["doc_as_upsert"] = true;
@@ -40,13 +40,13 @@ if (isset($_GET["oai"])) {
     }
 
     if ($_GET["metadataFormat"] == "nlm") {
-        
+
         if (isset($_GET["set"])) {
             $recs = $myEndpoint->listRecords('nlm', null, null, $_GET["set"]);
         } else {
             $recs = $myEndpoint->listRecords('nlm');
-        }        
-        
+        }
+
         foreach ($recs as $rec) {
 
             //print_r($rec);
@@ -60,7 +60,7 @@ if (isset($_GET["oai"])) {
                 $query["doc"]["harvester_id"] = (string)$rec->{'header'}->{'identifier'};
                 if (isset($_GET["qualis2015"])) {
                     $query["doc"]["qualis2015"] = $_GET["qualis2015"];
-                }                
+                }
                 $query["doc"]["tipo"] = (string)$rec->{'metadata'}->{'article'}->{'front'}->{'article-meta'}->{'article-categories'}->{'subj-group'}->{'subject'};
                 $query["doc"]["titulo"] = str_replace('"', '', (string)$rec->{'metadata'}->{'article'}->{'front'}->{'article-meta'}->{'title-group'}->{'article-title'});
                 $query["doc"]["ano"] = (string)$rec->{'metadata'}->{'article'}->{'front'}->{'article-meta'}->{'pub-date'}[0]->{'year'};
@@ -129,7 +129,7 @@ if (isset($_GET["oai"])) {
         if (isset($_GET["set"])) {
             $recs = $myEndpoint->listRecords('oai_dc', null, null, $_GET["set"]);
         } else {
-            $recs = $myEndpoint->listRecords('oai_dc');           
+            $recs = $myEndpoint->listRecords('oai_dc');
         }
 
         foreach ($recs as $rec) {
@@ -141,10 +141,10 @@ if (isset($_GET["oai"])) {
             //$data = $rec->metadata->children( 'http://www.dspace.org/xmlns/dspace/dim' );
             //$rows = $data->children( 'http://www.dspace.org/xmlns/dspace/dim' );
             //var_dump ($data);
-            
+
             //$json = json_encode($rec);
             //$array = json_decode($json,TRUE);
-            //var_dump($array);            
+            //var_dump($array);
 
             //$id = $rec->{'header'}->{'identifier'};
             //print_r($id);
@@ -153,7 +153,7 @@ if (isset($_GET["oai"])) {
             foreach ($rows->creator as $authors) {
                 $body["doc"]["author"][$i]["person"]["name"] = (string)$authors;
                 $i++;
-            }            
+            }
 
             $body["doc"]["base"] = $_GET["name"];
             $body["doc"]["unidadeUSP"] = (array)$rec->header->setSpec;
@@ -171,32 +171,32 @@ if (isset($_GET["oai"])) {
             }
             foreach ($rows->publisher as $publisher) {
                 $body["doc"]["publisher"]["organization"]["name"] = (string)$publisher;
-            }                                      
+            }
             $body["doc_as_upsert"] = true;
             $id = str_replace(".", "_", (string)$rec->header->identifier);
             $id = str_replace(":", "_", $id);
             //print_r($id);
             //print_r($body);
 
-            $resultado = elasticsearch::elastic_update($id, $type, $body);  
+            $resultado = elasticsearch::elastic_update($id, $type, $body);
             print_r($resultado);
 
             unset($id);
             unset($body);
-            flush();  
+            flush();
 
-            //break; 
+            //break;
         }
 
-    } elseif ($_GET["metadataFormat"] == "dim") {        
+    } elseif ($_GET["metadataFormat"] == "dim") {
 
         if (isset($_GET["set"])) {
 
-            $recs = $myEndpoint->listRecords('dim', null, null, $_GET["set"]); 
+            $recs = $myEndpoint->listRecords('dim', null, null, $_GET["set"]);
 
         } else {
 
-            $recs = $myEndpoint->listRecords('dim');           
+            $recs = $myEndpoint->listRecords('dim');
         }
 
         foreach ($recs as $rec) {
@@ -217,7 +217,7 @@ if (isset($_GET["oai"])) {
                     }
                     if ($field->attributes()->element == "identifier" && $field->attributes()->qualifier == "doi") {
                         $body["doc"]["doi"] = (string)$field;
-                    }                                                                
+                    }
                     if ($field->attributes()->element == "relation" && $field->attributes()->qualifier == "ispartof") {
                         $body["doc"]["isPartOf"]["name"] = (string)$field;
                     }
@@ -226,10 +226,10 @@ if (isset($_GET["oai"])) {
                     }
                     if ($field->attributes()->element == "identifier" && $field->attributes()->qualifier == "issn") {
                         $body["doc"]["isPartOf"]["issn"] = (string)$field;
-                    }                                         
+                    }
                     if ($field->attributes()->element == "description" && $field->attributes()->qualifier == "abstract") {
                         $body["doc"]["description"][] = (string)$field;
-                    }                    
+                    }
                     if ($field->attributes()->element == "contributor" && $field->attributes()->qualifier == "author") {
                         $author["person"]["name"] = (string)$field;
                     }
@@ -244,11 +244,11 @@ if (isset($_GET["oai"])) {
                     }
                     if ($field->attributes()->element == "language" && $field->attributes()->qualifier == "iso") {
                         $body["doc"]["language"][] = (string)$field;
-                    }       
-                                                                
+                    }
+
                 }
-            }         
-                
+            }
+
             $id = (string)$rec->header->identifier;
             $body["doc"]["base"][] = $_GET["name"];
             $body["doc"]["unidadeUSP"] = (array)$rec->header->setSpec;
@@ -256,28 +256,28 @@ if (isset($_GET["oai"])) {
             if (isset($author)) {
                 $body["doc"]["author"][] = $author;
                 unset($author);
-            }                        
+            }
             $body["doc_as_upsert"] = true;
-            
+
 
             $resultado = elasticsearch::elastic_update($id, $type, $body);
-            //print_r($resultado); 
+            //print_r($resultado);
 
 
             //print_r($body);
 
-            unset($body); 
-            flush();   
+            unset($body);
+            flush();
 
-            //break; 
-        }        
+            //break;
+        }
 
     } elseif ($_GET["metadataFormat"] == "mods") {
 
         if (isset($_GET["set"])) {
             $recs = $myEndpoint->listRecords('mods', null, null, $_GET["set"]);
         } else {
-            $recs = $myEndpoint->listRecords('mods');           
+            $recs = $myEndpoint->listRecords('mods');
         }
 
         foreach ($recs as $rec) {
@@ -292,7 +292,7 @@ if (isset($_GET["oai"])) {
                 $body["doc"]["author"][$i]["person"]["name"] = $authors->namePart{0} . ', ' . $authors->namePart[1];
                 $i++;
             }
-            
+
             foreach ($rec->metadata->modsCollection->mods->identifier as $identifier) {
                 $identifiers[] =  $identifier;
             }
@@ -318,9 +318,9 @@ if (isset($_GET["oai"])) {
 
             unset($id);
             unset($body);
-            flush(); 
+            flush();
 
-            //break; 
+            //break;
         }
 
     } elseif ($_GET["metadataFormat"] == "oai_marcxml") {
@@ -333,71 +333,133 @@ if (isset($_GET["oai"])) {
 
         foreach ($recs as $rec) {
 
-            //print_r($rec);
+            $sha256 = hash('sha256', ''.$rec->{'header'}->{'identifier'}.'');
+            $query["doc"]["type"] = "Work";
+            $query["doc"]["tipo"] = "Article";
+            $query["doc"]["source"] = $_GET['source'];
+            $query["doc"]["source_id"] = (string)$rec->{'header'}->{'identifier'};
+            $query["doc"]["tag"] = $_GET['source'];
+            $query["doc"]["match"]["tag"][] = (string)$_GET['source'];
+            $query["doc"]["harvester_id"] = (string)$rec->{'header'}->{'identifier'};
 
-            $body["doc"]["base"] = $_GET["name"];
+            foreach ($rec->{'metadata'}->{'collection'}->{'record'}->{'datafield'} as $datafield) {
+              $i_autAff=0;
+              switch ($datafield->attributes()->{'tag'}) {
+                case 024:
+                    if (isset($datafield->{'subfield'}[0])) {
+                      if ($datafield->{'subfield'}[0]->attributes()->{'code'} == 'a') {
+                        $query["doc"]["doi"] = (string)$datafield->{'subfield'}[0];
+                      }
+                    }
 
+                    break;
+                  case 100:
+                    foreach ($datafield->{'subfield'} as $authorSubfield) {
+                      if ($authorSubfield->attributes()->{'code'} == 'a') {
+                        $query["doc"]["author"][$i_autAff]["person"]["name"] = (string)$authorSubfield;
+                      }
+                      if ($authorSubfield->attributes()->{'code'} == 'u') {
+                        $query["doc"]["author"][$i_autAff]["person"]["affiliation"]["name"] = (string)$authorSubfield;
+                        $query["doc"]["institutions"][] = (string)$authorSubfield;
+                      }
+                    }
+                    $i_autAff++;
+                    break;
+                  case 110:
+                    foreach ($datafield->{'subfield'} as $authorSubfield) {
+                      if ($authorSubfield->attributes()->{'code'} == 'a') {
+                        $query["doc"]["author"][$i_autAff]["person"]["name"] = (string)$authorSubfield;
+                      }
+                      if ($authorSubfield->attributes()->{'code'} == 'u') {
+                        $query["doc"]["author"][$i_autAff]["person"]["affiliation"]["name"] = (string)$authorSubfield;
+                        $query["doc"]["institutions"][] = (string)$authorSubfield;
+                      }
+                    }
+                    $i_autAff++;
+                    break;
+                  case 245:
+                    if (isset($datafield->{'subfield'}[1])) {
+                      if ($datafield->{'subfield'}[1]->attributes()->{'code'} == 'b'){
+                        $query["doc"]["name"] = ''.(string)$datafield->{'subfield'}[0].': ' . (string)$datafield->{'subfield'}[1].'';
+                      } else {
+                        $query["doc"]["name"] = (string)$datafield->{'subfield'}[0];
+                      }
+                    } else {
+                      $query["doc"]["name"] = (string)$datafield->{'subfield'}[0];
+                    }
+                      break;
+                  case 260:
+                      if (isset($datafield->{'subfield'}[2])) {
+                        if ($datafield->{'subfield'}[2]->attributes()->{'code'} == 'c') {
+                          $query["doc"]["datePublished"] = (string)$datafield->{'subfield'}[2];
+                        }
+                      }
 
-            foreach ($rec->metadata->collection->record->datafield as $datafield) {
+                      break;
+                  case 650:
+                    if (isset($datafield->{'subfield'}[0])) {
+                      if ($datafield->{'subfield'}[0]->attributes()->{'code'} == 'a') {
+                        $query["doc"]["about"][] = (string)$datafield->{'subfield'}[0];
+                      }
+                    }
 
-                switch ($datafield->attributes()->tag) {
-                    case 245:
-                        $body["doc"]["name"] = (string)$datafield->attributes()->subfield{0};
-                        break;
-                    case 1:
-                        echo "i equals 1";
-                        break;
-                    case 2:
-                        echo "i equals 2";
-                        break;
-                }
-                 
+                    break;
+                  case 700:
+                    foreach ($datafield->{'subfield'} as $authorSubfield) {
+                      if ($authorSubfield->attributes()->{'code'} == 'a') {
+                        $query["doc"]["author"][$i_autAff]["person"]["name"] = (string)$authorSubfield;
+                      }
+                      if ($authorSubfield->attributes()->{'code'} == 'u') {
+                        $query["doc"]["author"][$i_autAff]["person"]["affiliation"]["name"] = (string)$authorSubfield;
+                        $query["doc"]["institutions"][] = (string)$authorSubfield;
+                      }
+                    }
+                    $i_autAff++;
+                    break;
+                  case 773:
+                      foreach ($datafield->{'subfield'} as $journalInformation) {
+                        if ($journalInformation->attributes()->{'code'} == 't') {
+                          $query["doc"]["isPartOf"]["name"] = (string)$journalInformation;
+                        }
+                      }
+                      break;
+                  case 852:
+                  echo $datafield;
+                      if (isset($datafield->{'subfield'}[1])) {
+                        if ($datafield->{'subfield'}[1]->attributes()->{'code'} == 'b') {
+                          $query["doc"]["source"] = (string)$datafield->{'subfield'}[1];
+                          $query["doc"]["tag"] = (string)$datafield->{'subfield'}[1];
+                          unset($query["doc"]["match"]["tag"]);
+                          $query["doc"]["match"]["tag"][] = (string)$datafield->{'subfield'}[1];
+                        }
+                      }
+                      break;
+                  case 2:
+                      print_r($datafield);
+                      break;
+              }
 
             }
 
+            $query["doc_as_upsert"] = true;
 
+            //echo '<br/><br/>';
+            //print_r($query);
 
-            
-
-            $i = 0;
-            foreach ($rec->metadata->modsCollection->mods->name as $authors) {
-                $body["doc"]["author"][$i]["person"]["name"] = $authors->namePart{0} . ', ' . $authors->namePart[1];
-                $i++;
-            }
-            
-            foreach ($rec->metadata->modsCollection->mods->identifier as $identifier) {
-                $identifiers[] =  $identifier;
-            }
-
-            $body["doc"]["language"][] = (string)$rec->metadata->modsCollection->mods->language->languageTerm;
-
-            $body["doc"]["isPartOf"]["name"] = (string)$rec->metadata->modsCollection->mods->relatedItem->titleInfo->title;
-
-            $body["doc"]["datePublished"] = (string)$rec->metadata->modsCollection->mods->relatedItem->originInfo->dateIssued;
-
-            $fl_array = preg_grep("/^(\d+)?\.(\d+).*$/", $identifiers);
-            foreach ($fl_array as $fl_array_i) {
-                $body["doc"]["doi"] = (string)$fl_array_i[0];
-            }
-
-            $body["doc"]["type"] = (string)$rec->metadata->modsCollection->mods->genre;
-
-            $body["doc_as_upsert"] = true;
-            $id = str_replace(".", "_", (string)$rec->header->identifier);
-            $id = str_replace(":", "_", $id);
-
-            print_r($body);
-
-            //$resultado = elasticsearch::elastic_update($id, $type, $body);
-
-            unset($id);
-            unset($body);
+            $resultado = elasticsearch::elastic_update($sha256, $type, $query);
+            //print_r($resultado);
+            unset($query);
             flush();
-            ob_flush(); 
+
+            //exit;
+
+
+            //$rec->{'header'}->attributes()->{'status'}
+
         }
 
-            //break; 
-        
+            //break;
+
     } else {
 
         $recs = $myEndpoint->listRecords('rfc1807');
@@ -411,7 +473,7 @@ if (isset($_GET["oai"])) {
                     $query["doc"]["harvester_id"] = (string)$rec->{'header'}->{'identifier'};
                 if (isset($_GET["qualis2015"])) {
                     $query["doc"]["qualis2015"] = $_GET["qualis2015"];
-                }                   
+                }
                     $query["doc"]["tipo"] = (string)$rec->{'metadata'}->{'rfc1807'}->{'type'}[0];
                     $query["doc"]["titulo"] = str_replace('"', '', (string)$rec->{'metadata'}->{'rfc1807'}->{'title'});
                     $query["doc"]["ano"] = substr((string)$rec->{'metadata'}->{'rfc1807'}->{'date'}, 0, 4);
@@ -428,10 +490,10 @@ if (isset($_GET["oai"])) {
                         }
                         foreach ($pc_array_dot as $pc_dot) {
                             $pc_array_end = explode(".", $pc_dot);
-                        }                             
+                        }
                         foreach ($pc_array_end as $pc) {
                             $query["doc"]["palavras_chave"][] = trim($pc);
-                        }                             
+                        }
                     }
                 }
 
@@ -470,8 +532,8 @@ if (isset($_GET["oai"])) {
                     unset($query);
                     flush();
             }
-        }        
-    } 
+        }
+    }
 
 } elseif (isset($_GET["delete"])) {
     echo $_GET["delete"];
