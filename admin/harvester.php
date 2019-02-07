@@ -333,6 +333,8 @@ if (isset($_GET["oai"])) {
 
         foreach ($recs as $rec) {
 
+            //print_r($rec);
+
             $sha256 = hash('sha256', ''.$rec->{'header'}->{'identifier'}.'');
             $query["doc"]["type"] = "Work";
             $query["doc"]["tipo"] = "Article";
@@ -341,6 +343,7 @@ if (isset($_GET["oai"])) {
             $query["doc"]["tag"] = $_GET['source'];
             $query["doc"]["match"]["tag"][] = (string)$_GET['source'];
             $query["doc"]["harvester_id"] = (string)$rec->{'header'}->{'identifier'};
+            $query["doc"]["language"] = trim(substr((string)$rec->{'metadata'}->{'collection'}->{'record'}->{'controlfield'}[2], -8));
 
             foreach ($rec->{'metadata'}->{'collection'}->{'record'}->{'datafield'} as $datafield) {
               $i_autAff=0;
@@ -429,6 +432,7 @@ if (isset($_GET["oai"])) {
                         if ($datafield->{'subfield'}[1]->attributes()->{'code'} == 'b') {
                           $query["doc"]["source"] = (string)$datafield->{'subfield'}[1];
                           $query["doc"]["tag"] = (string)$datafield->{'subfield'}[1];
+                          $query["doc"]["base"] = (string)$datafield->{'subfield'}[1];
                           unset($query["doc"]["match"]["tag"]);
                           $query["doc"]["match"]["tag"][] = (string)$datafield->{'subfield'}[1];
                         }
