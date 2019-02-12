@@ -6,9 +6,10 @@
         "guzzlehttp/guzzle": "~6.0",
         "setasign/fpdf": "1.8",
         "easyrdf/easyrdf": "*",
-        "renanbr/crossref-client": "^1"    
+        "renanbr/crossref-client": "^1"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "3.*"
+        "squizlabs/php_codesniffer": "3.*",
+        "sebastian/phpcpd": "~4.1.0"
     }
 }
