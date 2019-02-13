@@ -26,12 +26,14 @@ foreach ($recs as $rec) {
             $cursor = elasticsearch::elastic_get($sysno, $type, null);
             if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
               if (count($bitstreamsDSpace) != count($cursor["_source"]["USP"]["fullTextFiles"])) {
-                $body["doc"]["USP"]["fullTextFiles"][] =  $bitstreamsDSpace;
+                $body["doc"]["USP"]["fullTextFiles"] =  $bitstreamsDSpace;
                 $resultUpdateFilesElastic = elasticsearch::elastic_update($sysno, $type, $body);
+                unset($body);
               }
             } else {
-              $body["doc"]["USP"]["fullTextFiles"][] =  $bitstreamsDSpace;
+              $body["doc"]["USP"]["fullTextFiles"] =  $bitstreamsDSpace;
               $resultUpdateFilesElastic = elasticsearch::elastic_update($sysno, $type, $body);
+              unset($body);
             }
             break;
       }
