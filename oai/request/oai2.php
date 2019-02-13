@@ -153,12 +153,15 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 }
 
                 if (!empty($hit['_source']['USP']['fullTextFiles'])) {
+                  $i_bitstream = 0;
                   foreach ($hit['_source']['USP']['fullTextFiles'] as $bitstream) {
                       if (count($bitstream) > 10) {
-                          $fields['dc:bitstream'] = $url_base . "/directbitstream/" . $bitstream["uuid"] . "/" . $bitstream["name"];
+                          $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstream["uuid"] . "/" . $bitstream["name"];
+                          $i_bitstream++;
                       } else {
                           foreach ($bitstream as $bitstreans) {
-                              $fields['dc:bitstream'] = $url_base . "/directbitstream/" . $bitstreans["uuid"] . "/" . $bitstreans["name"];
+                              $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstreans["uuid"] . "/" . $bitstreans["name"];
+                              $i_bitstream++;
                           }
                       }
                   }
