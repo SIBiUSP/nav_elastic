@@ -60,6 +60,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 array (
                     array('setSpec'=>'PI', 'setName'=>'Produção Intelectual'),
                     array('setSpec'=>'TD', 'setName'=>'Teses e Dissertações'),
+                    array('setSpec'=>'OA', 'setName'=>'Open Access'),
                     array('setSpec'=>'ECA', 'setName'=>'Escola de Comunicações e Artes'),
                 );
         },
@@ -69,6 +70,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             global $client;
             global $index;
             global $type;
+            global $url_base;
 
             if ($metadataPrefix != 'oai_dc') {
                 throw new OAI2Exception('noRecordsMatch');
@@ -79,6 +81,8 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                    $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Produção científica";
                } elseif ($set == "TD") {
                    $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Teses e dissertações";
+               } elseif ($set == "OA") {
+                   $query["query"]["exists"]["field"] = "USP.fullTextFiles.name";
                } else {
                    $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
                }
@@ -145,6 +149,18 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 if (!empty($hit['_source']['url'])) {
                   foreach ($hit['_source']['url'] as $urlIdentifier) {
                       $fields['dc:identifier'] = $urlIdentifier;
+                  }
+                }
+
+                if (!empty($hit['_source']['USP']['fullTextFiles'])) {
+                  foreach ($hit['_source']['USP']['fullTextFiles'] as $bitstream) {
+                      if (count($bitstream) > 10) {
+                          $fields['dc:bitstream'] = $url_base . "/directbitstream/" . $bitstream["uuid"] . "/" . $bitstream["name"];
+                      } else {
+                          foreach ($bitstream as $bitstreans) {
+                              $fields['dc:bitstream'] = $url_base . "/directbitstream/" . $bitstreans["uuid"] . "/" . $bitstreans["name"];
+                          }
+                      }
                   }
                 }
 
