@@ -4,7 +4,6 @@
  */
 
 require 'inc/config.php';
-require 'inc/functions.php';
 
 /* Citeproc-PHP*/
 require 'inc/citeproc-php/CiteProc.php';
@@ -40,11 +39,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
       $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-      /* Login in DSpace */
-      $cookies = DSpaceREST::loginREST();
-
       /* Search for existing record on DSpace */
-      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
+      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
 
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
@@ -82,7 +78,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
               echo "<br/><br/>";
               print_r($userBitstream);
               echo "<br/><br/>";
-              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $cookies);
+              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
               }
@@ -97,7 +93,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
               </script>";
           }
           if (isset($_POST['deleteBitstream'])) {
-              $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $cookies);
+              $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
                   $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
@@ -124,22 +120,22 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
           if (isset($_POST['makePrivateBitstream'])) {
 
               /* Delete Annonymous Policy */
-              $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $cookies);
+              $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Restricted Policy */
-              $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
+              $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
 
           }
 
           if (isset($_POST['makePublicBitstream'])) {
 
               /* Delete Annonymous Policy */
-              $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $cookies);
+              $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Public Policy */
-              $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
+              $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
 
           }
 
-          $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+          $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
 
       } else {
 
@@ -152,7 +148,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
               if ($_POST["createRecord"] == "true") {
 
                   $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
-                  $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
+                  $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $_SESSION["DSpaceCookies"]);
 
                   echo "<script type='text/javascript'>
                   $(document).ready(function(){
@@ -546,7 +542,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                             foreach ($bitstreamsDSpace as $key => $value) {
 
-                                $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $cookies);
+                                $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $_SESSION["DSpaceCookies"]);
 
                                 foreach ($bitstreamPolicy as $bitstreamPolicyUnit) {
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID) {
@@ -798,10 +794,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
             <?php require 'inc/footer.php'; ?>
         </div>
 
-
         <?php require 'inc/offcanvas.php'; ?>
-        <?php ob_flush(); flush(); ?>
+
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
-        <?php  DSpaceREST::logoutREST($cookies); ?>
     </body>
 </html>

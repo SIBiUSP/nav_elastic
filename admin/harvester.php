@@ -2,7 +2,6 @@
 
 chdir('../');
 require 'inc/config.php';
-require 'inc/functions.php';
 
 
 if (isset($_GET["oai"])) {

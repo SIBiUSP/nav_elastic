@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <?php
     require 'inc/config.php'; 
-    require 'inc/functions.php';
-    
+
    $result_get = get::analisa_get($_GET);
-    $query = $result_get['query'];  
+    $query = $result_get['query'];
     $limit = $result_get['limit'];
     $page = $result_get['page'];
     $skip = $result_get['skip'];
-    
-    $query['sort'] = [ ['datePublished.keyword' => ['order' => 'desc']], ];    
+
+    $query['sort'] = [ ['datePublished.keyword' => ['order' => 'desc']], ];
 
     $params = [];
     $params["index"] = $index;
@@ -17,31 +16,31 @@
     $params["size"] = $limit;
     $params["from"] = $skip;
     $params["body"] = $query;
-    
-    
-    
+
+
+
 
     $cursor = $client->search($params);
-    $total = $cursor["hits"]["total"];    
+    $total = $cursor["hits"]["total"];
 
 ?>
 <html>
     <head>
-        <?php 
-            include('inc/meta-header.php'); 
-        ?>        
+        <?php
+            include('inc/meta-header.php');
+        ?>
         <title>BDPI USP - Relatório Gerencial</title>
         <script src="inc/uikit/js/components/accordion.min.js"></script>
         <script src="inc/uikit/js/components/pagination.min.js"></script>
-        
+
         <!-- D3.js Libraries and CSS -->
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
 
            <!-- UV Charts -->
         <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
-        <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
+        <script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script>
         <script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-        <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
+        <script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script>
         <script type="text/javascript" src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.js"></script>
 
         <!-- Save as javascript -->
@@ -55,9 +54,9 @@
                         window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
                     }
                 }
-        </script> 
+        </script>
 
-        
+
     </head>
     <body>
         <?php
@@ -66,11 +65,11 @@
             }
         ?>
         <?php include('inc/navbar.php'); ?>
- 
+
      <div class="uk-container">
-     
+
         <br/><br/><br/><br/>
-        
+
          <h3 class="uk-margin-top">Relatório com os seguintes parâmetros:
                     <?php foreach ($_GET as $filters) : ?>
                         <?php echo implode(",",$filters);?>
@@ -84,8 +83,8 @@
 
         <h3>Tipo de publicação (Somente os primeiros)</h3>
         <?php $type_mat_bar = Results::generateDataGraphBar($query, "type", "_count", "desc", 'Tipo de publicação', 4); ?>
-       
-                
+
+
                 <div id="type_chart" style="font-size:10px"></div>
                 <script type="text/javascript">
                     var graphdef = {
@@ -111,10 +110,10 @@
                             height: 300
                         }
                     })
-                </script> 
+                </script>
                 <?php generateDataTable($query, "type", "_count", "desc", 'Tipo de publicação', 9); ?>
 
-                <?php $csv_type = generateCSV($query, 'type',  "_count", "desc", 'Tipo de publicação', 500); ?> 
+                <?php $csv_type = generateCSV($query, 'type',  "_count", "desc", 'Tipo de publicação', 500); ?>
                 <button class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_type; ?>','tipo_de_material.csv','text/plain;charset=utf-8')">
                     Exportar todos os tipos de publicação em csv
                 </button>
@@ -149,7 +148,7 @@
                             height: 300
                         }
                     })
-                </script> 
+                </script>
 
                 <?php generateDataTable($query, 'unidadeUSP', "_count", "desc", 'Unidade USP - Trabalhos', 9); ?>
                 <?php $csv_unidadeUSPtrabalhos = generateCSV($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Trabalhos', 10000); ?>
@@ -157,7 +156,7 @@
                     Exportar todas os trabalhos por unidades em csv
                 </button>
 
-                <!--      
+                <!--
 
                 <h3>Unidade USP - Participações (10 primeiros)</h3>
                 < ?php generateDataTable($query, 'unidadeUSP', "_count", 'desc', 'Unidade USP - Participações', 9); ?>
@@ -165,14 +164,14 @@
                 <button  class="uk-button-primary" onclick="SaveAsFile('< ?php echo $csv_unidadeUSP; ?>','unidadeUSP_participacoes.csv','text/plain;charset=utf-8')">
                     Exportar todas participações por Unidade em csv
                 </button>
-                -->     
-                
+                -->
+
                 <h3>Departamento</h3>
                 <?php generateDataTable($query, 'authorUSP.departament', "_count", 'desc', 'Departamento', 9); ?>
                 <?php $csv_departament = generateCSV($query, 'authorUSP.departament', "_count", 'desc', 'Departamento', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_departament); ?>','departamento.csv','text/plain;charset=utf-8')">
                     Exportar todos os departamentos em csv
-                </button>                
+                </button>
 
 
                 <h3>Autores USP (10 primeiros)</h3>
@@ -183,7 +182,7 @@
                 </button>
 
 
-                <h3>Obra da qual a produção faz parte (10 primeiros)</h3>      
+                <h3>Obra da qual a produção faz parte (10 primeiros)</h3>
                 <?php generateDataTable($query, 'isPartOf.name', "_count", 'desc', 'Obra da qual a produção faz parte', 9); ?>
                 <?php $csv_ispartof = generateCSV($query, 'isPartOf.name', "_count", 'desc', 'Obra da qual a produção faz parte', 20000); ?>
                 <?php $csv_ispartof = str_replace('"', '', $csv_ispartof); ?>
@@ -192,7 +191,7 @@
                 </button>
 
 
-                <h3>Nome do evento (10 primeiros)</h3>        
+                <h3>Nome do evento (10 primeiros)</h3>
                 <?php generateDataTable($query, 'releasedEvent', "_count", 'desc', 'Nome do evento', 9); ?>
                 <?php $csv_evento = generateCSV($query, 'releasedEvent', "_count", 'desc', 'Nome do evento', 10000); ?>
                 <?php $csv_evento = str_replace('"', '', $csv_evento); ?>
@@ -201,7 +200,7 @@
                 </button>
 
 
-                <h3>Ano de publicação</h3>  
+                <h3>Ano de publicação</h3>
                 <?php $ano_bar = Results::generateDataGraphBar($query, 'datePublished', "_term", 'desc', 'Ano', 19); ?>
 
                 <div id="ano_chart"></div>
@@ -229,7 +228,7 @@
                             height: 300
                         }
                     })
-                </script>       
+                </script>
 
                 <?php generateDataTable($query, 'datePublished', "_term", 'desc', 'Ano de publicação', 200); ?>
                 <?php $csv_year = generateCSV($query, 'datePublished', "_term", 'asc', 'Ano de publicação', 10000); ?>
@@ -237,19 +236,19 @@
                     Exportar todos os anos em csv
                 </button>
 
-                <h3>Idioma</h3>       
+                <h3>Idioma</h3>
                 <?php generateDataTable($query, 'language', "_count", 'desc', 'Idioma', 10); ?>
                 <?php $csv_language = generateCSV($query, 'language', "_count", 'desc', 'Idioma', 10000); ?>
                 <button  class="uk-button-primary" onclick="SaveAsFile('<?php echo $csv_language; ?>','idioma.csv','text/plain;charset=utf-8')">
                     Exportar todos os idiomas em csv
                 </button>
 
-                <h3>Internacionalização</h3>  
+                <h3>Internacionalização</h3>
 
 
 
 <?php $internacionalizacao_bar = Results::generateDataGraphBar($query, 'USP.internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
-<div id="internacionalizacao_chart"></div>         
+<div id="internacionalizacao_chart"></div>
 <script type="text/javascript">
 var graphdef = {
 categories : ['internacionalização'],
@@ -272,7 +271,7 @@ width: 800,
 height: 600
 }
 })
-</script>      
+</script>
 
 <?php generateDataTable($query, 'USP.internacionalizacao', "_count", 'desc', 'Internacionalização', 10); ?>
 <?php $csv_internacionalizacao = generateCSV($query, 'USP.internacionalizacao', "_count", 'desc', 'Internacionalização', 10000); ?>
@@ -296,17 +295,17 @@ height: 600
 <h3>Instituição de colaboração</h3>
 <?php generateDataTable($query, 'author.person.affiliation.name', "_count", 'desc', 'Colaboração por instituição', 10); ?>
 <?php $csv_country = generateCSV($query, 'author.person.affiliation.name', "_count", 'desc', 'Colaboração por instituição', 10000); ?>
-<button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','colaboracao.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>         
-         
-         
-         
-         
+<button  class="uk-button-primary" onclick="SaveAsFile('<?php echo str_replace("'", "", $csv_country); ?>','colaboracao.csv','text/plain;charset=utf-8')">Exportar todos em csv</button>
+
+
+
+
 
             <hr class="uk-grid-divider">
-<?php include('inc/footer.php'); ?>         
+<?php include('inc/footer.php'); ?>
     </div>
-                
-<?php include('inc/offcanvas.php'); ?>        
-        
+
+<?php include('inc/offcanvas.php'); ?>
+
     </body>
 </html>

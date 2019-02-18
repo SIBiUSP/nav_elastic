@@ -9,7 +9,7 @@ include 'inc/functions.php';
 if ($handle = opendir('/var/www/html/bdpi/upload')) {
 
     /* Login in DSpace */
-    $cookies = DSpaceREST::loginREST();
+    $DSpaceCookies = DSpaceREST::loginREST();
 
     while (false !== ($fileWork = readdir($handle))) {
 
@@ -20,16 +20,16 @@ if ($handle = opendir('/var/www/html/bdpi/upload')) {
           $cursor = elasticsearch::elastic_get($sysno, $type, null);
 
           /* Search for existing record on DSpace */
-          $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
+          $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $DSpaceCookies);
 
           /* Verify if item exists on DSpace */
           if (empty($itemID)) {
             $dataString = DSpaceREST::buildDC($cursor, $sysno);
-            $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $cookies);
+            $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $DSpaceCookies);
             $userBitstream = 'publishedVersion - BulkUpload';
 
             /* Verify if item exists on DSpace again */
-            $itemIDCreated = DSpaceREST::searchItemDSpace($cursor["_id"], $cookies);
+            $itemIDCreated = DSpaceREST::searchItemDSpace($cursor["_id"], $DSpaceCookies);
             print_r($itemIDCreated);
             echo "<br/><br/>";
 
@@ -62,7 +62,7 @@ if ($handle = opendir('/var/www/html/bdpi/upload')) {
                 echo "<br/><br/>";
                 print_r($userBitstream);
                 echo "<br/><br/>";
-                $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $_FILES, $userBitstream, $cookies);
+                $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $_FILES, $userBitstream, $DSpaceCookies);
                 if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                     $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
                 }
@@ -79,14 +79,14 @@ if ($handle = opendir('/var/www/html/bdpi/upload')) {
 
 
 
-            $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $file, $userBitstream, $cookies);
+            $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $file, $userBitstream, $DSpaceCookies);
             print_r($resultAddBitstream);
             echo "<br/><br/>";
 
             /* Delete Annonymous Policy */
-            //$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $cookies);
+            //$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $DSpaceCookies);
             /* Add Restricted Policy */
-            //$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $cookies);
+            //$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $DSpaceCookies);
 
           } else {
             Echo "Registro já existe";

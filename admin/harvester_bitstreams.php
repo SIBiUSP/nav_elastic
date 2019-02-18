@@ -2,8 +2,6 @@
 
 chdir('../');
 require 'inc/config.php';
-require 'inc/functions.php';
-$cookies = DSpaceREST::loginREST();
 
 
 $oaiUrl = $oaiDspace;
@@ -21,8 +19,8 @@ foreach ($recs as $rec) {
       switch ($element["@attributes"]["name"]) {
         case "usp":
             $sysno = $element["element"][0]["element"]["field"];
-            $itemID = DSpaceREST::searchItemDSpace($sysno, $cookies);
-            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $cookies);
+            $itemID = DSpaceREST::searchItemDSpace($sysno, $DSpaceCookies);
+            $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $DSpaceCookies);
             $cursor = elasticsearch::elastic_get($sysno, $type, null);
             if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
               if (count($bitstreamsDSpace) != count($cursor["_source"]["USP"]["fullTextFiles"])) {

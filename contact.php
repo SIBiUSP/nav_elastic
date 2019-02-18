@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php 
+        <?php
             require 'inc/config.php'; 
-            require 'inc/functions.php';
-            require 'inc/meta-header.php'; 
+            require 'inc/meta-header.php';
         ?>
         <title>BDPI USP - <?php echo $t->gettext('Contato'); ?></title>
     </head>
@@ -17,7 +16,7 @@
         ?>
         <?php require 'inc/navbar.php'; ?>
         <div class="uk-container uk-margin-large-top">
-    
+
             <div class="uk-grid" uk-grid>
 
                 <div class="uk-width-2-3@m">
@@ -59,15 +58,15 @@
                     </div>
                 </div>
 
-                
 
 
-                
+
+
                 <div class="uk-width-1-3@m">
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Contato'); ?></h3>
                         <p>
-                            <strong>Departamento Técnico do Sistema Integrado de Bibliotecas da Universidade de São Paulo</strong>     
+                            <strong>Departamento Técnico do Sistema Integrado de Bibliotecas da Universidade de São Paulo</strong>
                             <br>Rua da Praça do Relógio, 109 - Bloco L  Térreo
                             <br>05508-050 - Cidade Universitária, São Paulo, SP - Brasil
                         </p>
@@ -78,26 +77,26 @@
                         <h3 class="uk-h4"><?php echo $t->gettext('Redes sociais'); ?></h3>
                         <p>
                             <a href="https://www.facebook.com/sibiusp/?fref=ts" uk-icon="icon: facebook" target="_blank" rel="noopener noreferrer"></a>
-                            <a href="https://twitter.com/sibiusp" uk-icon="icon: twitter" target="_blank" rel="noopener noreferrer"></a>                           
+                            <a href="https://twitter.com/sibiusp" uk-icon="icon: twitter" target="_blank" rel="noopener noreferrer"></a>
                             <a href="https://github.com/sibiusp" uk-icon="icon: github" target="_blank" rel="noopener noreferrer"></a>
                         </p>
                     </div>
                 </div>
             </div>
-        
-        
-        
+
+
+
         <hr class="uk-grid-divider">
-            
-     
-                        
+
+
+
 <?php include('inc/footer.php'); ?>
 
         </div>
-        
-        
+
+
 <?php include('inc/offcanvas.php'); ?>
-            
-        
+
+
     </body>
 </html>

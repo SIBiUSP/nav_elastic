@@ -13,7 +13,6 @@
  * @link     https://github.com/SIBiUSP/nav_elastic
  */
 require 'inc/config.php';
-require 'inc/functions.php';
 
 if (isset($_GET["search"])) {
     foreach ($_GET["search"] as $getSearch) {

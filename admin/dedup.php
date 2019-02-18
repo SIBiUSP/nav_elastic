@@ -4,12 +4,11 @@
     chdir('../');
     // Include essencial files
     require 'inc/config.php'; 
-    require 'inc/functions.php'; 
 
-    $query["query"]["query_string"]["query"] = "-_exists_:dedup";    
+    $query["query"]["query_string"]["query"] = "-_exists_:dedup";
     $query['sort'] = [
         ['datePublished.keyword' => ['order' => 'desc']],
-    ];      
+    ];
 
     $params = [];
     $params["index"] = $index;
@@ -33,22 +32,22 @@
 
     }
 
-    function query_bdpi($query_title,$query_year,$sysno,$type) { 
+    function query_bdpi($query_title,$query_year,$sysno,$type) {
         global $client;
         global $index;
-        global $type;       
+        global $type;
         $query = '
         {
             "min_score": 80,
             "query":{
                 "bool": {
-                    "should": [	
+                    "should": [
                         {
                             "multi_match" : {
                                 "query":      "'.str_replace('"', '', $query_title).'",
                                 "type":       "cross_fields",
                                 "fields":     [ "name" ],
-                                "minimum_should_match": "90%" 
+                                "minimum_should_match": "90%"
                              }
                         },
                         {
@@ -56,22 +55,22 @@
                                 "query":      "'.$type.'",
                                 "type":       "cross_fields",
                                 "fields":     [ "type" ],
-                                "minimum_should_match": "90%" 
+                                "minimum_should_match": "90%"
                              }
-                        },	                        	    
+                        },
                         {
                             "multi_match" : {
                                 "query":      "'.$query_year.'",
                                 "type":       "best_fields",
                                 "fields":     [ "datePublished" ],
-                                "minimum_should_match": "75%" 
+                                "minimum_should_match": "75%"
                             }
                         }
                     ],
                     "must_not" : {
                         "term" : { "sysno" : "'.$sysno.'" }
-                      },                    
-                    "minimum_should_match" : 2               
+                      },
+                    "minimum_should_match" : 2
                 }
             }
         }
@@ -81,8 +80,8 @@
         $params["index"] = $index;
         $params["type"] = $type;
         $params["size"] = 100;
-        $params["body"] = $query; 
-    
+        $params["body"] = $query;
+
         $cursor = $client->search($params);
 
         //print_r($cursor);
@@ -96,18 +95,18 @@
             // echo '<div class="uk-alert">';
             // echo '<h3>Registros similares na BDPI</h3>';
             // foreach ($data["hits"]["hits"] as $match){
-            //     echo '<p>Nota de proximidade: '.$match["_score"].' - <a href="//bdpi.usp.br/single.php?_id='.$match["_id"].'">'.$match["_source"]["type"].' - '.$match["_source"]["name"].' ('.$match["_source"]["datePublished"].')</a><br/> Autores: ';   
+            //     echo '<p>Nota de proximidade: '.$match["_score"].' - <a href="//bdpi.usp.br/single.php?_id='.$match["_id"].'">'.$match["_source"]["type"].' - '.$match["_source"]["name"].' ('.$match["_source"]["datePublished"].')</a><br/> Autores: ';
             //     foreach ($match["_source"]['author'] as $autores) {
             //         echo ''.$autores['person']['name'].', ';
             //     }
             //     if (isset($match["_source"]["doi"])){
             //         $doc["doc"]["bdpi"]["doi_bdpi"] = $match["_source"]["doi"];
             //     } else {
-                    
+
             //     }
             //     echo '</p>';
             // }
-            // echo '</div>';            
+            // echo '</div>';
 
             // $doc["doc"]["bdpi"]["existe"] = "Sim";
             // $doc["doc_as_upsert"] = true;
@@ -116,9 +115,9 @@
             $doc["doc"]["dedup"]["data"] = date("Ymd");
             $doc["doc_as_upsert"] = true;
             $result_elastic = elasticsearch::elastic_update($sysno, $type, $doc);
-            print_r($result_elastic);            
+            print_r($result_elastic);
 
         }
-    }    
+    }
 
 ?>
