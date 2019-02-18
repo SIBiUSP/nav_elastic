@@ -2,12 +2,11 @@
 <?php
 
 require 'inc/config.php';
-require 'inc/functions.php';
 
 
 if (!empty($_GET)) {
     $result_get = get::analisa_get($_GET);
-    $query = $result_get['query'];  
+    $query = $result_get['query'];
     $limit = $result_get['limit'];
     $page = $result_get['page'];
     $skip = $result_get['skip'];
@@ -21,17 +20,17 @@ if (!empty($_GET)) {
             ['datePublished.keyword' => ['order' => 'desc']],
         ];
     }
-    
+
     $params = [];
     $params["index"] = $index;
     $params["type"] = $type;
     $params["size"] = 1000;
     $params["from"] = $skip;
-    $params["body"] = $query; 
+    $params["body"] = $query;
 
     $cursor = $client->search($params);
-    $total = $cursor["hits"]["total"];   
-                
+    $total = $cursor["hits"]["total"];
+
 
     /* Citeproc-PHP*/
 
@@ -53,12 +52,12 @@ if (!empty($_GET)) {
     <a class="uk-alert-close" uk-close></a>
     <p>Não foi informado nenhum parametro.</p>
 </div>';
-}    
+}
 
 ?>
 <html>
     <head>
-        <?php require 'inc/meta-header.php'; ?>       
+        <?php require 'inc/meta-header.php'; ?>
         <title><?php echo $branch_abrev; ?> - Resultado da busca</title>
         <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
         <script>
@@ -71,8 +70,8 @@ if (!empty($_GET)) {
                     }
                 }
 
-        </script>               
-        
+        </script>
+
 
         <?php if ($year_result_graph == true) : ?>
             <!-- D3.js Libraries and CSS -->
@@ -84,11 +83,11 @@ if (!empty($_GET)) {
 
         <!-- Altmetric Script -->
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-        
+
         <!-- PlumX Script -->
         <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
 
-        
+
     </head>
     <body>
         <?php require 'inc/navbar.php'; ?>
@@ -98,8 +97,8 @@ if (!empty($_GET)) {
         if (file_exists("inc/analyticstracking.php")) {
             include_once "inc/analyticstracking.php";
         }
-        ?>        
- 
+        ?>
+
         <div class="uk-container">
             <div class="uk-width-1-1@s uk-width-1-1@m">
             <nav class="uk-navbar-container uk-margin" uk-navbar>
@@ -118,7 +117,7 @@ if (!empty($_GET)) {
                             <input type="hidden" name="fields[]" value="author.person.name">
                             <input type="hidden" name="fields[]" value="authorUSP.name">
                             <input type="hidden" name="fields[]" value="about">
-                            <input type="hidden" name="fields[]" value="description"> 	    
+                            <input type="hidden" name="fields[]" value="description">
                             <input class="uk-search-input" type="search" name="search[]" placeholder="<?php echo $t->gettext('Nova pesquisa...'); ?>" autofocus>
                         </form>
                     </div>
@@ -126,16 +125,16 @@ if (!empty($_GET)) {
                     <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
 
                 </div>
-                </nav>	  
+                </nav>
 
 	    </div>
-	   
+
 	    <div class="uk-width-1-1@s uk-width-1-1@m">
-	    
+
 		    <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
-		    				    
+
 			<p class="uk-margin-top" uk-margin>
-				<a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>	
+				<a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>
             <?php
             if (!empty($_GET["search"])) {
                 foreach ($_GET["search"] as $filters) {
@@ -149,10 +148,10 @@ if (!empty($_GET)) {
                 }
             }
             ?>
-				
+
 			</p>
 		    <?php endif;?>
-            </div>	
+            </div>
 
             <div class="uk-grid-divider" uk-grid>
                 <div class="uk-width-1-4@s uk-width-2-6@m">
@@ -165,10 +164,10 @@ if (!empty($_GET)) {
                                 <?php
                                 $facets = new facets();
                                 $facets->query = $query;
-                                
+
                                 if (!isset($_GET["search"])) {
-                                    $_GET["search"] = null;                                    
-                                }                            
+                                    $_GET["search"] = null;
+                                }
 
                                 $facets->facet("base", 10, $t->gettext('Bases'), null, "_term", $_GET["search"]);
                                 $facets->facet("type", 100, $t->gettext('Tipo de material'), null, "_term", $_GET["search"]);
@@ -183,26 +182,26 @@ if (!empty($_GET)) {
                                 $facets->facet("publisher.organization.name", 50, $t->gettext('Editora'), null, "_term", $_GET["search"]);
                                 $facets->facet("releasedEvent", 50, $t->gettext('Nome do evento'), null, "_term", $_GET["search"]);
                                 $facets->facet("country", 200, $t->gettext('País de publicação'), null, "_term", $_GET["search"]);
-                                $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]); 
+                                $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]);
                                 $facets->facet("funder", 50, $t->gettext('Agência de fomento'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.indexacao", 50, $t->gettext('Indexado em'), null, "_term", $_GET["search"]);
 
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Colaboração institucional'); ?></li>
-                                <?php 
+                                <?php
                                     $facets->facet("author.person.affiliation.name", 50, "Afiliação dos autores externos normalizada", null, "_term", $_GET["search"]);
-                                    $facets->facet("author.person.affiliation.name_not_found", 50, "Afiliação dos autores externos não normalizada", null, "_term", $_GET["search"]);                                    
-                                    $facets->facet("author.person.affiliation.location", 50, "País dos autores externos", null, "_term", $_GET["search"]);   
+                                    $facets->facet("author.person.affiliation.name_not_found", 50, "Afiliação dos autores externos não normalizada", null, "_term", $_GET["search"]);
+                                    $facets->facet("author.person.affiliation.location", 50, "País dos autores externos", null, "_term", $_GET["search"]);
                                 ?>
                                 <li class="uk-nav-header"><?php echo $t->gettext('Métricas'); ?></li>
-                                <?php 
+                                <?php
                                     $facets->facet("USP.serial_metrics.qualis.2012.area", 50, $t->gettext('Qualis 2010/2012 - Área'), null, "_term", $_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2012.nota", 50, $t->gettext('Qualis 2010/2012 - Nota'), null, "_term", $_GET["search"]);                                    
+                                    $facets->facet("USP.serial_metrics.qualis.2012.nota", 50, $t->gettext('Qualis 2010/2012 - Nota'), null, "_term", $_GET["search"]);
                                     $facets->facet("USP.serial_metrics.qualis.2012.area_nota", 50, $t->gettext('Qualis 2010/2012 - Área / Nota'), null, "_term", $_GET["search"]);
-                                ?>                                
-                                <?php 
+                                ?>
+                                <?php
                                     $facets->facet("USP.serial_metrics.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
-                                    $facets->facet("USP.serial_metrics.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);                                    
+                                    $facets->facet("USP.serial_metrics.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
                                     $facets->facet("USP.serial_metrics.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
                                 ?>
                                 <?php
@@ -214,9 +213,9 @@ if (!empty($_GET)) {
                                     $facets->facet_range("USP.citescore.citescore.2016.SJR", 100, "SJR - 2016", $_GET["search"]);
                                     $facets->facet_range("USP.citescore.citescore.2016.SNIP", 100, "SNIP - 2016", $_GET["search"]);
                                     $facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
-                                    
-                                ?>                                    
-                                <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>    
+
+                                ?>
+                                <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>
                                 <?php
                                     $facets->facet("inSupportOf", 30, "Tipo de tese", null, "_term", $_GET["search"]);
                                     $facets->facet("USP.areaconcentracao", 100, "Área de concentração", null, "_term", $_GET["search"]);
@@ -225,12 +224,12 @@ if (!empty($_GET)) {
                                     $facets->facet("USP.about_BDTD", 50, $t->gettext('Palavras-chave do autor'), null, "_term", $_GET["search"]);
                                 ?>
                             </ul>
-                            <?php if(!empty($_SESSION['oauthuserdata'])) : ?> 
+                            <?php if(!empty($_SESSION['oauthuserdata'])) : ?>
                                 <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                                 <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                                 <hr>
                                 <?php
-                                    $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);                                 
+                                    $facets->facet("USP.internacionalizacao", 10, "Internacionalização", null, "_term", $_GET["search"]);
                                     $facets->facet("authorUSP.regime_de_trabalho", 50, $t->gettext('Regime de trabalho'), null, "_term", $_GET["search"]);
                                     $facets->facet("authorUSP.funcao", 50, $t->gettext('Função'), null, "_term", $_GET["search"]);
                                     $facets->facet("USP.CAT.date", 100, "Data de registro e alterações", "desc", "_term", $_GET["search"]);
@@ -267,15 +266,15 @@ if (!empty($_GET)) {
                                     <p>
                                     <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                     <input type="text" class="uk-form-width-medium" id="date" readonly style="border:0; color:#f6931f; font-size:bold;" name="search[]">
-                                    </p>        
-                                    <div id="limitar-data" class="uk-margin-bottom"></div>        
+                                    </p>
+                                    <div id="limitar-data" class="uk-margin-bottom"></div>
                                     <?php if(!empty($_GET["search"])) : ?>
                                         <?php foreach($_GET["search"] as $search_expression): ?>
                                             <input type="hidden" name="search[]" value="<?php echo str_replace('"', '&quot;', $search_expression); ?>">
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                     <div class="uk-form-row"><button class="uk-button-primary"><?php echo $t->gettext('Limitar datas'); ?></button></div>
-                                </fieldset>        
+                                </fieldset>
                             </form>
                             <!-- Limitar por data - Fim -->
 
@@ -284,17 +283,17 @@ if (!empty($_GET)) {
                             <!-- Gerar relatório - Início -->
                             <?php if(!empty($_SESSION['oauthuserdata'])) : ?>
                                     <fieldset>
-                                        <legend>Gerar relatório</legend>                  
+                                        <legend>Gerar relatório</legend>
                                         <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
                                         </div>
-                                    </fieldset>        
+                                    </fieldset>
                             <?php endif; ?>
-                            <!-- Gerar relatório - Fim -->                
+                            <!-- Gerar relatório - Fim -->
                     </div>
                 </div>
-                
+
                 <div class="uk-width-3-4@s uk-width-4-6@m">
-                
+
                 <!-- Gráfico do ano - Início -->
                 <?php if ($year_result_graph == true) : ?>
                     <div class="uk-alert-primary" uk-alert>
@@ -323,17 +322,17 @@ if (!empty($_GET)) {
                                     height: 110
                                 }
                             })
-                        </script>                        
+                        </script>
                         </div>
                 <?php endif; ?>
-                 <!-- Gráfico do ano - Fim -->    
+                 <!-- Gráfico do ano - Fim -->
 
-           
+
 
 <!-- Resultados por formato -->
 
 <hr class="uk-grid-divider">
-<div class="uk-width-1-1 uk-margin-top uk-description-list-line">       
+<div class="uk-width-1-1 uk-margin-top uk-description-list-line">
 
 <?php if(isset($_GET["format"])) : ?>
 
@@ -348,10 +347,10 @@ if (!empty($_GET)) {
                     <th>DOI</th>
                     <th>Título</th>
                     <th>Autores</th>
-                    <th>Fonte da publicação</th>                    
+                    <th>Fonte da publicação</th>
                     <th>Paginação</th>
                     <th>Ano de publicação</th>
-                    <th>ISSN</th>  
+                    <th>ISSN</th>
                     <th>Local de publicação</th>
                     <th>Editora</th>
                     <th>Nome do evento</th>
@@ -373,7 +372,7 @@ if (!empty($_GET)) {
                     <td>
                         <?php if (!empty($r["_source"]['doi'])) : ?>
                             <a href="https://doi.org/<?php echo $r["_source"]['doi'];?>" target="_blank" rel="noopener noreferrer"><?php echo $r["_source"]['doi'];?></a>
-                        <?php endif; ?>    
+                        <?php endif; ?>
                     </td>
                     <td><?php echo $r["_source"]['name'];?></td>
                     <td>
@@ -383,7 +382,7 @@ if (!empty($_GET)) {
                             } else {
                                 $authors_array[]='<a href="result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>';
                             }
-                        } 
+                        }
                         $array_aut = implode("; ",$authors_array);
                         unset($authors_array);
                         print_r($array_aut);
@@ -392,12 +391,12 @@ if (!empty($_GET)) {
                     <td>
                         <?php if (!empty($r["_source"]['isPartOf'])) : ?>
                             <a href="result.php?filter[]=isPartOf.name:&quot;<?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"]; } ?>&quot;"><?php if (!empty($r["_source"]['isPartOf']["name"])) { echo $r["_source"]['isPartOf']["name"];} ?></a>
-                        <?php endif; ?>     
-                    </td>    
+                        <?php endif; ?>
+                    </td>
                     <td>
                         <?php if (!empty($r["_source"]['isPartOf']['USP']['dados_do_periodico'])) {
-                                 echo $r["_source"]['isPartOf']['USP']['dados_do_periodico']; 
-                        } 
+                                 echo $r["_source"]['isPartOf']['USP']['dados_do_periodico'];
+                        }
                         ?>
                     </td>
                     <td><?php if (!empty($r["_source"]['datePublished'])) { echo $r["_source"]['datePublished']; } ?></td>
@@ -405,41 +404,41 @@ if (!empty($_GET)) {
                         <?php if (!empty($r["_source"]['isPartOf']['issn'])) : ?>
                         <?php foreach ($r["_source"]['isPartOf']['issn'] as $issn) {
                             $issn_array[]='<a href="result.php?filter[]=isPartOf.issn:&quot;'.$issn.'&quot;">'.$issn.'</a>';
-                        } 
+                        }
                         $array_issn = implode("; ", $issn_array);
                         unset($issn_array);
                         print_r($array_issn);
                         ?>
                         <?php endif; ?>
-                    </td> 
+                    </td>
                     <td>
                         <?php if (!empty($r["_source"]['publisher']['organization']['location'])) {
-                                 echo $r["_source"]['publisher']['organization']['location']; 
-                        } 
+                                 echo $r["_source"]['publisher']['organization']['location'];
+                        }
                         ?>
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['publisher']['organization']['name'])) {
-                                 echo $r["_source"]['publisher']['organization']['name']; 
-                        } 
+                                 echo $r["_source"]['publisher']['organization']['name'];
+                        }
                         ?>
-                    </td>                                        
+                    </td>
                     <td>
                         <?php if (!empty($r["_source"]['releasedEvent'])) {
-                                 echo $r["_source"]['releasedEvent']; 
-                              } 
+                                 echo $r["_source"]['releasedEvent'];
+                              }
                         ?>
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['type'])) {
-                                 echo $r["_source"]['type']; 
-                              } 
+                                 echo $r["_source"]['type'];
+                              }
                         ?>
-                    </td>                      
+                    </td>
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $authorsUSP) {
                             $authorsUSP_array[]='<a href="result.php?filter[]=authorUSP.name:&quot;'.$authorsUSP["name"].'&quot;">'.$authorsUSP["name"].'</a>';
-                        } 
+                        }
                         $array_autUSP = implode("; ", $authorsUSP_array);
                         unset($authorsUSP_array);
                         print_r($array_autUSP);
@@ -448,7 +447,7 @@ if (!empty($_GET)) {
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $numUSP) {
                             $numUSP_array[]='<a href="result.php?filter[]=authorUSP.codpes:&quot;'.$numUSP["codpes"].'&quot;">'.$numUSP["codpes"].'</a>';
-                        } 
+                        }
                         $array_numUSP = implode("; ", $numUSP_array);
                         unset($numUSP_array);
                         print_r($array_numUSP);
@@ -457,7 +456,7 @@ if (!empty($_GET)) {
                     <td>
                         <?php foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
                             $unidadesUSP_array[]='<a href="result.php?filter[]=authorUSP.unidadeUSP:&quot;'.$unidadesUSP_aut["unidadeUSP"].'&quot;">'.$unidadesUSP_aut["unidadeUSP"].'</a>';
-                        } 
+                        }
                         $array_unidadesUSP = implode("; ", $unidadesUSP_array);
                         unset($unidadesUSP_array);
                         print_r($array_unidadesUSP);
@@ -469,41 +468,41 @@ if (!empty($_GET)) {
                                 $departament_array[]='<a href="result.php?filter[]=authorUSP.departament:&quot;'.$departament_aut["departament"].'&quot;">'.$departament_aut["departament"].'</a>';
                                 $array_departament = implode("; ", $departament_array);
                                 unset($departament_array);
-                                print_r($array_departament);                                
+                                print_r($array_departament);
                             }
-                        } 
+                        }
                         ?>
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['USP']['serial_metrics']['qualis']['2016'])) : ?>
                         <?php foreach ($r["_source"]['USP']['serial_metrics']['qualis']['2016'] as $qualis) {
                             $qualis_array[]='<a href="result.php?filter[]=USP.serial_metrics.qualis.2016.area_nota:&quot;'.$qualis["area_nota"].'&quot;">'.$qualis["area_nota"].'</a>';
-                        } 
+                        }
                         $array_qualis = implode("; ", $qualis_array);
                         unset($qualis_array);
                         print_r($array_qualis);
                         ?>
-                        <?php endif; ?>   
+                        <?php endif; ?>
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor'])) {
-                                 echo $r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor']; 
-                              } 
+                                 echo $r["_source"]['USP']['JCR']['JCR']['2016'][0]['Journal_Impact_Factor'];
+                              }
                         ?>
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore'])) {
-                                 echo $r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore']; 
-                              } 
+                                 echo $r["_source"]['USP']['citescore']['citescore']['2016'][0]['citescore'];
+                              }
                         ?>
                     </td>
                     <td>
                         <?php if (!empty($r["_source"]['USP']['internacionalizacao'])) {
-                                 echo $r["_source"]['USP']['internacionalizacao']; 
-                              } 
+                                 echo $r["_source"]['USP']['internacionalizacao'];
+                              }
                         ?>
-                    </td>                                                                                                                                                                                                      
-                                  
+                    </td>
+
                 </tr>
                 <?php endforeach;?>
             </tbody>
@@ -530,7 +529,7 @@ if (!empty($_GET)) {
                     <th>Idioma</th>
                     <th>Título</th>
                     <th>Resumo português</th>
-                    <th>Assuntos português</th>                    
+                    <th>Assuntos português</th>
                     <th>Título inglês</th>
                     <th>Resumo inglês</th>
                     <th>Ano de impressão</th>
@@ -546,13 +545,13 @@ if (!empty($_GET)) {
                     <?php foreach ($r["_source"]['authorUSP'] as $numUSP_aut) {
                         echo '<td>'. $numUSP_aut["codpes"].'</td>';
                         echo '<td>'. $numUSP_aut["name"].'</td>';
-                    }                    
-                    ?>                    
+                    }
+                    ?>
                     <?php foreach ($r["_source"]['author'] as $authors) {
                         if (empty($authors["person"]["potentialAction"])) {
                             echo '<td>'.$authors["person"]["name"].'</td>';
                         } else {
-                            $orientadores_array[] = $authors["person"]["name"]; 
+                            $orientadores_array[] = $authors["person"]["name"];
                         }
                     }
                     if (isset($orientadores_array)) {
@@ -560,7 +559,7 @@ if (!empty($_GET)) {
                         unset($orientadores_array);
                         echo '<td>'.$array_orientadores.'</td>';
                     }
-                                          
+
                     ?>
                     <?php foreach ($r["_source"]['authorUSP'] as $numUSP_aut) {
                         if (!empty($numUSP_aut["codpesOrientador"])) {
@@ -568,17 +567,17 @@ if (!empty($_GET)) {
                         } else {
                             echo '<td>Não foi possível coletar</td>';
                         }
-                    }                    
+                    }
                     ?>
                     <td><?php echo $r["_source"]['USP']['areaconcentracao'];?></td>
                     <td><?php echo $r["_source"]['inSupportOf']; ?></td>
-                    <td><?php echo $r["_source"]['language'][0]; ?></td>                      
+                    <td><?php echo $r["_source"]['language'][0]; ?></td>
                     <td><?php echo $r["_source"]['name'];?></td>
                     <td><?php echo $r["_source"]['description'][0];?></td>
                     <td>
                         <?php foreach ($r["_source"]['about'] as $subject) {
                             $subject_array[]=$subject;
-                        } 
+                        }
                         $array_subject = implode("; ", $subject_array);
                         unset($subject_array);
                         print_r($array_subject);
@@ -589,10 +588,10 @@ if (!empty($_GET)) {
                     <td><?php if (!empty($r["_source"]['datePublished'])) { echo $r["_source"]['datePublished']; } ?></td>
                     <td>
                         <?php if (!empty($r["_source"]['publisher']['organization']['location'])) {
-                                 echo $r["_source"]['publisher']['organization']['location']; 
-                        } 
+                                 echo $r["_source"]['publisher']['organization']['location'];
+                        }
                         ?>
-                    </td>                                        
+                    </td>
                     <td><?php echo $r["_source"]['dateCreated'];?></td>
                 </tr>
                 <?php endforeach;?>
@@ -602,7 +601,7 @@ if (!empty($_GET)) {
     </div>
 
     <?php elseif($_GET["format"] == "abnt") : ?>
-  
+
         <?php foreach ($cursor["hits"]["hits"] as $r) : ?>
             <li class="uk-h6 uk-margin-top">
                 <ul>
@@ -611,24 +610,24 @@ if (!empty($_GET)) {
                             $data = citation::citation_query($r["_source"]);
                             print_r($citeproc_abnt->render($data, $mode));
                         ?>
-                    </li>                                               
-                </ul>                                              
+                    </li>
+                </ul>
             </li>
-        <?php endforeach;?>    
+        <?php endforeach;?>
 
     <?php elseif($_GET["format"] == "RIS") : ?>
 
        <?php
 
-            foreach ($cursor["hits"]["hits"] as $r) { 
+            foreach ($cursor["hits"]["hits"] as $r) {
                 /* Exportador RIS */
                 $record_blob[] = Exporters::RIS($r);
                 $record_blob = str_replace("'","",$record_blob);
             }
-       ?> 
-    <h2>Exportar RIS</h2> 
+       ?>
+    <h2>Exportar RIS</h2>
     <p><button class="uk-button uk-button-primary" onclick="SaveAsFile('<?php echo implode("",str_replace('"','',$record_blob)); ?>','record.ris','text/plain;charset=utf-8')">RIS (EndNote)</button></p>
-           
+
     <?php else: ?>
     Não definido
 
@@ -637,20 +636,20 @@ if (!empty($_GET)) {
 <?php else: ?>
 <p>Formato não definido</p>
 
-<?php endif; ?>                   
-                 
+<?php endif; ?>
 
-                        
+
+
                     <hr class="uk-grid-divider">
 
-                   
+
                 </div>
             </div>
             <hr class="uk-grid-divider">
             </div>
-            <?php include('inc/footer.php'); ?>          
+            <?php include('inc/footer.php'); ?>
         </div>
-                
+
 
 
         <script>
@@ -658,9 +657,9 @@ if (!empty($_GET)) {
             var url = window.location.href.split('&page')[0];
             window.location=url +'&page='+ (pageIndex+1);
         });
-        </script>    
+        </script>
 
-<?php include('inc/offcanvas.php'); ?>         
-        
+<?php include('inc/offcanvas.php'); ?>
+
     </body>
 </html>

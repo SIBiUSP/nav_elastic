@@ -3,9 +3,8 @@
     <head>
         <?php
             require 'inc/config.php';
-            require 'inc/functions.php';
             require 'inc/meta-header.php';
-        ?> 
+        ?>
         <title><?php echo $branch; ?></title>
         <!-- Facebook Tags - START -->
         <meta property="og:locale" content="pt_BR">
@@ -15,27 +14,27 @@
         <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
-        <meta property="og:image:width" content="800"> 
-        <meta property="og:image:height" content="600"> 
+        <meta property="og:image:width" content="800">
+        <meta property="og:image:height" content="600">
         <meta property="og:type" content="website">
-        <!-- Facebook Tags - END -->        
-        
+        <!-- Facebook Tags - END -->
+
     </head>
 
-    <body>     
-        
+    <body>
+
         <?php
         if (file_exists("inc/analyticstracking.php")) {
             include_once "inc/analyticstracking.php";
         }
-        ?>        
-        
+        ?>
+
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
             <div class="uk-container">
                 <div class="uk-position-cover uk-inline uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport" style="background-image: url(<?php echo ${$prefix . $background_number}; ?>);">
                     <?php require 'inc/navbar.php'; ?>
                     <div class="uk-inline-clip uk-overlay-primary uk-padding">
-                    <h2 style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>                    
+                    <h2 style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>
                         <form class="uk-form-stacked" action="result.php">
                             <div class="uk-margin">
                                 <label class="uk-form-label" for="form-stacked-text"><?php echo $t->gettext('Termos de busca'); ?></label>
@@ -50,7 +49,7 @@
                                         <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
                                         <option value="base:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
                                         <option value="base:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
-                                    </select>                                                          
+                                    </select>
                                 </div>
                             </div>
                              <div class="uk-margin">
@@ -114,34 +113,34 @@
                                         <option value="unidadeUSP:&quot;MZ&quot;" style="color:#333"><?php echo $t->gettext('Museu de Zoologia (MZ)'); ?></option>
                                         <option value="unidadeUSP:&quot;MP&quot;" style="color:#333"><?php echo $t->gettext('Museu Paulista (MP)'); ?></option>
 
-                                    </select>                                   
-                                </div>                             
+                                    </select>
+                                </div>
                              </div>
                              <div class="uk-child-width-1-2 uk-text-center" uk-grid>
                                 <div><button class="uk-button uk-button-primary"><?php echo $t->gettext('Buscar'); ?></button></div>
                                 <div><button class="uk-button uk-button-danger" type="reset" value="Reset"><?php echo $t->gettext('Limpar formulário'); ?></button></div>
-                            </div>                      
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>        
-        
+        </div>
+
         <div class="uk-section uk-container">
-            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Mais informações'); ?></span></h1>                    
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Mais informações'); ?></span></h1>
             <div class="uk-child-width-expand@s uk-text-center" uk-grid>
                 <div>
                     <div class="uk-card">
                         <h3 class="uk-card-title"><?php echo $t->gettext('Bases'); ?></h3>
                         <ul class="uk-list uk-list-divider">
                             <?php Homepage::baseInicio(); ?>
-                        </ul>                      
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>  
-        
-        
+        </div>
+
+
         <div class="uk-section uk-container">
             <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Últimos registros'); ?></span></h1>
             <?php Homepage::ultimosRegistros();?>
@@ -150,10 +149,10 @@
 <?php require 'inc/footer.php'; ?>
 
         </div>
-        
-        
+
+
 <?php require 'inc/offcanvas.php'; ?>
-            
-        
+
+
     </body>
 </html>

@@ -1318,11 +1318,13 @@ class Record
         if (!empty($this->url)||!empty($this->doi)) {
             $this->onlineAccess($t);
         }
-        if ($this->showMetrics == true) {
-            if (!empty($this->doi)) {
-                $this->metrics($t, $this->doi, $this->completeRecord);
-            }
-        }
+        
+        /* Implementar AJAX */
+        //if ($this->showMetrics == true) {
+        //    if (!empty($this->doi)) {
+        //        $this->metrics($t, $this->doi, $this->completeRecord);
+        //    }
+        //}
 
         $this->citation($t, $this->completeRecord);
 
