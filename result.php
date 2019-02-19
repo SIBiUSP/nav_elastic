@@ -70,17 +70,17 @@ $total = $cursor["hits"]["total"];
 
 
 </head>
-    <body>
-        <?php require 'inc/navbar.php'; ?>
-        <br/><br/><br/>
+<body>
+    <?php require 'inc/navbar.php'; ?>
+    <br/><br/><br/>
 
-        <?php
-        if (file_exists("inc/analyticstracking.php")) {
-            include_once "inc/analyticstracking.php";
-        }
-        ?>
+    <?php
+    if (file_exists("inc/analyticstracking.php")) {
+        include_once "inc/analyticstracking.php";
+    }
+    ?>
 
-        <div class="uk-container">
+    <div class="uk-container">
         <div class="uk-width-1-1@s uk-width-1-1@m">
             <nav class="uk-navbar-container uk-margin" uk-navbar>
                 <div class="nav-overlay uk-navbar-left">
@@ -108,53 +108,52 @@ $total = $cursor["hits"]["total"];
         </div>
         <div class="uk-width-1-1@s uk-width-1-1@m">
 
-        <!-- List of filters - Start -->
-        <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
-        <p class="uk-margin-top" uk-margin>
-            <a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>
-            <?php
-            if (!empty($_GET["search"])) {
-                foreach ($_GET["search"] as $querySearch) {
-                    $querySearchArray[] = $querySearch;
-                    $name_field = explode(":", $querySearch);
-                    $querySearch = str_replace($name_field[0].":", "", $querySearch);
-                    $diff["search"] = array_diff($_GET["search"], $querySearchArray);
-                    $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                    echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
-                    unset($querySearchArray);
+            <!-- List of filters - Start -->
+            <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
+            <p class="uk-margin-top" uk-margin>
+                <a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>
+                <?php
+                if (!empty($_GET["search"])) {
+                    foreach ($_GET["search"] as $querySearch) {
+                        $querySearchArray[] = $querySearch;
+                        $name_field = explode(":", $querySearch);
+                        $querySearch = str_replace($name_field[0].":", "", $querySearch);
+                        $diff["search"] = array_diff($_GET["search"], $querySearchArray);
+                        $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                        echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                        unset($querySearchArray);
+                    }
                 }
-            }
 
-            if (!empty($_GET["filter"])) {
-                foreach ($_GET["filter"] as $filters) {
-                    $filters_array[] = $filters;
-                    $name_field = explode(":", $filters);
-                    $filters = str_replace($name_field[0].":", "", $filters);
-                    $diff["filter"] = array_diff($_GET["filter"], $filters_array);
-                    $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                    echo '<a class="uk-button uk-button-primary uk-button-small" href="http://'.$url_push.'">Filtrado por: '.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
-                    unset($filters_array);
+                if (!empty($_GET["filter"])) {
+                    foreach ($_GET["filter"] as $filters) {
+                        $filters_array[] = $filters;
+                        $name_field = explode(":", $filters);
+                        $filters = str_replace($name_field[0].":", "", $filters);
+                        $diff["filter"] = array_diff($_GET["filter"], $filters_array);
+                        $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                        echo '<a class="uk-button uk-button-primary uk-button-small" href="http://'.$url_push.'">Filtrado por: '.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                        unset($filters_array);
+                    }
                 }
-            }
 
-            if (!empty($_GET["notFilter"])) {
-                foreach ($_GET["notFilter"] as $notFilters) {
-                    $notFiltersArray[] = $notFilters;
-                    $name_field = explode(":", $notFilters);
-                    $notFilters = str_replace($name_field[0].":", "", $notFilters);
-                    $diff["notFilter"] = array_diff($_GET["notFilter"], $notFiltersArray);
-                    $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                    echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
-                    unset($notFiltersArray);
+                if (!empty($_GET["notFilter"])) {
+                    foreach ($_GET["notFilter"] as $notFilters) {
+                        $notFiltersArray[] = $notFilters;
+                        $name_field = explode(":", $notFilters);
+                        $notFilters = str_replace($name_field[0].":", "", $notFilters);
+                        $diff["notFilter"] = array_diff($_GET["notFilter"], $notFiltersArray);
+                        $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
+                        echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                        unset($notFiltersArray);
+                    }
                 }
-            }
-            ?>
+                ?>
 
-        </p>
-        <?php endif;?>
-        <!-- List of filters - End -->
+            </p>
+            <?php endif;?>
+            <!-- List of filters - End -->
         </div>
-
         <div class="uk-grid-divider" uk-grid>
             <div class="uk-width-1-4@s uk-width-2-6@m">
                     <!-- Facetas - Início -->
@@ -165,9 +164,9 @@ $total = $cursor["hits"]["total"];
                                 $facets = new Facets();
                                 $facets->query = $result_get['query'];
 
-                            if (!isset($_GET["search"])) {
-                                $_GET["search"] = null;
-                            }
+                                if (!isset($_GET["search"])) {
+                                    $_GET["search"] = null;
+                                }
 
                                 $facets->facet("base", 10, $t->gettext('Bases'), null, "_term", $_GET["search"]);
                                 $facets->facet("type", 100, $t->gettext('Tipo de material'), null, "_term", $_GET["search"]);
@@ -198,24 +197,6 @@ $total = $cursor["hits"]["total"];
                                 $facets->facet("USP.qualis.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.qualis.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
                             ?>
-                            <?php
-                                //$facets->facet("USP.WOS.coverage", 50, $t->gettext('Índices da Web of Science'), null, "_term", $_GET["search"]);
-                                //$facets->facet_range("USP.JCR.JCR.2016.Journal_Impact_Factor", 100, "JCR - Journal Impact Factor - 2016");
-                                //$facets->facet_range("USP.JCR.JCR.2016.IF_without_Journal_Self_Cites", 100, "JCR - Journal Impact Factor without Journal Self Cites - 2016");
-                                //$facets->facet_range("USP.JCR.JCR.2016.Eigenfactor_Score", 100, "JCR - Eigenfactor Score - 2016");
-                                //$facets->facet_range("USP.citescore.citescore.2017.citescore", 100, "Scopus - Citescore - 2017");
-                                //$facets->facet_range("USP.citescore.citescore.2017.SJR", 100, "Scopus - SJR - 2017");
-                                //$facets->facet_range("USP.citescore.citescore.2017.SNIP", 100, "Scopus - SNIP - 2017");
-                                //$facets->facet("USP.citescore.citescore.2016.open_access", 50, $t->gettext('Acesso aberto'), null, "_term", $_GET["search"]);
-
-                            ?>
-                            <!--
-                            <li class="uk-nav-header">< ?php echo $t->gettext('Métricas no nível do artigo'); ?></li>
-                            < ?php
-                                $facets->facet_range("USP.aminer.num_citation",100,$t->gettext('Citações no AMiner'),"INT");
-                                $facets->facet_range("USP.opencitation.num_citations",100,$t->gettext('Citações no OpenCitations'),"INT");
-                            ?>
-                            -->
                             <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>
                             <?php
                                 $facets->facet("inSupportOf", 30, $t->gettext('Tipo de tese'), null, "_term", $_GET["search"]);
@@ -545,19 +526,18 @@ $total = $cursor["hits"]["total"];
             </div>
         </div>
         <hr class="uk-grid-divider">
-        </div>
-        <?php require 'inc/footer.php'; ?>
-        </div>
+    </div>
+    <?php require 'inc/footer.php'; ?>
+    </div>
 
-        <script>
-        $('[data-uk-pagination]').on('select.uk.pagination', function(e, pageIndex){
-            var url = window.location.href.split('&page')[0];
-            window.location=url +'&page='+ (pageIndex+1);
-        });
-        </script>
-        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+    <script>
+    $('[data-uk-pagination]').on('select.uk.pagination', function(e, pageIndex){
+        var url = window.location.href.split('&page')[0];
+        window.location=url +'&page='+ (pageIndex+1);
+    });
+    </script>
 
-    <?php require 'inc/offcanvas.php'; ?>
+<?php require 'inc/offcanvas.php'; ?>
 
-    </body>
+</body>
 </html>
