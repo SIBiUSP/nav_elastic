@@ -432,14 +432,6 @@ $total = $cursor["hits"]["total"];
                     </ul>
                 <hr>
 
-                <!-- Gerar relatório - Início -->
-                <fieldset>
-                    <legend>Gerar relatório</legend>
-                    <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button uk-button-primary">Gerar relatório</a>
-                    </div>
-                </fieldset>
-                <!-- Gerar relatório - Fim -->
-
                 <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                 <hr>
                 <!-- Exportar resultados -->
