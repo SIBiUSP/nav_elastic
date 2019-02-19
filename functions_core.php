@@ -813,11 +813,11 @@ class DSpaceREST
 
     }
 
-    static function logoutREST($cookies)
+    static function logoutREST($DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $DSpaceCookies"));
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/logout");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -826,7 +826,7 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function searchItemDSpace($sysno, $cookies = null)
+    static function searchItemDSpace($sysno, $DSpaceCookies = null)
     {
         global $dspaceRest;
         $data_string = "{\"key\":\"usp.sysno\", \"value\":\"$sysno\"}";
@@ -835,9 +835,9 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -852,16 +852,16 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function getBitstreamDSpace($itemID, $cookies = NULL)
+    static function getBitstreamDSpace($itemID, $DSpaceCookies = NULL)
     {
         global $dspaceRest;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$itemID/bitstreams");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -872,16 +872,16 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function getBitstreamPolicyDSpace($bitstreamID, $cookies = null)
+    static function getBitstreamPolicyDSpace($bitstreamID, $DSpaceCookies = null)
     {
         global $dspaceRest;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/policy");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -892,7 +892,7 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function deleteBitstreamPolicyDSpace($bitstreamID, $policyID, $cookies)
+    static function deleteBitstreamPolicyDSpace($bitstreamID, $policyID, $DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
@@ -900,7 +900,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",
+            "Cookie: $DSpaceCookies",
             'Content-Type: application/json'
             )
         );
@@ -911,7 +911,7 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function addBitstreamPolicyDSpace($bitstreamID, $policyAction, $groupId, $resourceType, $rpType, $cookies)
+    static function addBitstreamPolicyDSpace($bitstreamID, $policyAction, $groupId, $resourceType, $rpType, $DSpaceCookies)
     {
         global $dspaceRest;
         $policyArray["action"] =  $policyAction;
@@ -930,9 +930,9 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -943,16 +943,16 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function getBitstreamRestrictedDSpace($bitstreamID, $cookies)
+    static function getBitstreamRestrictedDSpace($bitstreamID, $DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamID/retrieve/64171-196117-1-PB.pdf");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -964,7 +964,7 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function createItemDSpace($dataString,$collection,$cookies)
+    static function createItemDSpace($dataString,$collection,$DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
@@ -973,7 +973,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",
+            "Cookie: $DSpaceCookies",
             'Content-Type: application/json'
             )
         );
@@ -982,16 +982,16 @@ class DSpaceREST
 
     }
 
-    static function deleteItemDSpace($uuid, $cookies)
+    static function deleteItemDSpace($uuid, $DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -1002,7 +1002,7 @@ class DSpaceREST
         curl_close($ch);
     }
 
-    static function addBitstreamDSpace($uuid, $file, $userBitstream, $cookies)
+    static function addBitstreamDSpace($uuid, $file, $userBitstream, $DSpaceCookies)
     {
         global $dspaceRest;
         $filename = rawurlencode($file["file"]["name"]);
@@ -1012,7 +1012,7 @@ class DSpaceREST
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($file["file"]["tmp_name"]));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Cookie: $cookies",
+            "Cookie: $DSpaceCookies",
             'Content-Type: text/plain',
             'Accept: application/json'
             )
@@ -1023,16 +1023,16 @@ class DSpaceREST
         return $result;
     }
 
-    static function deleteBitstreamDSpace($bitstreamId, $cookies)
+    static function deleteBitstreamDSpace($bitstreamId, $DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/bitstreams/$bitstreamId");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        if (!empty($cookies)) {
+        if (!empty($DSpaceCookies)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                "Cookie: $cookies",
+                "Cookie: $DSpaceCookies",
                 'Content-Type: application/json'
                 )
             );
@@ -1150,11 +1150,11 @@ class DSpaceREST
 
     }
 
-    static function testREST($cookies)
+    static function testREST($DSpaceCookies)
     {
         global $dspaceRest;
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $cookies"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $DSpaceCookies"));
         curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/status");
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
