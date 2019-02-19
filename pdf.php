@@ -1,6 +1,5 @@
 <?php
     include('inc/config.php'); 
-    include('inc/functions.php');
 
     $cursor = elasticsearch::elastic_get($_GET['_id'],$type,null);
 

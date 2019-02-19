@@ -12,7 +12,6 @@ $filename = "sitemap.txt";
 chdir('../');
 // Include essencial files
 include 'inc/config.php';
-include 'inc/functions.php';
 
 //$query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "IFSC";
 

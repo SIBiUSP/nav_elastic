@@ -4,7 +4,6 @@
 chdir('../');
 // Include essencial files
 include 'inc/config.php';
-include 'inc/functions.php';
 
 if ($handle = opendir('/var/www/html/bdpi/upload')) {
 

@@ -2,7 +2,6 @@
 <?php
 
     require '../inc/config.php'; 
-    require '../inc/functions.php';
 
     $query["query"]["query_string"]["query"] = "+_exists_:doi -_exists_:USP.altmetric_com";
     $query['sort'] = [

@@ -3,7 +3,6 @@
     <head>
         <?php 
             include('inc/config.php'); 
-            include('inc/functions.php');
             include('inc/meta-header.php');
         ?>
             <title>Entre em contato</title>

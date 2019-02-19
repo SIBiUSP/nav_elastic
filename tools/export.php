@@ -478,7 +478,6 @@ if (isset($_GET["format"])) {
         chdir('../');
         // Include essencial files
         include 'inc/config.php';
-        include 'inc/functions.php';
 
         if (!empty($_GET)) {
             $result_get = get::analisa_get($_GET);
@@ -712,7 +711,6 @@ if (isset($_GET["format"])) {
         chdir('../');
         // Include essencial files
         include 'inc/config.php';
-        include 'inc/functions.php';
 
 
         $result_get = get::analisa_get($_GET);
@@ -776,7 +774,6 @@ if (isset($_GET["format"])) {
       chdir('../');
       // Include essencial files
       include 'inc/config.php';
-      include 'inc/functions.php';
 
       if (!empty($_GET)) {
           $result_get = get::analisa_get($_GET);

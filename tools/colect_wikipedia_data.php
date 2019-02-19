@@ -2,7 +2,6 @@
 <?php
 
     include('../inc/config.php'); 
-    include('../inc/functions.php');
     $query["query"]["query_string"]["query"] = "+_exists_:url -_exists_:USP.wikipedia";    
     $query['sort'] = [
         ['datePublished.keyword' => ['order' => 'desc']],

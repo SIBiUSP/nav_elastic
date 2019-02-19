@@ -4,7 +4,6 @@
     chdir('../');
     // Include essencial files
     include('inc/config.php'); 
-    include('inc/functions.php'); 
 
     $query["query"]["query_string"]["query"] = "-_exists_:itens_date";    
     $query['sort'] = [

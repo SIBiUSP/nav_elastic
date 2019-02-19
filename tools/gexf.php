@@ -11,7 +11,6 @@
     <graph defaultedgetype="undirected" mode="static">
     <?php
     require '../inc/config.php'; 
-    require '../inc/functions.php';
 
     $result_get = get::analisa_get($_GET);
     $query = $result_get['query'];  

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <?php
 
-    require '../inc/config.php'; 
-    require '../inc/functions.php';
+    require '../inc/config.php';
 
     $query["query"]["query_string"]["query"] = "-_exists_:USP.citescore";    
     $query['sort'] = [
