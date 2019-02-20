@@ -267,8 +267,6 @@ $total = $cursor["hits"]["total"];
                             </fieldset>
                         </form>
                         <!-- Limitar por data - Fim -->
-                    </ul>
-                <hr>
 
                 <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                 <hr>
