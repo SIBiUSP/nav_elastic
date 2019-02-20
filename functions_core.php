@@ -398,18 +398,29 @@ class Facets
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].'</a></div>';
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' (~'.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
                         echo '</div></li>';
                     }
 
                 } else {
-                    echo '<li>';
-                    echo '<div uk-grid>
-                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.$facets['key'].'</a></div>
-                        <div class="uk-width-1-3" style="color:#333">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
-                        ';
-                    echo '</div></div></li>';
+                    if ($facets['key'] == "Não preenchido") {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.$facets['key'].'</a></div>
+                            <div class="uk-width-1-3" style="color:#333">
+                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
+                            ';
+                        echo '</div></div></li>';
+                    } else {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.$facets['key'].' (~'.number_format($facets['doc_count'], 0, ',', '.').')</a></div>
+                            <div class="uk-width-1-3" style="color:#333">
+                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
+                            ';
+                        echo '</div></div></li>';
+                    }
+
                 }
             };
             echo '</ul>';
