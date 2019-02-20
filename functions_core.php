@@ -301,9 +301,7 @@ class Facets
 
         $result_count = count($response["aggregations"]["counts"]["buckets"]);
 
-        if ($result_count == 0) {
-
-        } elseif ($result_count <= 5) {
+        if (($result_count != 0) && ($result_count <= 5)) {
 
             echo '<li class="uk-parent">';
             echo '<a href="#" style="color:#333">'.$field_name.'</a>';
@@ -317,14 +315,24 @@ class Facets
                         echo '</div></li>';
                     }
                 } else {
-                    echo '<li>';
-                    echo '<div uk-grid>
-                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].'</a></div>
+                    if (!empty($_SESSION['oauthuserdata'])) {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' (~'.number_format($facets['doc_count'],0,',','.').')</a></div>
                         <div class="uk-width-1-3" style="color:#333">
                         <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
                         ';
-                    echo '</div></div></li>';
+                        echo '</div></div></li>';                       
 
+                    } else {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].'</a></div>
+                            <div class="uk-width-1-3" style="color:#333">
+                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                            ';
+                        echo '</div></div></li>';
+                    }
                 }
 
             };
@@ -340,17 +348,30 @@ class Facets
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'</a></div>';
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' (~'.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>';
                         echo '</div></li>';
                     }
                 } else {
-                    echo '<li>';
-                    echo '<div uk-grid>
-                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]["key"].'</a></div>
-                        <div class="uk-width-1-3" style="color:#333">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
-                        ';
-                    echo '</div></div></li>';
+                    if (!empty($_SESSION['oauthuserdata'])) {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' (~'.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
+                            <div class="uk-width-1-3" style="color:#333">
+                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                            ';
+                        echo '</div></div></li>';                                                
+
+                    } else {
+                        echo '<li>';
+                        echo '<div uk-grid>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]["key"].'</a></div>
+                            <div class="uk-width-1-3" style="color:#333">
+                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                            ';
+                        echo '</div></div></li>';                        
+
+                    }
+
 
                 }
 
