@@ -217,9 +217,9 @@ if (isset($_GET["format"])) {
 
                 $fields[] = $citeproc_apa->render($data_citation, $mode);
 
-                if (!empty($r["_source"]["USP"]["qualis"]["qualis"]["2016"]["area_nota"])) {
-                    foreach ($r["_source"]["USP"]["qualis"]["qualis"]["2016"]["area_nota"] as $qualis) {
-                        $qualis_array[]=$qualis;                       
+                if (!empty($r["_source"]["USP"]["qualis"]["qualis"]["2016"])) {
+                    foreach ($r["_source"]["USP"]["qualis"]["qualis"]["2016"] as $qualis) {
+                        $qualis_array[] = $qualis["area_nota"];                       
                     }
 
                     if (!empty($qualis_array)) {
