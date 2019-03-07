@@ -53,7 +53,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
 
-            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês\tABNT\tAPA";
+            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês\tABNT\tAPA\tQualis 2016";
 
             foreach ($cursor["hits"]["hits"] as $r) {
                 unset($fields);
@@ -216,6 +216,21 @@ if (isset($_GET["format"])) {
                 $fields[] = $citeproc_abnt->render($data_citation, $mode);
 
                 $fields[] = $citeproc_apa->render($data_citation, $mode);
+
+                if (!empty($r["_source"]["USP"]["qualis"]["qualis"]["2016"]["area_nota"])) {
+                    foreach ($r["_source"]["USP"]["qualis"]["qualis"]["2016"]["area_nota"] as $qualis) {
+                        $qualis_array[]=$qualis;                       
+                    }
+
+                    if (!empty($qualis_array)) {
+                        $fields[] = implode(";", $qualis_array);
+                        unset($qualis_array);
+                    } else {
+                        $fields[] = "";
+                    }
+                } else {
+                    $fields[] = "";
+                }
 
 
                 $content[] = implode("\t", $fields);
