@@ -411,6 +411,21 @@ if (isset($_GET["format"])) {
 
                     $fields[] = $citeproc_apa->render($data_citation, $mode);
 
+                    if (!empty($r["_source"]["USP"]["qualis"]["qualis"]["2016"])) {
+                        foreach ($r["_source"]["USP"]["qualis"]["qualis"]["2016"] as $qualis) {
+                            $qualis_array[] = $qualis["area_nota"];                       
+                        }
+    
+                        if (!empty($qualis_array)) {
+                            $fields[] = implode(";", $qualis_array);
+                            unset($qualis_array);
+                        } else {
+                            $fields[] = "";
+                        }
+                    } else {
+                        $fields[] = "";
+                    }                    
+
 
                     $content[] = implode("\t", $fields);
                     unset($fields);
