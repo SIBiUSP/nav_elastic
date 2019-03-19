@@ -1694,4 +1694,250 @@ class Record
     }
 }
 
+class FolioREST
+{
+    static function loginREST()
+    {
+        $ch = curl_init();
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/authn/login");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"username\":\"diku_admin\",\"password\":\"admin\"}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        $output_parsed = explode(" ", $server_output);
+        return $output_parsed[10];
+        curl_close($ch);
+    }
+    static function getContributorNameTypes($cookies)
+    {
+        $ch = curl_init();
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        //$headers[] = "Content-type: application/json";
+        //$headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/contributor-name-types");
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, "active==\"true\"");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+    static function getInstancesContext($cookies)
+    {
+        $ch = curl_init();
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        //$headers[] = "Content-type: application/json";
+        //$headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances/context");
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+    static function getIdentifierTypes($cookies, $query = null)
+    {
+        $ch = curl_init();
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/identifier-types?limit=50$query");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+
+    static function queryInstances($cookies, $offset = 0, $limit = 0, $query = null)
+    {
+        $ch = curl_init();
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Accept: application/json";
+        if (!empty($query)) {
+            curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances?offset=$offset&limit=$limit&query=$query");
+        } else {
+            curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances?offset=$offset&limit=$limit");        
+        }
+        
+        //curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        $resultArray = json_decode($server_output, true);
+        return $resultArray;
+        curl_close($ch);
+    }
+
+    static function queryInstancesHRID($cookies, $query)
+    {
+        $ch = curl_init();
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/inventory/instances?query=$query");
+        //curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        $resultArray = json_decode($server_output, true);
+        return $resultArray;
+        curl_close($ch);
+    }
+    static function queryHoldingsHRID($cookies, $query)
+    {
+        $ch = curl_init();
+        $headers = array($cookies);
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, "http://172.31.1.52:9130/holdings-storage/holdings?query=$query");
+        //curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        $resultArray = json_decode($server_output, true);
+        return $resultArray;
+        curl_close($ch);
+    }
+    static function addRecordREST($cookies,$json) {
+        $ch = curl_init();
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+    static function deleteRecordsREST($cookies,$id) {
+        $ch = curl_init();
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances/'.$id.'');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+    static function deleteAllRecordsREST($cookies) {
+        $ch = curl_init();
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/inventory/instances');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+    static function deleteItensREST($cookies) {
+        $ch = curl_init();
+        $headers = array();
+        $headers[] = "X-Okapi-Tenant: diku";
+        $headers[] = 'X-Okapi-Token: '.$cookies.'';
+        $headers[] = "Content-type: application/json";
+        $headers[] = "Accept: text/plain";
+        curl_setopt($ch, CURLOPT_URL, 'http://172.31.1.52:9130/holdings-storage/holdings');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        print_r($server_output);
+        curl_close($ch);
+    }
+    static function logoutREST($folioCookies)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: $folioCookies"));
+        curl_setopt($ch, CURLOPT_URL, "$folioRest/rest/logout");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        curl_close($ch);
+    }
+    static function folioCodexToElasticSchemaOrg($instance) 
+    {
+        #print_r($instance);
+        $body["doc"]["base"][] = "Livros";
+        $body["doc"]["type"] = "Livro";
+        $body["doc"]["folioID"] = $instance["id"];
+        $body["doc"]["sysno"] = $instance["hrid"];
+        #$body["doc"]["isbn"] = "";
+        #$body["doc"]["doi"] = "";
+        #$body["doc"]["language"][] = "";
+        #$body["doc"]["country"][] = "";
+        #$body["doc"]["alternateName"]="";
+        $body["doc"]["name"] = $instance["title"];
+
+        foreach (($instance["contributors"]) as $contributor) {
+            $author["person"]["name"] = $contributor["name"];
+            $body["doc"]["author"][] = $author;
+            unset($contributor);
+            unset($author);
+        }      
+
+
+        $body["doc"]["publisher"]["organization"]["name"] = $instance["publication"][0]["publisher"];
+        $body["doc"]["publisher"]["organization"]["location"] = $instance["publication"][0]["place"];
+        $body["doc"]["USP"]["notes"] = $instance["notes"];
+        #$body["doc"]["description"][] = "";
+        if (isset($instance["funder"])) {
+            $body["doc"]["funder"][]["name"] = "";
+            $body["doc"]["funder"][]["projectNumber"][] = "";
+        }
+        $body["doc"]["about"] = $instance["subjects"];
+        #$body["doc"]["isPartOf"]["name"] = "";
+        #$body["doc"]["url"][] = "";
+        $body["doc"]["datePublished"] = $instance["publication"][0]["dateOfPublication"];
+        $body["doc_as_upsert"] = true;
+        #echo "<br/><br/>";
+        #print_r($body);
+        #echo "<br/><br/>";
+
+        return $body;
+        
+    }    
+}
+
 ?>
