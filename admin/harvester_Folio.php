@@ -8,7 +8,7 @@ $folioCookies = FolioREST::loginREST();
 # Harvester All
 
 $offset = 0;
-$limit = 10;
+$limit = 100;
 $query = null;
 
 $harvestResult = FolioREST::queryInstances($folioCookies, $offset, $limit, $query);

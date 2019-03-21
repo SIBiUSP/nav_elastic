@@ -1905,7 +1905,7 @@ class FolioREST
         $body["doc"]["sysno"] = $instance["hrid"];
         #$body["doc"]["isbn"] = "";
         #$body["doc"]["doi"] = "";
-        #$body["doc"]["language"][] = "";
+        $body["doc"]["language"][] = "";
         #$body["doc"]["country"][] = "";
         #$body["doc"]["alternateName"]="";
         $body["doc"]["name"] = $instance["title"];
