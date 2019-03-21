@@ -37,7 +37,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
   /* DSpace */
   if (isset($dspaceRest)) {
 
-      $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+      $actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
       /* Search for existing record on DSpace */
       $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
