@@ -430,7 +430,13 @@ if (isset($_GET["format"])) {
                         }
                     } else {
                         $fields[] = "";
-                    }                    
+                    }
+                    
+                    if (!empty($r["_source"]['USP']['fatorimpacto'])) {
+                        $fields[] = $r["_source"]['USP']['fatorimpacto'];
+                    } else {
+                        $fields[] = "";
+                    }                      
 
 
                     $content[] = implode("\t", $fields);
