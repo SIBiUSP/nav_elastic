@@ -53,7 +53,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->search($params);
             $total = $cursor["hits"]["total"];
 
-            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês\tABNT\tAPA\tQualis 2016";
+            $content[] = "Sysno\tDOI\tTítulo\tAutores\tFonte da publicação\tPaginação\tAno de publicação\tISSN\tLocal de publicação\tEditora\tNome do evento\tTipo de Material\tTipo de tese\tAutores USP\tNúmero USP\tUnidades USP\tDepartamentos\tInternacionalização\tAssuntos\tURL\tResumo\tResumo em inglês\tABNT\tAPA\tQualis 2016\tFator de impacto - 590m";
 
             foreach ($cursor["hits"]["hits"] as $r) {
                 unset($fields);
@@ -231,6 +231,12 @@ if (isset($_GET["format"])) {
                 } else {
                     $fields[] = "";
                 }
+
+                if (!empty($r["_source"]['USP']['fatorimpacto'])) {
+                    $fields[] = $r["_source"]['USP']['fatorimpacto'];
+                } else {
+                    $fields[] = "";
+                }            
 
 
                 $content[] = implode("\t", $fields);
