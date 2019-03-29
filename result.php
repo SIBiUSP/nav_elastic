@@ -222,6 +222,7 @@ $total = $cursor["hits"]["total"];
                                 $facets->facet("isPartOf.issn", 100, "ISSN", null, "_term", $_GET["search"]);
                                 $facets->facet("doi", 100, "DOI", null, "_term", $_GET["search"]);
                                 $facets->facet("USP.crossref.message.funder.name", 50, $t->gettext('Agência de fomento obtida na CrossRef'), null, "_term", $_GET["search"]);
+                                $facets->facet("USP.fullTextFiles.name", 10, $t->gettext('Texto completo'), null, "_term", $_GET["search"]);
                                 $facets->rebuild_facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
                             ?>
                             </ul>
