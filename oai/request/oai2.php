@@ -82,7 +82,8 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                } elseif ($set == "TD") {
                    $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Teses e dissertações";
                } elseif ($set == "OA") {
-                   $query["query"]["exists"]["field"] = "USP.fullTextFiles.name";
+                   $query["query"]["bool"]["should"]["exists"]["field"] = "USP.fullTextFiles.name";
+                   $query["query"]["bool"]["should"]["exists"]["field"] = "USP.unpaywall.best_oa_location.url_for_pdf";
                } else {
                    $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
                }
@@ -152,8 +153,8 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                   }
                 }
 
-                if (!empty($hit['_source']['USP']['fullTextFiles'])) {
-                  $i_bitstream = 0;
+                $i_bitstream = 0;
+                if (!empty($hit['_source']['USP']['fullTextFiles'])) {                  
                   foreach ($hit['_source']['USP']['fullTextFiles'] as $bitstream) {
                       if (count($bitstream) > 10) {
                           $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstream["uuid"] . "/" . $bitstream["name"];
@@ -166,6 +167,11 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                       }
                   }
                 }
+
+                if (!empty($hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"])) {
+                    $fields['dc:bitstream_'.$i_bitstream] = $hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"];
+                    $i_bitstream++;
+                }                
 
                 if (!empty($hit['_source']['author'])) {
                     foreach ($hit['_source']['author'] as $k => $authors) {
