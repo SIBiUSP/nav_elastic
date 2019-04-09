@@ -179,6 +179,10 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                     }
                 }
 
+                if (!empty($hit['_source']['datePublished'])) {
+                    $fields['dc:date'] = $hit['_source']['datePublished'];
+                }                  
+
                 $records[$i]["identifier"] = $hit['_id'];
                 $records[$i]["datestamp"] = $now;
                 if (!empty($set)) {
