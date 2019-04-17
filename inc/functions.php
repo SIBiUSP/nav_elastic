@@ -1233,6 +1233,9 @@ class Record
         if (isset($record["_source"]["unidadeUSP"])) {
             $this->unidadeUSPArray = $record["_source"]["unidadeUSP"];
         }
+        if (isset($record["_source"]["USP"]["programa_pos_sigla"])) {
+            $this->programa_pos_sigla = $record["_source"]["USP"]["programa_pos_sigla"];
+        }        
         if (isset($record["_source"]["isbn"])) {
             $this->isbn = $record["_source"]["isbn"];
         }
@@ -1382,6 +1385,13 @@ class Record
             }
             echo '<li>'.$t->gettext('Unidades USP').': '.implode("; ", $unidadeUSPList).'</li>';
         }
+
+        /* Programa Sigla Pós */
+        if (!empty($this->programa_pos_sigla)) {
+            $programa_pos_sigla = $this->programa_pos_sigla;
+            $programa_pos_siglaList[] = '<a href="'.$url_base.'/result.php?filter[]=programa_pos_sigla:&quot;'.$programa_pos_sigla.'&quot;">'.$programa_pos_sigla.'</a>';
+            echo '<li>'.$t->gettext('Sigla do Departamento').': '.implode("; ", $programa_pos_siglaList).'</li>';
+        }        
 
         /* DOI */
         if (!empty($this->doi)) {
