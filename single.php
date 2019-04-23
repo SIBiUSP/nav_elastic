@@ -475,22 +475,28 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         ?>
                         <!-- Query itens on Aleph - End -->
 
+                        <!-- Confere se o usuário tem vínculo - Início -->
                         <?php
                         if (isset($_SESSION['oauthuserdata'])) {
                             $user = json_decode(json_encode($_SESSION['oauthuserdata']), true);
                         }
                         if (isset($user['vinculo'])) {
-                            foreach ($user['vinculo'] as $key => $value) {
-                                if (in_array($value["siglaUnidade"], $cursor["_source"]["unidadeUSP"])) {
+                            foreach ($user['vinculo'] as $vinculo) {
+                                $unidadeVinculoArray[] = $vinculo["siglaUnidade"];
+                            }
+                            foreach ($unidadeVinculoArray as $unidadeVinculoUsuario) {
+                                if (in_array($unidadeVinculoUsuario, $cursor["_source"]["unidadeUSP"])) {
                                     $isOfThisUnit = true;
-                                } else {
-                                    $isOfThisUnit = false;
                                 }
                             }
+                            if (empty($isOfThisUnit)){
+                                $isOfThisUnit = false;
+                            }                            
                         } else {
                             $isOfThisUnit = false;
                         }
                         ?>
+                        <!-- Confere se o usuário tem vínculo - Fim -->
 
 
 
