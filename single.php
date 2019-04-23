@@ -482,7 +482,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         }
                         if (isset($user['vinculo'])) {
                             foreach ($user['vinculo'] as $vinculo) {
-                                $unidadeVinculoArray[] = $vinculo["siglaUnidade"];
+                                $unidadeVinculoArray[] = strtoupper($vinculo["siglaUnidade"]);
                             }
                             foreach ($unidadeVinculoArray as $unidadeVinculoUsuario) {
                                 if (in_array($unidadeVinculoUsuario, $cursor["_source"]["unidadeUSP"])) {
