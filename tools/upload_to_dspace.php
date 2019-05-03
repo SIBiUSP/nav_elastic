@@ -12,86 +12,119 @@ if ($handle = opendir('/var/www/html/bdpi/upload')) {
 
     while (false !== ($fileWork = readdir($handle))) {
 
-        print_r($fileWork);
-
+        /* Get sysno */
         $sysno = getSysno($fileWork);
         if ($sysno != "Invalid") {
-          $cursor = elasticsearch::elastic_get($sysno, $type, null);
 
-          /* Search for existing record on DSpace */
-          $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $DSpaceCookies);
-
-          /* Verify if item exists on DSpace */
-          if (empty($itemID)) {
-            $dataString = DSpaceREST::buildDC($cursor, $sysno);
-            $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $DSpaceCookies);
-            $userBitstream = 'publishedVersion - BulkUpload';
-
-            /* Verify if item exists on DSpace again */
-            $itemIDCreated = DSpaceREST::searchItemDSpace($cursor["_id"], $DSpaceCookies);
-            print_r($itemIDCreated);
+            print_r($sysno);
             echo "<br/><br/>";
 
-            /* Upload Bitstream */
-            $file["file"]["name"] = $fileWork;
-            $file["file"]["tmp_name"] = "/var/www/html/bdpi/upload/$fileWork";
-            print_r($file);
-            echo "<br/><br/>";
+            /* Get record in BDPI */
+            $cursor = elasticsearch::elastic_get($sysno, $type, null);
 
-            if (isset($_SESSION['oauthuserdata'])) {
-                $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-                        <fieldset data-uk-margin>
-                        <legend>Enviar um arquivo</legend>
-                        <input type="file" name="file">
-                        <select class="uk-select" name="version">
-                            <option disabled selected value>Selecione a versão</option>
-                            <option value="publishedVersion">publishedVersion</option>
-                            <option value="submittedVersion">submittedVersion</option>
-                            <option value="acceptedVersion">acceptedVersion</option>
-                            <option value="updatedVersion">updatedVersion</option>
-                        </select>
-                        <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
-                        <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
-                    </fieldset>
-                    </form>';
-            }            
+            /* Search for existing record on DSpace */
+            $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $DSpaceCookies);
 
-            if (isset($_FILES['file'])) {
-                $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
+            /* Verify if item exists on DSpace */
+            if (empty($itemID)) {
+
+                $dataString = DSpaceREST::buildDC($cursor, $sysno);
+                $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $DSpaceCookies);
+
+                /* Verify if item exists on DSpace again */
+                $itemIDCreated = DSpaceREST::searchItemDSpace($cursor["_id"], $DSpaceCookies);
+                print_r($itemIDCreated);
                 echo "<br/><br/>";
-                print_r($userBitstream);
-                echo "<br/><br/>";
-                $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $_FILES, $userBitstream, $DSpaceCookies);
-                if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
-                    $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+
+
+
+        //     if (isset($_SESSION['oauthuserdata'])) {
+        //         $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+        //                 <fieldset data-uk-margin>
+        //                 <legend>Enviar um arquivo</legend>
+        //                 <input type="file" name="file">
+        //                 <select class="uk-select" name="version">
+        //                     <option disabled selected value>Selecione a versão</option>
+        //                     <option value="publishedVersion">publishedVersion</option>
+        //                     <option value="submittedVersion">submittedVersion</option>
+        //                     <option value="acceptedVersion">acceptedVersion</option>
+        //                     <option value="updatedVersion">updatedVersion</option>
+        //                 </select>
+        //                 <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
+        //                 <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
+        //             </fieldset>
+        //             </form>';
+        //     }            
+
+        //     if (isset($_FILES['file'])) {
+        //         $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
+        //         echo "<br/><br/>";
+        //         print_r($userBitstream);
+        //         echo "<br/><br/>";
+        //         $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $_FILES, $userBitstream, $DSpaceCookies);
+        //         if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+        //             $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+        //         }
+        //         $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
+        //         //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
+        //         $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+        //         echo "<script type='text/javascript'>
+        //         $(document).ready(function(){
+        //                 //Reload the page
+        //                 window.location = window.location.href;
+        //         });
+        //         </script>";
+            } else {
+                $getBitstreams = DSpaceREST::getBitstreamDSpace($itemID, $DSpaceCookies);
+                if (empty($getBitstreams)) {
+
+                    global $dspaceRest;
+
+                    $filename = rawurlencode($fileWork);
+                    $userBitstream = 'publishedVersion - BulkUpload';
+
+                    print_r($dspaceRest);
+                    echo "<br/><br/>";
+                    print_r($itemID);
+                    echo "<br/><br/>";
+                    print_r($filename);
+                    echo "<br/><br/>";
+                    print_r($userBitstream);
+                    echo "<br/><br/>"; 
+                    print_r($DSpaceCookies);
+                    echo "<br/><br/>";  
+                    print_r($fileWork);
+                    echo "<br/><br/>";                                                                                                      
+
+
+                    exec("                    
+                        curl -v -X POST \
+                        '$dspaceRest/rest/items/$itemID/bitstreams?name=$filename&description=$userBitstream' \
+                            -H 'Cookie: $DSpaceCookies' \
+                            -H 'content-type: application/x-www-form-urlencoded' \
+                            --data-binary '@/var/www/html/bdpi/upload/$fileWork'                    
+                    ", $output, $return_var);
+                    var_dump($output);
+                    var_dump($return_var);                
                 }
-                $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
-                //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
-                $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-                echo "<script type='text/javascript'>
-                $(document).ready(function(){
-                        //Reload the page
-                        window.location = window.location.href;
-                });
-                </script>";
+
+
             }
 
 
 
-            $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $file, $userBitstream, $DSpaceCookies);
-            print_r($resultAddBitstream);
-            echo "<br/><br/>";
 
-            /* Delete Annonymous Policy */
-            //$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $DSpaceCookies);
-            /* Add Restricted Policy */
-            //$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $DSpaceCookies);
 
-          } else {
-            Echo "Registro já existe";
-          }
+        //     /* Delete Annonymous Policy */
+        //     //$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $DSpaceCookies);
+        //     /* Add Restricted Policy */
+        //     //$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $DSpaceCookies);
 
-            exit();
+        //   } else {
+        //     Echo "Registro já existe";
+        //   }
+
+        //     exit();
         }
 
 
