@@ -231,8 +231,7 @@ class get
                 }
             }
             $getSearchResult = implode(" ", $getSearchArray);
-            //$query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
-            $query["query"]["bool"]["must"]["query_string"]["query"] = $getSearchResult;
+            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
         } else {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
