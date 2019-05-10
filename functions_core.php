@@ -232,7 +232,13 @@ class get
             }
             $getSearchResult = implode(" ", $getSearchArray);
             $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
-        } else {
+        } 
+
+        if (!empty($get['range'])) {
+            $query["query"]["bool"]["must"]["query_string"]["query"] = $get['range'][0];
+        }         
+        
+        if (!isset($query["query"]["bool"]["must"]["query_string"]["query"])) {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
 
