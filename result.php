@@ -253,7 +253,7 @@ $total = $cursor["hits"]["total"];
                                 </script>
                                 <p>
                                 <label for="date"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
-                                <input class="uk-input" type="text" id="date" readonly style="border:0; color:#f6931f;" name="search[]">
+                                <input class="uk-input" type="text" id="date" readonly style="border:0; color:#f6931f;" name="range[]">
                                 </p>
                                 <div id="limitar-data" class="uk-margin-bottom"></div>
                                 <?php if (!empty($_GET["search"])) : ?>
