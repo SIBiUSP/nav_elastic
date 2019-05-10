@@ -29,10 +29,13 @@
         
     </head>
 
-    <body>     
-        
-        <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
-        
+    <body>
+
+        <?php
+        if (file_exists("inc/analyticstracking.php")) {
+            include_once "inc/analyticstracking.php";
+        }
+        ?>         
         
         <div class="uk-background-image@s uk-background-cover uk-height-viewport" >
             <div class="uk-container">
