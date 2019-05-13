@@ -345,10 +345,6 @@ class PageSingle
 
     public static function jsonLD($record)
     {
-        foreach ($record['author'] as $autores) {
-            $autor_json[] = '"'.$autores["person"]["name"].'"';
-        }
-
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
             $periodicos_array = explode(",", $record["isPartOf"]["USP"]["dados_do_periodico"]);
             foreach ($periodicos_array as $periodicos_array_new) {
@@ -365,116 +361,55 @@ class PageSingle
                         $end_page = "N/D";
                     }
 
-                }
+            }
 
             }
-        }
-        if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {
-            if (!empty($record["publisher"]["organization"]["name"])) {
-                $publisher = '"publisher": "'.$record["publisher"]["organization"]["name"].'"';
-            } else {
-                $publisher = "";
-            }
-        }
+        }        
 
-        if (!empty($record['description'])) {
-            $description = '"description": "'.$record['description'][0].'",';
-        } else {
-            $description = "";
+        $publisher = $record["publisher"]["organization"]["name"] ?? "";
+        $isPartofName = $record["isPartOf"]["name"] ?? "";
+        $description = $record['description'][0] ?? "";
+        $volume = $volume ?? "";
+        $numero = $numero ?? "";
+        $first_page = $first_page ?? "";
+        $end_page = $end_page ?? "";
+
+        $jsonSource['@context'] = 'http://schema.org';
+        $jsonSource['@graph'][0]['@id'] = '#periodical';
+        $jsonSource['@graph'][0]['@type'] = 'Periodical';
+        $jsonSource['@graph'][0]['name'] = $isPartofName;
+        $jsonSource['@graph'][0]['issn'][0] = $record["isPartOf"]["issn"][0];
+        $jsonSource['@graph'][0]['publisher'] = $publisher;
+        $jsonSource['@graph'][1]['@id'] = '#volume';
+        $jsonSource['@graph'][1]['@type'] = 'PublicationVolume';
+        $jsonSource['@graph'][1]['volumeNumber'] = $volume;
+        $jsonSource['@graph'][1]['isPartOf'] = '#periodical';
+        $jsonSource['@graph'][2]['@id'] = '#issue';
+        $jsonSource['@graph'][2]['@type'] = 'PublicationIssue';
+        $jsonSource['@graph'][2]['issueNumber'] = $numero;
+        $jsonSource['@graph'][2]['datePublished'] = $record['datePublished'];
+        $jsonSource['@graph'][2]['isPartOf'] = '#volume';
+        $jsonSource['@graph'][3]['@type'] = 'ScholarlyArticle';
+        $jsonSource['@graph'][3]['datePublished'] = $record['datePublished'];
+        $jsonSource['@graph'][3]['isPartOf'] = '#issue';
+        $jsonSource['@graph'][3]['description'] = $description;
+        $jsonSource['@graph'][3]['sameAs'] = 'https://doi.org/'.$record['doi'].'';
+        $jsonSource['@graph'][3]['about'][] = 'Works';
+        $jsonSource['@graph'][3]['about'][] = 'Catalog';
+        $jsonSource['@graph'][3]['image'] = '//bdpi.usp.br/images/logo_sibi.jpg';
+        $jsonSource['@graph'][3]['pageEnd'] = $end_page;
+        $jsonSource['@graph'][3]['pageStart'] = $first_page;
+        $jsonSource['@graph'][3]['headline'] = $record['name'];
+        foreach ($record['author'] as $autores) {
+            $jsonSource['@graph'][3]['author'][] = $autores["person"]["name"];
         }
+        $json = json_encode($jsonSource, JSON_PRETTY_PRINT);
 
         echo '<script type="application/ld+json">';
-        echo '
-            {
-            "@context":"http://schema.org",
-            "@graph": [
-              ';
 
-
-        switch ($record["type"]) {
-        case "ARTIGO DE PERIODICO":
-            if (empty($record["isPartOf"]["issn"][0])) {
-                $record["isPartOf"]["issn"][0] = "";
-            }
-            if (empty($numero)) {
-                $numero = "";
-            }
-            if (empty($volume)) {
-                $volume = "";
-            }
-            if (empty($end_page)) {
-                $end_page = "";
-            }
-            if (empty($first_page)) {
-                $first_page = "";
-            }
-
-            echo '
-
-            {
-                "@id": "#periodical",
-                "@type": [
-                    "Periodical"
-                ],
-                "name": "'.$record["isPartOf"]["name"].'",
-                "issn": [
-                    "'.$record["isPartOf"]["issn"][0].'"
-                ],
-                '.$publisher.'
-            },
-            {
-                "@id": "#volume",
-                "@type": "PublicationVolume",
-                "volumeNumber": "'.$volume.'",
-                "isPartOf": "#periodical"
-            },
-            {
-                "@id": "#issue",
-                "@type": "PublicationIssue",
-                "issueNumber": "'.$numero.'",
-                "datePublished": "'.$record['datePublished'].'",
-                "isPartOf": "#volume"
-            },
-            {
-                "@type": "ScholarlyArticle",
-                "datePublished": "'.$record['datePublished'].'",
-                "isPartOf": "#issue",
-                '.$description.'
-                ';
-                if (!empty($record['doi'])) {
-                    echo '"sameAs": "https://doi.org/'.$record['doi'].'",';
-                }
-                echo '
-                "about": [
-                    "Works",
-                    "Catalog"
-                ],
-                "image":"//bdpi.usp.br/images/logo_sibi.jpg",
-                "pageEnd": "'.$end_page.'",
-                "pageStart": "'.$first_page.'",
-                "headline": "'.$record["name"].'",
-                "author": ['.implode(",", $autor_json).']
-            }
-
-                            ';
-
-                            break;
-                        case "PARTE DE MONOGRAFIA/LIVRO":
-
-                            break;
-                        case "TRABALHO DE EVENTO-RESUMO":
-
-                            break;
-                        case "TEXTO NA WEB":
-
-                            break;
-                        }
-
-                    echo '
-
-                    ]
-                    }
-            </script>';
+        print_r($json);
+        
+        echo '</script>';
 
     }
 

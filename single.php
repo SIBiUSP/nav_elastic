@@ -174,7 +174,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
     }
     ?>
 
-    </head>
+</head>
 <body>
         <?php
         if (file_exists("inc/analyticstracking.php")) {
