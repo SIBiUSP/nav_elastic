@@ -1,0 +1,227 @@
+DELETE /bdpi
+
+PUT /bdpi
+{
+  "settings": {
+    "number_of_shards" :   4,
+    "number_of_replicas" : 3,
+    "analysis": {
+        "filter": {
+            "portuguese_stop": {
+              "type":       "stop",
+              "stopwords":  "_portuguese_"
+            },
+            "my_ascii_folding" : {
+                "type" : "asciifolding",
+                "preserve_original" : true
+            },
+            "portuguese_stemmer": {
+              "type":       "stemmer",
+              "language":   "light_portuguese"
+            }
+      },
+      "analyzer": {
+        "portuguese": {
+          "tokenizer": "standard",
+          "filter":  [ "standard", "lowercase", "my_ascii_folding","portuguese_stop","portuguese_stemmer"]
+        }
+      }
+    }
+  }
+}
+
+PUT /bdpi/_mapping
+{
+	"properties": {
+		"about": {
+			"type": "text",
+			"analyzer": "portuguese",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},
+		"USP":{
+			"properties":{
+				"scopus_api_data":{
+					"properties":{
+						"valid_date":{
+							"type": "date"
+						}
+					}
+				}
+			}
+		},
+		"author": {
+			"properties": {
+				"person": {
+					"properties": {
+						"affiliation": {
+							"properties": {
+								"location": {
+									"type": "text",
+									"fields": {
+										"keyword": {
+											"type": "keyword",
+											"ignore_above": 256
+										}
+									}
+								},
+								"name": {
+									"type": "text",
+									"analyzer": "portuguese",
+									"fields": {
+										"keyword": {
+											"type": "keyword",
+											"ignore_above": 256
+										}
+									}
+								}
+							}
+						},
+						"name": {
+							"type": "text",
+							"analyzer": "portuguese",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
+						},
+						"potentialAction": {
+							"type": "text",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"authorUSP": {
+			"properties": {
+				"name": {
+					"type": "text",
+					"analyzer": "portuguese",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				}
+			}
+		},
+		"base": {
+			"type": "text",
+			"analyzer": "portuguese",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},
+		"description": {
+			"type": "text",
+			"analyzer": "portuguese",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},
+		"descriptionEn": {
+			"type": "text",
+			"analyzer": "portuguese",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},		
+		"funder": {
+			"properties": {
+				"name": {
+					"type": "text",
+					"analyzer": "portuguese",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				}
+			}
+		},
+		"isPartOf": {
+			"properties": {
+				"name": {
+					"type": "text",
+					"analyzer": "portuguese",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				}
+			}
+		},
+		"language": {
+			"type": "text",
+			"analyzer": "portuguese",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},
+		"name": {
+			"type": "text",
+			"analyzer": "portuguese",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},
+		"releasedEvent": {
+			"type": "text",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},		
+		"sibi_id": {
+			"type": "text",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		},
+		"unidadeUSP": {
+			"type": "text",
+			"fields": {
+				"keyword": {
+					"type": "keyword",
+					"ignore_above": 256
+				}
+			}
+		}
+	}
+}
