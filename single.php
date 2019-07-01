@@ -485,11 +485,11 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                                 $unidadeVinculoArray[] = strtoupper($vinculo["siglaUnidade"]);
                             }
                             foreach ($unidadeVinculoArray as $unidadeVinculoUsuario) {
-                                if (in_array($unidadeVinculoUsuario, $cursor["_source"]["unidadeUSP"])) {
+                                if (in_array($unidadeVinculoUsuario, strtoupper($cursor["_source"]["unidadeUSP"]))) {
                                     $isOfThisUnit = true;
                                 }
                             }
-                            if (empty($isOfThisUnit)){
+                            if (empty($isOfThisUnit)) {
                                 $isOfThisUnit = false;
                             }                            
                         } else {
