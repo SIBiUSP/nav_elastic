@@ -479,21 +479,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <?php
                         if (isset($_SESSION['oauthuserdata'])) {
                             $user = json_decode(json_encode($_SESSION['oauthuserdata']), true);
-                        }
-                        if (isset($user['vinculo'])) {
-                            foreach ($user['vinculo'] as $vinculo) {
-                                $unidadeVinculoArray[] = strtoupper($vinculo["siglaUnidade"]);
-                            }
-                            foreach ($unidadeVinculoArray as $unidadeVinculoUsuario) {
-                                if (in_array($unidadeVinculoUsuario, $cursor["_source"]["unidadeUSP"])) {
-                                    $isOfThisUnit = true;
-                                }
-                            }
-                            if (empty($isOfThisUnit)) {
-                                $isOfThisUnit = false;
-                            }                            
-                        } else {
-                            $isOfThisUnit = false;
+                            $isOfThisUnit = USP::isOfThisUnit($user["vinculo"], $cursor["_source"]["unidadeUSP"]);
                         }
                         ?>
                         <!-- Confere se o usuário tem vínculo - Fim -->

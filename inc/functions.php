@@ -584,7 +584,38 @@ class USP
         }
     }
 
+    static function aGlue($invalcheck)
+    {
+        global $aglue;
+        
+        if (array_key_exists($invalcheck, $aglue)  ) {
+            return $aglue[$invalcheck];
+        } else {
+            return $invalcheck;
+        }        
+
+    }
+
+    static function isOfThisUnit($ausrund, $aund) 
+    {
+        global $aglue;
+
+        foreach ($aglue as $k => $v) {
+            if (in_array($k, $aund)) {
+                $aund[] = $v;
+            }
+        }
+
+        foreach ($ausrund as $kusund => $vusund) {
+            return in_array(USP::aGlue(strtoupper($vusund["siglaUnidade"])), $aund);
+        }
+        return false;
+    }
+
+    
+
 }
+
 
 /* Function to generate Tables */
 function generateDataTable($consulta, $campo, $sort, $sort_orientation, $facet_display_name, $tamanho)
