@@ -19,18 +19,19 @@
             <h1><?php echo $t->gettext('Busca avançada'); ?></h1>
                 <div class="uk-width-1-1@m">
                     <div class="uk-alert uk-alert-large">
+                        <!--
                         <form class="uk-form" role="form" action="result.php" method="get">
                             <fieldset data-uk-margin>
-                                <legend><?php echo $t->gettext('String de busca avançada'); ?></legend>
-                                <p><?php echo $t->gettext('Selecionar os campos para realizar a busca:'); ?></p>
-                                <label><input type="checkbox" name="fields[]" value="name" checked> <?php echo $t->gettext('Título'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="author.person.name" checked> <?php echo $t->gettext('Autores'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="authorUSP.name" checked> <?php echo $t->gettext('Autores USP'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="unidadeUSP"> <?php echo $t->gettext('Unidades USP'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="authorUSP.departament"> <?php echo $t->gettext('Departamento'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="about" checked> <?php echo $t->gettext('Assuntos'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="author.person.affiliation.name"> <?php echo $t->gettext('Colaboração institucional'); ?></label>
-                                <label><input type="checkbox" name="fields[]" value="funder"> <?php echo $t->gettext('Agência de fomento'); ?></label>
+                                <legend>< ?php echo $t->gettext('String de busca avançada'); ?></legend>
+                                <p>< ?php echo $t->gettext('Selecionar os campos para realizar a busca:'); ?></p>
+                                <label><input type="checkbox" name="fields[]" value="name" checked> < ?php echo $t->gettext('Título'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="author.person.name" checked> < ?php echo $t->gettext('Autores'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="authorUSP.name" checked> < ?php echo $t->gettext('Autores USP'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="unidadeUSP"> < ?php echo $t->gettext('Unidades USP'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="authorUSP.departament"> < ?php echo $t->gettext('Departamento'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="about" checked> < ?php echo $t->gettext('Assuntos'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="author.person.affiliation.name"> < ?php echo $t->gettext('Colaboração institucional'); ?></label>
+                                <label><input type="checkbox" name="fields[]" value="funder"> < ?php echo $t->gettext('Agência de fomento'); ?></label>
                                 <label><input type="checkbox" name="fields[]" value="sysno"> Sysno</label>
                                 <br/>
                                 <script>
@@ -49,17 +50,18 @@
                                     } );
                                 </script>
                                 <p>
-                                    <label for="amount"><?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
+                                    <label for="amount">< ?php echo $t->gettext('Selecionar período de tempo'); ?>:</label>
                                     <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;" name="search[]">
                                 </p>
 
                                 <div id="slider-range"></div>
                                 <br/>
                                 <textarea type="text" class="uk-form-width-large" placeholder="Insira sua string de busca avançada" name="search[]" data-validation="required"></textarea>
-                                <button class="uk-button" type="submit"><?php echo $t->gettext('Buscar'); ?></button>
+                                <button class="uk-button" type="submit">< ?php echo $t->gettext('Buscar'); ?></button>
                                 <br/><br/><br/><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html" target="_blank" rel="noopener noreferrer">Consultar referência</a>
                             </fieldset>
                         </form>
+                        -->
                         <form role="form" action="result.php" method="get">
                             <fieldset>
                                 <legend class="uk-legend"><?php echo $t->gettext('Número USP'); ?></legend>
