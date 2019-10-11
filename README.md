@@ -9,10 +9,15 @@ sudo a2enmod rewrite
 
 Add to Apache2 sites-available
 `<Directory /var/www/html/>`
+        
         Options Indexes FollowSymLinks MultiViews
+        
         AllowOverride All
+        
         Order allow,deny
+        
         allow from all
+        
 `</Directory>`
 
 
@@ -43,6 +48,7 @@ php7.2-json > 1.3.7
 
 php7.2-mbstring
 
+php7.2-xmlwriter
 
 ## Developers 
 
