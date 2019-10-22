@@ -41,7 +41,7 @@
                             <!--<label class="uk-form-label" for="form-stacked-text"><?php echo $t->gettext('Termos de busca'); ?></label>-->
                             <div class="uk-form-controls uk-margin uk-search uk-search-default" style="width: 100%">
                                 <button class="uk-search-icon-flip " style="width: 5em;" uk-search-icon></button>
-                                <input class="uk-input" id="form-stacked-text" type="search" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]">
+                                <input class="uk-input" id="form-stacked-text" type="search" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" data-validation="required">
                             </div>
                         </div>
             		    <ul uk-accordion>
@@ -52,7 +52,7 @@
                                 <label hidden class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="filter[]">
-                                        <option selected value><?php echo $t->gettext('Todas as bases'); ?></option>
+                                        <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
                                         <option value="base:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
                                         <option value="base:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
                                     </select>
@@ -62,7 +62,7 @@
                                 <label hidden class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione uma Unidade USP para filtrar a busca'); ?></label>
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="filter[]">
-                                        <option selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
+                                        <option disabled selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
                                         <?php foreach($unidades as $key => $value ): ?>
                                             <option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
                                         <?php endforeach; ?>
