@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+    <head>
+        <?php
+            require 'inc/config.php';
+	    require 'inc/meta-header.php';
+        ?>
+        <title><?php echo $branch; ?></title>
+        <!-- Facebook Tags - START -->
+        <!--<meta property="og:locale" content="pt_BR">-->
+	<meta property="og:locale" content="<?php echo $locale ?>">
+        <meta property="og:url" content="//bdpi.usp.br">
+        <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
+        <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
+        <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
+        <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
+        <meta property="og:image:type" content="image/jpeg">
+        <meta property="og:image:width" content="800">
+        <meta property="og:image:height" content="600">
+        <meta property="og:type" content="website">
+        <!-- Facebook Tags - END -->
+
+    </head>
+
+    <body>
+
+        <?php
+        if (file_exists("inc/analyticstracking.php")) {
+            include_once "inc/analyticstracking.php";
+        }
+        ?>
+
+        <div class="uk-background-cover uk-height-viewport" >
+            <div class="uk-container">
+                <div class="uk-position-cover uk-inline uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-height-viewport">
+                    <?php require 'inc/navbar.php'; ?>
+                    <div class="uk-inline-clip uk-overlay-primary uk-padding">
+                    <h2 class="uk-align-center" style="color:#fcb421"><?php echo $t->gettext(''.$branch.''); ?></h2>
+                        <form class="uk-form-stacked" action="result.php">
+                            <div class="uk-margin">
+                                <label class="uk-form-label" for="form-stacked-text"><?php echo $t->gettext('Termos de busca'); ?></label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="form-stacked-text" type="text" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" data-validation="required">
+                                </div>
+			    </div>
+			    <ul uk-accordion>
+			    <li>
+				<a class="uk-accordion-title" href="#">Busca Avançada</a>
+			    <div class="uk-accordion-content">
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
+                                    <div class="uk-form-controls">
+                                        <select class="uk-select" id="form-stacked-select" name="filter[]">
+                                            <option disabled selected value><?php echo $t->gettext('Todas as bases'); ?></option>
+                                            <option value="base:&quot;Produção científica&quot;" style="color:#333"><?php echo $t->gettext('Produção Científica'); ?></option>
+                                            <option value="base:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                 <div class="uk-margin">
+                                    <label class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione uma Unidade USP para filtrar a busca'); ?></label>
+                                    <div class="uk-form-controls">
+                                        <select class="uk-select" id="form-stacked-select" name="filter[]">
+                                            <option selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
+                                            <?php foreach($unidades as $key => $value ): ?>
+                                                <option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+				 </div>
+			    </div><!-- FIM - uk-accordion-content -->
+			    </li>
+			    </ul>
+                                <div><button class="uk-button uk-button-primary uk-align-center"><?php echo $t->gettext('Buscar'); ?></button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-section uk-container">
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Mais informações'); ?></span></h1>
+            <div class="uk-child-width-expand@s uk-text-center" uk-grid>
+                <div>
+                    <div class="uk-card">
+                        <h3 class="uk-card-title"><?php echo $t->gettext('Bases'); ?></h3>
+                        <ul class="uk-list uk-list-divider">
+                            <?php Homepage::baseInicio(); ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="uk-section uk-container">
+            <h1 class="uk-heading-line uk-text-center"><span><?php echo $t->gettext('Últimos registros'); ?></span></h1>
+            <?php Homepage::ultimosRegistros();?>
+        </div>
+
+<?php require 'inc/footer.php'; ?>
+
+        </div>
+
+
+<?php require 'inc/offcanvas.php'; ?>
+
+
+    </body>
+</html>

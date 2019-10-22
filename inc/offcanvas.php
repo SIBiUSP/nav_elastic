@@ -2,13 +2,13 @@
     <div class="uk-offcanvas-bar">
         <ul class="uk-nav uk-nav-offcanvas">
             <li class="uk-active">
-                <a href="index.php">Início</a>
+                <a href="index.php"><?php echo $t->gettext('Início'); ?></a>
             </li>
             <li>
-                <a href="advanced_search.php">Busca avançada</a>
+                <a href="advanced_search.php"><?php echo $t->gettext('Busca técnica'); ?></a>
             </li>
             <li>
-                <a href="contato.php">Contato</a>
+                <a href="contato.php"><?php echo $t->gettext('Contato'); ?></a>
             </li>
             <?php if(empty($_SESSION['oauthuserdata'])){ ?>
                 <li><a href="aut/oauth.php">Login</a></li>
@@ -16,7 +16,7 @@
                 <li><a href="aut/logout.php">Logout</a></li>
             <?php } ?>
             <li>
-                <a href="about.php">Sobre</a>
+                <a href="about.php"><?php echo $t->gettext('Sobre'); ?></a>
             </li>
         </ul>
     </div>

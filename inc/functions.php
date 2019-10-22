@@ -93,7 +93,29 @@ class Homepage
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
             echo '<li><a href="result.php?filter[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
         }
+    }
 
+    static function totalProducao($t){
+        global $type;
+        $query = '{
+            "aggs": {
+                "group_by_state": {
+                    "terms": {
+                        "field": "base.keyword",
+                        "size" : 5
+                    }
+                }
+            }
+        }';
+        $response = elasticsearch::elastic_search($type,null,0,$query);
+        $total = round($response["hits"]["total"]);
+        if ($total >= 0 && $total < 1000000) {
+            return $t->gettext("Total da produção") . ": &cong; " . round($total/1000) . " " . $t->gettext("mil");
+        } else if ($total >= 1000000 && $total <= 1949999){
+            return $t->gettext("Total da produção") . ": &cong; " . number_format($total/1000000,1,',','.') . " " . $t->gettext("milhão");
+        } else {
+            return $t->gettext("Total da produção") . ": &cong; " . number_format($total/1000000,1,',','.') . " " . $t->gettext("milhões");
+        }
     }
 
     /**

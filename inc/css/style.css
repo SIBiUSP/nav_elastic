@@ -4,3 +4,39 @@
     background-image: url("../images/bg-headtop.gif");
     background-repeat: repeat-x;
 }
+
+#menu div ul li a {
+    color: #1094ab  !important;
+    font-weight: bold !important;
+}
+
+#menu div ul li a:hover{
+	color: #fcb421  !important;
+}
+
+/*#menu div ul li a:hover {
+    color: #64c4d2 !important;
+}*/
+
+#sub-menu div ul li a{
+	font-weight: bold !important;
+}
+
+.uk-button-primary, .uk-search-icon-flip {
+	background: #1094ab;
+	color: #fff !important;
+}
+
+.uk-button-primary:hover, .uk-search-icon-flip:hover {
+	background: #fcb421;
+    color: #333 !important;
+}
+
+#sub-menu div ul li a{
+	min-height: auto;
+	height: 2em;
+}
+
+#logos-rodape a, #logos-rodape a:hover{
+	text-decoration: none !important; 
+}
