@@ -175,7 +175,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
     ?>
 
 </head>
-<body>
+<body style="height: 100vh; min-height: 45em; position: relative;">
         <?php
         if (file_exists("inc/analyticstracking.php")) {
             include_once "inc/analyticstracking.php";
@@ -783,9 +783,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                 </div>
             </div>
             <hr class="uk-grid-divider">
-            <?php require 'inc/footer.php'; ?>
+            
         </div>
-
+        <?php require 'inc/footer.php'; ?>
         <?php require 'inc/offcanvas.php'; ?>
 
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>

@@ -55,7 +55,7 @@ if (!empty($_GET)) {
 }
 
 ?>
-<html>
+<html style="height: 100vh; min-height: 45em; position: relative;">
     <head>
         <?php require 'inc/meta-header.php'; ?>
         <title><?php echo $branch_abrev; ?> - Resultado da busca</title>
@@ -647,9 +647,9 @@ if (!empty($_GET)) {
             </div>
             <hr class="uk-grid-divider">
             </div>
-            <?php include('inc/footer.php'); ?>
+            
         </div>
-
+        <?php include('inc/footer.php'); ?>
 
 
         <script>

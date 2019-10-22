@@ -8,7 +8,7 @@
         <title>BDPI USP - <?php echo $t->gettext('Busca avançada'); ?></title>
     </head>
 
-    <body>
+    <body style="height: 100vh; min-height: 45em; position: relative;">
         <?php
         if (file_exists('inc/analyticstracking.php')) {
             include_once 'inc/analyticstracking.php';
@@ -121,9 +121,9 @@
                 </div>
             <hr class="uk-grid-divider">
 
-            <?php require 'inc/footer.php'; ?>
-
         </div>
+
+        <?php require 'inc/footer.php'; ?>
 
     <?php require 'inc/offcanvas.php'; ?>
 

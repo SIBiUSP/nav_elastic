@@ -14,7 +14,7 @@
         <title>BDPI USP - Dashboard</title>
     </head>
 
-    <body>
+    <body style="height: 100vh; min-height: 45em; position: relative;">
         <?php
             if (file_exists("inc/analyticstracking.php")){
                 include_once("inc/analyticstracking.php");

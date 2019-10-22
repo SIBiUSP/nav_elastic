@@ -29,7 +29,8 @@
                 </div>
             </div>
             <hr>
-            <?php include('inc/footer.php'); ?>
+            
         </div>
+        <?php include('inc/footer.php'); ?>
     </body>
 </html>
