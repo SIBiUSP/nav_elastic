@@ -41,7 +41,7 @@
                             <!--<label class="uk-form-label" for="form-stacked-text"><?php echo $t->gettext('Termos de busca'); ?></label>-->
                             <div class="uk-form-controls uk-margin uk-search uk-search-default" style="width: 100%">
                                 <button class="uk-search-icon-flip " style="width: 5em;" uk-search-icon></button>
-                                <input class="uk-input" id="form-stacked-text" type="search" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" data-validation="required">
+                                <input class="uk-input" id="form-stacked-text" type="search" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]">
                             </div>
                         </div>
             		    <ul uk-accordion>
