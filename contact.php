@@ -66,12 +66,12 @@
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Contato'); ?></h3>
                         <p>
-                            <strong>Departamento Técnico do Sistema Integrado de Bibliotecas da Universidade de São Paulo</strong>
+                            <strong><?php echo $t->gettext('Agência USP de Gestão da Informação Acadêmica'); ?></strong>
                             <br>Rua da Praça do Relógio, 109 - Bloco L  Térreo
                             <br>05508-050 - Cidade Universitária, São Paulo, SP - Brasil
                         </p>
                         <p>
-                            <a>atendimento@dt.sibi.usp.br</a>
+                            <a>atendimento@aguia.usp.br</a>
                             <br>Tel: (0xx11) 2648-0948
                         </p>
                         <h3 class="uk-h4"><?php echo $t->gettext('Redes sociais'); ?></h3>
