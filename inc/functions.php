@@ -1285,7 +1285,7 @@ class Record
                 echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
             }
         }
-
+	
         if (!empty($this->url)||!empty($this->doi)) {
             $this->onlineAccess($t);
         }
@@ -1554,7 +1554,14 @@ class Record
 
         echo '<div class="uk-alert-primary" uk-alert>';
         echo '<p class="uk-text-small">'.$t->gettext('Acesso online ao documento').'</p>';
-        if (!empty($this->url)) {
+        
+	$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
+	if (!empty($fileLink)){
+	    $fileLink = substr($fileLink, 5);
+	    echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer">'.$t->gettext('DOWNLOAD DIRETO DO ARQUIVO').'</a>';
+	}
+	
+	if (!empty($this->url)) {
             foreach ($this->url as $url) {
                 echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer">'.$t->gettext('Acesso online à fonte').'</a>';
             }
