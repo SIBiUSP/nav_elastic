@@ -7,14 +7,16 @@ Enable mod_rewrite on Apache2:
 
 sudo a2enmod rewrite
 
-Add to Apache2 sites-available
-`<Directory /var/www/html/>`
+Add to Apache2 sites-available:
+
+```
+<Directory /var/www/html/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
         Order allow,deny
         allow from all
-`</Directory>`
-
+</Directory>
+```
 
 Run: 
 
@@ -35,6 +37,9 @@ git submodule update
 
 ## System requirements
 
+pre-required packages:
+
+```
 php7.2-curl
 
 php7.2-intl
@@ -43,6 +48,10 @@ php7.2-json > 1.3.7
 
 php7.2-mbstring
 
+php7.2-xmlwriter
+
+zip / unzip
+```
 
 ## Developers 
 
@@ -64,4 +73,4 @@ OAI-PMH (Package Metadata Harvesting) 2.0 Data Provider - https://github.com/dan
 
 ## Find new versions in composer
 
-composer update --dry-run
+php composer.phar update --dry-run

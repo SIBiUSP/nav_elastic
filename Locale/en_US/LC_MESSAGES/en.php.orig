@@ -228,6 +228,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Search for keyword or author',
       ),
+      
 <<<<<<< HEAD
       'Resultado da busca' => 
       array (
