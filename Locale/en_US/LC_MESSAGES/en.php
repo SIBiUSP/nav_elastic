@@ -28,6 +28,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Online source access',
       ),
+      'DOWNLOAD DIRETO DO ARQUIVO' =>
+      array (
+        0 => 'Download File',
+      ),
       'Afiliação dos autores externos normalizada' =>
       array (
         0 => 'Normalized affiliation',
