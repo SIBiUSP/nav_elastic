@@ -16,16 +16,14 @@
         ?>
 
         <?php require 'inc/navbar.php'; ?>
-        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;>
+        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
             <h1>Em breve</h1>
             <hr class="uk-grid-divider">
 
             
 
         </div>
-        <div style="position: relative; max-width: initial;">
-            <?php require 'inc/footer.php'; ?>
-        </div>
+        <?php require 'inc/footer.php'; ?>
     <?php require 'inc/offcanvas.php'; ?>
 
     </body>
