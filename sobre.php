@@ -23,7 +23,9 @@
             
 
         </div>
-        <?php require 'inc/footer.php'; ?>
+        <div style="position: relative; max-width: initial;">
+            <?php require 'inc/footer.php'; ?>
+        </div>
     <?php require 'inc/offcanvas.php'; ?>
 
     </body>

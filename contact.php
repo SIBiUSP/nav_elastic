@@ -58,10 +58,6 @@
                     </div>
                 </div>
 
-
-
-
-
                 <div class="uk-width-1-3@m">
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Contato'); ?></h3>
@@ -84,14 +80,11 @@
                 </div>
             </div>
 
-
-
         <hr class="uk-grid-divider">
 
-
-
-<?php include('inc/footer.php'); ?>
-
+        </div>
+        <div style="position: relative; max-width: initial;">
+            <?php require 'inc/footer.php'; ?>
         </div>
 
 

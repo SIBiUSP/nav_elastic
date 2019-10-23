@@ -27,7 +27,9 @@
         </div>
 
         <?php echo $queryKibana ?>
-        <?php include('inc/footer.php'); ?>
+        <div style="position: relative; max-width: initial;">
+            <?php require 'inc/footer.php'; ?>
+        </div>
 
     <?php include('inc/offcanvas.php'); ?>
 

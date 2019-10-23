@@ -649,7 +649,9 @@ if (!empty($_GET)) {
             </div>
             
         </div>
-        <?php include('inc/footer.php'); ?>
+        <div style="position: relative; max-width: initial;">
+            <?php require 'inc/footer.php'; ?>
+        </div>
 
 
         <script>
