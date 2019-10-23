@@ -15,7 +15,7 @@
         }
         require 'inc/navbar.php';
         ?>
-        <div class="uk-container uk-margin-large-top">
+        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;>
             <h1><?php echo $t->gettext('Busca avançada'); ?></h1>
                 <div class="uk-width-1-1@m">
                     <div class="uk-alert uk-alert-large">
