@@ -83,10 +83,7 @@
         <hr class="uk-grid-divider">
 
         </div>
-        <div style="position: relative; max-width: initial;">
-            <?php require 'inc/footer.php'; ?>
-        </div>
-
+        <?php require 'inc/footer.php'; ?>
 
 <?php include('inc/offcanvas.php'); ?>
 
