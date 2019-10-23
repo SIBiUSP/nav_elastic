@@ -348,11 +348,7 @@ $total = $cursor["hits"]["total"];
                 <?php ui::pagination($page, $total, $limit, $t); ?>
                 <!-- Navegador de resultados - Fim -->
 
-            </div>
-        </div>
-        <hr class="uk-grid-divider">
-    </div>
-    <!-- Gráfico do ano - Início -->
+                <!-- Gráfico do ano - Início -->
         <?php if ($year_result_graph == true && $total > 0 ) : ?>
             <div class="uk-alert-primary" uk-alert>
                 <a class="uk-alert-close" uk-close></a>
@@ -384,6 +380,13 @@ $total = $cursor["hits"]["total"];
                 </div>
         <?php endif; ?>
     <!-- Gráfico do ano - Fim -->
+            </div>
+        </div>
+        <hr class="uk-grid-divider">
+
+
+    </div>
+
     </div>
     <div style="position: relative; max-width: initial;">
         <?php require 'inc/footer.php'; ?>
