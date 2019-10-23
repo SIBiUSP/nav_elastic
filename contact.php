@@ -15,7 +15,7 @@
         }
         ?>
         <?php require 'inc/navbar.php'; ?>
-        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;>
+        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
 
             <div class="uk-grid" uk-grid>
 

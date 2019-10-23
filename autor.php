@@ -99,7 +99,7 @@ if (!empty($_GET)) {
         }
         ?>
 
-        <div class="uk-container" style="position: relative; padding-bottom: 15em;>
+        <div class="uk-container" style="position: relative; padding-bottom: 15em;">
             <div class="uk-width-1-1@s uk-width-1-1@m">
             <nav class="uk-navbar-container uk-margin" uk-navbar>
                 <div class="nav-overlay uk-navbar-left">
