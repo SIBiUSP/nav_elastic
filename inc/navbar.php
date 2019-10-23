@@ -92,12 +92,12 @@
                 <?php endif ; ?>-->
                 <li>
                     <a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=pt_BR" style="padding-right: 0.2em;">
-                        <img src="inc/images/br.png" style="width: 1.6em;">
+                        <img src="<?php echo $url_base; ?>/inc/images/br.png" style="width: 1.6em;">
                     </a>
                 </li>
                 <li>
                     <a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=en_US" style="padding-left: 0.2em;">
-                        <img src="inc/images/en.png" style="width: 1.6em;">
+                        <img src="<?php echo $url_base; ?>/inc/images/en.png" style="width: 1.6em;">
                     </a>
                 </li>
             </ul>
