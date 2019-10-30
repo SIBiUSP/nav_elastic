@@ -10,7 +10,7 @@
     <body>
         <!-- < ?php include_once("inc/analyticstracking.php") ?> -->
         <?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-margin-large-top">
+        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
             <p>Não foi possível encontrar a página solicitada.</p>
             <div class="uk-grid uk-margin-large-bottom" uk-grid>
                 <div class="uk-width-1-1@m">
@@ -31,6 +31,8 @@
             <hr>
             
         </div>
-        <?php include('inc/footer.php'); ?>
+        <div style="position: relative; max-width: initial;">
+            <?php require 'inc/footer.php'; ?>
+        </div>
     </body>
 </html>

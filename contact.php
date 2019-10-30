@@ -15,7 +15,7 @@
         }
         ?>
         <?php require 'inc/navbar.php'; ?>
-        <div class="uk-container uk-margin-large-top">
+        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
 
             <div class="uk-grid" uk-grid>
 
@@ -58,10 +58,6 @@
                     </div>
                 </div>
 
-
-
-
-
                 <div class="uk-width-1-3@m">
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
                         <h3 class="uk-panel-title"><?php echo $t->gettext('Contato'); ?></h3>
@@ -84,16 +80,10 @@
                 </div>
             </div>
 
-
-
         <hr class="uk-grid-divider">
 
-
-
-<?php include('inc/footer.php'); ?>
-
         </div>
-
+        <?php require 'inc/footer.php'; ?>
 
 <?php include('inc/offcanvas.php'); ?>
 

@@ -3,7 +3,7 @@
     <div class="uk-width-1-2@m uk-width-1-2@s">
 	    <p id="logos-rodape"class="uk-text-small uk-text-left uk-text-left@m">
 	    	<a href="http://www.usp.br" target="_blank" rel="noopener noreferrer" style="font-family: arial; font-size:2.5em; font-weight: bold; line-height: 2.5em; color: #123e72">
-    			<img src="inc/images/usp-logo-png.png" style="width: 2.5em;">
+    			<img src="<?php echo $url_base; ?>/inc/images/usp-logo-png.png" style="width: 2.5em;">
     		</a>
     		<!--<strong>Universidade de São Paulo</strong>-->
         <a href="http://www.aguia.usp.br" target="_blank" rel="noopener noreferrer">

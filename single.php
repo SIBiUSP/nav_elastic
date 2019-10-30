@@ -184,7 +184,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
         ?>
         <br/><br/><br/>
 
-        <div class="uk-container uk-margin-large-bottom">
+        <div class="uk-container uk-margin-large-bottom" style="position: relative; padding-bottom: 15em;">
             <div class="uk-grid uk-margin-top" uk-grid>
                 <div class="uk-width-1-4@m">
                     <div class="uk-card uk-card-body">
@@ -785,7 +785,9 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
             <hr class="uk-grid-divider">
             
         </div>
-        <?php require 'inc/footer.php'; ?>
+        <div style="position: relative; max-width: initial;">
+          <?php require 'inc/footer.php'; ?>
+      </div>
         <?php require 'inc/offcanvas.php'; ?>
 
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>

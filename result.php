@@ -289,39 +289,6 @@ $total = $cursor["hits"]["total"];
 
             <div class="uk-width-3-4@s uk-width-4-6@m">
 
-            <!-- Gráfico do ano - Início -->
-            <?php if ($year_result_graph == true && $total > 0 ) : ?>
-                <div class="uk-alert-primary" uk-alert>
-                    <a class="uk-alert-close" uk-close></a>
-                    <?php $ano_bar = Results::generateDataGraphBar($result_get['query'], 'datePublished', "_term", 'desc', 'Ano', 10); ?>
-                    <div id="ano_chart" class="uk-visible@l"></div>
-                    <script type="text/javascript">
-                        var graphdef = {
-                            categories : ['<?= $t->gettext('Ano') ?>'],
-                            dataset : {
-                                '<?= $t->gettext('Ano') ?>' : [<?= $ano_bar; ?>]
-                            }
-                        }
-                        var chart = uv.chart ('Bar', graphdef, {
-                            meta : {
-                                position: '#ano_chart',
-                                caption : '<?= $t->gettext('Ano de publicação') ?>',
-                                hlabel : '<?= $t->gettext('Ano') ?>',
-                                vlabel : '<?= $t->gettext('registros') ?>'
-                            },
-                            graph : {
-                                orientation : "Vertical"
-                            },
-                            dimension : {
-                                width: 650,
-                                height: 110
-                            }
-                        })
-                    </script>
-                    </div>
-            <?php endif; ?>
-                <!-- Gráfico do ano - Fim -->
-
             <!-- Vocabulário controlado - Início -->
             <?php if(isset($_GET["search"])) : ?>
                 <?php foreach ($_GET["search"] as $expressao_busca) : ?>
@@ -381,13 +348,48 @@ $total = $cursor["hits"]["total"];
                 <?php ui::pagination($page, $total, $limit, $t); ?>
                 <!-- Navegador de resultados - Fim -->
 
+                <!-- Gráfico do ano - Início -->
+        <?php if ($year_result_graph == true && $total > 0 ) : ?>
+            <div class="uk-alert-primary" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <?php $ano_bar = Results::generateDataGraphBar($result_get['query'], 'datePublished', "_term", 'desc', 'Ano', 10); ?>
+                <div id="ano_chart" class="uk-visible@l"></div>
+                <script type="text/javascript">
+                    var graphdef = {
+                        categories : ['<?= $t->gettext('Ano') ?>'],
+                        dataset : {
+                            '<?= $t->gettext('Ano') ?>' : [<?= $ano_bar; ?>]
+                        }
+                    }
+                    var chart = uv.chart ('Bar', graphdef, {
+                        meta : {
+                            position: '#ano_chart',
+                            caption : '<?= $t->gettext('Ano de publicação') ?>',
+                            hlabel : '<?= $t->gettext('Ano') ?>',
+                            vlabel : '<?= $t->gettext('registros') ?>'
+                        },
+                        graph : {
+                            orientation : "Vertical"
+                        },
+                        dimension : {
+                            width: 650,
+                            height: 110
+                        }
+                    })
+                </script>
+                </div>
+        <?php endif; ?>
+    <!-- Gráfico do ano - Fim -->
             </div>
         </div>
         <hr class="uk-grid-divider">
+
+
     </div>
+
     </div>
     <div style="position: relative; max-width: initial;">
-    <?php require 'inc/footer.php'; ?>
+        <?php require 'inc/footer.php'; ?>
     </div>
 
     <script>

@@ -1580,12 +1580,12 @@ class Record
 	$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
         if (!empty($fileLink)){
         $fileLink = substr($fileLink, 5);
-            echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer">'.$t->gettext('DOWNLOAD DIRETO DO ARQUIVO').'</a>';
+            echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
         }
 
         if (!empty($this->url)) {
             foreach ($this->url as $url) {
-                echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer">'.$t->gettext('Acesso online à fonte').'</a>';
+                echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">'.$t->gettext('Acesso à fonte').'</a>';
             }
         }
         if (!empty($this->doi)) {

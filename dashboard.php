@@ -16,11 +16,13 @@
         ?>
 
 		<?php include('inc/navbar.php'); ?>
-        <div class="uk-container uk-margin-large-top">
+        <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
             <h1>Dashboard</h1>
                <iframe src="/app/kibana#/dashboard/<?php echo $dashboardHash; ?>?embed=true&_g=()" height="11500" width="100%"></iframe>
         </div>
-        <?php include('inc/footer.php'); ?>
+        <div style="position: relative; max-width: initial;">
+            <?php require 'inc/footer.php'; ?>
+        </div>
 
     <?php include('inc/offcanvas.php'); ?>
 
