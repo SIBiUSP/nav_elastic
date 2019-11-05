@@ -1,0 +1,7 @@
+[submodule "functions_core"]
+        path = functions_core
+        url = https://github.com/SIBiUSP/functions_core.git
+[submodule "inc/popterms"]
+        path = inc/popterms
+        url = https://github.com/tematres/popterms.git
+
