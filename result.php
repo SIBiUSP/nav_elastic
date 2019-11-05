@@ -13,6 +13,11 @@
  * @link     https://github.com/SIBiUSP/nav_elastic
  */
 require 'inc/config.php';
+/*
+array_walk_recursive($_GET, function (&$item, $key){
+    $item = htmlspecialchars($item);
+});
+*/
 
 if (isset($_GET["search"])) {
     foreach ($_GET["search"] as $getSearch) {
