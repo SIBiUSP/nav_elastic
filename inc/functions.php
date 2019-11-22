@@ -1260,8 +1260,9 @@ class Record
         echo '<li>';
         echo '<div class="uk-grid-divider uk-padding-small" uk-grid>';
         echo '<div class="uk-width-1-5@m">';
-        echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].''.$_SERVER['QUERY_STRING'].'&filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a></p>';
-       
+
+        echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
+
         if (!empty($this->isbn)) {
             $cover_link = 'https://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
             echo  '<p><img src="'.$cover_link.'"></p>';

@@ -14,6 +14,10 @@
  */
 require 'inc/config.php';
 
+array_walk_recursive($_GET, function (&$item, $key){
+    $item = htmlspecialchars(strip_tags($item),ENT_NOQUOTES);
+});
+
 if (isset($_GET["search"])) {
     foreach ($_GET["search"] as $getSearch) {
         $getCleaned[] = htmlspecialchars($getSearch, ENT_QUOTES);
