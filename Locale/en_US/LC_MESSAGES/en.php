@@ -316,6 +316,18 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'records',
       ),
+      'Remover do resultado' =>
+      array (
+        0 => 'Remove from result',
+      ),
+      'Removido' =>
+      array (
+        0 => 'Removed',
+      ),
+      'Removidos' =>
+      array (
+        0 => 'Removed',
+      ),
       'Resumo' =>
       array (
         0 => 'Abstract',
