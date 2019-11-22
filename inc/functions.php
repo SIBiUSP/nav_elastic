@@ -109,13 +109,20 @@ class Homepage
         }';
         $response = elasticsearch::elastic_search($type,null,0,$query);
         $total = round($response["hits"]["total"]);
-        if ($total >= 0 && $total < 1000000) {
+        /*if ($total >= 0 && $total < 1000000) {
             return $t->gettext("Total da produção") . ": &cong; " . round($total/1000) . " " . $t->gettext("mil");
         } else if ($total >= 1000000 && $total <= 1949999){
             return $t->gettext("Total da produção") . ": &cong; " . number_format($total/1000000,1,',','.') . " " . $t->gettext("milhão");
         } else {
             return $t->gettext("Total da produção") . ": &cong; " . number_format($total/1000000,1,',','.') . " " . $t->gettext("milhões");
+        }*/
+        
+        if($_GET["locale"] == "en_US"){
+            $total = number_format($total, 0, '.', ',');
+        } else {
+            $total = number_format($total, 0, ',', '.');
         }
+        return $t->gettext("Total da produção") . ": " . $total;
     }
 
     /**
@@ -1253,15 +1260,9 @@ class Record
         echo '<li>';
         echo '<div class="uk-grid-divider uk-padding-small" uk-grid>';
         echo '<div class="uk-width-1-5@m">';
-        echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.$this->type.'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
-        echo '<p>Unidades USP: ';
-        if (!empty($this->unidadeUSPArray)) {
-            $unique =  array_unique($this->unidadeUSPArray);
-            foreach ($unique as $unidadeUSP) {
-                echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.' </a>';
-            }
-        }
-        echo '</p>';
+
+        echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
+
         if (!empty($this->isbn)) {
             $cover_link = 'https://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
             echo  '<p><img src="'.$cover_link.'"></p>';
@@ -1269,10 +1270,10 @@ class Record
         echo '</div>';
         echo '<div class="uk-width-4-5@m">';
         echo '<article class="uk-article">';
-        echo '<p class="uk-text-lead uk-margin-remove" style="font-size:115%"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
+        echo '<p class="uk-text-lead uk-margin-remove title-link"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
 
         /* Authors */
-        echo '<p class="uk-article-meta uk-margin-remove">'.$t->gettext('Autores').': ';
+        echo '<p class="uk-article-meta uk-margin-remove"  style="color: #666">';
         foreach ($this->authorArray as $authors) {
             if (!empty($authors["person"]["orcid"])) {
                 $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
@@ -1280,9 +1281,9 @@ class Record
                 $orcidLink = '';
             }
             if (!empty($authors["person"]["potentialAction"])) {
-                $authors_array[]='<a href="result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>'.$orcidLink.'';
+                $authors_array[]='<a class="link" href="result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' ('.$authors["person"]["potentialAction"].')</a>'.$orcidLink.'';
             } else {
-                $authors_array[]='<a href="result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'';
+                $authors_array[]='<a class="link" href="result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'';
             }
             unset($orcidLink);
         }
@@ -1292,20 +1293,49 @@ class Record
 
         /* IsPartOf */
         if (!empty($this->isPartOfArray["name"])) {
-            echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></p>';
+            echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a>. ';
         }
 
         /*  releasedEvent */
         if (!empty($this->releasedEvent)) {
-            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a></p>';
+            echo $t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a>. ';
+        }
+
+        /* Units*/
+
+        if (!empty($this->unidadeUSPArray)) {
+            $unique =  array_unique($this->unidadeUSPArray);
+            if (count($unique) > 1) {
+                echo 'Unidades: ';
+            } else {
+                echo 'Unidade: ';
+            }
+            $i = 0;
+            foreach ($unique as $unidadeUSP) {
+                if($i != 0){
+                    echo ', ';
+                }
+                echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
+                $i++;
+            }
+            echo '</p>';
         }
 
         /* Subjects */
         if (!empty($this->aboutArray)) {
             echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
+            //var_dump($this->aboutArray)
+            $i = 0;
             foreach ($this->aboutArray as $subject) {
-                echo '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a> ';
+                $subjectItem = "";
+                if ($i != 0){
+                    $subjectItem .= ", ";
+                }
+                $subjectItem .= '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.ucwords(mb_strtolower($subject, 'UTF-8')).'</a>';
+                echo $subjectItem;
+                $i++;
             }
+            unset($i);
         }
 	
         if (!empty($this->url)||!empty($this->doi)) {
@@ -1338,23 +1368,23 @@ class Record
     {
         echo '<article class="uk-article">';
         echo '<p class="uk-article-meta">';
-        echo '<a href="<?php echo $url_base ?>/result.php?filter[]=type:&quot;'.$this->type.'&quot;">'.$this->type.'</a>';
+        echo '<a href="<?php echo $url_base ?>/result.php?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a>';
         echo '</p>';
         echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
         foreach ($this->authorArray as $authors) {
             if (!empty($authors["person"]["orcid"])) {
-                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                $orcidLink = ' <a class="link" href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
                 $orcidLink = '';
             }
             if (!empty($authors["person"]["affiliation"]["name"])) {
-                $authorsList[] =  '<li><a href="'.$url_base.'/result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - <span class="uk-text-muted">'.$authors["person"]["affiliation"]["name"].'</span></a>'.$orcidLink.'</li>';
+                $authorsList[] =  '<li><a class="link" href="'.$url_base.'/result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' - <span class="uk-text-muted">'.$authors["person"]["affiliation"]["name"].'</span></a>'.$orcidLink.'</li>';
             } elseif (!empty($authors["person"]["potentialAction"])) {
-                $authorsList[] = '<li><a href="'.$url_base.'/result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' <span class="uk-text-muted">('.$authors["person"]["potentialAction"].')</span></a>'.$orcidLink.'</li>';
+                $authorsList[] = '<li><a class="link" href="'.$url_base.'/result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].' <span class="uk-text-muted">('.$authors["person"]["potentialAction"].')</span></a>'.$orcidLink.'</li>';
             } else {
-                $authorsList[] = '<li><a href="'.$url_base.'/result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'</li>';
+                $authorsList[] = '<li><a class="link" href="'.$url_base.'/result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'</li>';
             }
             unset($orcidLink);
         }
@@ -1368,10 +1398,12 @@ class Record
         }
         /* USP Units */
         if (!empty($this->unidadeUSPArray)) {
+            $i = 0;
             foreach ($this->unidadeUSPArray as $unidadeUSP) {
+
                 $unidadeUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
             }
-            echo '<li>'.$t->gettext('Unidades USP').': '.implode("; ", $unidadeUSPList).'</li>';
+            echo '<li>'.$t->gettext('Unidades').': '.implode("; ", $unidadeUSPList).'</li>';
         }
 
         /* Programa Sigla Pós */
@@ -1398,6 +1430,7 @@ class Record
         /* Subject */
         if (isset($this->aboutArray)) {
             foreach ($this->aboutArray as $subject) {
+
                 $subjectList[] = '<a href="'.$url_base.'/result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a>';
             }
             echo '<li>'.$t->gettext('Assuntos').': '.implode("; ", $subjectList).'</li>';
@@ -1574,25 +1607,24 @@ class Record
     public function onlineAccess($t)
     {
 
-        echo '<div class="uk-alert-primary" uk-alert>';
-        echo '<p class="uk-text-small">'.$t->gettext('Acesso online ao documento').'</p>';
-        
+        echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
+
 	$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
         if (!empty($fileLink)){
         $fileLink = substr($fileLink, 5);
-            echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
+            echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
         }
 
         if (!empty($this->url)) {
             foreach ($this->url as $url) {
-                echo '<a class="uk-button uk-button-primary uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">'.$t->gettext('Acesso à fonte').'</a>';
+                echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">'.$t->gettext('Acesso à fonte').'</a>';
             }
         }
         if (!empty($this->doi)) {
-            echo '<a class="uk-button uk-button-primary uk-button-small" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
+            echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
         }
 
-        $sfx_array[] = 'rft.atitle='.$this->name.'';
+        /*$sfx_array[] = 'rft.atitle='.$this->name.'';
         $sfx_array[] = 'rft.year='.$this->datePublished.'';
         if (!empty($this->isPartOfArray["name"])) {
             $sfx_array[] = 'rft.jtitle='.$this->isPartOfArray["name"].'';
@@ -1606,7 +1638,7 @@ class Record
         if (!empty($r["_source"]['ispartof_data'][0])) {
             $sfx_array[] = 'rft.volume='.trim(str_replace("v.", "", $r["_source"]['ispartof_data'][0])).'';
         }
-        echo ' <a class="uk-text-small" href="//www.sibi.usp.br/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="https://www.sibi.usp.br/sfxlcl41/sfx.gif"></a>';
+        echo ' <a class="uk-text-small" href="//www.sibi.usp.br/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="https://www.sibi.usp.br/sfxlcl41/sfx.gif"></a>';*/
         echo '</div>';
 
     }
@@ -1668,8 +1700,8 @@ class Record
         $citeproc_vancouver = new citeproc($csl_nlm, $lang);
         $mode = "reference";
         echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
-            echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';
-            echo '<div><a class="uk-button uk-button-text" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade">'.$t->gettext('Como citar').'</a> </div>';
+            /*echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';*/
+            echo '<div><a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade">'.$t->gettext('Como citar').'</a> </div>';
         echo '</div>';
         echo '<div id="citacao'.$record['_id'].'" hidden="hidden">';
             echo '<li class="uk-h6 uk-margin-top">';

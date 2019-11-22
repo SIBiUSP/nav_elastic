@@ -1,5 +1,37 @@
 @charset "utf-8";
 
+html{
+	color: #333;
+}
+
+a{
+	color: #666;
+}
+a.link, h3.link {
+	color: #666 !important;
+}
+
+a:hover, h3.link{
+	color: #999;
+}
+
+a:hover.link{
+	color: #999 !important;
+	text-decoration: underline;
+}
+
+p.title-link, p:hover.title-link {
+	font-size:115% !important;
+}
+
+p.title-link, a#button.uk-button-default{
+	color: #123e72 !important;
+}
+
+p:hover.title-link, a:hover#button.uk-button-default{
+	color: #1094ab !important;
+}
+
 .barrausp {
     background-image: url("../images/bg-headtop.gif");
     background-repeat: repeat-x;
@@ -23,13 +55,35 @@
 }
 
 .uk-button-primary, .uk-search-icon-flip {
-	background: #1094ab;
+	background: #1094ab !important;
 	color: #fff !important;
 }
 
 .uk-button-primary:hover, .uk-search-icon-flip:hover {
-	background: #fcb421;
+	background: #fcb421 !important;
     color: #333 !important;
+}
+
+
+
+.uk-nav-header {
+	color: #222 !important;
+}
+
+.uk-offcanvas-bar hr{
+	border-top-color: #e5e5e5 !important;
+}
+
+.uk-offcanvas-bar {
+	color: #333 !important;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.uppercase {
+	text-transform: uppercase;
 }
 
 #sub-menu div ul li a{
@@ -39,4 +93,8 @@
 
 #logos-rodape a, #logos-rodape a:hover{
 	text-decoration: none !important; 
+}
+
+.not-filter{
+	color: #f0504c !important;	
 }

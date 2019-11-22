@@ -76,7 +76,6 @@ $total = $cursor["hits"]["total"];
 </head>
 <body style="height: 100vh; min-height: 45em; position: relative;">
     <?php require 'inc/navbar.php'; ?>
-    <br/><br/><br/>
 
     <?php
     if (file_exists("inc/analyticstracking.php")) {
@@ -114,8 +113,12 @@ $total = $cursor["hits"]["total"];
 
             <!-- List of filters - Start -->
             <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
+
             <p class="uk-margin-top" uk-margin>
-                <a class="uk-button uk-button-default uk-button-small" href="index.php"><?php echo $t->gettext('Começar novamente'); ?></a>
+                <a href="#offcanvas-slide" class="uk-text-small" uk-toggle>
+                    <?php echo $t->gettext('Filtros'); ?>
+                </a>:
+                
                 <?php
                 if (!empty($_GET["search"])) {
                     foreach ($_GET["search"] as $querySearch) {
@@ -124,7 +127,7 @@ $total = $cursor["hits"]["total"];
                         $querySearch = str_replace($name_field[0].":", "", $querySearch);
                         $diff["search"] = array_diff($_GET["search"], $querySearchArray);
                         $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                        echo '<a class="uk-button uk-button-default uk-button-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                        echo '<a class="uk-button uk-button-default uk-button-small uk-text-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
                         unset($querySearchArray);
                     }
                 }
@@ -136,34 +139,39 @@ $total = $cursor["hits"]["total"];
                         $filters = str_replace($name_field[0].":", "", $filters);
                         $diff["filter"] = array_diff($_GET["filter"], $filters_array);
                         $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                        echo '<a class="uk-button uk-button-primary uk-button-small" href="http://'.$url_push.'">Filtrado por: '.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                        echo '<a class="uk-button uk-button-default uk-button-small uk-text-small" href="http://'.$url_push.'">'.$filters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
                         unset($filters_array);
                     }
                 }
 
                 if (!empty($_GET["notFilter"])) {
+                    $notFilterText = sizeof($_GET["notFilter"]) > 1 ? $t->gettext('Removidos') : $t->gettext('Removido');
+                    echo '<span class="not-filter"> '. $notFilterText . ': </span>';
                     foreach ($_GET["notFilter"] as $notFilters) {
                         $notFiltersArray[] = $notFilters;
                         $name_field = explode(":", $notFilters);
                         $notFilters = str_replace($name_field[0].":", "", $notFilters);
                         $diff["notFilter"] = array_diff($_GET["notFilter"], $notFiltersArray);
                         $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
-                        echo '<a class="uk-button uk-button-danger uk-button-small" href="http://'.$url_push.'">Ocultando: '.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+                        echo '<a class="uk-button uk-button-default uk-button-small uk-text-small not-filter" href="http://'.$url_push.'">'.$notFilters.' <span uk-icon="icon: close; ratio: 1"></span></a>';
                         unset($notFiltersArray);
                     }
                 }
                 ?>
-
+                <a class="uk-text-small" href="index.php" style="float: right;"><?php echo "Limpar"/*$t->gettext('Começar novamente')*/; ?></a>
             </p>
             <?php endif;?>
             <!-- List of filters - End -->
+
         </div>
         <div class="uk-grid-divider" uk-grid>
-            <div class="uk-width-1-4@s uk-width-2-6@m">
+            <div id="offcanvas-slide" uk-offcanvas>
+                <div class="uk-offcanvas-bar uk-background-muted uk-text-secondary">
+                    <h3 class="link"><?php echo $t->gettext('Filtros'); ?></h3>
+            <!--<div class="uk-width-1-4@s uk-width-2-6@m">-->
                     <!-- Facetas - Início -->
-                    <h3><?php echo $t->gettext('Refinar busca'); ?></h3>
                         <hr>
-                        <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
+                        <ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                             <?php
                                 $facets = new Facets();
                                 $facets->query = $result_get['query'];
@@ -174,15 +182,15 @@ $total = $cursor["hits"]["total"];
 
                                 $facets->facet("base", 10, $t->gettext('Bases'), null, "_term", $_GET["search"]);
                                 $facets->facet("type", 100, $t->gettext('Tipo de material'), null, "_term", $_GET["search"]);
-                                $facets->facet("unidadeUSP", 200, $t->gettext('Unidades USP'), null, "_term", $_GET["search"]);
-                                $facets->facet("authorUSP.departament", 100, $t->gettext('Departamento'), null, "_term", $_GET["search"]);
+                                $facets->facet("unidadeUSP", 200, $t->gettext('Unidades USP'), null, "_term", $_GET["search"], "uppercase");
+                                $facets->facet("authorUSP.departament", 100, $t->gettext('Departamento'), null, "_term", $_GET["search"], "uppercase");
                                 $facets->facet("author.person.name", 150, $t->gettext('Autores'), null, "_term", $_GET["search"]);
                                 $facets->facet("authorUSP.name", 150, $t->gettext('Autores USP'), null, "_term", $_GET["search"]);
                                 $facets->facet("datePublished", 120, $t->gettext('Ano de publicação'), "desc", "_term", $_GET["search"]);
                                 $facets->facet("about", 50, $t->gettext('Assuntos'), null, "_term", $_GET["search"]);
                                 $facets->facet("language", 40, $t->gettext('Idioma'), null, "_term", $_GET["search"]);
                                 $facets->facet("isPartOf.name", 50, $t->gettext('Título da fonte'), null, "_term", $_GET["search"]);
-                                $facets->facet("publisher.organization.name", 50, $t->gettext('Editora'), null, "_term", $_GET["search"]);
+                                $facets->facet("publisher.organization.name", 50, $t->gettext('Editora'), null, "_term", $_GET["search"], "uppercase");
                                 $facets->facet("releasedEvent", 50, $t->gettext('Nome do evento'), null, "_term", $_GET["search"]);
                                 $facets->facet("country", 200, $t->gettext('País de publicação'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.grupopesquisa", 100, "Grupo de pesquisa", null, "_term", $_GET["search"]);
@@ -195,13 +203,13 @@ $total = $cursor["hits"]["total"];
                                 $facets->facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
                                 $facets->facet("author.person.affiliation.location", 50, $t->gettext('País das instituições de afiliação dos autores externos'), null, "_term", $_GET["search"]);
                             ?>
-                            <li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
+                            <!--<li class="uk-nav-header"><?php echo $t->gettext('Métricas do periódico'); ?></li>
                             <?php
                                 $facets->facet("USP.qualis.qualis.2016.area", 50, $t->gettext('Qualis 2013/2016 - Área'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.qualis.qualis.2016.nota", 50, $t->gettext('Qualis 2013/2016 - Nota'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.qualis.qualis.2016.area_nota", 50, $t->gettext('Qualis 2013/2016 - Área / Nota'), null, "_term", $_GET["search"]);
-                            ?>
-                            <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>
+                            ?>-->
+                            <li class="uk-nav-header"><?php echo $t->gettext('Teses e Dissertações'); ?></li>-
                             <?php
                                 $facets->facet("inSupportOf", 30, $t->gettext('Tipo de tese'), null, "_term", $_GET["search"]);
                                 $facets->facet("USP.areaconcentracao", 100, "Área de concentração", null, "_term", $_GET["search"]);
@@ -290,8 +298,9 @@ $total = $cursor["hits"]["total"];
                 <?php endif; ?>
 
             </div>
+        </div>
 
-            <div class="uk-width-3-4@s uk-width-4-6@m">
+            <div class="uk-width-1-1">
 
             <!-- Vocabulário controlado - Início -->
             <?php if(isset($_GET["search"])) : ?>
