@@ -110,15 +110,12 @@ $total = $cursor["hits"]["total"];
             </nav>
         </div>
         <div class="uk-width-1-1@s uk-width-1-1@m">
-
-            <!-- List of filters - Start -->
-            <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
-
             <p class="uk-margin-top" uk-margin>
                 <a href="#offcanvas-slide" class="uk-text-small" uk-toggle>
                     <?php echo $t->gettext('Filtros'); ?>
                 </a>:
-                
+            <!-- List of filters - Start -->
+            <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
                 <?php
                 if (!empty($_GET["search"])) {
                     foreach ($_GET["search"] as $querySearch) {
@@ -159,10 +156,10 @@ $total = $cursor["hits"]["total"];
                 }
                 ?>
                 <a class="uk-text-small" href="index.php" style="float: right;"><?php echo "Limpar"/*$t->gettext('Começar novamente')*/; ?></a>
-            </p>
+            
             <?php endif;?>
             <!-- List of filters - End -->
-
+            </p>
         </div>
         <div class="uk-grid-divider" uk-grid>
             <div id="offcanvas-slide" uk-offcanvas>
