@@ -91,12 +91,15 @@
                     </a></li>
                 <?php endif ; ?>-->
                 <li>
-                    <a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=pt_BR" style="padding-right: 0.2em;">
+                    <?php
+                        $link = "http://".$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"]."?".preg_replace("^&locale=[a-z]{2}_[A-Z]{2}$", "", $_SERVER["QUERY_STRING"]);
+                    ?>
+                    <a href="<?php echo $link; ?>&locale=pt_BR" style="padding-right: 0.2em;">
                         <img src="<?php echo $url_base; ?>/inc/images/br.png" style="width: 1.6em;">
                     </a>
                 </li>
                 <li>
-                    <a href="http://<?php echo ''.$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].''; ?>?<?php echo $_SERVER["QUERY_STRING"]; ?>&locale=en_US" style="padding-left: 0.2em;">
+                    <a href="<?php echo $link; ?>&locale=en_US" style="padding-left: 0.2em;">
                         <img src="<?php echo $url_base; ?>/inc/images/en.png" style="width: 1.6em;">
                     </a>
                 </li>
