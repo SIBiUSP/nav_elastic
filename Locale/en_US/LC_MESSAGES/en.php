@@ -22,11 +22,11 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Acesso ao documento' => 
       array (
-        0 => 'Online access',
+        0 => 'Online object access',
       ),
       'Acesso online à fonte' => 
       array (
-        0 => 'Online access',
+        0 => 'Online source access',
       ),
       'Afiliação dos autores externos normalizada' => 
       array (
@@ -39,6 +39,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Agência de fomento' => 
       array (
         0 => 'Funding Agencies',
+      ),
+      'Agência USP de Gestão da Informação Acadêmica' =>
+      array (
+        0 => 'Agency USP of Scholarly Communication',
       ),
       'Ano' => 
       array (
@@ -59,6 +63,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'ARTIGO DE JORNAL' => 
       array (
         0 => 'NEWS ITEM',
+      ),
+      'Artigo de periodico' =>
+      array (
+        0 => 'Article',
       ),
       'ARTIGO DE JORNAL-DEP/ENTR' => 
       array (
@@ -103,6 +111,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Busca institucional' => 
       array (
         0 => 'Context search',
+      ),
+      'Busca técnica' =>
+      array(
+        0 => 'Expert search',
       ),
       'Buscar' => 
       array (
@@ -168,6 +180,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Tools',
       ),
+      'Filtros' =>
+      array (
+        0 => 'Filters',
+      ),
       'Fonte' => 
       array (
         0 => 'Source',
@@ -194,11 +210,11 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Local' => 
       array (
-        0 => 'Publisher place',
+        0 => 'Place of publication',
       ),
       'Mais informações' => 
       array (
-        0 => 'More informations',
+        0 => 'More information',
       ),
       'Métricas' => 
       array (
@@ -218,7 +234,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Nome do evento' => 
       array (
-        0 => 'Conference titles',
+        0 => 'Conference title',
       ),
       'Nossos números' => 
       array (
@@ -270,7 +286,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Pesquise por termo ou autor' => 
       array (
-        0 => 'Search for keyword or author',
+        0 => 'Search by keyword or author',
       ),
       'Português' => 
       array (
@@ -308,6 +324,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Removed',
       ),
+      'Repositório da Produção USP' =>
+      array (
+        0 => 'USP Production Repository',
+      ),
       'Resumo' =>
       array (
         0 => 'Abstract',
@@ -322,7 +342,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Selecionar os campos para realizar a busca:' => 
       array (
-        0 => 'Select fields to search:',
+        0 => 'Select search fields:',
       ),
       'Selecione uma Unidade USP para filtrar a busca' => 
       array (
@@ -342,7 +362,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Teses e Dissertações' => 
       array (
-        0 => 'Theses and Dissertations',
+        0 => 'Thesis and Dissertations',
       ),
       'Termos de busca' => 
       array (
@@ -350,7 +370,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Tipo de material' => 
       array (
-        0 => 'Document Types',
+        0 => 'Document types',
       ),
       'Tipo de tese' => 
       array (
@@ -371,6 +391,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Todas as Unidades USP' => 
       array (
         0 => 'All USP Schools',
+      ),
+      'Total da produção' =>
+      array (
+        0 => 'Available items',
       ),
       'TRABALHO DE EVENTO' => 
       array (
@@ -394,7 +418,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Ver registro completo' => 
       array (
-        0 => 'Full record',
+        0 => 'View full record',
       ),
       'Visualização em rede' => 
       array (
