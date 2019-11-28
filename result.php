@@ -24,6 +24,7 @@ if (isset($_GET["search"])) {
     }
     unset($_GET["search"]);
     $_GET["search"] = $getCleaned;
+    
 }
 
 if (isset($fields)) {
@@ -48,7 +49,9 @@ $params["index"] = $index;
 $params["type"] = $type;
 $params["size"] = $limit;
 $params["from"] = $result_get['skip'];
-$params["body"] = $result_get['query'];
+if(!empty($_GET["search"][0]) || !empty($_GET["fields"])){
+    $params["body"] = $result_get['query'];
+} 
 
 $cursor = $client->search($params);
 $total = $cursor["hits"]["total"];
@@ -117,7 +120,7 @@ $total = $cursor["hits"]["total"];
             <!-- List of filters - Start -->
             <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
                 <?php
-                if (!empty($_GET["search"])) {
+                if (!empty($_GET["search"][0])) {
                     foreach ($_GET["search"] as $querySearch) {
                         $querySearchArray[] = $querySearch;
                         $name_field = explode(":", $querySearch);
@@ -125,6 +128,7 @@ $total = $cursor["hits"]["total"];
                         $diff["search"] = array_diff($_GET["search"], $querySearchArray);
                         $url_push = $_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"].'?'.http_build_query($diff);
                         echo '<a class="uk-button uk-button-default uk-button-small uk-text-small" href="http://'.$url_push.'">'.$querySearch.' <span uk-icon="icon: close; ratio: 1"></span></a>';
+
                         unset($querySearchArray);
                     }
                 }
