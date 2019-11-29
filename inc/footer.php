@@ -19,17 +19,17 @@
 	                    <a class="uk-link-muted" href="<?php echo $url_base; ?>/advanced_search.php"><?php echo $t->gettext('Busca técnica'); ?></a>
 	                </li>
 
-		        	<li>
+		        	<!--<li>
 	                <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
 	                    <!-- < ?php if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) : ?> -->
 	                        <a href="<?php echo $url_base; ?>/tutorial_staff/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial Staff'); ?></a>
 	                    <!-- < ?php else: ?> -->
 	                    <!--    <a href="< php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer">< ?php echo $t->gettext('Tutorial'); ?></a> -->
-	                    <!-- < ?php endif; ?> -->
+	                    <!-- < ?php endif; ?>
 	                <?php else: ?>
 	                    <a href="<?php echo $url_base; ?>/tutorial/" target="_blank" rel="noopener noreferrer"><?php echo $t->gettext('Tutorial'); ?></a>
 	                <?php endif; ?>
-	                </li>
+	                </li>-->
 
 	                <li>
 	                    <a href="<?php echo $url_base; ?>/contact.php"><?php echo $t->gettext('Contato'); ?></a>
