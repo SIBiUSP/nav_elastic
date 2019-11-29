@@ -238,7 +238,7 @@ class get
             $query["query"]["bool"]["must"]["query_string"]["query"] = $get['range'][0];
         }         
         
-        if (!isset($query["query"]["bool"]["must"]["query_string"]["query"])) {
+        if (empty($query["query"]["bool"]["must"]["query_string"]["query"])) {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
 
