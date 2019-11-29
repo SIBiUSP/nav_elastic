@@ -18,6 +18,7 @@ array_walk_recursive($_GET, function (&$item, $key){
     $item = htmlspecialchars(strip_tags($item),ENT_NOQUOTES);
 });
 
+
 if (isset($_GET["search"])) {
     foreach ($_GET["search"] as $getSearch) {
         $getCleaned[] = htmlspecialchars($getSearch, ENT_QUOTES);
@@ -32,6 +33,7 @@ if (isset($fields)) {
 }
 
 $result_get = get::analisa_get($_GET);
+
 $limit = $result_get['limit'];
 $page = $result_get['page'];
 
@@ -49,9 +51,11 @@ $params["index"] = $index;
 $params["type"] = $type;
 $params["size"] = $limit;
 $params["from"] = $result_get['skip'];
-if(!empty($_GET["search"][0]) || !empty($_GET["fields"])){
-    $params["body"] = $result_get['query'];
-} 
+$params["body"] = $result_get['query'];
+
+//var_dump($params);
+//$params["body"]["query"]["bool"]["must"]["query_string"]["query"]="*";
+
 
 $cursor = $client->search($params);
 $total = $cursor["hits"]["total"];
