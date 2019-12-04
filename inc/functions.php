@@ -1338,7 +1338,9 @@ class Record
             unset($i);
         }
 	
-        if (!empty($this->url)||!empty($this->doi)) {
+	// Alterado para também executar caso haja link no dspace 
+	$dspaceFileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
+        if (!empty($this->url)||!empty($this->doi)||!empty($dspaceFileLink)) {
             $this->onlineAccess($t);
         }
         
