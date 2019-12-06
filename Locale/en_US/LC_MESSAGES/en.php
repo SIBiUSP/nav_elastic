@@ -420,6 +420,18 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'View full record',
       ),
+      'Versão aceita' =>
+      array(
+        0 => 'Post-print',
+      ),
+      'Versão publicada' =>
+      array(
+        0 => 'Published',
+      ),
+      'Versão submetida' =>
+      array(
+        0 => 'Pre-print',
+      ),
       'Visualização em rede' => 
       array (
         0 => 'Network visualization',

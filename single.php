@@ -62,10 +62,8 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                       <input type="file" name="file">
                       <select class="uk-select" name="version">
                           <option disabled selected value>Selecione a versão</option>
-                          <option value="publishedVersion">publishedVersion</option>
-                          <option value="submittedVersion">submittedVersion</option>
-                          <option value="acceptedVersion">acceptedVersion</option>
-                          <option value="updatedVersion">updatedVersion</option>
+                          <option value="publishedVersion"><?php echo $t->gettext('Versão publicada'); ?></option>
+                          <option value="acceptedVersion"><?php echo $t->gettext('Versão aceita'); ?></option>
                       </select>
                       <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
                       <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
@@ -211,7 +209,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
 
                         <!-- Métricas - Início -->
                         <?php if (!empty($cursor["_source"]['doi'])) : ?>
-                        <h3 class="uk-panel-title"><?php echo $t->gettext('Métricas'); ?></h3>
+                        <h3 class="uk-panel-title"></h3>
                         <hr>
                             <?php if ($show_metrics == true) : ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
