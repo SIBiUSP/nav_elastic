@@ -92,33 +92,21 @@ $total = $cursor["hits"]["total"];
 
     <div class="uk-container" style="position: relative; padding-bottom: 15em;">
         <div class="uk-width-1-1@s uk-width-1-1@m">
-            <nav class="uk-navbar-container uk-margin" uk-navbar>
-                <div class="nav-overlay uk-navbar-left">
-                    <a class="uk-navbar-item uk-logo" uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"><?php echo $t->gettext('Clique para uma nova pesquisa'); ?></a>
-                </div>
-                <div class="nav-overlay uk-navbar-right">
-                    <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
-                </div>
-                <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
-                <div class="uk-navbar-item uk-width-expand">
-                <form class="uk-search uk-search-navbar uk-width-1-1">
+            <form class="uk-search uk-search-navbar uk-width-1-1" action="result.php">
+                <div class="search uk-form-controls uk-margin uk-search uk-search-default uk-width-1-1@s uk-width-1-1@m uk-align-center">
                     <input type="hidden" name="fields[]" value="name">
                     <input type="hidden" name="fields[]" value="author.person.name">
                     <input type="hidden" name="fields[]" value="authorUSP.name">
                     <input type="hidden" name="fields[]" value="about">
                     <input type="hidden" name="fields[]" value="description">
-                    <input class="uk-search-input" type="search" name="search[]" placeholder="<?php echo $t->gettext('Nova pesquisa...'); ?>" autofocus>
-                    </form>
+                    <button class="search-button uk-search-icon-flip" uk-search-icon="ratio: 1"></button>
+                    <input class="search-input uk-input" id="form-stacked-text" type="search" placeholder="<?php echo $t->gettext('Pesquise por termo ou autor'); ?>" name="search[]" value="<?php echo !empty($_GET['search'][0]) ? $_GET['search'][0] : ""; ?>">
                 </div>
-
-                <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
-
-                </div>
-            </nav>
+            </form>
         </div>
         <div class="uk-width-1-1@s uk-width-1-1@m">
             <p class="uk-margin-top" uk-margin>
-                <a href="#offcanvas-slide" class="uk-text-small" uk-toggle>
+                <a href="#offcanvas-slide" class="uk-button uk-button-small uk-text-small filtros" uk-toggle>
                     <?php echo $t->gettext('Filtros'); ?>
                 </a>:
             <!-- List of filters - Start -->

@@ -98,3 +98,38 @@ p:hover.title-link, a:hover#button.uk-button-default{
 .not-filter{
 	color: #f0504c !important;	
 }
+
+.filtros {
+	background-color: #fff !important;
+	color: #1094ab !important;
+	border: 1px solid #1094ab !important;
+}
+
+.filtros:hover {
+	color: #fcb421 !important;
+	border: 1px solid #fcb421 !important;
+}
+
+.search {
+	border: none;
+	border-bottom: 1px solid #e5e5e5 !important;
+}
+
+.search:hover, .search:active{
+	border: none;
+	border-bottom: 1px solid #1094ab !important;
+}
+
+.search-button{
+	background-color: #fff !important;
+	color: #1094ab !important;
+}
+
+.search-button:hover{
+	background-color: #fff !important;
+	color: #fcb421 !important;
+}
+
+.search-input{
+	border: none;
+}
