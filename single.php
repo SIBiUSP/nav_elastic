@@ -190,7 +190,7 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <!--<hr>-->
                             <li>
-                                <a class="uk-button uk-button-primary exportacao" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="noopener noreferrer nofollow">Registro no Dedalus</a>
+                                <a class="uk-button exportacao" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="noopener noreferrer nofollow">Registro no Dedalus</a>
                             </li>
                         </ul>
                         <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
