@@ -197,13 +197,13 @@ $cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>
                             <li>
-                                <a class="uk-button uk-button-primary exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
+                                <a class="uk-button exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
                             </li>
                             <li class="uk-nav-divider">
-                                <a class="uk-button uk-button-primary exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=bibtex" rel="noopener noreferrer nofollow">Bibtex</a>
+                                <a class="uk-button exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=bibtex" rel="noopener noreferrer nofollow">Bibtex</a>
                             </li>
                             <li class="uk-nav-divider">
-                                <a class="uk-button uk-button-primary exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
+                                <a class="uk-button exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
                             </li>
                         </ul>
 
