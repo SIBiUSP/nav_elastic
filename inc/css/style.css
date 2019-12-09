@@ -99,13 +99,13 @@ p:hover.title-link, a:hover#button.uk-button-default{
 	color: #f0504c !important;	
 }
 
-.filtros {
+.filtros, .exportacao {
 	background-color: #fff !important;
 	color: #1094ab !important;
 	border: 1px solid #1094ab !important;
 }
 
-.filtros:hover {
+.filtros:hover, .exportacao:hover {
 	color: #fcb421 !important;
 	border: 1px solid #fcb421 !important;
 }
