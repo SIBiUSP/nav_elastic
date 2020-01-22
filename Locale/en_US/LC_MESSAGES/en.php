@@ -20,6 +20,14 @@ Language: en_US
 Plural-Forms: nplurals=2; plural=(n != 1);
 ',
       ),
+      'A sua mensagem foi enviada com sucesso!' => 
+      array (
+        0 => 'Your message has been successfully sent!',
+      ),
+      'A sua mensagem não foi enviada! Tente novamente.' => 
+      array (
+        0 => 'Your message has not been sent! Please try again.',
+      ),
       'Acesso ao documento' => 
       array (
         0 => 'Online object access',
@@ -160,6 +168,18 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Departament',
       ),
+      'Digite o seu nome' => 
+      array (
+        0 => 'Enter your name',
+      ),
+      'Digite o seu e-mail' => 
+      array (
+        0 => 'Enter your e-mail',
+      ),
+      'Digite a sua mensagem' => 
+      array (
+        0 => 'Enter your message',
+      ),
       'Editora' => 
       array (
         0 => 'Publisher',
@@ -216,6 +236,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'More information',
       ),
+      'Mensagem' => 
+      array (
+        0 => 'Message',
+      ),
       'Métricas' => 
       array (
         0 => 'Metrics',
@@ -231,6 +255,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'MONOGRAFIA/LIVRO' => 
       array (
         0 => 'Book',
+      ),
+      'Nome' => 
+      array (
+        0 => 'Name',
       ),
       'Nome do evento' => 
       array (
