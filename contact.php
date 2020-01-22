@@ -16,7 +16,26 @@
         ?>
         <?php require 'inc/navbar.php'; ?>
         <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
-
+            <?php
+                if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["mensagem"])){
+                    $nome = $_POST["nome"];
+                    $email = $_POST["email"];
+                    $email_remetente = "repositorio@aguia.usp.br";
+                    $mensagem = $_POST["mensagem"];
+                    $para = "alander.machado@aguia.usp.br";
+                    $assunto = "Contato do site do Repositório";
+                    $headers = "MIME-Version: 1.1\n";
+                    $headers .= "Content-type: text/plain; charset=UTF-8\n";
+                    $headers .= "From: $email_remetente\n";
+                    $headers .= "Return-Path: $email_remetente\n";
+                    $headers .= "Reply-To: $email\n";
+                    if(mail($para, $assunto, $mensagem, $headers)){
+                        echo $t->gettext('A sua mensagem foi enviada com sucesso!');
+                    } else{
+                        echo $t->gettext('A sua mensagem não foi enviada! Tente novamente.');
+                    }
+                }
+            ?>
             <div class="uk-grid" uk-grid>
 
                 <div class="uk-width-2-3@m">
@@ -24,32 +43,32 @@
 
                         <h3 class="uk-panel-title">Entre em contato</h3>
 
-                        <form class="uk-form uk-form-stacked">
+                        <form class="uk-form uk-form-stacked" method="post" action="">
 
                             <div class="uk-form-row">
-                                <label class="uk-form-label">Seu nome</label>
+                                <label class="uk-form-label"><?php echo $t->gettext('Nome'); ?></label>
                                 <div class="uk-form-controls">
-                                    <input type="text" placeholder="" class="uk-width-1-1" disabled>
+                                    <input type="text" name="nome" placeholder="<?php echo $t->gettext('Digite o seu nome'); ?>" class="uk-input uk-width-1-1">
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
-                                <label class="uk-form-label">Seu e-mail</label>
+                                <label class="uk-form-label">E-mail</label>
                                 <div class="uk-form-controls">
-                                    <input type="text" placeholder="" class="uk-width-1-1" disabled>
+                                    <input type="email" name="email" placeholder="<?php echo $t->gettext('Digite o seu e-mail'); ?>" class="uk-input uk-width-1-1">
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
-                                <label class="uk-form-label">Sua mensagem</label>
+                                <label class="uk-form-label"><?php echo $t->gettext('Mensagem'); ?></label>
                                 <div class="uk-form-controls">
-                                    <textarea class="uk-width-1-1" id="form-h-t" cols="100" rows="9" disabled></textarea>
+                                    <textarea name="mensagem" placeholder="<?php echo $t->gettext('Digite a sua mensagem'); ?>" class="uk-textarea uk-width-1-1" id="form-h-t" cols="100" rows="9"></textarea>
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
-                                    <button class="uk-button uk-button-primary" disabled><?php echo $t->gettext('Enviar'); ?></button>
+                                    <button class="uk-button uk-button-primary"><?php echo $t->gettext('Enviar'); ?></button>
                                 </div>
                             </div>
 
