@@ -20,7 +20,7 @@
                 if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["mensagem"])){
                     $nome = $_POST["nome"];
                     $email = $_POST["email"];
-                    $email_remetente = "repositorio@aguia.usp.br";
+                    $email_remetente = "Repositorio da Produção USP <repositorio@aguia.usp.br>";
                     $mensagem = $_POST["mensagem"];
                     $para = "alander.machado@aguia.usp.br";
                     $assunto = "Contato do site do Repositório";
@@ -28,7 +28,7 @@
                     $headers .= "Content-type: text/plain; charset=UTF-8\n";
                     $headers .= "From: $email_remetente\n";
                     $headers .= "Return-Path: $email_remetente\n";
-                    $headers .= "Reply-To: $email\n";
+                    $headers .= "Reply-To: $nome <$email>\n";
                     if(mail($para, $assunto, $mensagem, $headers)){
                         echo $t->gettext('A sua mensagem foi enviada com sucesso!');
                     } else{
