@@ -18,21 +18,29 @@
         <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
             <?php
                 if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["mensagem"])){
-                    $nome = $_POST["nome"];
-                    $email = $_POST["email"];
+                    $nome = input_sanitize($_POST["nome"]);
+                    $email_cliente = input_sanitize($_POST["email"], true);
+                    $mensagem = input_sanitize($_POST["mensagem"]);
                     $email_remetente = "Atendimento AGUIA <atendimento@aguia.usp.br>";
-                    $mensagem = $_POST["mensagem"];
-                    $para = $email_remetente;
+                    $email_destinatario = $email_remetente;
                     $assunto = "Contato do site do Repositório - $nome";
                     $headers = "MIME-Version: 1.1\n";
                     $headers .= "Content-type: text/plain; charset=UTF-8\n";
                     $headers .= "From: $email_remetente\n";
-                    $headers .= "Return-Path: $para\n";
-                    $headers .= "Reply-To: $nome <$email>\n";
-                    if(mail($para, $assunto, $mensagem, $headers)){
-                        echo $t->gettext('A sua mensagem foi enviada com sucesso!');
+                    $headers .= "Return-Path: $email_destinatario\n";
+                    $headers .= "Reply-To: $nome <$email_cliente>\n";
+                    if(filter_var($email, FILTER_VALIDATE_EMAIL) && mail($email_destinatario, $assunto, $mensagem, $headers)){
+                        $notification = $t->gettext('A sua mensagem foi enviada com sucesso!');
+                        echo "<div class=\"uk-alert-success\" uk-alert>
+                            <a class=\"uk-alert-close\" uk-close></a>
+                            <p>{$notification}</p>
+                        </div>";
                     } else{
-                        echo $t->gettext('A sua mensagem não foi enviada! Tente novamente.');
+                        $notification = $t->gettext('A sua mensagem não foi enviada! Tente novamente.');
+                        echo "<div class=\"uk-alert-danger\" uk-alert>
+                            <a class=\"uk-alert-close\" uk-close></a>
+                            <p>{$notification}</p>
+                        </div>";
                     }
                 }
             ?>

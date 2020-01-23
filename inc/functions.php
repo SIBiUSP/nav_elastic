@@ -18,6 +18,18 @@ if (file_exists('functions_core/functions_core.php')) {
     include '../../functions_core/functions_core.php';
 }
 
+function input_sanitize($input, $email=false){
+    $input = trim($input);
+    $input = stripslashes($input);
+    if($email){
+        $input = filter_var($input, FILTER_SANITIZE_EMAIL);
+    } else {
+        $input = filter_var($input, FILTER_SANITIZE_STRING, FILTER_SANITIZE_SPECIAL_CHARS);    
+    }
+    return $input;
+}
+
+
 /**
  * Página Inicial
  *
