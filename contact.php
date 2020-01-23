@@ -29,7 +29,7 @@
                     $headers .= "From: $email_remetente\n";
                     $headers .= "Return-Path: $email_destinatario\n";
                     $headers .= "Reply-To: $nome <$email_cliente>\n";
-                    if(filter_var($email, FILTER_VALIDATE_EMAIL) && mail($email_destinatario, $assunto, $mensagem, $headers)){
+                    if(filter_var($email_cliente, FILTER_VALIDATE_EMAIL) && mail($email_destinatario, $assunto, $mensagem, $headers)){
                         $notification = $t->gettext('A sua mensagem foi enviada com sucesso!');
                         echo "<div class=\"uk-alert-success\" uk-alert>
                             <a class=\"uk-alert-close\" uk-close></a>
