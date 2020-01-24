@@ -132,6 +132,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Centers, Hospitals, Institutes and Museums',
       ),
+      'Cidade' => 
+      array (
+        0 => 'City',
+      ),
       'Citações no AMiner' => 
       array (
         0 => 'Num. of citations on AMiner',
@@ -168,17 +172,29 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Departament',
       ),
-      'Digite o seu nome' => 
+      'Digite a sua cidade' => 
       array (
-        0 => 'Enter your name',
-      ),
-      'Digite o seu e-mail' => 
-      array (
-        0 => 'Enter your e-mail',
+        0 => 'Enter your city',
       ),
       'Digite a sua mensagem' => 
       array (
         0 => 'Enter your message',
+      ),
+      'Digite o seu e-mail' => 
+      array (
+        0 => 'Enter your state or province or region',
+      ),
+      'Digite o seu estado' => 
+      array (
+        0 => 'Enter your state/',
+      ),
+      'Digite o seu nome' => 
+      array (
+        0 => 'Enter your name',
+      ),
+      'Digite o seu país' => 
+      array (
+        0 => 'Enter your country',
       ),
       'Editora' => 
       array (
@@ -187,6 +203,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Enviar' => 
       array (
         0 => 'Send',
+      ),
+      'Estado' => 
+      array (
+        0 => 'State / Province / Region',
       ),
       'Estatísticas da base' => 
       array (
@@ -287,6 +307,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'ou pesquise este registro no' => 
       array (
         0 => 'or search this record in',
+      ),
+      'País' => 
+      array (
+        0 => 'Country',
       ),
       'País das instituições de afiliação dos autores externos' => 
       array (
