@@ -5,14 +5,14 @@ html{
 }
 
 a{
-	color: #666;
+	color: #666 !important;
 }
 a.link, h3.link {
 	color: #666 !important;
 }
 
 a:hover, h3.link{
-	color: #999;
+	color: #999 !important;
 }
 
 a:hover.link{
