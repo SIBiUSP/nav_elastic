@@ -108,7 +108,7 @@ $total = $cursor["hits"]["total"];
             <p class="uk-margin-top" uk-margin>
                 <a href="#offcanvas-slide" class="uk-button uk-button-small uk-text-small filtros" uk-toggle>
                     <?php echo $t->gettext('Filtros'); ?>
-                </a>:
+                </a> :
             <!-- List of filters - Start -->
             <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
                 <?php
