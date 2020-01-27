@@ -7,8 +7,12 @@ html{
 a{
 	color: #666 !important;
 }
-a.link, h3.link, h3.title {
+a.link, h3.link{
 	color: #666 !important;
+}
+
+h3.title {
+	color: #333 !important;
 }
 
 a:hover, h3.link, h3.title {
