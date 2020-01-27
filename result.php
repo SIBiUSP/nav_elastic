@@ -160,7 +160,7 @@ $total = $cursor["hits"]["total"];
         <div class="uk-grid-divider" uk-grid>
             <div id="offcanvas-slide" uk-offcanvas>
                 <div class="uk-offcanvas-bar uk-background-muted uk-text-secondary">
-                    <h3 class="link"><?php echo $t->gettext('Filtros'); ?></h3>
+                    <h3 class="title"><?php echo $t->gettext('Filtros'); ?></h3>
             <!--<div class="uk-width-1-4@s uk-width-2-6@m">-->
                     <!-- Facetas - Início -->
                         <hr>
@@ -212,7 +212,7 @@ $total = $cursor["hits"]["total"];
                             ?>
                         </ul>
                         <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
-                            <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
+                            <h3 class="uk-panel-title uk-margin-top title">Informações administrativas</h3>
                             <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                             <hr>
                             <?php
@@ -279,7 +279,7 @@ $total = $cursor["hits"]["total"];
                 <?php if (!empty($_SESSION['oauthuserdata'])) : ?>
                 <hr>
                 <!-- Exportar resultados -->
-                <h3 class="uk-panel-title"><?php echo $t->gettext('Exportar'); ?></h3>
+                <h3 class="uk-panel-title title"><?php echo $t->gettext('Exportar'); ?></h3>
                 <p>Limitado aos primeiros 10000 resultados</p>
                 <ul>
                     <li><a class="" href="tools/export.php?<?php echo ''.$_SERVER["QUERY_STRING"].'&format=table'; ?>">Exportar resultados em formato tabela</a></li>
