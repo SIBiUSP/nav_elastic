@@ -21,7 +21,7 @@ a:hover.link{
 }
 
 h3 {
-	color: 333#;
+	color: 333# !important;
 }
 
 p.title-link, p:hover.title-link {
