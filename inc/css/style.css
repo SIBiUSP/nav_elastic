@@ -20,6 +20,10 @@ a:hover.link{
 	text-decoration: underline;
 }
 
+h3 {
+	color: 333#;
+}
+
 p.title-link, p:hover.title-link {
 	font-size:115% !important;
 }
