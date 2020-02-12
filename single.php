@@ -19,8 +19,13 @@ $citeproc_vancouver = new citeproc($csl_nlm, $lang);
 $mode = "reference";
 
 /* Montar a consulta */
-$cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
-
+try {
+	$cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
+}
+catch (exception $e) {
+	header('HTTP/1.1 404 Not Found');
+	header('Location: '.'404.php');
+}
 ?>
 
 <!DOCTYPE html>
