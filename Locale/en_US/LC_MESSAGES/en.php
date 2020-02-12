@@ -396,6 +396,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Select search fields:',
       ),
+      'Selecione a versão do arquivo' => 
+      array (
+        0 => 'Select the file version',
+      ),
       'Selecione uma Unidade USP para filtrar a busca' => 
       array (
         0 => 'Select one USP School to filter the search',

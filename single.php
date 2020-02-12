@@ -65,10 +65,10 @@ catch (exception $e) {
                       <fieldset data-uk-margin>
                       <legend>Enviar um arquivo</legend>
                       <input type="file" name="file">
-                      <select class="uk-select" name="version" required>
-                          <!--<option disabled selected value>Selecione a versão</option>-->
-                          <option value="publishedVersion">'. $t->gettext('Versão publicada') . '</option>
-                          <option value="acceptedVersion">' . $t->gettext('Versão aceita') . '</option>
+                      <select class="uk-select" name="version" placeholder="'. $t->gettext("Selecione a versão do arquivo") .'" required>
+                          
+                          <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
+                          <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
                       </select>
                       <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
                       <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
