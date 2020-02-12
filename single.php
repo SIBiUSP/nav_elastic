@@ -66,7 +66,7 @@ catch (exception $e) {
                       <legend>Enviar um arquivo</legend>
                       <input type="file" name="file">
                       <select class="uk-select" name="version" required>
-                          <option selected disabled>'. $t->gettext("Selecione a versão do arquivo") .'</option>
+                          <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
                           <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
                           <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
                       </select>
