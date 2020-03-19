@@ -5,7 +5,7 @@
             include('inc/config.php');
             include('inc/meta-header.php');
         ?>
-        <title>BDPI USP - Dashboard</title>
+        <title><?php echo $branch_abrev; ?> - Dashboard</title>
     </head>
 
     <body style="height: 100vh; min-height: 45em; position: relative;">
