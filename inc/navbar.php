@@ -92,7 +92,7 @@
                 <?php endif ; ?>-->
                 <li>
                     <?php
-                        $link = "http://".$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"]."?".preg_replace("^&locale=[a-z]{2}_[A-Z]{2}$", "", $_SERVER["QUERY_STRING"]);
+                        $link = "http://".$_SERVER['SERVER_NAME'].$_SERVER["SCRIPT_NAME"]."?".preg_replace("/^&locale=[a-z]{2}_[A-Z]{2}$/", "", $_SERVER["QUERY_STRING"]);
                     ?>
                     <a href="<?php echo $link; ?>&locale=pt_BR" style="padding-right: 0.2em;">
                         <img src="<?php echo $url_base; ?>/inc/images/br.png" style="width: 1.6em;">
