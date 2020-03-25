@@ -819,6 +819,7 @@ class ElasticPatch
 	curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
 	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 	$response = curl_exec($curl);
+	error_log('teste');
 	curl_close($curl);
     }
 }
