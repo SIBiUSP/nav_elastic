@@ -810,7 +810,8 @@ class ElasticPatch
 {
     static function syncElastic($sysno)
     {
-	$url = "http://dspaceapi:8000/item/".$sysno."/";
+	global $pythonBdpiApi;
+	$url = "$pythonBdpiApi/item/$sysno/";
 	$headers = array('Content-Type: application/json');
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_URL, $url);
