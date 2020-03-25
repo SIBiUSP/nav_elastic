@@ -88,7 +88,7 @@ catch (exception $e) {
               $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
               //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
               $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-              ElasticPatch::syncElastic($itemID);
+              ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
               $(document).ready(function(){
                       //Reload the page
@@ -105,7 +105,7 @@ catch (exception $e) {
                   $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                   print_r($resultUpdateFilesElastic);
               }
-              ElasticPatch::syncElastic($itemID);
+              ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               
               echo '<div class="uk-alert-danger" uk-alert>
               <a class="uk-alert-close" uk-close></a>
