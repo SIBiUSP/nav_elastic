@@ -1622,20 +1622,48 @@ class Record
     {
 
         echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
+        $firstFile = null;
+        $files = $this->completeRecord["_source"]["files"]["database"];
+        foreach ($files as $file) {
+            if($file["status"] == "public"){
+                if($file["file_type"] == "publishedVersion"){
+                    $file["icon"] .= "inc/images/pdf_publicado.svg";
+                    $file["iconAlt"] = $t->gettext("Versão Publicada");
+                } else {
+                    $file["icon"] .= "inc/images/pdf_aceito.svg";
+                    $file["iconAlt"] = $t->gettext("Versão Aceita");
+                }
+                $firstFile = $file;
+                break;
+            }
+            else if ($file["status"] == "embargoed" && $firstFile == null || $firstFile["status"] == "private") {
+                $file["icon"] .= "inc/images/pdf_embargado.svg";
+                $file["iconAlt"] = $t->gettext("Embargado");
+            } else if($fistFile == null && $file["status"] == "private") {
+                $file["icon"] .= "inc/images/pdf_privado.svg";
+                $file["iconAlt"] = $t->gettext("Privado");
+            }
+            $firstFile = $file;
+        }
 
-	$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
-        if (!empty($fileLink)){
-        $fileLink = substr($fileLink, 5);
-            echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
+	    //$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
+        if (!empty($firstFile["file_link"])){
+        //$firstFile = substr($fileLink, 5);
+            //echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
+            if($firstFile["status"] == "public" ){
+                echo '<a id="button" href="'. $firstFile["file_link"] . '" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'. $firstFile["iconAlt"] .'"><img src="'. $firstFile["icon"] . '" style="height: 48px;" alt="'. $firstFile["iconAlt"] .'"></a>';
+            } else {
+                echo '<img src="'. $firstFile["icon"] . '" style="margin-right: 1em; height: 48px;" alt="'. $firstFile["iconAlt"] .'" uk-tooltip="'. $firstFile["iconAlt"].'">';
+            }
         }
 
         if (!empty($this->url)) {
             foreach ($this->url as $url) {
-                echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">'.$t->gettext('Acesso à fonte').'</a>';
+                echo '<a id="button" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'.$t->gettext('Acesso à fonte').'"><img src="inc/images/acesso_fonte.svg" style="height: 48px;" alt="'.$t->gettext('Acesso à fonte').'"></a>';
             }
         }
         if (!empty($this->doi)) {
-            echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer">DOI</a>';
+            echo '<a id="button" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer"><img src="inc/images/doi.svg" style="height: 48px;" alt="DOI"></a>';
         }
 
         /*$sfx_array[] = 'rft.atitle='.$this->name.'';

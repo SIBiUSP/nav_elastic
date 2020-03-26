@@ -32,7 +32,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Online object access',
       ),
-      'Acesso online à fonte' => 
+      'Acesso à fonte' => 
       array (
         0 => 'Online source access',
       ),
@@ -200,6 +200,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Publisher',
       ),
+      'Embargado' => 
+      array (
+        0 => 'Embargoed',
+      ),
       'Enviar' => 
       array (
         0 => 'Send',
@@ -343,6 +347,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Português' => 
       array (
         0 => 'Portuguese',
+      ),
+      'Privado' => 
+      array (
+        0 => 'Private',
       ),
       'Produção Científica' => 
       array (
