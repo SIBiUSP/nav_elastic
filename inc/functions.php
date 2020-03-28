@@ -1653,19 +1653,19 @@ class Record
         //$firstFile = substr($fileLink, 5);
             //echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
             if($firstFile["status"] == "public" ){
-                echo '<a id="button" href="'. $firstFile["file_link"] . '" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'. $firstFile["iconAlt"] .'"><img src="'. $firstFile["icon"] . '" style="height: 48px;" alt="'. $firstFile["iconAlt"] .'"></a>';
+                echo '<a id="button" href="'. $firstFile["file_link"] . '" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'. $firstFile["iconAlt"] .'"><img class="result-icons" src="'. $firstFile["icon"] . '" alt="'. $firstFile["iconAlt"] .'"></a>';
             } else {
-                echo '<img src="'. $firstFile["icon"] . '" style="margin-right: 1em; height: 48px;" alt="'. $firstFile["iconAlt"] .'" uk-tooltip="'. $firstFile["iconAlt"].'">';
+                echo '<img class="result-icons" src="'. $firstFile["icon"] . '" style="margin-right: 1em;" alt="'. $firstFile["iconAlt"] .'" uk-tooltip="'. $firstFile["iconAlt"].'">';
             }
         }
 
         if (!empty($this->url)) {
             foreach ($this->url as $url) {
-                echo '<a id="button" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'.$t->gettext('Acesso à fonte').'"><img src="inc/images/acesso_fonte.svg" style="height: 48px;" alt="'.$t->gettext('Acesso à fonte').'"></a>';
+                echo '<a id="button" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'.$t->gettext('Acesso à fonte').'"><img class="result-icons" src="inc/images/acesso_fonte.svg" alt="'.$t->gettext('Acesso à fonte').'"></a>';
             }
         }
         if (!empty($this->doi)) {
-            echo '<a id="button" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;"><img src="inc/images/doi.svg" style="height: 48px;" alt="DOI"></a>';
+            echo '<a id="button" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;"><img class="result-icons" src="inc/images/doi.svg"  alt="DOI"></a>';
         }
 
         /*$sfx_array[] = 'rft.atitle='.$this->name.'';
@@ -1745,7 +1745,7 @@ class Record
         $citeproc_vancouver = new citeproc($csl_nlm, $lang);
         $mode = "reference";
 
-        echo '<a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade" uk-tooltip="'.$t->gettext('Como citar').'" uk-toggle><img src="inc/images/citacao.svg" style="height: 48px;" alt="'.$t->gettext('Como citar').'"></a>';
+        echo '<a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade" uk-tooltip="'.$t->gettext('Como citar').'" uk-toggle><img class="result-icons"  src="inc/images/citacao.svg" alt="'.$t->gettext('Como citar').'"></a>';
 
         //echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
             /*echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';*/

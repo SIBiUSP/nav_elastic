@@ -145,3 +145,14 @@ p:hover.title-link, a:hover#button.uk-button-default{
 .search-input{
 	border: none;
 }
+
+.result-icons {
+	height: 48px;
+}
+
+
+@media only screen and (min-width: 960px) {
+  .result-icons {
+    height: 40px;
+  }
+}
