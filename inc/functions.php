@@ -1350,6 +1350,8 @@ class Record
             unset($i);
         }
 	
+        echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
+        
 	// Alterado para também executar caso haja link no dspace 
 	$dspaceFileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
         if (!empty($this->url)||!empty($this->doi)||!empty($dspaceFileLink)) {
@@ -1365,7 +1367,7 @@ class Record
 
         $this->citation($t, $this->completeRecord);
 
-
+        echo '</div>';
 
         echo '</article>';
 
@@ -1621,7 +1623,7 @@ class Record
     public function onlineAccess($t)
     {
 
-        echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
+        
         $firstFile = null;
         $files = $this->completeRecord["_source"]["files"]["database"];
         foreach ($files as $file) {
@@ -1663,7 +1665,7 @@ class Record
             }
         }
         if (!empty($this->doi)) {
-            echo '<a id="button" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer"><img src="inc/images/doi.svg" style="height: 48px;" alt="DOI"></a>';
+            echo '<a id="button" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;"><img src="inc/images/doi.svg" style="height: 48px;" alt="DOI"></a>';
         }
 
         /*$sfx_array[] = 'rft.atitle='.$this->name.'';
@@ -1681,7 +1683,8 @@ class Record
             $sfx_array[] = 'rft.volume='.trim(str_replace("v.", "", $r["_source"]['ispartof_data'][0])).'';
         }
         echo ' <a class="uk-text-small" href="//www.sibi.usp.br/sfxlcl41?'.implode("&", $sfx_array).'" target="_blank" rel="noopener noreferrer">'.$t->gettext('ou pesquise este registro no').'<img src="https://www.sibi.usp.br/sfxlcl41/sfx.gif"></a>';*/
-        echo '</div>';
+
+        
 
     }
 
@@ -1741,11 +1744,16 @@ class Record
         $citeproc_nlm = new citeproc($csl_nlm, $lang);
         $citeproc_vancouver = new citeproc($csl_nlm, $lang);
         $mode = "reference";
-        echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
+
+        echo '<a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade" uk-tooltip="'.$t->gettext('Como citar').'" uk-toggle><img src="inc/images/citacao.svg" style="height: 48px;" alt="'.$t->gettext('Como citar').'"></a>';
+
+        //echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
             /*echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';*/
-            echo '<div><a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade">'.$t->gettext('Como citar').'</a> </div>';
-        echo '</div>';
-        echo '<div id="citacao'.$record['_id'].'" hidden="hidden">';
+            
+        //echo '</div>';
+        echo '<div id="citacao'.$record['_id'].'" class="uk-flex-top" uk-modal>';
+        echo '<div class="uk-modal-dialog uk-margin-auto-vertical">';
+        echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
             echo '<li class="uk-h6 uk-margin-top">';
                 echo '<div class="uk-alert-danger" uk-alert>A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>';
                 echo '<ul>';
@@ -1771,6 +1779,7 @@ class Record
                     echo '</li>';
                 echo '</ul>';
             echo '</li>';
+        echo '</div>';
         echo '</div>';
     }
 }
