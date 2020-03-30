@@ -150,6 +150,13 @@ p:hover.title-link, a:hover#button.uk-button-default{
 	height: 48px;
 }
 
+.citation li {
+	list-style: none;
+}
+
+#citacao{
+	margin: auto;
+}
 
 @media only screen and (min-width: 960px) {
   .result-icons {

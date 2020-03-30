@@ -81,7 +81,7 @@ $total = $cursor["hits"]["total"];
 
 
 </head>
-<body style="height: 100vh; min-height: 45em; position: relative;">
+<body style="min-height: 45em; position: relative;">
     <?php require 'inc/navbar.php'; ?>
 
     <?php

@@ -1754,9 +1754,9 @@ class Record
         echo '<div id="citacao'.$record['_id'].'" class="uk-flex-top" uk-modal>';
         echo '<div class="uk-modal-dialog uk-margin-auto-vertical">';
         echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
-            echo '<li class="uk-h6 uk-margin-top">';
+            echo '<div class="uk-h6 uk-margin-top">';
                 echo '<div class="uk-alert-danger" uk-alert>A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>';
-                echo '<ul>';
+                echo '<ul class="citation">';
                     echo '<li class="uk-margin-top">';
                     echo '<p><strong>ABNT</strong></p>';
                     $data = citation::citation_query($record["_source"]);
@@ -1778,7 +1778,7 @@ class Record
                     print_r($citeproc_vancouver->render($data, $mode));
                     echo '</li>';
                 echo '</ul>';
-            echo '</li>';
+            echo '</div>';
         echo '</div>';
         echo '</div>';
     }
