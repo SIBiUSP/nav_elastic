@@ -592,7 +592,7 @@ catch (exception $e) {
                                                         </div>
                                                     </div>';
 
-                                                    if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, "7936577" || "8241960" )) {
+                                                    if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffDevelopers)) {
                                                     echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Embargoed-'.$value["uuid"].'">Embargar</button></th>';
 
                                                     echo '<div id="modal-Embargoed-'.$value["uuid"].'" uk-modal>
