@@ -96,6 +96,7 @@ catch (exception $e) {
               });
               </script>";
           }
+
           if (isset($_POST['deleteBitstream'])) {
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
@@ -591,7 +592,28 @@ catch (exception $e) {
                                                         </div>
                                                     </div>';
 
+                                                    if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, "7936577" || "8241960" )) {
+                                                    echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Embargoed-'.$value["uuid"].'">Embargar</button></th>';
 
+                                                    echo '<div id="modal-Embargoed-'.$value["uuid"].'" uk-modal>
+                                                        <div class="uk-modal-dialog uk-modal-body">
+                                                            <h2 class="uk-modal-title">Embargar</h2>
+                                                            <p>Tem certeza que quer embargar o arquivo '.$value["name"].'?</p>
+                                                            <p class="uk-text-right">
+                                                                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                                                <form action="' . $actual_link . '" method="post">
+                                                                    <input type="hidden" name="makeEmbargoedBitstream" value="'.$value["uuid"].'" />
+                                                                    <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
+                                                                    <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
+                                                                    <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
+                                                                    <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
+                                                                    <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
+                                                                    <button class="uk-button uk-button-secondary" name="btn_submit">Embargar</button>
+                                                                </form>
+                                                            </p>
+                                                        </div>
+                                                    </div>';
+                                                  }
                                                 //}
                                                 echo '<th></th>';
                                             } else {
