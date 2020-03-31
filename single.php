@@ -621,7 +621,7 @@ catch (exception $e) {
                                                                     <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
                                                                     <div class="uk-modal-footer uk-text-right">
                                                                         <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                                        <input type="submit" class="uk-button uk-button-primary" name="btn_submit">Embargar</button>
+                                                                        <input type="submit" class="uk-button uk-button-primary" name="btn_submit" value="Embargar">
                                                                     </div>
                                                                 </form>
 
