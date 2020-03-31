@@ -609,14 +609,10 @@ catch (exception $e) {
                                                             </div>
                                                             <div class="uk-modal-body">
                                                               <p>Tem certeza que quer embargar o arquivo '.$value["name"].'?</p>
-
-                                                            </div>
-
-
-                                                            <div class="uk-modal-footer">
                                                             
                                                                 <form action="' . $actual_link . '" method="post">
-                                                                    <input type="date" name="embargoed-until" />
+                                                                    <label for="embargoed-until">Selecine a data que o arquivo será liberado:</label>
+                                                                    <input type="date" name="embargoed-until" required />
                                                                     <input type="hidden" name="makeEmbargoedBitstream" value="'.$value["uuid"].'" />
                                                                     <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
                                                                     <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
@@ -625,7 +621,7 @@ catch (exception $e) {
                                                                     <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
                                                                     <div class="uk-modal-footer uk-text-right">
                                                                         <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                                        <button class="uk-button uk-button-primary" type="button" name="btn_submit">Embargar</button>
+                                                                        <input type="submit" class="uk-button uk-button-primary" name="btn_submit">Embargar</button>
                                                                     </div>
                                                                 </form>
 
