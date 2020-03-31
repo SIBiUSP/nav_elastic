@@ -611,7 +611,7 @@ catch (exception $e) {
                                                               <p>Tem certeza que quer embargar o arquivo '.$value["name"].'?</p>
                                                             
                                                                 <form action="' . $actual_link . '" method="post">
-                                                                    <label for="embargoed-until">Selecine a data que o arquivo será liberado:</label>
+                                                                    <label for="embargoed-until">Selecione a data em que o arquivo será liberado:</label>
                                                                     <input type="date" name="embargoed-until" required />
                                                                     <input type="hidden" name="makeEmbargoedBitstream" value="'.$value["uuid"].'" />
                                                                     <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
