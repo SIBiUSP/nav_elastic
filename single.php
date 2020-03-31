@@ -623,11 +623,10 @@ catch (exception $e) {
                                                                     <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
                                                                     <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
                                                                     <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
-                                                                    <button class="uk-button uk-button-secondary" name="btn_submit">Embargar</button>
                                                                     <div class="uk-modal-footer uk-text-right">
-                                                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                                    <button class="uk-button uk-button-primary" type="button">Confirmar</button>
-                                                                </div>
+                                                                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
+                                                                        <button class="uk-button uk-button-primary" type="button" name="btn_submit">Embargar</button>
+                                                                    </div>
                                                                 </form>
 
                                                             
