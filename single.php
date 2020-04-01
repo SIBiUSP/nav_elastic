@@ -145,6 +145,8 @@ catch (exception $e) {
 
           if (isset($_POST['doEmbargoBitstream'])){
               echo("<script type='text/javascript'>alert('Bitstream ".$_POST['doEmbargoBitstream']."\\nPolicy_id ".$_POST['policyID']."');</script>");
+              ElasticPatch::doEmbargo($_POST['doEmbargoBitstream'],$_POST['policyID']);
+              ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
           }
 
           $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
