@@ -1353,7 +1353,7 @@ class Record
         echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
         
 	// Alterado para também executar caso haja link no dspace 
-	$dspaceFileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
+	$dspaceFileLink = $this->completeRecord["_source"]["files"]["database"];
         if (!empty($this->url)||!empty($this->doi)||!empty($dspaceFileLink)) {
             $this->onlineAccess($t);
         }
