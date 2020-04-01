@@ -144,7 +144,7 @@ catch (exception $e) {
           }
 
           if (isset($_POST['doEmbargoBitstream'])){
-              echo("<script type='javascript'>alert('Bitstream embargado');");
+              echo("<script type='text/javascript'>alert('Bitstream ".$_POST['doEmbargoBitstream']."\\nPolicy_id ".$_POST['policyID']."');</script>");
           }
 
           $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
@@ -617,7 +617,7 @@ catch (exception $e) {
                                                                 <form action="' . $actual_link . '" method="post">
                                                                     <label for="embargoed-until">Selecione a data em que o arquivo será liberado:</label>
                                                                     <input type="date" name="embargoed-until" required />
-                                                                    <input type="hidden" name="makeEmbargoedBitstream" value="'.$value["uuid"].'" />
+                                                                    <input type="hidden" name="doEmbargoBitstream" value="'.$value["uuid"].'" />
                                                                     <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
                                                                     <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
                                                                     <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
