@@ -619,16 +619,11 @@ catch (exception $e) {
                                                                     <input type="date" name="embargoed-until" required />
                                                                     <input type="hidden" name="doEmbargoBitstream" value="'.$value["uuid"].'" />
                                                                     <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
-                                                                    <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
-                                                                    <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
-                                                                    <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
-                                                                    <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
                                                                     <div class="uk-modal-footer uk-text-right">
                                                                         <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
                                                                         <input type="submit" class="uk-button uk-button-primary" name="btn_submit" value="Embargar">
                                                                     </div>
                                                                 </form>
-
                                                             
                                                             </div>
                                                         </div>
