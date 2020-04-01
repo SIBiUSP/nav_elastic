@@ -821,6 +821,20 @@ class ElasticPatch
 	$response = curl_exec($curl);
 	curl_close($curl);
     }
+
+    static function doEmbargo($objectID, $policyID)
+    {
+        global $pythonBdpiApi;
+	$url = "$pythonBdpiApi/item/$sysno/";
+	$headers = array('Content-Type: application/json');
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+	$response = curl_exec($curl);
+	curl_close($curl);
+    }
 }
 
 /**
