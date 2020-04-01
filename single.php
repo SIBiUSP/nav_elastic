@@ -143,6 +143,10 @@ catch (exception $e) {
 
           }
 
+          if (isset($_POST['doEmbargoBitstream'])){
+              echo("<script type='javascript'>alert('Bitstream embargado');");
+          }
+
           $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
 
       } else {
