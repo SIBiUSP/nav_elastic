@@ -144,8 +144,7 @@ catch (exception $e) {
           }
 
           if (isset($_POST['doEmbargoBitstream'])){
-              echo("<script type='text/javascript'>alert('Bitstream ".$_POST['doEmbargoBitstream']."\\nPolicy_id ".$_POST['policyID']."');</script>");
-              ElasticPatch::doEmbargo($_POST['doEmbargoBitstream'],$_POST['policyID']);
+              ElasticPatch::doEmbargo($_POST['doEmbargoBitstream'],$_POST['policyID'],$_POST['untilDate']);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
           }
 
@@ -618,7 +617,7 @@ catch (exception $e) {
                                                             
                                                                 <form action="' . $actual_link . '" method="post">
                                                                     <label for="embargoed-until">Selecione a data em que o arquivo será liberado:</label>
-                                                                    <input type="date" name="embargoed-until" required />
+                                                                    <input type="date" name="untilDate" required />
                                                                     <input type="hidden" name="doEmbargoBitstream" value="'.$value["uuid"].'" />
                                                                     <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
                                                                     <div class="uk-modal-footer uk-text-right">
