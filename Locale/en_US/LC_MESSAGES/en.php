@@ -200,9 +200,9 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Publisher',
       ),
-      'Embargado' => 
+      'Embargado até ' => 
       array (
-        0 => 'Embargoed',
+        0 => 'Embargoed until ',
       ),
       'Enviar' => 
       array (

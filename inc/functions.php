@@ -1626,7 +1626,10 @@ class Record
         
         $firstFile = null;
         $files = $this->completeRecord["_source"]["files"]["database"];
+
+        //var_dump($files);
         foreach ($files as $file) {
+
             if($file["status"] == "public"){
                 if($file["file_type"] == "publishedVersion"){
                     $file["icon"] .= "inc/images/pdf_publicado.svg";
@@ -1638,14 +1641,19 @@ class Record
                 $firstFile = $file;
                 break;
             }
-            else if ($file["status"] == "embargoed" && $firstFile == null || $firstFile["status"] == "private") {
+        else if ($file["status"] == "embargoed" && ($firstFile == null || $firstFile["status"] == "private")) {
                 $file["icon"] .= "inc/images/pdf_embargado.svg";
-                $file["iconAlt"] = $t->gettext("Embargado");
-            } else if($fistFile == null && $file["status"] == "private") {
+                if ($_SESSION['localeToUse'] == 'pt_BR'){
+                    $file["until_date"] =  date('d/m/Y', strtotime($file["until_date"]));
+                }
+                $file["iconAlt"] = $t->gettext("Embargado até ") . $file["until_date"];
+                $firstFile = $file;
+            } else if($firstFile == null && $file["status"] == "private") {
                 $file["icon"] .= "inc/images/pdf_privado.svg";
                 $file["iconAlt"] = $t->gettext("Privado");
+                $firstFile = $file;
             }
-            $firstFile = $file;
+            
         }
 
 	    //$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
