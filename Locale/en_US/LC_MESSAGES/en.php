@@ -196,6 +196,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Enter your country',
       ),
+      'Disponível em ' => 
+      array (
+        0 => 'Avaliable on ',
+      ),
       'Editora' => 
       array (
         0 => 'Publisher',

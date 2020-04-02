@@ -1646,7 +1646,7 @@ class Record
                 if ($_SESSION['localeToUse'] == 'pt_BR'){
                     $file["until_date"] =  date('d/m/Y', strtotime($file["until_date"]));
                 }
-                $file["iconAlt"] = $t->gettext("Embargado até ") . $file["until_date"];
+                $file["iconAlt"] = $t->gettext("Disponível em ") . $file["until_date"];
                 $firstFile = $file;
             } else if($firstFile == null && $file["status"] == "private") {
                 $file["icon"] .= "inc/images/pdf_privado.svg";
