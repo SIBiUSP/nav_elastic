@@ -198,7 +198,7 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       ),
       'Disponível em ' => 
       array (
-        0 => 'Avaliable on ',
+        0 => 'Available on ',
       ),
       'Editora' => 
       array (
