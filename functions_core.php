@@ -822,12 +822,12 @@ class ElasticPatch
 	curl_close($curl);
     }
 
-    static function doEmbargo($objectID, $policyID, $untilDate)
+    static function doEmbargo($objectID, $policyID, $releaseDate)
     {
         global $pythonBdpiApi;
 	$url = "$pythonBdpiApi/bitstream/$objectID/";
 	$headers = array('Content-Type: application/json');
-	$data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID,"until_date"=>$untilDate));
+	$data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID,"release_date"=>$releaseDate));
 	$curl = curl_init();
 	curl_setopt($curl, CURLOPT_URL, $url);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
