@@ -1644,9 +1644,9 @@ class Record
         else if ($file["status"] == "embargoed" && ($firstFile == null || $firstFile["status"] == "private")) {
                 $file["icon"] .= "inc/images/pdf_embargado.svg";
                 if ($_SESSION['localeToUse'] == 'pt_BR'){
-                    $file["until_date"] =  date('d/m/Y', strtotime($file["until_date"]));
+                    $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
                 }
-                $file["iconAlt"] = $t->gettext("Disponível em ") . $file["until_date"];
+                $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
                 $firstFile = $file;
             } else if($firstFile == null && $file["status"] == "private") {
                 $file["icon"] .= "inc/images/pdf_privado.svg";
