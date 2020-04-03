@@ -825,7 +825,7 @@ class ElasticPatch
     static function doEmbargo($objectID, $policyID, $releaseDate)
     {
         global $pythonBdpiApi;
-	$url = "$pythonBdpiApi/bitstream/$objectID/";
+	$url = "$pythonBdpiApi/embargo/$objectID/";
 	$headers = array('Content-Type: application/json');
 	$data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID,"release_date"=>$releaseDate));
 	$curl = curl_init();
