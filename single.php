@@ -537,16 +537,16 @@ catch (exception $e) {
                             <table class="uk-table uk-table-justify uk-table-divider">
                             <thead>
                                 <tr>
-                                    <th>Tipo</th>
+                                    <!--<th>Tipo</th>-->
                                     <th>Nome do arquivo</th>
-                                    <th>Tipo de acesso</th>
+                                    <th>Status</th>
                                     <th>Link</th>
                                 </tr>
                             </thead>
                             <tbody>';
 
                             foreach ($bitstreamsDSpace as $key => $value) {
-
+                                var_dump($value);
                                 $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $_SESSION["DSpaceCookies"]);
 
                                 foreach ($bitstreamPolicy as $bitstreamPolicyUnit) {
@@ -555,7 +555,7 @@ catch (exception $e) {
                                         if (isset($_SESSION['oauthuserdata'])) {
                                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                                 echo '<tr>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
+                                                //echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
                                                 echo '<th>'.$value["name"].'</th>';
                                                 echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
                                                 echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
