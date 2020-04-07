@@ -204,9 +204,9 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Publisher',
       ),
-      'Embargado até ' => 
+      'Liberação em ' => 
       array (
-        0 => 'Embargoed until ',
+        0 => 'Release date ',
       ),
       'Enviar' => 
       array (
