@@ -150,6 +150,10 @@ p:hover.title-link, a:hover#button.uk-button-default{
 	height: 48px;
 }
 
+.register-icons {
+	height: 48px;
+}
+
 .citation li {
 	list-style: none;
 }
@@ -158,8 +162,17 @@ p:hover.title-link, a:hover#button.uk-button-default{
 	margin: auto;
 }
 
+.desativado {
+	opacity : 0.2;
+}
+
 @media only screen and (min-width: 960px) {
   .result-icons {
     height: 40px;
   }
+
+  .register-icons {
+	height: 56px;
+
+}
 }

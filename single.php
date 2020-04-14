@@ -488,44 +488,33 @@ catch (exception $e) {
                         ?>
                         <!-- Query itens on Aleph - End -->
 
-                        <!-- Confere se o usuário tem vínculo - Início -->
                         <?php
+                        //Confere se o usuário tem vínculo - Início
                         if (isset($_SESSION['oauthuserdata'])) {
                             $user = json_decode(json_encode($_SESSION['oauthuserdata']), true);
                             $isOfThisUnit = USP::isOfThisUnit($user["vinculo"], $cursor["_source"]["unidadeUSP"]);
-                        }
-                        ?>
-                        <!-- Confere se o usuário tem vínculo - Fim -->
+                        //Confere se o usuário tem vínculo - Fim
 
-
-
-                        <!-- Query bitstreams on Dspace - Start -->
-                        <?php
-
-                        if (isset($_SESSION['oauthuserdata'])) {
+                        //Query bitstreams on Dspace - Start
                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                //if ($isOfThisUnit == true) {
-                                    if ($testDSpace == "true") {
-                                        if (!empty($uploadForm)) {
-                                            echo '<div class="uk-alert-danger" uk-alert>';
-                                            echo '<a class="uk-alert-close" uk-close></a>';
-                                            echo '<h5>Gestão do documento digital</h5>';
-                                            echo $uploadForm;
-                                            echo '</div>';
-                                        }
-
-                                        if (!empty($createForm)) {
-                                            echo '<div class="uk-alert-danger" uk-alert>';
-                                            echo '<a class="uk-alert-close" uk-close></a>';
-                                            echo '<h5>Gestão do documento digital</h5>';
-                                            echo $createForm;
-                                            echo '</div>';
-                                        }
-
+                                if ($testDSpace == "true") {
+                                    if (!empty($uploadForm)) {
+                                        echo '<div class="uk-alert-danger" uk-alert>';
+                                        echo '<a class="uk-alert-close" uk-close></a>';
+                                        echo '<h5>Gestão do documento digital</h5>';
+                                        echo $uploadForm;
+                                        echo '</div>';
                                     }
 
-                                //}
+                                    if (!empty($createForm)) {
+                                        echo '<div class="uk-alert-danger" uk-alert>';
+                                        echo '<a class="uk-alert-close" uk-close></a>';
+                                        echo '<h5>Gestão do documento digital</h5>';
+                                        echo $createForm;
+                                        echo '</div>';
+                                    }
 
+                                }
                             }
 
                         }
@@ -537,181 +526,126 @@ catch (exception $e) {
                             <table class="uk-table uk-table-justify uk-table-divider">
                             <thead>
                                 <tr>
-                                    <!--<th>Tipo</th>-->
+                                    <th>Tipo</th>
                                     <th>Nome do arquivo</th>
-                                    <th>Status</th>
                                     <th>Link</th>
                                 </tr>
                             </thead>
                             <tbody>';
 
                             foreach ($bitstreamsDSpace as $key => $value) {
-                                var_dump($value);
                                 $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $_SESSION["DSpaceCookies"]);
-
                                 foreach ($bitstreamPolicy as $bitstreamPolicyUnit) {
-                                    if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID) {
+                                    $file = [
+                                      "uuid" => $value["uuid"],
+                                      "name" => $value["name"],
+                                      "link" => "",
+                                      "direct_link" => ""
+                                    ];
+                                    
+                                    if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
+                                        if($dspaceAnnonymousID["RPNAME"] == "EMBARGO" && $dspaceAnnonymousID["RPTYPE"] == "TYPE_CUSTOM" && $dspaceAnnonymousID["epersongroup_id"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $dspaceAnnonymousID["action_id"] == 0 && strtotime($dspaceAnnonymousID["start_date"]) > strtotime(date("Y-m-d"))){ //Embargado
+                                          
+                                          $file["status"] = "embargado";
+                                          $file["icon"] = "/inc/images/pdf_embargado.svg";
+                                          if ($_SESSION['localeToUse'] == 'pt_BR'){
+                                              $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
+                                          }
+                                          $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
+                                        } else { //Público
+                                            $file["status"] = "publico";
+                                            $file["version"] = substr($value["description"], 0, strpos($value["description"], '-'));
+                                            if($file["version"] == "publishedVersion"){
+                                                $file["icon"] = "/inc/images/pdf_publicado.svg";
+                                                $file["iconAlt"] = $t->gettext("Versão Publicada");
+                                            } elseif ($file["version"] == "acceptedVersion"){
+                                                $file["icon"] = "/inc/images/pdf_aceito.svg";
+                                                $file["iconAlt"] = $t->gettext("Versão Aceita");
+                                            } //elseif ($file["version"] == "acceptedVersion")
+                                            $file["link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
+                                            $file["direct_link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
+                                        } //else
 
-                                        if (isset($_SESSION['oauthuserdata'])) {
-                                            if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                                echo '<tr>';
-                                                //echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
-                                                echo '<th>'.$value["name"].'</th>';
-                                                echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
-                                                //if ($isOfThisUnit == true) {
-                                                    echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream-'.$value["uuid"].'">Excluir</button></th>';
-                                                    echo '<div id="modal-deleteBitstream-'.$value["uuid"].'" uk-modal>';
-                                                    echo '<div class="uk-modal-dialog uk-modal-body">';
-                                                    echo '<h2 class="uk-modal-title">Excluir arquivo</h2>';
-                                                    echo '<p>Tem certeza que quer excluir o arquivo '.$value["name"].'?</p>';
-                                                    echo '<p class="uk-text-right">';
-                                                    echo '<button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
-                                                    echo '<form action="' . $actual_link . '" method="post">';
-                                                    echo '<input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />';
-                                                    echo '<button class="uk-button uk-button-danger" name="btn_submit">Excluir</button>';
-                                                    echo '</form>';
-                                                    echo '</p>';
-                                                    echo '</div>';
-                                                    echo '</div>';
+                                    } elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID) { //Privado
+                                      $file["status"] = "privado";
+                                      $file["icon"] .= "/inc/images/pdf_privado.svg";
+                                      $file["iconAlt"] = $t->gettext("Privado");
+                                    } //elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID)
 
-
-                                                    echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Private-'.$value["uuid"].'">Tornar privado</button></th>';
-
-                                                    echo '<div id="modal-Private-'.$value["uuid"].'" uk-modal>
-                                                        <div class="uk-modal-dialog uk-modal-body">
-                                                            <h2 class="uk-modal-title">Tornar privado</h2>
-                                                            <p>Tem certeza que quer tornar privado o arquivo '.$value["name"].'?</p>
-                                                            <p class="uk-text-right">
-                                                                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                                <form action="' . $actual_link . '" method="post">
-                                                                    <input type="hidden" name="makePrivateBitstream" value="'.$value["uuid"].'" />
-                                                                    <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
-                                                                    <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
-                                                                    <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
-                                                                    <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
-                                                                    <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
-                                                                    <button class="uk-button uk-button-secondary" name="btn_submit">Tornar privado</button>
-                                                                </form>
-                                                            </p>
-                                                        </div>
-                                                    </div>';
-
-                                                    if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffDevelopers)) {
-                                                    echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Embargoed-'.$value["uuid"].'">Embargar</button></th>';
-
-                                                    
-                                                      
-                                                          
-                                                      
-                                                 
-
-                                                    echo '<div id="modal-Embargoed-'.$value["uuid"].'" uk-modal>
-                                                        <div class="uk-modal-dialog">
-                                                            <button class="uk-modal-close-default" type="button" uk-close></button>
-                                                            <div class="uk-modal-header">
-                                                              <h2 class="uk-modal-title">Embargar</h2>
-                                                            </div>
-                                                            <div class="uk-modal-body">
-                                                              <p>Tem certeza que quer embargar o arquivo '.$value["name"].'?</p>
-                                                            
-                                                                <form action="' . $actual_link . '" method="post">
-                                                                    <label for="releaseDate">Selecione a data em que o arquivo será liberado:</label>
-                                                                    <input type="date" name="releaseDate" required />
-                                                                    <input type="hidden" name="doEmbargoBitstream" value="'.$value["uuid"].'" />
-                                                                    <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
-                                                                    <div class="uk-modal-footer uk-text-right">
-                                                                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                                        <input type="submit" class="uk-button uk-button-primary" name="btn_submit" value="Embargar">
-                                                                    </div>
-                                                                </form>
-                                                            
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-                                                  }
-                                                //}
-                                                echo '<th></th>';
-                                            } else {
-                                                echo '<tr>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
-                                                echo '<th>'.$value["name"].'</th>';
-                                                echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                                echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
-                                            }
-
-                                        } else {
-                                            echo '<tr>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
-                                            echo '<th>'.$value["name"].'</th>';
-                                            echo '<th><img width="48" alt="Open Access logo PLoS white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/64px-Open_Access_logo_PLoS_white.svg.png"></th>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
-
-                                        }
-
-                                    } elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID) {
+                                    if ($file["link"] == ""){
+                                        $file["link"] = '<img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-tooltip="'. $file["iconAlt"] .'" uk-img>';
+                                    } //if ($file["link"] == "")
 
 
-                                        if (isset($_SESSION['oauthuserdata'])) {
+                                    echo '<tr>';
+                                    echo '<th>'.$file["link"].'</th>';
+                                    echo '<th>'.$file["name"].'</th>';
+                                    echo '<th>'.$file["direct_link"].'</th>';
 
-                                            echo '<tr>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow"><img data-src="'.$url_base.'/inc/images/pdf.png" width="70" height="70" alt="" uk-img></a></th>';
-                                            echo '<th>'.$value["name"].'</th>';
-                                            echo '<th><img width="48" alt="Closed Access logo white" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Closed_Access_logo_white.svg/64px-Closed_Access_logo_white.svg.png"></th>';
-                                            echo '<th><a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a></th>';
 
-                                            if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
+                                if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
 
-                                                echo '<th><button class="uk-button uk-button-danger uk-margin-small-right" type="button" uk-toggle="target: #modal-deleteBitstream-'.$value["uuid"].'">Excluir</button></th>';
+                                    $botoes["excluir"]["acao"] = "Excluir";
+                                    $botoes["excluir"]["icon"] = "excluir.svg";
+                                    $botoes["excluir"]["modal_id"] = "deleteBitstream";
+                                    $botoes["excluir"]["title"] = "Excluir arquivo";
+                                    $botoes["excluir"]["mensagem"] = "excluir";
 
-                                                echo '<div id="modal-deleteBitstream-'.$value["uuid"].'" uk-modal>
-                                                    <div class="uk-modal-dialog uk-modal-body">
-                                                        <h2 class="uk-modal-title">Excluir arquivo</h2>
-                                                        <p>Tem certeza que quer excluir o arquivo '.$value["name"].'?</p>
-                                                        <p class="uk-text-right">
-                                                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                            <form action="' . $actual_link . '" method="post">
-                                                                <input type="hidden" name="deleteBitstream" value="'.$value["uuid"].'" />
-                                                                <button class="uk-button uk-button-danger" name="btn_submit">Excluir</button>
-                                                            </form>
-                                                        </p>
-                                                    </div>
-                                                </div>';
+                                    $botoes["publico"]["acao"] = "Tornar Público";
+                                    $botoes["publico"]["icon"] = "publico.svg";
+                                    $botoes["publico"]["modal_id"] = "makePublicBitstream";
+                                    $botoes["publico"]["title"] = "Tornar Público";
+                                    $botoes["publico"]["mensagem"] = "tornar público";
 
-                                                echo '<th><button class="uk-button uk-button-secondary uk-margin-small-right" type="button" uk-toggle="target: #modal-Public-'.$value["uuid"].'">Tornar público</button></th>';
+                                    $botoes["privado"]["acao"] = "Tornar Privado";
+                                    $botoes["privado"]["icon"] = "privado.svg";
+                                    $botoes["privado"]["modal_id"] = "makePrivateBitstream";
+                                    $botoes["privado"]["title"] = "Tornar Privado";
+                                    $botoes["privado"]["mensagem"] = "tornar privado";
 
-                                                echo '<div id="modal-Public-'.$value["uuid"].'" uk-modal>
-                                                    <div class="uk-modal-dialog uk-modal-body">
-                                                        <h2 class="uk-modal-title">Tornar público</h2>
-                                                        <p>Tem certeza que quer tornar público o arquivo '.$value["name"].'?</p>
-                                                        <p class="uk-text-right">
-                                                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-                                                            <form action="' . $actual_link . '" method="post">
-                                                                <input type="hidden" name="makePublicBitstream" value="'.$value["uuid"].'" />
-                                                                <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
-                                                                <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
-                                                                <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
-                                                                <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
-                                                                <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />
-                                                                <button class="uk-button uk-button-secondary" name="btn_submit">Tornar público</button>
-                                                            </form>
-                                                        </p>
-                                                    </div>
-                                                </div>';
+                                    $botoes["embargado"]["acao"] = "Embargar";
+                                    $botoes["embargado"]["icon"] = "embargo.svg";
+                                    $botoes["embargado"]["modal_id"] = "doEmbargoBitstream";
+                                    $botoes["embargado"]["title"] = "Embargar";
+                                    $botoes["embargado"]["mensagem"] = "embargar";
 
-                                                echo '<th></th>';
-                                            }
-                                        }
+                                    foreach($botoes as $botao){
+                                        echo '<th><a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'"><img class="register-icons" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img></a></th>';
+                                        echo '<div id="modal-'. $botao["motal_id"] .'-'.$value["uuid"].'" uk-modal>';
 
-                                    } else {
-
-                                    }
-
+                                        echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
+                                        echo '<div class="uk-modal-header">';
+                                        echo '<h2 class="uk-modal-title">' . $botao["title"] . '</h2>';
+                                        echo '</div>';
+                                        echo '<div class="uk-modal-dialog uk-modal-body">';
+                                        echo '<p>Tem certeza que quer ' . $botao["mensagem"] . " o arquivo " . $value["name"].'?</p>';
+                                        echo '<form action="' . $actual_link . '" method="post">';
+                                        if($botao["acao"] == "Embargar"){
+                                            echo '<label for="releaseDate">Selecione a data em que o arquivo será liberado:</label>
+                                                  <input type="date" name="releaseDate" required />';
+                                        } //if($botao["acao"] == "Embargar")
+                                        echo '<input type="hidden" name="'. $botao["modal_id"] .'" value="'.$value["uuid"].'" />';
+                                        if(!$botao["acao"] == "Excluir"){
+                                            echo '<input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
+                                              <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
+                                              <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
+                                              <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
+                                              <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';
+                                        } //if(!$botao["acao"] == "Excluir")
+                                        echo '<div class="uk-modal-footer uk-text-right">';
+                                        echo '<button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
+                                        echo '<button class="uk-button uk-button-danger" name="btn_submit">'. $botao["acao"] .'</button>';
+                                        echo '</div>';
+                                        echo '</form>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                    } //foreach($botoes as $botao)
+                                  }
+                                    echo '<th></th>';
                                 }
-
-                            }
+                            } //foreach ($bitstreamsDSpace as $key => $value)
                             echo '</tbody></table></div>';
-                        }
+                        } //if (!empty($bitstreamsDSpace))
                         ?>
                         <!-- Query bitstreams on Dspace - End -->
 
