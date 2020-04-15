@@ -611,7 +611,7 @@ catch (exception $e) {
 
                                     foreach($botoes as $botao){
                                         echo '<th><a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'"><img class="register-icons" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img></a></th>';
-                                        echo '<div id="modal-'. $botao["motal_id"] .'-'.$value["uuid"].'" uk-modal>';
+                                        echo '<div id="modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-modal>';
 
                                         echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
                                         echo '<div class="uk-modal-header">';
