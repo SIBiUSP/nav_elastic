@@ -625,13 +625,13 @@ catch (exception $e) {
                                                   <input type="date" name="releaseDate" required />';
                                         } //if($botao["acao"] == "Embargar")
                                         echo '<input type="hidden" name="'. $botao["modal_id"] .'" value="'.$value["uuid"].'" />';
-                                        if(!$botao["acao"] == "Excluir"){
+                                        //if(!$botao["acao"] == "Excluir"){
                                             echo '<input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
                                               <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
                                               <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
                                               <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
                                               <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';
-                                        } //if(!$botao["acao"] == "Excluir")
+                                        //} //if(!$botao["acao"] == "Excluir")
                                         echo '<div class="uk-modal-footer uk-text-right">';
                                         echo '<button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
                                         echo '<button class="uk-button uk-button-danger" name="btn_submit">'. $botao["acao"] .'</button>';
