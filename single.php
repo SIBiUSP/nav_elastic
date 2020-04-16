@@ -78,10 +78,10 @@ catch (exception $e) {
 
           if (isset($_FILES['file'])) {
               $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
-              echo "<br/><br/>";
-              print_r($userBitstream);
-              echo "<br/><br/>";
-              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
+              //echo "<br/><br/>";
+              //print_r($userBitstream);
+              //echo "<br/><br/>";
+              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"], $_POST["codpes"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
               }
