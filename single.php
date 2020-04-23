@@ -88,6 +88,8 @@ catch (exception $e) {
               $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
               //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
               $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+	      ElasticPatch::uploader($resultAddBitstream["uuid"]);
+	      ElasticPatch::publisher($resultAddBitstream["uuid"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
               $(document).ready(function(){
@@ -106,6 +108,7 @@ catch (exception $e) {
                   $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                   print_r($resultUpdateFilesElastic);
               }
+	      ElasticPatch::deleter($_POST["deleteBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               
               echo '<div class="uk-alert-danger" uk-alert>
@@ -129,6 +132,7 @@ catch (exception $e) {
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Restricted Policy */
               $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
+	      ElasticPatch::privater($_POST["makePrivateBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
 
           }
@@ -139,6 +143,7 @@ catch (exception $e) {
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Public Policy */
               $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
+	      ElasticPatch::publisher($_POST["makePublicBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
 
           }
