@@ -854,24 +854,24 @@ class ElasticPatch
 	curl_close($curl);
     }
 
-    static function uploader($objectID, $numusp)
+    static function uploader($objectID)
     {
-	self::accountability($objectID, $numusp, "uploader");
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "uploader");
     }
 
-    static function publisher($objectID, $numusp)
+    static function publisher($objectID)
     {
-	self::accountability($objectID, $numusp, "publisher");
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "publisher");
     }
 
-    static function deleter($objectID, $numusp)
+    static function deleter($objectID)
     {
-	self::accountability($objectID, $numusp, "deleter");
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "deleter");
     }
 
-    static function privater($objectID, $numusp)
+    static function privater($objectID)
     {
-	self::accountability($objectID, $numusp, "privater");
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "privater");
     }
 }
 
