@@ -149,7 +149,8 @@ catch (exception $e) {
           }
 
           if (isset($_POST['doEmbargoBitstream'])){
-              ElasticPatch::doEmbargo($_POST['doEmbargoBitstream'],$_POST['policyID'],$_POST['releaseDate']);
+              ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
+	      ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
           }
 
