@@ -70,18 +70,17 @@ catch (exception $e) {
                           <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
                           <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
                       </select>
-                      <input type="text" name="codpes" value="'.$_SESSION['oauthuserdata']->{'loginUsuario'}.'" hidden>
                       <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
                   </fieldset>
                   </form>';
           }
 
-          if (isset($_FILES['file'])) {
-              $userBitstream = ''.$_POST["version"].'-'.$_POST["codpes"].'';
+          if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
+              $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
               //echo "<br/><br/>";
               //print_r($userBitstream);
               //echo "<br/><br/>";
-              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"], $_POST["codpes"]);
+              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
               }
@@ -99,7 +98,7 @@ catch (exception $e) {
               </script>";
           }
 
-          if (isset($_POST['deleteBitstream'])) {
+          if (isset($_POST['deleteBitstream']) and isset($_SESSION['oauthuserdata'])) {
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
@@ -126,7 +125,7 @@ catch (exception $e) {
 
           }
 
-          if (isset($_POST['makePrivateBitstream'])) {
+          if (isset($_POST['makePrivateBitstream']) and isset($_SESSION['oauthuserdata'])) {
 
               /* Delete Annonymous Policy */
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
@@ -137,7 +136,7 @@ catch (exception $e) {
 
           }
 
-          if (isset($_POST['makePublicBitstream'])) {
+          if (isset($_POST['makePublicBitstream']) and isset($_SESSION['oauthuserdata'])) {
 
               /* Delete Annonymous Policy */
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
@@ -148,7 +147,7 @@ catch (exception $e) {
 
           }
 
-          if (isset($_POST['doEmbargoBitstream'])){
+          if (isset($_POST['doEmbargoBitstream']) and isset($_SESSION['oauthuserdata'])){
               ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
 	      ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
