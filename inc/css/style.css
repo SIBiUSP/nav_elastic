@@ -163,7 +163,7 @@ p:hover.title-link, a:hover#button.uk-button-default{
 }
 
 .desativado {
-	opacity : 0.2;
+	opacity : 0.3;
 }
 
 @media only screen and (min-width: 960px) {

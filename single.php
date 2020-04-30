@@ -614,8 +614,15 @@ catch (exception $e) {
                                     $botoes["embargado"]["title"] = "Embargar";
                                     $botoes["embargado"]["mensagem"] = "embargar";
 
-                                    foreach($botoes as $botao){
-                                        echo '<th><a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'"><img class="register-icons" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img></a></th>';
+				    foreach($botoes as $funcao => $botao){
+					$class_button = "register-icons";
+					if ($file["status"] == $funcao)
+					    $class_button .= " desativado";
+					$img_icon = '<img class="'. $class_button .'" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img>';
+					if ($file["status"] != $funcao)
+					    $img_icon = '<a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'">' . $img_icon . '</a>' ;
+
+                                        echo '<th>'. $img_icon .'</th>';
                                         echo '<div id="modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-modal>';
 
                                         echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
