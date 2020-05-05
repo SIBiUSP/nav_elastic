@@ -18,6 +18,17 @@ if (file_exists('functions_core/functions_core.php')) {
     include '../../functions_core/functions_core.php';
 }
 
+function checkDSpaceAPI(){
+    $curl = curl_init("http://172.31.1.37:8000");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_exec($curl);
+    $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+    if($http_status == 200)
+	return true;
+    return false;
+}
+
 function input_sanitize($input, $email=false){
     $input = trim($input);
     $input = stripslashes($input);
