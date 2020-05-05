@@ -75,7 +75,8 @@ catch (exception $e) {
                   </form>';
           }
 
-          if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata']) and checkDSpaceAPI()) {
+          if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
+            if(checkDSpaceAPI()){
               $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
               //echo "<br/><br/>";
               //print_r($userBitstream);
@@ -87,8 +88,8 @@ catch (exception $e) {
               $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
               //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
               $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-	      ElasticPatch::uploader($resultAddBitstream["uuid"]);
-	      ElasticPatch::publisher($resultAddBitstream["uuid"]);
+	            ElasticPatch::uploader($resultAddBitstream["uuid"]);
+	            ElasticPatch::publisher($resultAddBitstream["uuid"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
               $(document).ready(function(){
@@ -96,14 +97,13 @@ catch (exception $e) {
                       window.location = window.location.href;
               });
               </script>";
-          } else {
-            echo '<div class="uk-alert-danger" uk-alert>
-                    <a class="uk-alert-close" uk-close></a>
-                    <p>No momento, não é possível realizar o upload do arquivo. Tente mais tarde ou contate o administrador do sistema.</p>
-                  </div>';
+            } else {
+              getAlertMessage("não é possível realizar o upload do arquivo", "danger");
+            }
           }
 
           if (isset($_POST['deleteBitstream']) and isset($_SESSION['oauthuserdata'])) {
+            if(checkDSpaceAPI()){
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
@@ -112,7 +112,7 @@ catch (exception $e) {
                   $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                   print_r($resultUpdateFilesElastic);
               }
-	      ElasticPatch::deleter($_POST["deleteBitstream"]);
+	            ElasticPatch::deleter($_POST["deleteBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               
               echo '<div class="uk-alert-danger" uk-alert>
@@ -126,42 +126,52 @@ catch (exception $e) {
                       window.location = window.location.href;
               });
               </script>";
-
-
+            } else {
+              getAlertMessage("não é possível excluir o arquivo", "danger");
+            }
           }
 
           if (isset($_POST['makePrivateBitstream']) and isset($_SESSION['oauthuserdata'])) {
-
+            if(checkDSpaceAPI()){
               /* Delete Annonymous Policy */
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Restricted Policy */
               $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
-	      ElasticPatch::privater($_POST["makePrivateBitstream"]);
+	            ElasticPatch::privater($_POST["makePrivateBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
+            } else {
+              getAlertMessage("não é possível tornar o arquivo privado", "danger");
+            }
 
           }
 
           if (isset($_POST['makePublicBitstream']) and isset($_SESSION['oauthuserdata'])) {
-
+            if(checkDSpaceAPI()){
               /* Delete Annonymous Policy */
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Public Policy */
               $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
-	      ElasticPatch::publisher($_POST["makePublicBitstream"]);
+	            ElasticPatch::publisher($_POST["makePublicBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
-
+            } else {
+              getAlertMessage("não é possível tornar o arquivo público", "danger");
+            }
           }
 
           if (isset($_POST['doEmbargoBitstream']) and isset($_SESSION['oauthuserdata'])){
+            if(checkDSpaceAPI()){
               ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
-	      ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
+	            ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
+            } else {
+              getAlertMessage("não é possível embargar o arquivo", "danger");
+            }
           }
 
           $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
 
       } else {
-
+        if(checkDSpaceAPI()){
           $createForm  = '<form action="' . $actual_link . '" method="post">
                   <input type="hidden" name="createRecord" value="true" />
                   <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
@@ -181,6 +191,9 @@ catch (exception $e) {
                   </script>";
               }
           }
+        } else {
+          getAlertMessage("não é possível criar o registro", "danger");
+        }
 
       }
 
@@ -525,6 +538,9 @@ catch (exception $e) {
                                     }
 
                                 }
+                                $table_headers = "
+                                                  <th>Responsável</th>
+                                                ";
                             }
 
                         }
@@ -538,8 +554,9 @@ catch (exception $e) {
                                 <tr>
                                     <th>Tipo</th>
                                     <th>Nome do arquivo</th>
-                                    <th>Link</th>
-                                </tr>
+                                    <th>Link</th>'
+                                    .$table_headers.
+                                    '</tr>
                             </thead>
                             <tbody>';
 
@@ -550,7 +567,8 @@ catch (exception $e) {
                                       "uuid" => $value["uuid"],
                                       "name" => $value["name"],
                                       "link" => "",
-                                      "direct_link" => ""
+                                      "direct_link" => "",
+                                      "responsible" => preg_replace("/[^0-9]/", "", $value["description"])
                                     ];
                                     
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
@@ -588,12 +606,12 @@ catch (exception $e) {
 
 
                                     echo '<tr>';
-                                    echo '<th>'.$file["link"].'</th>';
-                                    echo '<th>'.$file["name"].'</th>';
-                                    echo '<th>'.$file["direct_link"].'</th>';
-
+                                    echo '<td>'.$file["link"].'</td>';
+                                    echo '<td>'.$file["name"].'</td>';
+                                    echo '<td>'.$file["direct_link"].'</td>';
 
                                 if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
+                                    echo '<td>'.$file["responsible"].'</td>';
 
                                     $botoes["excluir"]["acao"] = "Excluir";
                                     $botoes["excluir"]["icon"] = "excluir.svg";
@@ -619,15 +637,14 @@ catch (exception $e) {
                                     $botoes["embargado"]["title"] = "Embargar";
                                     $botoes["embargado"]["mensagem"] = "embargar";
 
-				    foreach($botoes as $funcao => $botao){
-					$class_button = "register-icons";
-					if ($file["status"] == $funcao)
-					    $class_button .= " desativado";
-					$img_icon = '<img class="'. $class_button .'" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img>';
-					if ($file["status"] != $funcao)
-					    $img_icon = '<a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'">' . $img_icon . '</a>' ;
-
-                                        echo '<th>'. $img_icon .'</th>';
+                        				    foreach($botoes as $funcao => $botao){
+                        					   $class_button = "register-icons";
+                        					   if ($file["status"] == $funcao)
+                        					    $class_button .= " desativado";
+                        					   $img_icon = '<img class="'. $class_button .'" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img>';
+                        					   if ($file["status"] != $funcao)
+                        					    $img_icon = '<a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'">' . $img_icon . '</a>' ;
+                                        echo '<td>'. $img_icon .'</td>';
                                         echo '<div id="modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-modal>';
 
                                         echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
@@ -658,7 +675,7 @@ catch (exception $e) {
                                         echo '</div>';
                                     } //foreach($botoes as $botao)
                                   }
-                                    echo '<th></th>';
+                                    echo '<td></td>';
                                 }
                             } //foreach ($bitstreamsDSpace as $key => $value)
                             echo '</tbody></table></div>';
