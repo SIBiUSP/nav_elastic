@@ -75,7 +75,7 @@ catch (exception $e) {
                   </form>';
           }
 
-          if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
+          if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata']) and checkDSpaceAPI()) {
               $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
               //echo "<br/><br/>";
               //print_r($userBitstream);
@@ -96,6 +96,11 @@ catch (exception $e) {
                       window.location = window.location.href;
               });
               </script>";
+          } else {
+            echo '<div class="uk-alert-danger" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p>No momento, não é possível realizar o upload do arquivo. Tente mais tarde ou contate o administrador do sistema.</p>
+                  </div>';
           }
 
           if (isset($_POST['deleteBitstream']) and isset($_SESSION['oauthuserdata'])) {
