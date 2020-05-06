@@ -18,8 +18,8 @@ if (file_exists('functions_core/functions_core.php')) {
     include '../../functions_core/functions_core.php';
 }
 
-function checkDSpaceAPI(){
-    $curl = curl_init($pythonBdpiApi);
+function checkDSpaceAPI($url_api){
+    $curl = curl_init($url_api);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_exec($curl);
     $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -30,11 +30,10 @@ function checkDSpaceAPI(){
 }
 
 function getAlertMessage($message, $type){
-
-    echo '<div class="uk-alert-'. $type .' uk-alert>
-            <a class="uk-alert-close" uk-close></a>
-            <p>No momento, '. $message . '. Tente mais tarde ou contate o administrador do sistema.</p>
-        </div>';
+    return '<div class="uk-alert-'. $type .'" uk-alert>
+              <a class="uk-alert-close" uk-close></a>
+              <p>No momento, '. $message . '. Tente mais tarde ou contate o administrador do sistema.</p>
+            </div>';
 }
 
 function input_sanitize($input, $email=false){

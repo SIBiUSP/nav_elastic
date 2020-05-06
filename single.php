@@ -76,7 +76,8 @@ catch (exception $e) {
           }
 
           if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
-            if(checkDSpaceAPI()){
+            //if(checkDSpaceAPI($pythonBdpiApi)){
+            if(checkDSpaceAPI("http://172.35.0.58")){
               $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
               //echo "<br/><br/>";
               //print_r($userBitstream);
@@ -98,12 +99,12 @@ catch (exception $e) {
               });
               </script>";
             } else {
-              getAlertMessage("não é possível realizar o upload do arquivo", "danger");
+              $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
           }
 
           if (isset($_POST['deleteBitstream']) and isset($_SESSION['oauthuserdata'])) {
-            if(checkDSpaceAPI()){
+            if(checkDSpaceAPI($pythonBdpiApi)){
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
@@ -127,12 +128,12 @@ catch (exception $e) {
               });
               </script>";
             } else {
-              getAlertMessage("não é possível excluir o arquivo", "danger");
+              $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
           }
 
           if (isset($_POST['makePrivateBitstream']) and isset($_SESSION['oauthuserdata'])) {
-            if(checkDSpaceAPI()){
+            if(checkDSpaceAPI($pythonBdpiApi)){
               /* Delete Annonymous Policy */
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Restricted Policy */
@@ -140,13 +141,13 @@ catch (exception $e) {
 	            ElasticPatch::privater($_POST["makePrivateBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
             } else {
-              getAlertMessage("não é possível tornar o arquivo privado", "danger");
+              $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
 
           }
 
           if (isset($_POST['makePublicBitstream']) and isset($_SESSION['oauthuserdata'])) {
-            if(checkDSpaceAPI()){
+            if(checkDSpaceAPI($pythonBdpiApi)){
               /* Delete Annonymous Policy */
               $resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Public Policy */
@@ -154,24 +155,24 @@ catch (exception $e) {
 	            ElasticPatch::publisher($_POST["makePublicBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
             } else {
-              getAlertMessage("não é possível tornar o arquivo público", "danger");
+              $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
           }
 
           if (isset($_POST['doEmbargoBitstream']) and isset($_SESSION['oauthuserdata'])){
-            if(checkDSpaceAPI()){
+            if(checkDSpaceAPI($pythonBdpiApi)){
               ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
 	            ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
             } else {
-              getAlertMessage("não é possível embargar o arquivo", "danger");
+              $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
           }
 
           $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
 
       } else {
-        if(checkDSpaceAPI()){
+        if(checkDSpaceAPI($pythonBdpiApi)){
           $createForm  = '<form action="' . $actual_link . '" method="post">
                   <input type="hidden" name="createRecord" value="true" />
                   <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
@@ -192,7 +193,7 @@ catch (exception $e) {
               }
           }
         } else {
-          getAlertMessage("não é possível criar o registro", "danger");
+          $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
         }
 
       }
@@ -521,8 +522,9 @@ catch (exception $e) {
                         //Query bitstreams on Dspace - Start
                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                 if ($testDSpace == "true") {
+
                                     if (!empty($uploadForm)) {
-                                        echo '<div class="uk-alert-danger" uk-alert>';
+                                        echo '<div class="" uk-alert>';
                                         echo '<a class="uk-alert-close" uk-close></a>';
                                         echo '<h5>Gestão do documento digital</h5>';
                                         echo $uploadForm;
@@ -530,7 +532,7 @@ catch (exception $e) {
                                     }
 
                                     if (!empty($createForm)) {
-                                        echo '<div class="uk-alert-danger" uk-alert>';
+                                        echo '<div class="" uk-alert>';
                                         echo '<a class="uk-alert-close" uk-close></a>';
                                         echo '<h5>Gestão do documento digital</h5>';
                                         echo $createForm;
@@ -538,6 +540,11 @@ catch (exception $e) {
                                     }
 
                                 }
+
+                                if(!empty($responseMessage)){
+                                    echo $responseMessage;
+                                }
+
                                 $table_headers = "
                                                   <th>Responsável</th>
                                                 ";
@@ -546,7 +553,7 @@ catch (exception $e) {
                         }
 
                         if (!empty($bitstreamsDSpace)) {
-                            echo '<div class="uk-alert-primary" uk-alert>
+                            echo '<div class="" uk-alert>
                             <h4>Download do texto completo</h4>
 
                             <table class="uk-table uk-table-justify uk-table-divider">
