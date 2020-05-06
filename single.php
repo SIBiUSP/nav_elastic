@@ -646,32 +646,33 @@ catch (exception $e) {
                         					    $img_icon = '<a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'">' . $img_icon . '</a>' ;
                                         echo '<td>'. $img_icon .'</td>';
                                         echo '<div id="modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-modal>';
-
-                                        echo '<button class="uk-modal-close-default" type="button" uk-close></button>';
-                                        echo '<div class="uk-modal-header">';
-                                        echo '<h2 class="uk-modal-title">' . $botao["title"] . '</h2>';
-                                        echo '</div>';
-                                        echo '<div class="uk-modal-dialog uk-modal-body">';
-                                        echo '<p>Tem certeza que quer ' . $botao["mensagem"] . " o arquivo " . $value["name"].'?</p>';
-                                        echo '<form action="' . $actual_link . '" method="post">';
+                                        echo '  <div class="uk-modal-dialog">';
+                                        echo '    <button class="uk-modal-close-default" type="button" uk-close></button>';
+                                        echo '    <div class="uk-modal-header">';
+                                        echo '      <h2 class="uk-modal-title">' . $botao["title"] . '</h2>';
+                                        echo '    </div>';
+                                        echo '    <div class="uk-modal-body">';
+                                        echo '      <p>Tem certeza que quer ' . $botao["mensagem"] . " o arquivo " . $value["name"].'?</p>';
+                                        echo '      <form action="' . $actual_link . '" method="post">';
                                         if($botao["acao"] == "Embargar"){
-                                            echo '<label for="releaseDate">Selecione a data em que o arquivo será liberado:</label>
-                                                  <input type="date" name="releaseDate" required />';
+                                            echo '    <label for="releaseDate">Selecione a data em que o arquivo será liberado:</label>
+                                                      <input type="date" name="releaseDate" required />';
                                         } //if($botao["acao"] == "Embargar")
-                                        echo '<input type="hidden" name="'. $botao["modal_id"] .'" value="'.$value["uuid"].'" />';
+                                        echo '        <input type="hidden" name="'. $botao["modal_id"] .'" value="'.$value["uuid"].'" />';
                                         //if(!$botao["acao"] == "Excluir"){
-                                            echo '<input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
-                                              <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
-                                              <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
-                                              <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
-                                              <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';
+                                            echo '    <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
+                                                      <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
+                                                      <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
+                                                      <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
+                                                      <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';
                                         //} //if(!$botao["acao"] == "Excluir")
-                                        echo '<div class="uk-modal-footer uk-text-right">';
-                                        echo '<button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
+                                        echo '    </div>';
+                                        echo '    <div class="uk-modal-footer uk-text-right">';
+                                        echo '      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
                                         echo '<button class="uk-button uk-button-danger" name="btn_submit">'. $botao["acao"] .'</button>';
-                                        echo '</div>';
-                                        echo '</form>';
-                                        echo '</div>';
+                                        echo '    </div>';
+                                        echo '    </form>';
+                                        echo '  </div>';
                                         echo '</div>';
                                     } //foreach($botoes as $botao)
                                   }
