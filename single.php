@@ -76,8 +76,7 @@ catch (exception $e) {
           }
 
           if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
-            //if(checkDSpaceAPI($pythonBdpiApi)){
-            if(checkDSpaceAPI("http://172.35.0.58")){
+            if(checkDSpaceAPI($pythonBdpiApi)){
               $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
               //echo "<br/><br/>";
               //print_r($userBitstream);
