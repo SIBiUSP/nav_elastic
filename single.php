@@ -574,21 +574,30 @@ catch (exception $e) {
                                       "name" => $value["name"],
                                       "link" => "",
                                       "direct_link" => "",
-                                      "responsible" => preg_replace("/[^0-9]/", "", $value["description"])
+                                      "responsible" => preg_replace("/[^0-9]/", "", $value["description"]),
+                                      "version" => substr($value["description"], 0, strpos($value["description"], '-'))
                                     ];
                                     
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
                                         if($dspaceAnnonymousID["RPNAME"] == "EMBARGO" && $dspaceAnnonymousID["RPTYPE"] == "TYPE_CUSTOM" && $dspaceAnnonymousID["epersongroup_id"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $dspaceAnnonymousID["action_id"] == 0 && strtotime($dspaceAnnonymousID["start_date"]) > strtotime(date("Y-m-d"))){ //Embargado
                                           
+                                          if($file["version"] == "publishedVersion"){
+                                              $file["icon"] = "/inc/images/pdf_publicado_embargado.svg";
+                                          } elseif ($file["version"] == "acceptedVersion"){
+                                              $file["icon"] = "/inc/images/pdf_aceito_embargado.svg";
+                                          } else {
+                                              $file["icon"] = "/inc/images/pdf_embargado.svg";
+                                          }
+
                                           $file["status"] = "embargado";
-                                          $file["icon"] = "/inc/images/pdf_embargado.svg";
+                                          
                                           if ($_SESSION['localeToUse'] == 'pt_BR'){
                                               $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
                                           }
+
                                           $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
                                         } else { //Público
                                             $file["status"] = "publico";
-                                            $file["version"] = substr($value["description"], 0, strpos($value["description"], '-'));
                                             if($file["version"] == "publishedVersion"){
                                                 $file["icon"] = "/inc/images/pdf_publicado.svg";
                                                 $file["iconAlt"] = $t->gettext("Versão Publicada");
@@ -602,7 +611,14 @@ catch (exception $e) {
 
                                     } elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID) { //Privado
                                       $file["status"] = "privado";
-                                      $file["icon"] .= "/inc/images/pdf_privado.svg";
+                                      if($file["version"] == "publishedVersion"){
+                                          $file["icon"] = "/inc/images/pdf_publicado_privado.svg";
+                                      } elseif ($file["version"] == "acceptedVersion"){
+                                          $file["icon"] = "/inc/images/pdf_aceito_privado.svg";
+                                      } else {
+                                          $file["icon"] = "/inc/images/pdf_privado.svg";
+                                      }
+                                      
                                       $file["iconAlt"] = $t->gettext("Privado");
                                     } //elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID)
 
