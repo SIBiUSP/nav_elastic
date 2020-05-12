@@ -579,7 +579,6 @@ catch (exception $e) {
                                     ];
                                     
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
-                                      var_dump($bitstreamPolicy);
                                         if($bitstreamPolicyUnit["rpName"] == "EMBARGO" && $bitstreamPolicyUnit["rpType"] == "TYPE_CUSTOM" && $bitstreamPolicyUnit["groupId"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $bitstreamPolicyUnit["action"] == "READ" && strtotime($bitstreamPolicyUnit["startDate"]) > strtotime(date("Y-m-d"))){ //Embargado
                                           
                                           if($file["version"] == "publishedVersion"){
