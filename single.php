@@ -579,7 +579,8 @@ catch (exception $e) {
                                     ];
                                     
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
-                                        if($dspaceAnnonymousID["RPNAME"] == "EMBARGO" && $dspaceAnnonymousID["RPTYPE"] == "TYPE_CUSTOM" && $dspaceAnnonymousID["epersongroup_id"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $dspaceAnnonymousID["action_id"] == 0 && strtotime($dspaceAnnonymousID["start_date"]) > strtotime(date("Y-m-d"))){ //Embargado
+                                      var_dump($bitstreamPolicy);
+                                        if($bitstreamPolicyUnit["rpName"] == "EMBARGO" && $bitstreamPolicyUnit["rpType"] == "TYPE_CUSTOM" && $bitstreamPolicyUnit["groupId"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $bitstreamPolicyUnit["action"] == "READ" && strtotime($bitstreamPolicyUnit["startDate"]) > strtotime(date("Y-m-d"))){ //Embargado
                                           
                                           if($file["version"] == "publishedVersion"){
                                               $file["icon"] = "/inc/images/pdf_publicado_embargado.svg";
