@@ -569,6 +569,7 @@ catch (exception $e) {
                             foreach ($bitstreamsDSpace as $key => $value) {
                                 $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $_SESSION["DSpaceCookies"]);
                                 foreach ($bitstreamPolicy as $bitstreamPolicyUnit) {
+
                                     $file = [
                                       "uuid" => $value["uuid"],
                                       "name" => $value["name"],
@@ -592,7 +593,7 @@ catch (exception $e) {
                                           $file["status"] = "embargado";
                                           
                                           if ($_SESSION['localeToUse'] == 'pt_BR'){
-                                              $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
+                                              $file["release_date"] =  date('d/m/Y', strtotime($bitstreamPolicyUnit["startDate"]));
                                           }
 
                                           $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
