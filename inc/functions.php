@@ -1644,30 +1644,28 @@ class Record
         
         $firstFile = null;
         $files = $this->completeRecord["_source"]["files"]["database"];
-
-        //var_dump($files);
         foreach ($files as $file) {
-
             if($file["status"] == "public"){
-                if($file["file_type"] == "publishedVersion"){
-                    $file["icon"] .= "inc/images/pdf_publicado.svg";
+                if($file["file_type"] == "publishedVersion" &&  ($firstFile["status"] != "public" || ($firstFile["status"] == "public" && $firstFile["file_type"] != "publishedVersion"))){
+                    $file["icon"] = "inc/images/pdf_publicado.svg";
                     $file["iconAlt"] = $t->gettext("Versão Publicada");
-                } else {
-                    $file["icon"] .= "inc/images/pdf_aceito.svg";
+                    $firstFile = $file;
+                    break;
+                } else if($firstFile["status"] != "public"){
+                    $file["icon"] = "inc/images/pdf_aceito.svg";
                     $file["iconAlt"] = $t->gettext("Versão Aceita");
+                    $firstFile = $file;
                 }
-                $firstFile = $file;
-                break;
             }
-        else if ($file["status"] == "embargoed" && ($firstFile == null || $firstFile["status"] == "private")) {
-                $file["icon"] .= "inc/images/pdf_embargado.svg";
+            else if ($file["status"] == "embargoed" && ($firstFile == null || $firstFile["status"] == "private")) {
+                $file["icon"] = "inc/images/pdf_embargado.svg";
                 if ($_SESSION['localeToUse'] == 'pt_BR'){
                     $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
                 }
                 $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
                 $firstFile = $file;
             } else if($firstFile == null && $file["status"] == "private") {
-                $file["icon"] .= "inc/images/pdf_privado.svg";
+                $file["icon"] = "inc/images/pdf_privado.svg";
                 $file["iconAlt"] = $t->gettext("Privado");
                 $firstFile = $file;
             }
