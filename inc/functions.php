@@ -26,6 +26,7 @@ function checkDSpaceAPI($url_api){
     curl_close($curl);
     if($http_status == 200)
 	   return true;
+    error_log("A API de sincronização não está respondendo");
     return false;
 }
 
@@ -1402,7 +1403,7 @@ class Record
     {
         echo '<article class="uk-article">';
         echo '<p class="uk-article-meta">';
-        echo '<a href="<?php echo $url_base ?>/result.php?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a>';
+        echo '<a href="'.$url_base.'/result.php?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a>';
         echo '</p>';
         echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
