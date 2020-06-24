@@ -96,7 +96,9 @@
                                     <textarea name="mensagem" placeholder="<?php echo $t->gettext('Digite a sua mensagem'); ?>" class="uk-textarea uk-width-1-1" id="form-h-t" cols="100" rows="9"></textarea>
                                 </div>
                             </div>
-
+			    <div class="uk-form-row">
+				<div class="g-recaptcha" data-sitekey="6LedBakZAAAAAF-CUG031vPRHB1jSTaWB2psR9rI"></div>
+			    </div>
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
                                     <button class="uk-button uk-button-primary"><?php echo $t->gettext('Enviar'); ?></button>

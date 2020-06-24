@@ -15,3 +15,5 @@
     <link rel="stylesheet" href="<?php echo $url_base;?>/inc/css/style.css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
