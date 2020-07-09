@@ -48,6 +48,22 @@ function input_sanitize($input, $email=false){
     return $input;
 }
 
+function __htmlspecialchars($data) {
+    if (is_array($data)) {
+        foreach ( $data as $key => $value ) {
+            $data[$key] = __htmlspecialchars($value);
+        }
+    } else if (is_object($data)) {
+        $values = get_class_vars(get_class($data));
+        foreach ( $values as $key => $value ) {
+            $data->{$key} = __htmlspecialchars($value);
+        }
+    } else {
+        $data = htmlspecialchars($data);
+    }
+    return $data;
+}
+
 
 /**
  * Página Inicial
@@ -1197,8 +1213,8 @@ class Record
 
     public function __construct($record, $showMetrics)
     {
-        $this->id = $record["_id"];
-        $this->name = $record["_source"]["name"];
+	$this->id = $record["_id"];
+	$this->name = $record["_source"]["name"];
         $this->base = $record["_source"]["base"][0];
         $this->type = ucfirst(strtolower($record["_source"]["type"]));
         if (isset($record["_source"]["datePublished"])) {
@@ -1405,6 +1421,7 @@ class Record
         echo '<p class="uk-article-meta">';
         echo '<a href="'.$url_base.'/result.php?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a>';
         echo '</p>';
+        //echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%"> ('.$this->datePublished.')</h1>';
         echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
