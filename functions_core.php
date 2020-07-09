@@ -1056,7 +1056,6 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        var_dump($output);
         //$result = json_decode($output, true);
         return $result;
         curl_close($ch);
