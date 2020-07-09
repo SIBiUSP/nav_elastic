@@ -35,7 +35,7 @@ class elasticsearch
         $params["_source"] = $fields;
 
         $response = $client->get($params);
-        return $response;
+        return __htmlspecialchars($response);
     }
 
     /**
@@ -65,7 +65,7 @@ class elasticsearch
         $params["body"] = $body;
 
         $response = $client->search($params);
-        return $response;
+        return __htmlspecialchars($response);
     }
 
     /**
