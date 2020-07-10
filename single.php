@@ -406,7 +406,7 @@ catch (exception $e) {
 
 
                         <!-- Qualis - Início -->
-                        <?php if (intval($cursor["_source"]["datePublished"]) >= 2010 ) : ?>
+                        <?php if (isset($cursor["_source"]["datePublished"]) && intval($cursor["_source"]["datePublished"]) >= 2010 ) : ?>
                             <?php if (!empty($cursor["_source"]["USP"]["serial_metrics"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
