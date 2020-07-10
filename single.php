@@ -800,8 +800,10 @@ catch (exception $e) {
                         <!-- Other works of same authors - Start -->
                         <?php
                         if (isset($cursor["_source"]["authorUSP"])) {
-                            foreach ($cursor["_source"]["authorUSP"] as $authorUSPArray) {
-                                $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
+			    foreach ($cursor["_source"]["authorUSP"] as $authorUSPArray) {
+				if(isset($authorUSPArray["codpes"])){
+                                    $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
+				}
                             }
 
                             $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
