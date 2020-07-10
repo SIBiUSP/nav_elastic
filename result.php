@@ -14,6 +14,10 @@
  */
 require 'inc/config.php';
 
+if(isset($_GET["search"])){
+	$_GET["search"] = search_sanitize($_GET["search"]);
+}
+
 array_walk_recursive($_GET, function (&$item, $key){
     $item = htmlspecialchars(strip_tags($item),ENT_NOQUOTES);
 });
@@ -21,12 +25,13 @@ array_walk_recursive($_GET, function (&$item, $key){
 
 if (isset($_GET["search"])) {
     foreach ($_GET["search"] as $getSearch) {
-        $getCleaned[] = htmlspecialchars($getSearch, ENT_QUOTES);
+        $getCleaned[] = input_sanitize(htmlspecialchars($getSearch, ENT_QUOTES));
     }
     unset($_GET["search"]);
     $_GET["search"] = $getCleaned;
     
 }
+var_dump($_GET["search"]);
 
 if (isset($fields)) {
     $_GET["fields"] = $fields;
@@ -113,7 +118,7 @@ $total = $cursor["hits"]["total"];
             <?php if (!empty($_SERVER["QUERY_STRING"])) : ?>
                 <?php
                 if (!empty($_GET["search"][0])) {
-                    foreach ($_GET["search"] as $querySearch) {
+			foreach ($_GET["search"] as $querySearch) {
                         $querySearchArray[] = $querySearch;
                         $name_field = explode(":", $querySearch);
                         $querySearch = str_replace($name_field[0].":", "", $querySearch);

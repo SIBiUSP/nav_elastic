@@ -560,9 +560,10 @@ catch (exception $e) {
                                 <tr>
                                     <th>Tipo</th>
                                     <th>Nome do arquivo</th>
-                                    <th>Link</th>'
-                                    .$table_headers.
-                                    '</tr>
+				    <th>Link</th>';
+			
+                            isset($table_headers) ? $table_headers : "";
+                            echo '</tr>
                             </thead>
                             <tbody>';
 
@@ -633,7 +634,7 @@ catch (exception $e) {
                                     echo '<td>'.$file["name"].'</td>';
                                     echo '<td>'.$file["direct_link"].'</td>';
 
-                                if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
+                                if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
                                     echo '<td>'.$file["responsible"].'</td>';
 
                                     $botoes["excluir"]["acao"] = "Excluir";

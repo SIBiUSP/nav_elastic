@@ -48,6 +48,17 @@ function input_sanitize($input, $email=false){
     return $input;
 }
 
+function search_sanitize($search){
+	if(is_array($search)){
+		foreach($search as $key => $value){
+			$data[$key] = str_replace(":", "", $value);
+		}
+	} else {
+		$data = str_replace(":", "", $value);
+	}
+	return $data;
+}
+
 function __htmlspecialchars($data) {
     if (is_array($data)) {
         foreach ( $data as $key => $value ) {
@@ -63,6 +74,8 @@ function __htmlspecialchars($data) {
     }
     return $data;
 }
+
+
 
 
 /**
@@ -164,7 +177,7 @@ class Homepage
             return $t->gettext("Total da produção") . ": &cong; " . number_format($total/1000000,1,',','.') . " " . $t->gettext("milhões");
         }*/
         
-        if($_GET["locale"] == "en_US"){
+        if(isset($_GET["locale"]) && $_GET["locale"] == "en_US"){
             $total = number_format($total, 0, '.', ',');
         } else {
             $total = number_format($total, 0, ',', '.');
@@ -1388,10 +1401,14 @@ class Record
         echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
         
 	// Alterado para também executar caso haja link no dspace 
-	$dspaceFileLink = $this->completeRecord["_source"]["files"]["database"];
-        if (!empty($this->url)||!empty($this->doi)||!empty($dspaceFileLink)) {
-            $this->onlineAccess($t);
-        }
+	if(isset($this->completeRecord["_source"]["files"]["database"])){
+            $dspaceFileLink = $this->completeRecord["_source"]["files"]["database"];
+	
+            if (!empty($this->url)||!empty($this->doi)||!empty($dspaceFileLink)) {
+                $this->onlineAccess($t);
+	    }
+
+	}
         
         /* Implementar AJAX */
         //if ($this->showMetrics == true) {
@@ -1660,35 +1677,37 @@ class Record
     {
 
         
-        $firstFile = null;
-        $files = $this->completeRecord["_source"]["files"]["database"];
-        foreach ($files as $file) {
-            if($file["status"] == "public"){
-                if($file["file_type"] == "publishedVersion" &&  ($firstFile["status"] != "public" || ($firstFile["status"] == "public" && $firstFile["file_type"] != "publishedVersion"))){
-                    $file["icon"] = "inc/images/pdf_publicado.svg";
-                    $file["iconAlt"] = $t->gettext("Versão Publicada");
+	$firstFile = null;
+	if(isset($this->completeRecord["_source"]["files"]["database"])){
+            $files = $this->completeRecord["_source"]["files"]["database"];
+            foreach ($files as $file) {
+                if($file["status"] == "public"){
+                    if($file["file_type"] == "publishedVersion" &&  ($firstFile["status"] != "public" || ($firstFile["status"] == "public" && $firstFile["file_type"] != "publishedVersion"))){
+                        $file["icon"] = "inc/images/pdf_publicado.svg";
+                        $file["iconAlt"] = $t->gettext("Versão Publicada");
+                        $firstFile = $file;
+                        break;
+                    } else if($firstFile["status"] != "public"){
+                        $file["icon"] = "inc/images/pdf_aceito.svg";
+                        $file["iconAlt"] = $t->gettext("Versão Aceita");
+                        $firstFile = $file;
+                    }
+                }
+                else if ($file["status"] == "embargoed" && ($firstFile == null || $firstFile["status"] == "private")) {
+                    $file["icon"] = "inc/images/pdf_embargado.svg";
+                    if ($_SESSION['localeToUse'] == 'pt_BR'){
+                        $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
+                    }
+                    $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
                     $firstFile = $file;
-                    break;
-                } else if($firstFile["status"] != "public"){
-                    $file["icon"] = "inc/images/pdf_aceito.svg";
-                    $file["iconAlt"] = $t->gettext("Versão Aceita");
+                } else if($firstFile == null && $file["status"] == "private") {
+                    $file["icon"] = "inc/images/pdf_privado.svg";
+                    $file["iconAlt"] = $t->gettext("Privado");
                     $firstFile = $file;
                 }
-            }
-            else if ($file["status"] == "embargoed" && ($firstFile == null || $firstFile["status"] == "private")) {
-                $file["icon"] = "inc/images/pdf_embargado.svg";
-                if ($_SESSION['localeToUse'] == 'pt_BR'){
-                    $file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
-                }
-                $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
-                $firstFile = $file;
-            } else if($firstFile == null && $file["status"] == "private") {
-                $file["icon"] = "inc/images/pdf_privado.svg";
-                $file["iconAlt"] = $t->gettext("Privado");
-                $firstFile = $file;
-            }
             
-        }
+	    }
+	}
 
 	    //$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
         if (!empty($firstFile["file_link"])){
