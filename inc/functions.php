@@ -466,8 +466,10 @@ class PageSingle
         $jsonSource['@context'] = 'http://schema.org';
         $jsonSource['@graph'][0]['@id'] = '#periodical';
         $jsonSource['@graph'][0]['@type'] = 'Periodical';
-        $jsonSource['@graph'][0]['name'] = $isPartofName;
-        $jsonSource['@graph'][0]['issn'][0] = $record["isPartOf"]["issn"][0];
+	$jsonSource['@graph'][0]['name'] = $isPartofName;
+	if(isset($record["isPartOf"]["issn"][0])){
+            $jsonSource['@graph'][0]['issn'][0] = $record["isPartOf"]["issn"][0];
+	}
         $jsonSource['@graph'][0]['publisher'] = $publisher;
         $jsonSource['@graph'][1]['@id'] = '#volume';
         $jsonSource['@graph'][1]['@type'] = 'PublicationVolume';
@@ -481,8 +483,10 @@ class PageSingle
         $jsonSource['@graph'][3]['@type'] = 'ScholarlyArticle';
         $jsonSource['@graph'][3]['datePublished'] = $record['datePublished'];
         $jsonSource['@graph'][3]['isPartOf'] = '#issue';
-        $jsonSource['@graph'][3]['description'] = $description;
-        $jsonSource['@graph'][3]['sameAs'] = 'https://doi.org/'.$record['doi'].'';
+	$jsonSource['@graph'][3]['description'] = $description;
+	if(isset($record['doi'])){
+            $jsonSource['@graph'][3]['sameAs'] = 'https://doi.org/'.$record['doi'].'';
+	}
         $jsonSource['@graph'][3]['about'][] = 'Works';
         $jsonSource['@graph'][3]['about'][] = 'Catalog';
         $jsonSource['@graph'][3]['image'] = '//bdpi.usp.br/images/logo_sibi.jpg';

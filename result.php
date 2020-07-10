@@ -31,7 +31,6 @@ if (isset($_GET["search"])) {
     $_GET["search"] = $getCleaned;
     
 }
-var_dump($_GET["search"]);
 
 if (isset($fields)) {
     $_GET["fields"] = $fields;
