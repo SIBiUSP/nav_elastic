@@ -390,9 +390,11 @@ class PageSingle
                 echo '    <meta name="citation_author" content="'.$autores["person"]["name"].'">';
                 echo "\n";
             }
-        }
-        echo '    <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
-        echo "\n";
+	}
+	if(isset($record['datePublished'])){
+            echo '    <meta name="citation_publication_date" content="'.$record['datePublished'].'">';
+            echo "\n";
+	}
         if (!empty($record["isPartOf"]["name"])) {
             echo '    <meta name="citation_journal_title" content="'.$record["isPartOf"]["name"].'">';
             echo "\n";
@@ -478,10 +480,12 @@ class PageSingle
         $jsonSource['@graph'][2]['@id'] = '#issue';
         $jsonSource['@graph'][2]['@type'] = 'PublicationIssue';
         $jsonSource['@graph'][2]['issueNumber'] = $numero;
-        $jsonSource['@graph'][2]['datePublished'] = $record['datePublished'];
-        $jsonSource['@graph'][2]['isPartOf'] = '#volume';
+	$jsonSource['@graph'][2]['isPartOf'] = '#volume';
+	if(isset($record['datePublished'])){
+            $jsonSource['@graph'][2]['datePublished'] = $record['datePublished'];
+	    $jsonSource['@graph'][3]['datePublished'] = $record['datePublished'];
+	}
         $jsonSource['@graph'][3]['@type'] = 'ScholarlyArticle';
-        $jsonSource['@graph'][3]['datePublished'] = $record['datePublished'];
         $jsonSource['@graph'][3]['isPartOf'] = '#issue';
 	$jsonSource['@graph'][3]['description'] = $description;
 	if(isset($record['doi'])){
