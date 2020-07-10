@@ -304,11 +304,10 @@ class Facets
 
         $response = elasticsearch::elastic_search($type, null, 0, $query);
 
-        $result_count = count($response["aggregations"]["counts"]["buckets"]);
+	$result_count = count($response["aggregations"]["counts"]["buckets"]);
 
-        if (($result_count != 0) && ($result_count <= 5)) {
-
-            echo '<li class="uk-parent">';
+        if (($result_count > 0) && ($result_count <= 5)) {
+	    echo '<li class="uk-parent">';
             echo '<a href="#" style="color:#123e72;">'.$field_name.'</a>';
             echo ' <ul class="uk-nav-sub">';
             foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
@@ -340,15 +339,15 @@ class Facets
                     }
                 }
 
-            };
+            }
             echo '</ul></li>';
 
-        } else {
+        } elseif($result_count > 5) {
             $i = 0;
             echo '<li class="uk-parent">';
             echo '<a href="#"  style="color:#123e72;">'.$field_name.'</a>';
             echo ' <ul class="uk-nav-sub">';
-            while ($i <= 5) {
+            while ($i < 5) {
                 if ($response["aggregations"]["counts"]["buckets"][$i]['key'] == "Não preenchido") {
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
