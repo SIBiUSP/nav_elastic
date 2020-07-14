@@ -805,8 +805,9 @@ catch (exception $e) {
                                     $authorUSPArrayCodpes[] = $authorUSPArray["codpes"];
 				}
                             }
-
-                            $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
+			    if(isset($authorUSPArrayCodpes)){
+			        $queryOtherWorks["query"]["bool"]["must"]["query_string"]["query"] = 'authorUSP.codpes:('.implode(" OR ", $authorUSPArrayCodpes).')';
+			    }
                             $queryOtherWorks["query"]["bool"]["must_not"]["term"]["name.keyword"] = $cursor["_source"]["name"];
                             $resultOtherWorks = elasticsearch::elastic_search($type, ["_id","name"], 10, $queryOtherWorks);
                             echo '<div class="uk-alert-primary" uk-alert>';

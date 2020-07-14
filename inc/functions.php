@@ -657,7 +657,7 @@ class USP
         echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
         $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
 
-        if ($xml->{'resume'}->{'cant_result'} != 0) {
+        if (is_object($xml) && $xml->{'resume'}->{'cant_result'} != 0) {
 
             $termo_xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetchUp&arg='.$xml->{'result'}->{'term'}->{'term_id'}[0].'');
             foreach (($termo_xml->{'result'}->{'term'}) as $string_up) {
