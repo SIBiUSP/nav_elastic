@@ -309,12 +309,12 @@ catch (exception $e) {
                                     $oadoi = metrics::get_oadoi($cursor["_source"]['doi']);
                                     echo '<div class="uk-alert-primary uk-h6 uk-padding-small">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org" target="_blank" rel="noopener noreferrer nofollow">oaDOI API</a>)';
                                     echo '<ul>';
-                                    if ($oadoi['results'][0]['is_subscription_journal'] == 1) {
+                                    if (isset($oadoi['results'][0]['is_subscription_journal']) && $oadoi['results'][0]['is_subscription_journal'] == 1) {
                                         echo '<li>Este periódico é de assinatura</li>';
                                     } else {
                                         echo '<li>Este periódico é de acesso aberto</li>';
                                     }
-                                    if ($oadoi['results'][0]['is_free_to_read'] == 1) {
+                                    if (isset($oadoi['results'][0]['is_free_to_read']) && $oadoi['results'][0]['is_free_to_read'] == 1) {
                                         echo '<li>Este artigo é de acesso aberto</li>';
                                     } else {
                                         echo '<li>Este artigo NÃO é de acesso aberto<br/>';

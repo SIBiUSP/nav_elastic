@@ -1528,8 +1528,10 @@ class Record
                 if (!empty($funder["projectNumber"]) && $funder["name"] == "Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP)") {
                     foreach ($funder["projectNumber"] as $projectNumber) {
                         $projectNumber = str_replace(" ", "", $projectNumber);
-                        preg_match("/\d\d\/\d{5}-\d/", $projectNumber, $projectNumberMatchArray);
-                        echo '<br/>Processo FAPESP: <a href="http://bv.fapesp.br/pt/processo/'.$projectNumberMatchArray[0].'" target="_blank" rel="noopener noreferrer">'.$projectNumber.'</a>';
+			preg_match("/\d\d\/\d{5}-\d/", $projectNumber, $projectNumberMatchArray);
+			if(isset($projectNumberMatchArray[0])){
+			    echo '<br/>Processo FAPESP: <a href="http://bv.fapesp.br/pt/processo/'.$projectNumberMatchArray[0].'" target="_blank" rel="noopener noreferrer">'.$projectNumber.'</a>';
+			}
                     }
                 }
                 echo '</li>';
