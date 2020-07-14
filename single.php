@@ -299,7 +299,7 @@ catch (exception $e) {
                     <article class="uk-article">
                         <?php
                         $record = new Record($cursor, $show_metrics);
-                        $record->completeRecordMetadata($t, $url_base);
+			$record->completeRecordMetadata($t, $url_base);
                         ?>
 
                         <?php

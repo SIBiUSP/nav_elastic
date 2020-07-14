@@ -1410,23 +1410,21 @@ class Record
         
 	// Alterado para também executar caso haja link no dspace 
 	if(isset($this->completeRecord["_source"]["files"]["database"])){
-            $dspaceFileLink = $this->completeRecord["_source"]["files"]["database"];
-	
-            if (!empty($this->url)||!empty($this->doi)||!empty($dspaceFileLink)) {
-                $this->onlineAccess($t);
-	    }
-
+	    $dspaceFileLink = $this->completeRecord["_source"]["files"]["database"];
+	}	
+	if (!empty($this->url)||!empty($this->doi)||isset($dspaceFileLink)) {
+		$this->onlineAccess($t);
 	}
+
+	
         
         /* Implementar AJAX */
         //if ($this->showMetrics == true) {
         //    if (!empty($this->doi)) {
         //        $this->metrics($t, $this->doi, $this->completeRecord);
         //    }
-        //}
-
-        $this->citation($t, $this->completeRecord);
-
+	//}
+	$this->citation($t, $this->completeRecord);
         echo '</div>';
 
         echo '</article>';
@@ -1675,16 +1673,15 @@ class Record
             echo '<li>'.$t->gettext('Nome do evento').': <a href="result.php?filter[]=releasedEvent:&quot;'.$this->releasedEvent.'&quot;">'.$this->releasedEvent.'</a></li>';
         }
 
-        if (!empty($this->url)||!empty($this->doi)) {
-            $this->onlineAccess($t);
+	if (!empty($this->url)||!empty($this->doi)) {
+	    $this->onlineAccess($t);
         }
 
     }
 
     public function onlineAccess($t)
     {
-
-        
+	
 	$firstFile = null;
 	if(isset($this->completeRecord["_source"]["files"]["database"])){
             $files = $this->completeRecord["_source"]["files"]["database"];
@@ -1733,7 +1730,7 @@ class Record
                 echo '<a id="button" href="'.$url.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'.$t->gettext('Acesso à fonte').'"><img class="result-icons" src="../inc/images/acesso_fonte.svg" alt="'.$t->gettext('Acesso à fonte').'"></a>';
             }
         }
-        if (!empty($this->doi)) {
+	if (!empty($this->doi)) {
             echo '<a id="button" href="https://doi.org/'.$this->doi.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;"><img class="result-icons" src="../inc/images/doi.svg"  alt="DOI"></a>';
         }
 
@@ -1814,7 +1811,7 @@ class Record
         $citeproc_vancouver = new citeproc($csl_nlm, $lang);
         $mode = "reference";
 
-        echo '<a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade" uk-tooltip="'.$t->gettext('Como citar').'" uk-toggle><img class="result-icons"  src="inc/images/citacao.svg" alt="'.$t->gettext('Como citar').'"></a>';
+	echo '<a class="uk-link-text link" href="#" uk-toggle="target: #citacao'.$record['_id'].'; animation: uk-animation-fade" uk-tooltip="'.$t->gettext('Como citar').'" uk-toggle><img class="result-icons"  src="inc/images/citacao.svg" alt="'.$t->gettext('Como citar').'"></a>';
 
         //echo '<div class="uk-grid-small uk-child-width-auto" uk-grid>';
             /*echo '<div><a class="uk-button uk-button-text" href="item/'.$record['_id'].'">'.$t->gettext('Ver registro completo').'</a></div>';*/
