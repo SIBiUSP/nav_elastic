@@ -655,7 +655,10 @@ class USP
     static function consultar_vcusp($termo)
     {
         echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
-        $xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
+	//$xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
+	
+        $externalxml = file_get_contents('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
+        $xml = simplexml_load_string($externalxml);
 
         if (is_object($xml) && $xml->{'resume'}->{'cant_result'} != 0) {
 

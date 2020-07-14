@@ -45,11 +45,13 @@ catch (exception $e) {
       $actual_link = "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
       /* Search for existing record on DSpace */
-      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+      if(isset($cursor)){
+          $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+      }
 
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
-
+	     
           function removeElementWithValue($array, $key, $value)
           {
               foreach ($array as $subKey => $subArray) {
