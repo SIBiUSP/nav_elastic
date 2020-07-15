@@ -203,19 +203,22 @@ class get
         $i_filter = 0;
         if (!empty($get['filter'])) {
             foreach ($get['filter'] as $filter) {
-                $filter_array = explode(":", $filter);
-                $filter_array_term = str_replace('"', "", (string)$filter_array[1]);
+		$filter_array = explode(":", $filter);
+		if(!empty($filter_array[1])){
+		    $filter_array_term = str_replace('"', "", (string)$filter_array[1]);
+		}
                 $query["query"]["bool"]["filter"][$i_filter]["term"][(string)$filter_array[0].".keyword"] = $filter_array_term;
                 $i_filter++;
             }
-
         }
 
         if (!empty($get['notFilter'])) {
             $i_notFilter = 0;
             foreach ($get['notFilter'] as $notFilter) {
-                $notFilterArray = explode(":", $notFilter);
-                $notFilterArrayTerm = str_replace('"', "", (string)$notFilterArray[1]);
+	        $notFilterArray = explode(":", $notFilter);
+		if(!empty($notFilterArray[1])){
+		    $notFilterArrayTerm = str_replace('"', "", (string)$notFilterArray[1]);
+		}
                 $query["query"]["bool"]["must_not"][$i_notFilter]["term"][(string)$notFilterArray[0].".keyword"] = $notFilterArrayTerm;
                 $i_notFilter++;
             }
