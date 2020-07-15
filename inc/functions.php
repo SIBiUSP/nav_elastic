@@ -385,11 +385,14 @@ class PageSingle
     {
         echo '<meta name="citation_title" content="'.$record["name"].'">';
         echo "\n";
-        if (!empty($record['author'])) {
+        if (!empty($record['author'] && is_array($record['author']))) {
             foreach ($record['author'] as $autores) {
                 echo '    <meta name="citation_author" content="'.$autores["person"]["name"].'">';
                 echo "\n";
             }
+	} else {
+	    echo '    <meta name="citation_author" content="'.$autores["person"]["name"].'">';
+	    echo "\n";
 	}
 	if(isset($record['datePublished'])){
             echo '    <meta name="citation_publication_date" content="'.$record['datePublished'].'">';

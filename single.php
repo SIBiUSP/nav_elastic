@@ -597,7 +597,9 @@ catch (exception $e) {
                                           
                                           if ($_SESSION['localeToUse'] == 'pt_BR'){
                                               $file["release_date"] =  date('d/m/Y', strtotime($bitstreamPolicyUnit["startDate"]));
-                                          }
+					  } else {
+					      $file["release_date"] = date('Y/m/d', strtotime($bitstreamPolicyUnit["startDate"]));
+				          }
 
                                           $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
                                         } else { //Público

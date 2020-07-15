@@ -43,12 +43,22 @@ foreach ($response["hits"]["hits"] as $r) {
     $data = json_decode($json, true);
 
     //print_r($data["message"]);
-    foreach ($data["message"]["items"] as $recordCrossref) {
-        similar_text($recordCrossref["title"][0], $r["_source"]["name"], $percent);
+    if(!empty($data["message"]["items"]) && is_array($data["message"]["items"])){
+        foreach ($data["message"]["items"] as $recordCrossref) {
+            similar_text($recordCrossref["title"][0], $r["_source"]["name"], $percent);
+            if ($percent > 95) {
+                echo 'DOI encontrado: '.$recordCrossref["DOI"].'';
+            	$doiFound = $recordCrossref["DOI"];
+            }
+
+    	}
+    }else {
+            similar_text($data["message"]["items"]["title"][0], $r["_source"]["name"], $percent);
         if ($percent > 95) {
-            echo 'DOI encontrado: '.$recordCrossref["DOI"].'';
-            $doiFound = $recordCrossref["DOI"];
+            echo 'DOI encontrado: '.$data["message"]["items"]["DOI"].'';
+            $doiFound = $data["message"]["items"]["DOI"];
         }
+
 
     }
     if (isset($doiFound)) {
