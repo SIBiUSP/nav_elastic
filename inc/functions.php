@@ -390,7 +390,7 @@ class PageSingle
                 echo '    <meta name="citation_author" content="'.$autores["person"]["name"].'">';
                 echo "\n";
             }
-	} else {
+	} elseif(!empty($autores["person"]["name"])){
 	    echo '    <meta name="citation_author" content="'.$autores["person"]["name"].'">';
 	    echo "\n";
 	}
