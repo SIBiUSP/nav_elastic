@@ -56,6 +56,7 @@ function search_sanitize($search){
 	} else {
 		$data = str_replace(":", "", $value);
 	}
+	$data = preg_replace('/\s+/', ' ',$data);
 	return $data;
 }
 
@@ -311,7 +312,6 @@ class PageSingle
         global $_POST;
         global $_FILES;
         global $client;
-
 
         if (!is_dir('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'')){
             mkdir('upload/'.$_GET['_id'][0].'/'.$_GET['_id'][1].'/'.$_GET['_id'][2].'/'.$_GET['_id'][3].'/'.$_GET['_id'][4].'/'.$_GET['_id'][5].'/'.$_GET['_id'][6].'/'.$_GET['_id'][7].'/'.$_GET['_id'].'', 0700, true);

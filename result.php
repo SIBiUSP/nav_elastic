@@ -17,9 +17,8 @@ require 'inc/config.php';
 if(isset($_GET["search"])){
 	$_GET["search"] = search_sanitize($_GET["search"]);
 }
-
 array_walk_recursive($_GET, function (&$item, $key){
-    $item = htmlspecialchars(strip_tags($item),ENT_NOQUOTES);
+	$item = htmlspecialchars(strip_tags($item),ENT_NOQUOTES);
 });
 
 
