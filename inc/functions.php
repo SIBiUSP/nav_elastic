@@ -1255,8 +1255,10 @@ class Record
         $this->languageArray = $record["_source"]["language"];
         if (isset($record["_source"]["country"])) {
             $this->countryArray = $record["_source"]["country"];
-        }
-        $this->authorArray = $record["_source"]["author"];
+	}
+	if(isset($record["_source"]["author"])){
+	    $this->authorArray = $record["_source"]["author"];
+	}
         if (isset($record["_source"]["description"])) {
             $this->descriptionArray = $record["_source"]["description"];
         }
@@ -1362,8 +1364,10 @@ class Record
                 $authors_array[]='<a class="link" href="result.php?filter[]=author.person.name:&quot;'.$authors["person"]["name"].'&quot;">'.$authors["person"]["name"].'</a>'.$orcidLink.'';
             }
             unset($orcidLink);
-        }
-        $array_aut = implode("; ", $authors_array);
+	}
+	if(!empty($authors_array)){
+	    $array_aut = implode("; ", $authors_array);
+	}
         print_r($array_aut);
         echo '</p>';
 
@@ -1564,8 +1568,10 @@ class Record
                     if (isset($funder["award"])) {
                         foreach ($funder["award"] as $projectNumber) {
                             $projectNumberArray[] = '$$f'.$projectNumber.'';
-                        }
-                        echo '<p><b>$$a'.$funder["name"].''.implode("", $projectNumberArray).'</b></p>';
+			}
+			if(!empty($projectNumberArray)){
+			    echo '<p><b>$$a'.$funder["name"].''.implode("", $projectNumberArray).'</b></p>';
+			}
                         $projectNumberArray = [];
 
                     } else {

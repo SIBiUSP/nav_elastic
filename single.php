@@ -20,7 +20,11 @@ $mode = "reference";
 
 /* Montar a consulta */
 try {	
-	$cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
+	if(!empty($_GET['_id'])){
+		$cursor = elasticsearch::elastic_get($_GET['_id'], $type, null);
+	} else {
+		throw new Exception('Id do registro não definido.');
+	}
 }
 catch (exception $e) {
 	header('HTTP/1.1 404 Not Found');
