@@ -57,6 +57,8 @@ function search_sanitize($search){
 		$data = str_replace(":", "", $value);
 	}
 	$data = preg_replace('/\s+/', ' ',$data);
+	$data = preg_replace('/s+\/s+/', ' ', $data);
+	$data = preg_replace('/\//', ' ', $data);
 	return $data;
 }
 
