@@ -25,8 +25,8 @@ try {
 catch (exception $e) {
 	header('HTTP/1.1 404 Not Found');
 	header('Location: '.$url_base .'/404.php');
+	die();
 }
-if(!empty($cursor)):
 ?>
 
 <!DOCTYPE html>
@@ -839,4 +839,3 @@ if(!empty($cursor)):
         <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
     </body>
 </html>
-<?php endif; ?>
