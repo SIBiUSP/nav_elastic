@@ -21,7 +21,8 @@ class elasticsearch
     public static function elastic_get($_id, $type, $fields, $alternative_index = "")
     {
         global $index;
-        global $client;
+	global $client;
+
         $params = [];
 
         if (strlen($alternative_index) > 0) {
@@ -62,7 +63,7 @@ class elasticsearch
         $params["type"] = $type;
         $params["_source"] = $fields;
         $params["size"] = $size;
-        $params["body"] = $body;
+	$params["body"] = $body;
 
         $response = $client->search($params);
         return __htmlspecialchars($response);
@@ -201,7 +202,7 @@ class get
         $prev = ($page - 1);
 
         $i_filter = 0;
-        if (!empty($get['filter'])) {
+	if (!empty($get['filter'])) {
             foreach ($get['filter'] as $filter) {
 		$filter_array = explode(":", $filter);
 		if(!empty($filter_array[1])){
@@ -224,7 +225,7 @@ class get
             }
         }
 
-        if (!empty($get['search'])) {
+	if (!empty($get['search'])) {
             foreach ($get['search'] as $getSearch) {
                 if (strpos($getSearch, 'base.keyword') !== false) {
                     $query["query"]["bool"]["filter"][$i_filter]["term"]["base.keyword"] = "Produção científica";
@@ -232,9 +233,9 @@ class get
                 } else {
                     $getSearchArray[] = $getSearch;
                 }
-            }
-            $getSearchResult = implode(" ", $getSearchArray);
-            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
+	    }
+	    $getSearchResult = implode(" ", $getSearchArray);
+	    $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
         } 
 
         if (!empty($get['range'])) {
@@ -390,8 +391,8 @@ class Facets
                 if ($facets['key'] == "Não preenchido") {
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
-                        echo '<div uk-grid>
-                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.'" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.mb_strtolower($facets['key'], "UTF-8").' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
+			echo '<div uk-grid>
+                             <div class="uk-width-3-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.'" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.mb_strtolower($facets['key'], "UTF-8").' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
                         echo '</div></li>';
                     }
 
