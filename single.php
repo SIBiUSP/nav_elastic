@@ -24,7 +24,7 @@ try {
 }
 catch (exception $e) {
 	header('HTTP/1.1 404 Not Found');
-	header('Location: '.'404.php');
+	header('Location: '.'../404.php');
 }
 ?>
 
@@ -201,7 +201,7 @@ catch (exception $e) {
 
   }
   ?>
-
+    
     <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
 
     <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
