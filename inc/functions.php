@@ -1368,7 +1368,9 @@ class Record
 	if(!empty($authors_array)){
 	    $array_aut = implode("; ", $authors_array);
 	}
-        print_r($array_aut);
+	if (!empty($array_aut)){
+		print_r($array_aut);
+	}
         echo '</p>';
 
         /* IsPartOf */
