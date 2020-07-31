@@ -551,9 +551,10 @@ catch (exception $e) {
                                     echo $responseMessage;
                                 }
 
-                                $table_headers = "
+                                $table_headers = '
                                                   <th>Responsável</th>
-                                                ";
+                                                  <th colspan="4">Ações</th>
+                                                ';
                             }
 
                         }
@@ -566,10 +567,12 @@ catch (exception $e) {
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
-                                    <th>Nome do arquivo</th>
-				    <th>Link</th>';
-			
-                            isset($table_headers) ? $table_headers : "";
+                                    <th>Nome</th>
+				                            <th>Link</th>
+
+                                    ';
+			                              
+                            echo isset($table_headers) ? $table_headers : "";
                             echo '</tr>
                             </thead>
                             <tbody>';
@@ -586,6 +589,10 @@ catch (exception $e) {
                                       "responsible" => preg_replace("/[^0-9]/", "", $value["description"]),
                                       "version" => substr($value["description"], 0, strpos($value["description"], '-'))
                                     ];
+
+                                    if(strlen($file["name"])>25){
+                                      $file["name"] = substr($file["name"],0,25).'...';
+                                    }
                                     
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
                                         if($bitstreamPolicyUnit["rpName"] == "EMBARGO" && $bitstreamPolicyUnit["rpType"] == "TYPE_CUSTOM" && $bitstreamPolicyUnit["groupId"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $bitstreamPolicyUnit["action"] == "READ" && strtotime($bitstreamPolicyUnit["startDate"]) > strtotime(date("Y-m-d"))){ //Embargado
