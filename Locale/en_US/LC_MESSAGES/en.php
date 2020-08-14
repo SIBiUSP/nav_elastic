@@ -112,6 +112,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Digital Library of Intellectual Production of Universidade de São Paulo',
       ),
+      'Biblioteca Digital de Trabalhos Acadêmicos da Universidade de São Paulo' =>
+      array(
+	0 => 'Digital Library of Academic Works of Universidade de São Paulo',
+      ),
+      'Biblioteca Digital de Trabalhos Acadêmicos da USP' =>
+      array(
+        0 => 'USP Digital Library of Academic Works',
+      ),
       'Busca avançada' => 
       array (
         0 => 'Advanced search',
@@ -491,6 +499,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Versão aceita' =>
       array(
         0 => 'Post-print',
+      ),
+      'Versão em desenvolvimento' =>
+      array(
+        0 => 'Development version',
       ),
       'Versão publicada' =>
       array(

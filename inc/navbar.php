@@ -41,7 +41,7 @@
              </ul>
         </div>
         <div class="uk-navbar-center" style="top: 60%;">
-            <a class="uk-navbar-item uk-logo" href="<?php echo $url_base; ?>/index.php"><h1 style="font-family: Arial, sans-serif; color: #123e72;">ReP</h1></a>
+	<a class="uk-navbar-item uk-logo" href="<?php echo $url_base; ?>/index.php"><h1 style="font-family: Arial, sans-serif; color: #123e72;"><?php echo $branch_abrev_nav; ?></h1></a>
         </div>
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">

@@ -42,7 +42,7 @@
 	</div>
 	<div class="uk-text-center uk-width-1-1 uk-text-center">
 	    <p class="uk-text-small ">
-	    	<?php echo $t->gettext('Biblioteca Digital de Produção Intelectual da Universidade de São Paulo'); ?> &nbsp;&nbsp;&nbsp; 2012 - <?php echo date("Y"); ?>
+	    	<?php echo $t->gettext($branch_footer); ?> &nbsp;&nbsp;&nbsp; 2012 - <?php echo date("Y"); ?>
 	    </p>
 	</div>
 </div>

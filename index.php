@@ -9,7 +9,7 @@
         <!-- Facebook Tags - START -->
         <!--<meta property="og:locale" content="pt_BR">-->
 	<meta property="og:locale" content="<?php echo $locale ?>">
-        <meta property="og:url" content="//bdpi.usp.br">
+	<meta property="og:url" content="<?php echo $url_base; ?>">
         <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
         <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
         <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
@@ -34,7 +34,11 @@
 
             <div class="uk-width-3-4@s uk-child-width-3-4@m uk-align-center" uk-grid>
                 <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-card-body" style="margin-top: 2.5em;">
-                    <h2 class="uk-align-center uk-text-center" style="color:#1094ab"><strong><?php echo $t->gettext(''.$branch.''); ?></strong></h2>
+		    <h2 class="uk-align-center uk-text-center" style="color:#1094ab">
+			<strong><?php echo $t->gettext(''.$branch.''); ?></strong></br>
+			<span class="uk-form-label uk-text-center"><?php if(!empty($branch_version)) echo $t->gettext($branch_version); ?></span>
+		    </h2>
+			
                     <p class="uk-form-label uk-text-right"><?php echo Homepage::totalProducao($t); ?></p>
                     <form class="uk-form-stacked" action="result.php">
                         <div class="uk-margin">
