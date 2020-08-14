@@ -97,7 +97,7 @@
                                 </div>
                             </div>
 			    <div class="uk-form-row">
-				<div class="g-recaptcha" data-sitekey="6LedBakZAAAAAF-CUG031vPRHB1jSTaWB2psR9rI"></div>
+			    <div class="g-recaptcha" data-sitekey="<?php echo $captcha_key; ?>"></div>
 			    </div>
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
