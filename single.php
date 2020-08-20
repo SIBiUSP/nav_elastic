@@ -595,13 +595,15 @@ catch (exception $e) {
                                     }
                                     
                                     if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
-                                        if($bitstreamPolicyUnit["rpName"] == "EMBARGO" && $bitstreamPolicyUnit["rpType"] == "TYPE_CUSTOM" && $bitstreamPolicyUnit["groupId"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $bitstreamPolicyUnit["action"] == "READ" && strtotime($bitstreamPolicyUnit["startDate"]) > strtotime(date("Y-m-d"))){ //Embargado
-                                          
+                                        if($bitstreamPolicyUnit["rpName"] == "EMBARGO" && $bitstreamPolicyUnit["rpType"] == "TYPE_CUSTOM" && $bitstreamPolicyUnit["groupId"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $bitstreamPolicyUnit["action"] == "READ" && strtotime($bitstreamPolicyUnit["startDate"]) > strtotime(date("Y-m-d"))){ //Embargado				
+
                                           if($file["version"] == "publishedVersion"){
                                               $file["icon"] = "/inc/images/pdf_publicado_embargado.svg";
                                           } elseif ($file["version"] == "acceptedVersion"){
                                               $file["icon"] = "/inc/images/pdf_aceito_embargado.svg";
-                                          } else {
+					  } elseif ($file["version"] == "submittedVersion") {
+					      $file["icon"] = "/inc/images/pdf_submetido_embargado.svg";
+					  } else {
                                               $file["icon"] = "/inc/images/pdf_embargado.svg";
                                           }
 
@@ -622,7 +624,10 @@ catch (exception $e) {
                                             } elseif ($file["version"] == "acceptedVersion"){
                                                 $file["icon"] = "/inc/images/pdf_aceito.svg";
                                                 $file["iconAlt"] = $t->gettext("Versão Aceita");
-                                            } //elseif ($file["version"] == "acceptedVersion")
+					    } elseif ($file["version"] == "submittedVersion") {
+					        $file["icon"] = "/inc/images/pdf_submetido.svg";
+						$file["iconAlt"] = $t->gettext("Versão Submetida");
+					    }
                                             $file["link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
                                             $file["direct_link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
                                         } //else
@@ -633,7 +638,9 @@ catch (exception $e) {
                                           $file["icon"] = "/inc/images/pdf_publicado_privado.svg";
                                       } elseif ($file["version"] == "acceptedVersion"){
                                           $file["icon"] = "/inc/images/pdf_aceito_privado.svg";
-                                      } else {
+				      } elseif ($file["version"] == "submittedVersion"){
+				          $file["icon"] = "/inc/images/pdf_submetido_privado.svg";
+				      } else {
                                           $file["icon"] = "/inc/images/pdf_privado.svg";
                                       }
                                       

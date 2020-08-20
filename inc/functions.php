@@ -1703,16 +1703,22 @@ class Record
 	$firstFile = null;
 	if(isset($this->completeRecord["_source"]["files"]["database"])){
             $files = $this->completeRecord["_source"]["files"]["database"];
-            foreach ($files as $file) {
+	    foreach ($files as $file) {
+		    var_dump($file);
                 if($file["status"] == "public"){
                     if($file["file_type"] == "publishedVersion" &&  ($firstFile["status"] != "public" || ($firstFile["status"] == "public" && $firstFile["file_type"] != "publishedVersion"))){
                         $file["icon"] = "inc/images/pdf_publicado.svg";
                         $file["iconAlt"] = $t->gettext("Versão Publicada");
                         $firstFile = $file;
                         break;
-                    } else if($firstFile["status"] != "public"){
+		    } else if($file["file_type"] == "acceptedVersion" && ($firstFile["status"] != "public" || ($firstFile["status"] == "public" && $firstFile["file_type"] == "submittedVersion")  )){
                         $file["icon"] = "inc/images/pdf_aceito.svg";
                         $file["iconAlt"] = $t->gettext("Versão Aceita");
+                        $firstFile = $file;
+			
+		    } else if($firstFile["status"] != "public"){
+                        $file["icon"] = "inc/images/pdf_submetido.svg";
+                        $file["iconAlt"] = $t->gettext("Versão Submetida");
                         $firstFile = $file;
                     }
                 }
