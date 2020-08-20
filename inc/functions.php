@@ -1704,7 +1704,6 @@ class Record
 	if(isset($this->completeRecord["_source"]["files"]["database"])){
             $files = $this->completeRecord["_source"]["files"]["database"];
 	    foreach ($files as $file) {
-		    var_dump($file);
                 if($file["status"] == "public"){
                     if($file["file_type"] == "publishedVersion" &&  ($firstFile["status"] != "public" || ($firstFile["status"] == "public" && $firstFile["file_type"] != "publishedVersion"))){
                         $file["icon"] = "inc/images/pdf_publicado.svg";
