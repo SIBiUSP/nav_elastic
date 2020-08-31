@@ -1,3 +1,4 @@
+<?php include_once("admin/staffAdmins.php");?>
 <div style="height: 0.3em; background: #fcb421;"></div>
 <div style="height: 0.4em; background: #64c4d2;"></div>
 <div class="uk-card uk-card-default" >
@@ -47,7 +48,7 @@
             <ul class="uk-navbar-nav">
                 
                 
-                <li class="uk-active">
+		<li class="uk-active">
                     <?php if (empty($_SESSION['oauthuserdata'])) : ?>
                     <li><a href="aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>
                     <?php else: ?>
@@ -106,6 +107,9 @@
             </ul>
         </div>
     </div>
+    <?php if(!empty($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffAdmins)): ?>
+        <div class="uk-align-right" style="position: absolute; top: 25px; right: 20px;"><a href="http://repdev.aguia.usp.br/admin/staffusers.php" style="color: #1094ab  !important;">Gerenciar Usuários</a></div>
+    <?php endif; ?>
 </div>
 
 

@@ -3,3 +3,13 @@
 RewriteEngine On
 
 RewriteRule ^item/([-\w]+)$ single.php?_id=$1 [NC,L]
+
+<Files admin/staffusers.php>
+    Require ip 200.144.210.0/24 172.31.0.0/22 143.107.154.0/24 143.107.252.0/24 143.107.3.0/24 200.144.62.0/23 200.144.206.0/23 200.144.234.0/23 200.144.238.0/23 200.144.240.0/22
+</Files>
+<Files inc/staff.php>
+    Require all denied
+</Files>
+<Files inc/staff.txt>
+    Require all denied
+</Files>

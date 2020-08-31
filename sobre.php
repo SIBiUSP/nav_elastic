@@ -1,5 +1,5 @@
 <?php
-	$sobre_pt_br = "";
+	/*$sobre_pt_br = "";
 	$sobre_en = "";
 	
 	if($about == "repositorio"){
@@ -23,7 +23,7 @@
 	} elseif ($about == "bdta") {
 		$sobre_pt_br = "";
 		$sobre_en = "";
-	}
+	}*/
 
 ?>
 
@@ -72,7 +72,7 @@
 
                     <li>Integrate with a set of national and international initiatives, through qualified and standardized integration standards and protocols.</li>
                 </ul>';
-	} elseif ($about == "bdta") {
+	    } elseif ($about == "bdta") {
 		$sobre_pt_br = '
 			<p>A Biblioteca Digital de Trabalhos Acadêmicos da USP proporciona à sociedade em geral o acesso ao texto completo dos Trabalhos de Conclusão de Curso da Universidade. Inclui em seu acervo: Trabalho de Conclusão de Curso de Graduação, Trabalho de Conclusão de Curso de Especialização (MBA), Trabalho de Conclusão de Residência (TCR) da Universidade de São Paulo.
 A BDTA atende à <strong><a href="http://www.leginf.usp.br/?resolucao=resolucao-cocex-cog-no-7497-de-09-de-abril-de-2018" title="Resolução CoCEx-CoG número 7497" target="_blank">Resolução CoCEx-CoG Nº 7497, de 09 de abril de 2018</a></strong>, que Regulamenta a disponibilização de trabalhos de conclusão de curso ou outros trabalhos acadêmicos equivalentes na Biblioteca Digital de Trabalhos Acadêmicos da Universidade de São Paulo.</p>

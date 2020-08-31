@@ -2,6 +2,8 @@ data/
 inc/config.php
 inc/analyticstracking.php
 inc/staff.php
+inc/staff.txt
+admin/staffAdmins.php
 /robots.txt
 composer.lock
 composer.phar

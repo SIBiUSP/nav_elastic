@@ -11,11 +11,11 @@
  */
 
 if (file_exists('functions_core/functions_core.php')) {
-    include 'functions_core/functions_core.php';
+    include_once 'functions_core/functions_core.php';
 } elseif (file_exists('../functions_core/functions_core.php')) {
-    include '../functions_core/functions_core.php';
+    include_once '../functions_core/functions_core.php';
 } else {
-    include '../../functions_core/functions_core.php';
+    include_once '../../functions_core/functions_core.php';
 }
 
 function checkDSpaceAPI($url_api){
@@ -79,7 +79,19 @@ function __htmlspecialchars($data) {
 }
 
 
-
+function get_staffUsers(){
+	$staffUsers = array();
+	$arquivo = fopen($_SERVER["DOCUMENT_ROOT"].'/inc/staff.txt','r');
+	if ($arquivo == false) die('O arquivo não existe.');
+	while(true) {
+		$linha = fgets($arquivo);
+		if ($linha==null) break;
+		$usertemp = explode(";", $linha);
+		$staffUsers[] = $usertemp[0];
+	}
+	fclose($arquivo);
+	return $staffUsers;
+}
 
 /**
  * Página Inicial
