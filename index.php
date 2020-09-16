@@ -52,7 +52,8 @@
             		    <li>
             			<a class="uk-accordion-title uk-text-small uk-text-right" href="#"><?php echo $t->gettext('Filtros'); ?></a>
             		    <div class="uk-accordion-content">
-                            <div class="uk-margin">
+		            <?php if($branch_abrev == "ReP USP"): ?>
+			    <div class="uk-margin">
                                 <label hidden class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="filter[]">
@@ -61,7 +62,8 @@
                                         <option value="base:&quot;Teses e dissertações&quot;" style="color:#333"><?php echo $t->gettext('Teses e Dissertações'); ?></option>
                                     </select>
                                 </div>
-                            </div>
+			    </div>
+			    <?php endif;?>
                             <div class="uk-margin">
                                 <label hidden class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione uma Unidade USP para filtrar a busca'); ?></label>
                                 <div class="uk-form-controls">

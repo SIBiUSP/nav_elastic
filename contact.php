@@ -16,41 +16,64 @@
         ?>
         <?php require 'inc/navbar.php'; ?>
         <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
-            <?php
-                if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["mensagem"]) && isset($_POST["cidade"])){
-                    $nome = input_sanitize($_POST["nome"]);
-                    $email_cliente = input_sanitize($_POST["email"], true);
-                    $cidade = input_sanitize($_POST["cidade"]);
-                    $estado = input_sanitize($_POST["estado"]);
-                    $pais = input_sanitize($_POST["pais"]);
-                    $mensagem = input_sanitize($_POST["mensagem"]);
-                    $mensagem_email = "Nome: {$nome}\n";
-                    $mensagem_email .= "E-mail: {$email_cliente}\n";
-                    $mensagem_email .= "Cidade/UF: {$cidade}/{$estado}\n";
-                    $mensagem_email .= "País: {$pais}\n";
-                    $mensagem_email .= "Mensagem:\n{$mensagem}\n";
-                    $email_remetente = "Atendimento AGUIA <atendimento@aguia.usp.br>";
-                    $email_destinatario = $email_remetente;
-                    $assunto = "Contato do site do Repositório - $nome";
-                    $headers = "MIME-Version: 1.1\n";
-                    $headers .= "Content-type: text/plain; charset=UTF-8\n";
-                    $headers .= "From: $email_remetente\n";
-                    $headers .= "Return-Path: $email_destinatario\n";
-                    $headers .= "Reply-To: $nome <$email_cliente>\n";
-                    if(filter_var($email_cliente, FILTER_VALIDATE_EMAIL) && mail($email_destinatario, $assunto, $mensagem_email, $headers)){
-                        $notification = $t->gettext('A sua mensagem foi enviada com sucesso!');
-                        echo "<div class=\"uk-alert-success\" uk-alert>
+	<?php
+		if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["mensagem"]) && isset($_POST["cidade"])){
+		    if(isset($_POST['g-recaptcha-response'])){
+			$captcha=$_POST['g-recaptcha-response'];
+		    }
+                    if(!$captcha){
+                        echo '<h4>Por favor, cheque o Captcha do formulário.</h4>';
+			exit;
+		    }
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                    // post request to server
+                    $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($reCaptchaPrivateKey) .  '&response=' . urlencode($captcha);
+                    $response = file_get_contents($url);
+                    $responseKeys = json_decode($response,true);
+
+		    // should return JSON with success as true
+                    if($responseKeys["success"]) {
+                    	$nome = input_sanitize($_POST["nome"]);
+                	$email_cliente = input_sanitize($_POST["email"], true);
+       	            	$cidade = input_sanitize($_POST["cidade"]);
+                   	$estado = input_sanitize($_POST["estado"]);
+                   	$pais = input_sanitize($_POST["pais"]);
+		    	$mensagem = input_sanitize($_POST["mensagem"]);
+                    	$mensagem_email = "Nome: {$nome}\n";
+                    	$mensagem_email .= "E-mail: {$email_cliente}\n";
+                    	$mensagem_email .= "Cidade/UF: {$cidade}/{$estado}\n";
+                    	$mensagem_email .= "País: {$pais}\n";
+                    	$mensagem_email .= "Mensagem:\n{$mensagem}\n";
+                    	$email_remetente = "Atendimento AGUIA <atendimento@aguia.usp.br>";
+                    	$email_destinatario = $email_remetente;
+                    	$assunto = "Contato do site $branch_abrev - $nome";
+                    	$headers = "MIME-Version: 1.1\n";
+                   	$headers .= "Content-type: text/plain; charset=UTF-8\n";
+                    	$headers .= "From: $email_remetente\n";
+                    	$headers .= "Return-Path: $email_destinatario\n";
+                    	$headers .= "Reply-To: $nome <$email_cliente>\n";
+		
+			if(filter_var($email_cliente, FILTER_VALIDATE_EMAIL) && mail($email_destinatario, $assunto, $mensagem_email, $headers)){
+                            $notification = $t->gettext('A sua mensagem foi enviada com sucesso!');
+                            echo "<div class=\"uk-alert-success\" uk-alert>
                             <a class=\"uk-alert-close\" uk-close></a>
                             <p>{$notification}</p>
-                        </div>";
-                    } else{
+                            </div>";
+                        } else {
+                            $notification = $t->gettext('A sua mensagem não foi enviada! Tente novamente.');
+                            echo "<div class=\"uk-alert-danger\" uk-alert>
+                            <a class=\"uk-alert-close\" uk-close></a>
+                            <p>{$notification}</p>
+                           </div>";
+                        }
+		    } else {
                         $notification = $t->gettext('A sua mensagem não foi enviada! Tente novamente.');
                         echo "<div class=\"uk-alert-danger\" uk-alert>
-                            <a class=\"uk-alert-close\" uk-close></a>
-                            <p>{$notification}</p>
+                        <a class=\"uk-alert-close\" uk-close></a>
+                        <p>{$notification}</p>
                         </div>";
-                    }
-                }
+		    }
+	    }
             ?>
             <div class="uk-grid" uk-grid>
 
@@ -97,7 +120,7 @@
                                 </div>
                             </div>
 			    <div class="uk-form-row">
-			    <div class="g-recaptcha" data-sitekey="<?php echo $captcha_key; ?>"></div>
+			    <div class="g-recaptcha" data-sitekey="<?php echo $reCaptchaPublicKey; ?>"></div>
 			    </div>
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
