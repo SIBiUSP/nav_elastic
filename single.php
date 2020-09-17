@@ -71,13 +71,17 @@ catch (exception $e) {
               $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                       <fieldset data-uk-margin>
                       <legend>Enviar um arquivo</legend>
-                      <input type="file" name="file">
-                      <select class="uk-select" name="version" required>
-                          <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
-                          <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
-                          <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
-                      </select>
-                      <button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
+		      <input type="file" name="file">';
+		      if ($branch_abrev != "BDTA USP"){
+                      	  $uploadForm .= '<select class="uk-select" name="version" required>
+                              <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
+                              <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
+                              <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
+			  </select>';
+		      } else {
+			 $uploadForm .= '<input type="hidden" name="version" value="publishedVersion"><br/>';
+		      }
+		$uploadForm .= '<button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
                   </fieldset>
                   </form>';
           }
