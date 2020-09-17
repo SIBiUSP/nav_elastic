@@ -72,7 +72,7 @@ catch (exception $e) {
                       <fieldset data-uk-margin>
                       <legend>Enviar um arquivo</legend>
 		      <input type="file" name="file">';
-		      if ($branch_abrev != "BDTA USP"){
+		      if ($uploadVersion){
                       	  $uploadForm .= '<select class="uk-select" name="version" required>
                               <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
                               <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>

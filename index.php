@@ -12,7 +12,7 @@
 	<meta property="og:url" content="<?php echo $url_base; ?>">
         <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
         <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
-        <meta property="og:description" content="<?php //echo $t->gettext(''.$branch_description.''); ?>">
+        <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
         <meta property="og:image:width" content="800">
@@ -52,7 +52,7 @@
             		    <li>
             			<a class="uk-accordion-title uk-text-small uk-text-right" href="#"><?php echo $t->gettext('Filtros'); ?></a>
             		    <div class="uk-accordion-content">
-		            <?php if($branch_abrev == "ReP USP"): ?>
+			    <?php if($indexBasesFilter):?>
 			    <div class="uk-margin">
                                 <label hidden class="uk-form-label" for="form-stacked-select"><?php echo $t->gettext('Selecione a base'); ?></label>
                                 <div class="uk-form-controls">
