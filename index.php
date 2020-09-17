@@ -12,7 +12,7 @@
 	<meta property="og:url" content="<?php echo $url_base; ?>">
         <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
         <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
-        <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
+        <meta property="og:description" content="<?php //echo $t->gettext(''.$branch_description.''); ?>">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
         <meta property="og:image:width" content="800">
