@@ -69,8 +69,10 @@
                                 <div class="uk-form-controls">
                                     <select class="uk-select" id="form-stacked-select" name="filter[]">
                                         <option disabled selected value><?php echo $t->gettext('Todas as Unidades USP'); ?></option>
-                                        <?php foreach($unidades as $key => $value ): ?>
-                                            <option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
+					<?php foreach($unidades as $key => $value ): ?>
+					    <?php if(!in_array($key, $schoolsFilterRemove)): ?>
+					    <option value="unidadeUSP:&quot;<?php echo $key; ?>&quot;" style="color:#333"><?php echo $value; ?></option>
+					    <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

@@ -25,16 +25,18 @@
                                 <div class="uk-padding">
                                     <h3><?php echo $t->gettext('Unidades USP'); ?></h3>
                                     <?php $count = 0; ?>
-                                    <?php foreach($unidades as $key => $value ): ?>
-                                        <?php $count++;?>
-                                        <a href="result.php?filter[]=<?php echo $key; ?>" class="uk-text-small" style="color:#333">
-                                            <?php echo $value; ?>
-                                        </a>
-                                        <br/>
-                                        <?php if($count == 18 || $count == 36): ?>
-                                            </div>
-                                            <div class="uk-padding">
-                                        <?php endif; ?>
+				    <?php foreach($unidades as $key => $value ): ?>
+					<?php if(isset(!in_array($key, $schoolsFilterRemove)): ?>
+                                            <?php $count++;?>
+                                            <a href="result.php?filter[]=unidadeUSP:&quot;<?php echo $key; ?>&quot;" class="uk-text-small" style="color:#333">
+                                                <?php echo $value; ?>
+                                            </a>
+                                            <br/>
+                                            <?php if($count == 18 || $count == 36): ?>
+                                                </div>
+                                                <div class="uk-padding">
+					    <?php endif; ?>
+					<?php endif; ?> 
                                     <?php endforeach; ?>
                                 </div>
                             </div>
