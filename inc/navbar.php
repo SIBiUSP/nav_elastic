@@ -26,7 +26,7 @@
                                     <h3><?php echo $t->gettext('Unidades USP'); ?></h3>
                                     <?php $count = 0; ?>
 				    <?php foreach($unidades as $key => $value ): ?>
-					<?php if(isset(!in_array($key, $schoolsFilterRemove)): ?>
+					<?php if(!in_array($key, $schoolsFilterRemove)): ?>
                                             <?php $count++;?>
                                             <a href="result.php?filter[]=unidadeUSP:&quot;<?php echo $key; ?>&quot;" class="uk-text-small" style="color:#333">
                                                 <?php echo $value; ?>
