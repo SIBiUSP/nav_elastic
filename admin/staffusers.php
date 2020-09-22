@@ -173,7 +173,8 @@ $users = get_users();
 								<option value="<?php echo "AGUIA"; ?>" style="color:#333"><?php echo "Agência USP de Gestão da Informação Acadêmica (AGUIA)"; ?></option>
 								<?php foreach($unidades as $key => $value ): ?>
 									<?php if(!in_array($key, $schoolsManageUsersRemove)): ?>
-                                        				<option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
+									<option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
+									<?php endif; ?>
                                     				<?php endforeach; ?>
 	                                		</select>
         	                    		</div>
