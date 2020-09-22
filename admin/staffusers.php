@@ -172,7 +172,7 @@ $users = get_users();
 							<select class="uk-select" id="form-stacked-select" name="unidade">
 								<option value="<?php echo "AGUIA"; ?>" style="color:#333"><?php echo "Agência USP de Gestão da Informação Acadêmica (AGUIA)"; ?></option>
 								<?php foreach($unidades as $key => $value ): ?>
-									<?php if(isset(!in_array($key, $schoolsManageUsersRemove)): ?>
+									<?php if(!in_array($key, $schoolsManageUsersRemove)): ?>
                                         				<option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
                                     				<?php endforeach; ?>
 	                                		</select>
