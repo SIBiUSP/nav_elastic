@@ -180,6 +180,8 @@ $total = $cursor["hits"]["total"];
 					$facets->facet("base", 10, $t->gettext('Bases'), null, "_term", $_GET["search"]);
 				if($documentTypesFacet)
 					$facets->facet("type", 100, $t->gettext('Tipo de material'), null, "_term", $_GET["search"]);
+				if($degreeFacet)
+					$facets->facet("inSupportOf", 100, $t->gettext('Grau'), null, "_term", $_GET["search"]);
 				if($uspSchoolsFacet)
 					$facets->facet("unidadeUSP", 200, $t->gettext('Unidades USP'), null, "_term", $_GET["search"], "uppercase");
 				if($departamentFacet)

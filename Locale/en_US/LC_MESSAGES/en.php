@@ -212,6 +212,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Publisher',
       ),
+      'Grau' =>
+       array (
+         0 => 'Degree',
+       ),
       'Liberação em ' => 
       array (
         0 => 'Release date ',
