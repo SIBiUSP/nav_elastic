@@ -242,7 +242,7 @@ class Homepage
             echo '<ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-small">';
             if (!empty($r["_source"]['author'])) {
                 foreach ($r["_source"]['author'] as $autores) {
-                    if (!empty($autores["person"]["orcid"])) {
+		    if (!empty($autores["person"]["orcid"])) {
                         $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
                     } else {
                         $orcidLink = '';
@@ -1365,7 +1365,7 @@ class Record
         /* Authors */
         echo '<p class="uk-article-meta uk-margin-remove"  style="color: #666">';
         foreach ($this->authorArray as $authors) {
-            if (!empty($authors["person"]["orcid"])) {
+	    if (!empty($authors["person"]["orcid"])) {
                 $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
                 $orcidLink = '';
@@ -1418,14 +1418,14 @@ class Record
         /* Subjects */
         if (!empty($this->aboutArray)) {
             echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
-            //var_dump($this->aboutArray)
             $i = 0;
             foreach ($this->aboutArray as $subject) {
                 $subjectItem = "";
                 if ($i != 0){
                     $subjectItem .= ", ";
                 }
-                $subjectItem .= '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.ucwords(mb_strtolower($subject, 'UTF-8')).'</a>';
+		$subjectItem .= '<a href="result.php?filter[]=about:&quot;'.$subject.'&quot;">'.
+			strtoupper($subject).'</a>';
                 echo $subjectItem;
                 $i++;
             }
@@ -1475,7 +1475,7 @@ class Record
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
         foreach ($this->authorArray as $authors) {
-            if (!empty($authors["person"]["orcid"])) {
+	    if (!empty($authors["person"]["orcid"])) {
                 $orcidLink = ' <a class="link" href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
             } else {
                 $orcidLink = '';
