@@ -1489,13 +1489,13 @@ class Record
             }
             unset($orcidLink);
         }
-        echo '<li>'.$t->gettext('Autores').': <ul>'.implode("", $authorsList).'</ul></li>';
+        echo '<li>'.$t->gettext(sizeof($authorsList) > 1 ? 'Autores' : 'Autor').': <ul>'.implode("", $authorsList).'</ul></li>';
         /* USP Authors */
         if (!empty($this->authorUSPArray)) {
             foreach ($this->authorUSPArray as $autoresUSP) {
                 $authorsUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=authorUSP.name:&quot;'.$autoresUSP["name"].'&quot;">'.$autoresUSP["name"].' - '.$autoresUSP["unidadeUSP"].' </a>';
             }
-            echo '<li>'.$t->gettext('Autores USP').': '.implode("; ", $authorsUSPList).'</li>';
+            echo '<li>'.$t->gettext(sizeof($authorsUSPList) > 1 ? 'Autores USP' : 'Autor USP').': '.implode("; ", $authorsUSPList).'</li>';
         }
         /* USP Units */
 	if (!empty($this->unidadeUSPArray)) {
@@ -1536,7 +1536,7 @@ class Record
 
                 $subjectList[] = '<a href="'.$url_base.'/result.php?filter[]=about:&quot;'.$subject.'&quot;">'.$subject.'</a>';
             }
-            echo '<li>'.$t->gettext('Assuntos').': '.implode("; ", $subjectList).'</li>';
+            echo '<li>'.$t->gettext(sizeof($subjectList) > 1 ? 'Assuntos' : 'Assunto').': '.implode("; ", $subjectList).'</li>';
         }
 
         /* BDTD Subject */
@@ -1604,7 +1604,7 @@ class Record
         foreach ($this->languageArray as $language) {
             $languageList[] = '<a href="'.$url_base.'/result.php?filter[]=language:&quot;'.$language.'&quot;">'.$language.'</a>';
         }
-        echo '<li>'.$t->gettext('Idioma').': '.implode("; ", $languageList).'</li>';
+        echo '<li>'.$t->gettext(sizeof($languageList) > 1 ? 'Idiomas' : 'Idioma').': '.implode("; ", $languageList).'</li>';
 
         /* Abstract */
         if (!empty($this->descriptionArray)) {

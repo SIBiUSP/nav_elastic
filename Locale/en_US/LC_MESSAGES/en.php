@@ -84,6 +84,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Article',
       ),
+      'Assunto' =>
+      array (
+        0 => 'Subject',
+      ),
       'Assuntos' => 
       array (
         0 => 'Subjects',
@@ -92,6 +96,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Subjects from thesis',
       ),
+      'Autor' =>
+      array (
+        0 => 'Author',
+      ),
       'Autores' => 
       array (
         0 => 'Authors',
@@ -99,6 +107,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'autores vinculados à USP' => 
       array (
         0 => 'USP affiliated authors',
+      ),
+      'Autor USP' =>
+      array (
+        0 => 'USP affiliated author',
       ),
       'Autores USP' => 
       array (
@@ -251,6 +263,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       'Idioma' => 
       array (
         0 => 'Language',
+      ),
+      'Idiomas' =>
+      array (
+        0 => 'Languages',
       ),
       'Inglês' => 
       array (
