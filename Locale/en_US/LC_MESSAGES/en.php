@@ -488,6 +488,14 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Recent submissions',
       ),
+      'Unidade' =>
+      array (
+        0 => 'School',
+      ),
+      'Unidades' =>
+      array (
+        0 => 'Schools',
+      ),
       'Unidades USP' => 
       array (
         0 => 'USP Schools',

@@ -1498,13 +1498,15 @@ class Record
             echo '<li>'.$t->gettext('Autores USP').': '.implode("; ", $authorsUSPList).'</li>';
         }
         /* USP Units */
-        if (!empty($this->unidadeUSPArray)) {
+	if (!empty($this->unidadeUSPArray)) {
+	    
             $i = 0;
             foreach ($this->unidadeUSPArray as $unidadeUSP) {
 
-                $unidadeUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
-            }
-            echo '<li>'.$t->gettext('Unidades').': '.implode("; ", $unidadeUSPList).'</li>';
+		$unidadeUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
+	    }
+	    $unidadeUSPList = array_unique($unidadeUSPList);
+            echo '<li>'.$t->gettext(sizeof($unidadeUSPList) > 1 ? 'Unidades' : 'Unidade').': '.implode("; ", $unidadeUSPList).'</li>';
         }
 
         /* Programa Sigla Pós */
