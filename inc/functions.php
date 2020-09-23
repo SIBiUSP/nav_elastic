@@ -1387,7 +1387,7 @@ class Record
 
         /* IsPartOf */
         if (!empty($this->isPartOfArray["name"])) {
-            echo '<p class="uk-text-small uk-margin-remove">In: <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a>. ';
+            echo '<p class="uk-text-small uk-margin-remove">'. $t->gettext('Fonte') .': <a href="result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a>. ';
         }
 
         /*  releasedEvent */
