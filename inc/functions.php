@@ -1417,7 +1417,7 @@ class Record
 
         /* Subjects */
         if (!empty($this->aboutArray)) {
-            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext('Assuntos').': ';
+            echo '<p class="uk-text-small uk-margin-remove">'.$t->gettext(sizeof($this->aboutArray) > 1 ? 'Assuntos' : 'Assunto').': ';
             $i = 0;
             foreach ($this->aboutArray as $subject) {
                 $subjectItem = "";
