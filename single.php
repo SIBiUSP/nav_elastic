@@ -51,9 +51,9 @@ catch (exception $e) {
 
       /* Search for existing record on DSpace */
       if(isset($cursor)){
-          $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+	      //$itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+	      $itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
       }
-
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
 	     
@@ -89,10 +89,7 @@ catch (exception $e) {
           if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
-              //echo "<br/><br/>";
-              //print_r($userBitstream);
-              //echo "<br/><br/>";
-              $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
+	      $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
               }
@@ -179,8 +176,6 @@ catch (exception $e) {
             }
           }
 
-          $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
-
       } else {
         if(checkDSpaceAPI($pythonBdpiApi)){
           $createForm  = '<form action="' . $actual_link . '" method="post">
@@ -188,8 +183,7 @@ catch (exception $e) {
                   <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
                   </form>';
 
-          if (isset($_POST["createRecord"])) {
-              if ($_POST["createRecord"] == "true") {
+          if (isset($_POST["createRecord"]) && $_POST["createRecord"]) {
 
                   $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
                   $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $_SESSION["DSpaceCookies"]);
@@ -200,7 +194,6 @@ catch (exception $e) {
                           window.location = window.location.href;
                   });
                   </script>";
-              }
           }
         } else {
           $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
@@ -260,7 +253,7 @@ catch (exception $e) {
                         <?php if (!empty($cursor["_source"]['doi'])) : ?>
                         <h3 class="uk-panel-title"></h3>
                         <hr>
-                            <?php if ($show_metrics == true) : ?>
+                            <?php if ($show_metrics) : ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
                             <div class="uk-alert-warning" uk-alert>
                                 <p><?php echo $t->gettext('Métricas'); ?>:</p>
@@ -561,9 +554,8 @@ catch (exception $e) {
                                                 ';
                             }
 
-                        }
-
-                        if (!empty($bitstreamsDSpace)) {
+			}
+			if(isset($cursor["_source"]["files"]["database"])){
                             echo '<div class="" uk-alert>
                             <h4>Download do texto completo</h4>
 
@@ -574,95 +566,78 @@ catch (exception $e) {
                                     <th>Nome</th>
 				                            <th>Link</th>
 
-                                    ';
-			                              
+';
+			if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
+				$bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($itemID, $_SESSION["DSpaceCookies"]);
+			}
                             echo isset($table_headers) ? $table_headers : "";
                             echo '</tr>
                             </thead>
-                            <tbody>';
+			    <tbody>';
+				$countPolicy = 0;
+				foreach($cursor["_source"]["files"]["database"] as $file){
+					$file["link"] = "";
+					$file["direct_link"] = "";
+					if(strlen($file["file_name"])>25){
+						$file["file_name"] = substr($file["file_name"],0,25).'...';
+					}
+					if($file["status"] == "public"){
+						if($file["file_type"] == "publishedVersion"){
+							$file["icon"] = "/inc/images/pdf_publicado.svg";
+							$file["iconAlt"] = $t->gettext("Versão Publicada");
+						} else if($file["file_type"] == "acceptedVersion"){
+							$file["icon"] = "/inc/images/pdf_aceito.svg";
+							$file["iconAlt"] = $t->gettext("Versão Aceita");
+						} else if($firstFile["status"] != "public"){
+							$file["icon"] = "/inc/images/pdf_submetido.svg";
+							$file["iconAlt"] = $t->gettext("Versão Submetida");
+						}
+						$file["link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$file["bitstream_id"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
+						$file["direct_link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$file["bitstream_id"].'/'.$file["file_name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
+					}
+					else if ($file["status"] == "embargoed") {
+						if($file["file_type"] == "publishedVersion"){
+							$file["icon"] = "/inc/images/pdf_publicado_embargado.svg";
+						} else if($file["file_type"] == "acceptedVersion"){
+							$file["icon"] = "/inc/images/pdf_aceito_embargado.svg";
+						} else if($firstFile["status"] != "public"){
+							$file["icon"] = "/inc/images/pdf_submetido_embargado.svg";
+						} else {
+							$file["icon"] = "/inc/images/pdf_embargado.svg";
+						}
+						if ($_SESSION['localeToUse'] == 'pt_BR'){
+							$file["release_date"] =  date('d/m/Y', strtotime($file["release_date"]));
 
-                            foreach ($bitstreamsDSpace as $key => $value) {
-                                $bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($value["uuid"], $_SESSION["DSpaceCookies"]);
-                                foreach ($bitstreamPolicy as $bitstreamPolicyUnit) {
+						} else {
+							$file["release_date"] = date('Y/m/d', strtotime($file["release_date"]));
+						}
+						$file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
 
-                                    $file = [
-                                      "uuid" => $value["uuid"],
-                                      "name" => $value["name"],
-                                      "link" => "",
-                                      "direct_link" => "",
-                                      "responsible" => preg_replace("/[^0-9]/", "", $value["description"]),
-                                      "version" => substr($value["description"], 0, strpos($value["description"], '-'))
-                                    ];
+					} else if($file["status"] == "private") {
+						if($file["file_type"] == "publishedVersion"){
+							$file["icon"] = "/inc/images/pdf_publicado_privado.svg";
+						} else if($file["file_type"] == "acceptedVersion"){
+							$file["icon"] = "/inc/images/pdf_aceito_privado.svg";
+						} else if($firstFile["status"] != "public"){
+							$file["icon"] = "/inc/images/pdf_submetido_privado.svg";
+						} else {
+							$file["icon"] = "/inc/images/pdf_privado.svg";
+						}
+						$file["iconAlt"] = $t->gettext("Privado");
+					}
+					if ($file["link"] == ""){
+						$file["link"] = '<img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-tooltip="'. $file["iconAlt"] .'" uk-img>';
+					}
+	
+					echo '<tr>';                                                                                                                                                                                                                                 echo '<td>'.$file["link"].'</td>';
+                                        echo '<td>'.$file["file_name"].'</td>';
+                                        echo '<td>'.$file["direct_link"].'</td>';
+					
+					/*foreach ($bitstreamsDSpace as $key => $value) {*/
 
-                                    if(strlen($file["name"])>25){
-                                      $file["name"] = substr($file["name"],0,25).'...';
-                                    }
-                                    
-                                    if ($bitstreamPolicyUnit["groupId"] == $dspaceAnnonymousID){
-                                        if($bitstreamPolicyUnit["rpName"] == "EMBARGO" && $bitstreamPolicyUnit["rpType"] == "TYPE_CUSTOM" && $bitstreamPolicyUnit["groupId"] == "2ad3ba80-0db8-40f4-9d49-bd2467f95cff" && $bitstreamPolicyUnit["action"] == "READ" && strtotime($bitstreamPolicyUnit["startDate"]) > strtotime(date("Y-m-d"))){ //Embargado				
-
-                                          if($file["version"] == "publishedVersion"){
-                                              $file["icon"] = "/inc/images/pdf_publicado_embargado.svg";
-                                          } elseif ($file["version"] == "acceptedVersion"){
-                                              $file["icon"] = "/inc/images/pdf_aceito_embargado.svg";
-					  } elseif ($file["version"] == "submittedVersion") {
-					      $file["icon"] = "/inc/images/pdf_submetido_embargado.svg";
-					  } else {
-                                              $file["icon"] = "/inc/images/pdf_embargado.svg";
-                                          }
-
-                                          $file["status"] = "embargado";
-                                          
-                                          if ($_SESSION['localeToUse'] == 'pt_BR'){
-                                              $file["release_date"] =  date('d/m/Y', strtotime($bitstreamPolicyUnit["startDate"]));
-					  } else {
-					      $file["release_date"] = date('Y/m/d', strtotime($bitstreamPolicyUnit["startDate"]));
-				          }
-
-                                          $file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
-                                        } else { //Público
-                                            $file["status"] = "publico";
-                                            if($file["version"] == "publishedVersion"){
-                                                $file["icon"] = "/inc/images/pdf_publicado.svg";
-                                                $file["iconAlt"] = $t->gettext("Versão Publicada");
-                                            } elseif ($file["version"] == "acceptedVersion"){
-                                                $file["icon"] = "/inc/images/pdf_aceito.svg";
-                                                $file["iconAlt"] = $t->gettext("Versão Aceita");
-					    } elseif ($file["version"] == "submittedVersion") {
-					        $file["icon"] = "/inc/images/pdf_submetido.svg";
-						$file["iconAlt"] = $t->gettext("Versão Submetida");
-					    }
-                                            $file["link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$value["uuid"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
-                                            $file["direct_link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$value["uuid"].'/'.$value["name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
-                                        } //else
-
-                                    } elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID) { //Privado
-                                      $file["status"] = "privado";
-                                      if($file["version"] == "publishedVersion"){
-                                          $file["icon"] = "/inc/images/pdf_publicado_privado.svg";
-                                      } elseif ($file["version"] == "acceptedVersion"){
-                                          $file["icon"] = "/inc/images/pdf_aceito_privado.svg";
-				      } elseif ($file["version"] == "submittedVersion"){
-				          $file["icon"] = "/inc/images/pdf_submetido_privado.svg";
-				      } else {
-                                          $file["icon"] = "/inc/images/pdf_privado.svg";
-                                      }
-                                      
-                                      $file["iconAlt"] = $t->gettext("Privado");
-                                    } //elseif ($bitstreamPolicyUnit["groupId"] == $dspaceRestrictedID)
-
-                                    if ($file["link"] == ""){
-                                        $file["link"] = '<img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-tooltip="'. $file["iconAlt"] .'" uk-img>';
-                                    } //if ($file["link"] == "")
-
-
-                                    echo '<tr>';
-                                    echo '<td>'.$file["link"].'</td>';
-                                    echo '<td>'.$file["name"].'</td>';
-                                    echo '<td>'.$file["direct_link"].'</td>';
-
-                                if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                    echo '<td>'.$file["responsible"].'</td>';
+					if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
+					
+				    echo '<td>'.$file["accountability_info"]["uploader"].'</td>';
 
                                     $botoes["excluir"]["acao"] = "Excluir";
                                     $botoes["excluir"]["icon"] = "excluir.svg";
@@ -670,23 +645,23 @@ catch (exception $e) {
                                     $botoes["excluir"]["title"] = "Excluir arquivo";
                                     $botoes["excluir"]["mensagem"] = "excluir";
 
-                                    $botoes["publico"]["acao"] = "Tornar Público";
-                                    $botoes["publico"]["icon"] = "publico.svg";
-                                    $botoes["publico"]["modal_id"] = "makePublicBitstream";
-                                    $botoes["publico"]["title"] = "Tornar Público";
-                                    $botoes["publico"]["mensagem"] = "tornar público";
+                                    $botoes["public"]["acao"] = "Tornar Público";
+                                    $botoes["public"]["icon"] = "publico.svg";
+                                    $botoes["public"]["modal_id"] = "makePublicBitstream";
+                                    $botoes["public"]["title"] = "Tornar Público";
+                                    $botoes["public"]["mensagem"] = "tornar público";
 
-                                    $botoes["privado"]["acao"] = "Tornar Privado";
-                                    $botoes["privado"]["icon"] = "privado.svg";
-                                    $botoes["privado"]["modal_id"] = "makePrivateBitstream";
-                                    $botoes["privado"]["title"] = "Tornar Privado";
-                                    $botoes["privado"]["mensagem"] = "tornar privado";
+                                    $botoes["private"]["acao"] = "Tornar Privado";
+                                    $botoes["private"]["icon"] = "privado.svg";
+                                    $botoes["private"]["modal_id"] = "makePrivateBitstream";
+                                    $botoes["private"]["title"] = "Tornar Privado";
+                                    $botoes["private"]["mensagem"] = "tornar privado";
 
-                                    $botoes["embargado"]["acao"] = "Embargar";
-                                    $botoes["embargado"]["icon"] = "embargo.svg";
-                                    $botoes["embargado"]["modal_id"] = "doEmbargoBitstream";
-                                    $botoes["embargado"]["title"] = "Embargar";
-                                    $botoes["embargado"]["mensagem"] = "embargar";
+                                    $botoes["embargoed"]["acao"] = "Embargar";
+                                    $botoes["embargoed"]["icon"] = "embargo.svg";
+                                    $botoes["embargoed"]["modal_id"] = "doEmbargoBitstream";
+                                    $botoes["embargoed"]["title"] = "Embargar";
+                                    $botoes["embargoed"]["mensagem"] = "embargar";
 
                         				    foreach($botoes as $funcao => $botao){
                         					   $class_button = "register-icons";
@@ -694,28 +669,34 @@ catch (exception $e) {
                         					    $class_button .= " desativado";
                         					   $img_icon = '<img class="'. $class_button .'" data-src="'. $url_base.'/inc/images/'. $botao["icon"] .'" alt="'. $botao["acao"] . '" uk-img>';
                         					   if ($file["status"] != $funcao)
-                        					    $img_icon = '<a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-tooltip="'. $botao["acao"] .'">' . $img_icon . '</a>' ;
+                        					    $img_icon = '<a class="" type="button" uk-toggle="target: #modal-'. $botao["modal_id"] .'-'.$file["bitstream_id"].'" uk-tooltip="'. $botao["acao"] .'">' . $img_icon . '</a>' ;
                                         echo '<td>'. $img_icon .'</td>';
-                                        echo '<div id="modal-'. $botao["modal_id"] .'-'.$value["uuid"].'" uk-modal>';
+                                        echo '<div id="modal-'. $botao["modal_id"] .'-'.$file["bitstream_id"].'" uk-modal>';
                                         echo '  <div class="uk-modal-dialog">';
                                         echo '    <button class="uk-modal-close-default" type="button" uk-close></button>';
                                         echo '    <div class="uk-modal-header">';
                                         echo '      <h2 class="uk-modal-title">' . $botao["title"] . '</h2>';
                                         echo '    </div>';
                                         echo '    <div class="uk-modal-body">';
-                                        echo '      <p>Tem certeza que quer ' . $botao["mensagem"] . " o arquivo " . $value["name"].'?</p>';
+                                        echo '      <p>Tem certeza que quer ' . $botao["mensagem"] . " o arquivo " . $file["file_name"].'?</p>';
                                         echo '      <form action="' . $actual_link . '" method="post">';
-                                        if($botao["acao"] == "Embargar"){
+					if($botao["acao"] == "Embargar"){
                                             echo '    <label for="releaseDate">Selecione a data em que o arquivo será liberado:</label>
                                                       <input type="date" name="releaseDate" required />';
                                         } //if($botao["acao"] == "Embargar")
-                                        echo '        <input type="hidden" name="'. $botao["modal_id"] .'" value="'.$value["uuid"].'" />';
-                                        //if(!$botao["acao"] == "Excluir"){
-                                            echo '    <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
+                                        echo '        <input type="hidden" name="'. $botao["modal_id"] .'" value="'.$file["bitstream_id"].'" />';
+					//if(!$botao["acao"] == "Excluir"){
+                                            /*echo '    <input type="hidden" name="policyID" value="'.$bitstreamPolicyUnit["id"].'" />
                                                       <input type="hidden" name="policyAction" value="'.$bitstreamPolicyUnit["action"].'" />
                                                       <input type="hidden" name="policyGroupId" value="'.$bitstreamPolicyUnit["groupId"].'" />
                                                       <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
-                                                      <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';
+						      <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';*/
+
+					    echo '    <input type="hidden" name="policyID" value="'.$bitstreamPolicy[$countPolicy]["id"].'" />
+                                                      <input type="hidden" name="policyAction" value="READ" />
+                                                      <input type="hidden" name="policyGroupId" value="2ad3ba80-0db8-40f4-9d49-bd2467f95cff" />
+                                                      <input type="hidden" name="policyResourceType" value="bitstream" />
+                                                      <input type="hidden" name="policyRpType" value="TYPE_CUSTOM" />';
                                         //} //if(!$botao["acao"] == "Excluir")
                                         echo '    </div>';
                                         echo '    <div class="uk-modal-footer uk-text-right">';
@@ -724,12 +705,14 @@ catch (exception $e) {
                                         echo '    </div>';
                                         echo '    </form>';
                                         echo '  </div>';
-                                        echo '</div>';
-                                    } //foreach($botoes as $botao)
+					echo '</div>';					
+							    } //foreach($botoes as $botao)
+					$countPolicy++;
                                   }
                                     echo '<td></td>';
                                 }
-                            } //foreach ($bitstreamsDSpace as $key => $value)
+			    //} //foreach ($bitstreamsDSpace as $key => $value)
+			//} //foreach
                             echo '</tbody></table></div>';
                         } //if (!empty($bitstreamsDSpace))
                         ?>
