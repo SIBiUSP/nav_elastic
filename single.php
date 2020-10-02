@@ -568,16 +568,20 @@ catch (exception $e) {
 
 ';
 				if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
+					$bitstreamPolicy = [];
 					$bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
+					foreach($bitstreamsDSpace as $bitstreamPolicyUnit){
+						$bitstreamPolicy[$bitstreamPolicyUnit["uuid"]] = DSpaceREST::getBitstreamPolicyDSpace($bitstreamPolicyUnit["uuid"], $_SESSION["DSpaceCookies"])[0];
+					}
 			}
                             echo isset($table_headers) ? $table_headers : "";
                             echo '</tr>
                             </thead>
 			    <tbody>';
-				$countPolicy = 0;
 				foreach($cursor["_source"]["files"]["database"] as $file){
 					$file["link"] = "";
 					$file["direct_link"] = "";
+					$file["bitstreamPolicy"] = $bitstreamPolicy[$file["bitstream_id"]];
 					if(strlen($file["file_name"])>25){
 						$file["file_name"] = substr($file["file_name"],0,25).'...';
 					}
@@ -636,8 +640,6 @@ catch (exception $e) {
 					/*foreach ($bitstreamsDSpace as $key => $value) {*/
 
 					if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
-						$bitstreamPolicy = DSpaceREST::getBitstreamPolicyDSpace($bitstreamsDSpace[$countPolicy]["uuid"], $_SESSION["DSpaceCookies"]);
-						var_dump($bitstreamPolicy);
 				    echo '<td>'.$file["accountability_info"]["uploader"].'</td>';
 
                                     $botoes["excluir"]["acao"] = "Excluir";
@@ -693,11 +695,11 @@ catch (exception $e) {
                                                       <input type="hidden" name="policyResourceType" value="'.$bitstreamPolicyUnit["resourceType"].'" />
 						      <input type="hidden" name="policyRpType" value="'.$bitstreamPolicyUnit["rpType"].'" />';*/
 
-					    echo '    <input type="hidden" name="policyID" value="'.$bitstreamPolicy[$countPolicy]["id"].'" />
-                                                      <input type="hidden" name="policyAction" value="'. $bitstreamPolicy[$countPolicy]["action"] .'" />
-                                                      <input type="hidden" name="policyGroupId" value="'. $bitstreamPolicy[$countPolicy]["groupId"] .'" />
-                                                      <input type="hidden" name="policyResourceType" value="'. $bitstreamPolicy[$countPolicy]["resourceType"] .'" />
-                                                      <input type="hidden" name="policyRpType" value="'. $bitstreamPolicy[$countPolicy]["rpType"] .'" />';
+					  echo '    <input type="hidden" name="policyID" value="'.$file["bitstreamPolicy"]["id"].'" />
+                                                      <input type="hidden" name="policyAction" value="'. $file["bitstreamPolicy"]["action"] .'" />
+                                                      <input type="hidden" name="policyGroupId" value="'. $file["bitstreamPolicy"]["groupId"] .'" />
+                                                      <input type="hidden" name="policyResourceType" value="'. $file["bitstreamPolicy"]["resourceType"] .'" />
+						      <input type="hidden" name="policyRpType" value="'. $file["bitstreamPolicy"]["rpType"] .'" />';
                                         //} //if(!$botao["acao"] == "Excluir")
                                         echo '    </div>';
                                         echo '    <div class="uk-modal-footer uk-text-right">';
@@ -708,7 +710,6 @@ catch (exception $e) {
                                         echo '  </div>';
 					echo '</div>';					
 							    } //foreach($botoes as $botao)
-					$countPolicy++;
                                   }
                                     echo '<td></td>';
                                 }
