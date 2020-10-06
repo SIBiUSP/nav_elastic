@@ -46,17 +46,16 @@ catch (exception $e) {
   <?php
   /* DSpace */
   if (isset($dspaceRest)) {
-
       $actual_link = "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
       /* Search for existing record on DSpace */
-      if(isset($cursor)){
-	      //$itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
-	      $itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
+      if(isset($cursor) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
+	      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+	      //$itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
+		
       }
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
-	     
           function removeElementWithValue($array, $key, $value)
           {
               foreach ($array as $subKey => $subArray) {
@@ -66,7 +65,6 @@ catch (exception $e) {
               }
               return $array;
           }
-
           if (isset($_SESSION['oauthuserdata'])) {
               $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                       <fieldset data-uk-margin>
