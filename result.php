@@ -35,6 +35,11 @@ if (isset($fields)) {
     $_GET["fields"] = $fields;
 }
 
+if(isset($_GET["page"]) && $_GET['page'] < 1){
+	$_GET['page'] = 1;
+	header('Location: //'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET));
+}
+
 $result_get = get::analisa_get($_GET);
 
 $limit = $result_get['limit'];
@@ -56,12 +61,15 @@ $params["size"] = $limit;
 $params["from"] = $result_get['skip'];
 $params["body"] = $result_get['query'];
 
-//var_dump($params);
 //$params["body"]["query"]["bool"]["must"]["query_string"]["query"]="*";
-
 
 $cursor = $client->search($params);
 $total = $cursor["hits"]["total"];
+$total_pages = ceil($total/$limit);
+if($page > $total_pages){
+	$_GET["page"] = $total_pages;
+	header('Location: //'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET));
+}
 
 ?>
 <html>
@@ -444,7 +452,7 @@ $total = $cursor["hits"]["total"];
     <!-- Gráfico do ano - Fim -->
             </div>
         </div>
-        <hr class="uk-grid-divider">
+        <!--<hr class="uk-grid-divider">-->
 
 
     </div>

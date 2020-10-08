@@ -50,13 +50,17 @@ p:hover.title-link, a:hover#button.uk-button-default{
 }
 
 #menu div ul li a {
-    color: #1094ab  !important;
     font-weight: bold !important;
 }
 
-#menu div ul li a:hover{
-	color: #fcb421  !important;
+#menu div ul li a, .menu div ul li a {
+	color: #1094ab  !important;
 }
+
+#menu div ul li a:hover, .menu div ul li a:hover{
+        color: #fcb421  !important;
+}
+
 
 /*#menu div ul li a:hover {
     color: #64c4d2 !important;
