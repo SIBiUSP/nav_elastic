@@ -35,7 +35,7 @@ if (isset($fields)) {
     $_GET["fields"] = $fields;
 }
 
-if(isset($_GET["page"]) && $_GET['page'] < 1){
+if(isset($_GET["page"]) && $_GET['page'] < 0){
 	$_GET['page'] = 1;
 	header('Location: //'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET));
 }
@@ -66,9 +66,13 @@ $params["body"] = $result_get['query'];
 $cursor = $client->search($params);
 $total = $cursor["hits"]["total"];
 $total_pages = ceil($total/$limit);
-if($page > $total_pages){
+
+if($total_pages > 0 && $page > $total_pages){
 	$_GET["page"] = $total_pages;
 	header('Location: //'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET));
+} else if ($total_pages == 0 && $page > 1){
+	$_GET["page"] = 1;
+        header('Location: //'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET));
 }
 
 ?>
