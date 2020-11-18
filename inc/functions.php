@@ -1552,7 +1552,7 @@ class Record
             echo '<li>'.$t->gettext('Agências de fomento').': ';
             echo '<ul class="uk-list uk-text-small">';
             foreach ($this->funderArray as $funder) {
-                echo '<li><a href="'.$url_base.'/result.php?filter[]=funder:&quot;'.$funder["name"].'&quot;">'.$funder["name"].'</a>';
+                echo '<li><a href="'.$url_base.'/result.php?filter[]=funder.name:&quot;'.$funder["name"].'&quot;">'.$funder["name"].'</a>';
                 if (!empty($funder["projectNumber"]) && $funder["name"] == "Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP)") {
                     foreach ($funder["projectNumber"] as $projectNumber) {
                         $projectNumber = str_replace(" ", "", $projectNumber);
