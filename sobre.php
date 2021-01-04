@@ -3,23 +3,22 @@
 	$sobre_en = "";
 	
 	if($about == "repositorio"){
-		$sobre_pt_br = '<p>O Repositório da Produção da USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da produção intelectual (científica, artística, acadêmica e técnica) da Universidade de São Paulo, em consonância com a Política de Informação da Universidade definida na <a href="http://www.leginf.usp.br/?resolucao=resolucao-no-6444-de-22-de-outubro-de-2012" target="_blank">Resolução nº 6.444</a> de outubro de 2012. É um sistema de gestão, descoberta e disseminação cujos objetivos são:</p>
+		$sobre_pt_br = '<p>O Repositório de Acesso Aberto da Produção da USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
+                <ul class="uk-list uk-list-bullet">
+
+			<li>Aumentar a visibilidade, acessibilidade e difusão de conteúdos digitais dos resultados das atividades acadêmicas e de pesquisa da universidade por meio da coleta, organização, registro e preservação de sua memória institucional;</li>
+    			<li>Facilitar a gestão e o acesso à informação sobre a produção de pesquisa da USP, por meio da oferta de indicadores confiáveis e validados;</li>
+			<li>Contribuir para a preservação do conhecimento produzido na universidade, seu uso e impacto científico, acadêmico e social, integrando-se a outras iniciativas nacionais e internacionais.</li>
+                </ul>';
+
+		$sobre_en = '<p>The Open Access Repository of the Universidade de Sao Paulo is the Digital Library of Research Production of the university, launched on October 22, 2012.  It is the institutional and official repository of research publications and scientific, artistic, academic and technical production in digital format by its authors, departments, units, institutes, centers, museums and central bodies.</p><p>Its objectives are:</p>
 
                 <ul class="uk-list uk-list-bullet">
-                    <li>Aumentar a visibilidade, acessibilidade e difusão dos resultados da atividade acadêmica e de pesquisa da USP por meio da coleta, organização e preservação em longo prazo;</li>
-
-                    <li>Facilitar a gestão e o acesso à informação sobre a produção intelectual da USP, por meio da oferta de indicadores confiáveis e validados;</li>
-
-                    <li>Integrar-se a um conjunto de iniciativas nacionais e internacionais, por meio de padrões e protocolos de integração qualificados e normalizados.</li>
+			<li>To increase the visibility, accessibility and dissemination of digital contents of the results of research and academic activities through the collection, organization, registration and preservation of its institutional memory; </li>
+			<li>To facilitate the management and access to information on USP scientific production, through the offer of reliable and validated indicators;</li>
+			<li>To contribute to the preservation of knowledge produced at the university, its use and scientific, academic and social impact, integrating with other national and international initiatives.</li>
                 </ul>';
-		$sobre_en = '<p>The Open Access Repository of the Universidade de Sao Paulo is the Digital Library of Research Production of the University, launched on October 22, 2012. It is the institutional and official repository of research publications (scientific, artistic, academic and technical) of the Universidade de São Paulo, according to Information Policy defined by the <a href="http://www.leginf.usp.br/?resolucao=resolucao-no-6444-de-22-de-outubro-de-2012" target="_blank">Resolution Nº 6,444</a> of October 2012. It is a management, discovery and dissemination system whose objectives are:</p>
 
-                <ul class="uk-list uk-list-bullet">
-                    <li>Increase the visibility, accessibility and dissemination of the results of USP\'s academic and research activity through the collection, organization and long-term preservation;</li>
-                                                                                                                                                                                                                                                                 <li>Facilitate the management and access to information on USP research outcomes, by offering reliable and validated indicators;</li>
-
-                    <li>Integrate with a set of national and international initiatives, through qualified and standardized integration standards and protocols.</li>
-                </ul>';
 	} elseif ($about == "bdta") {
 		$sobre_pt_br = "";
 		$sobre_en = "";
@@ -54,24 +53,24 @@
             $sobre_en = '';
 
             if($about == "repositorio"){
-		$sobre_pt_br = '
-				<p>O Repositório da Produção da USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da produção intelectual (científica, artística, acadêmica e técnica) da Universidade de São Paulo, em consonância com a Política de Informação da Universidade definida na <a href="http://www.leginf.usp.br/?resolucao=resolucao-no-6444-de-22-de-outubro-de-2012" target="_blank">Resolução nº 6.444</a> de outubro de 2012. É um sistema de gestão, descoberta e disseminação cujos objetivos são:</p>
+		$sobre_pt_br = '<p>O Repositório de Acesso Aberto da Produção da USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
 
-							                    <ul class="uk-list uk-list-bullet">
-									                        <li>Aumentar a visibilidade, acessibilidade e difusão dos resultados da atividade acadêmica e de pesquisa da USP por meio da coleta, organização e preservação em longo prazo;</li>
 
-                    <li>Facilitar a gestão e o acesso à informação sobre a produção intelectual da USP, por meio da oferta de indicadores confiáveis e validados;</li>
+                <ul class="uk-list uk-list-bullet">
 
-                    <li>Integrar-se a um conjunto de iniciativas nacionais e internacionais, por meio de padrões e protocolos de integração qualificados e normalizados.</li>
+			<li>Aumentar a visibilidade, acessibilidade e difusão de conteúdos digitais dos resultados das atividades acadêmicas e de pesquisa da universidade por meio da coleta, organização, registro e preservação de sua memória institucional;</li>
+    			<li>Facilitar a gestão e o acesso à informação sobre a produção de pesquisa da USP, por meio da oferta de indicadores confiáveis e validados;</li>
+			<li>Contribuir para a preservação do conhecimento produzido na universidade, seu uso e impacto científico, acadêmico e social, integrando-se a outras iniciativas nacionais e internacionais.</li>
                 </ul>';
-		$sobre_en = '<p>The Open Access Repository of the Universidade de Sao Paulo is the Digital Library of Research Production of the University, launched on October 22, 2012. It is the institutional and official repository of research publications (scientific, artistic, academic and technical) of the Universidade de São Paulo, according to Information Policy defined by the <a href="http://www.leginf.usp.br/?resolucao=resolucao-no-6444-de-22-de-outubro-de-2012" target="_blank">Resolution Nº 6,444</a> of October 2012. It is a management, discovery and dissemination system whose objectives are:</p>
 
-			                <ul class="uk-list uk-list-bullet">
-					                    <li>Increase the visibility, accessibility and dissemination of the results of USP\'s academic and research activity through the collection, organization and long-term preservation;</li>
-							                                                                                                                                                                                                                                                                     <li>Facilitate the management and access to information on USP research outcomes, by offering reliable and validated indicators;</li>
+		$sobre_en = '<p>The Open Access Repository of the Universidade de Sao Paulo is the Digital Library of Research Production of the university, launched on October 22, 2012.  It is the institutional and official repository of research publications and scientific, artistic, academic and technical production in digital format by its authors, departments, units, institutes, centers, museums and central bodies.</p><p>Its objectives are:</p>
 
-                    <li>Integrate with a set of national and international initiatives, through qualified and standardized integration standards and protocols.</li>
+                <ul class="uk-list uk-list-bullet">
+			<li>To increase the visibility, accessibility and dissemination of digital contents of the results of research and academic activities through the collection, organization, registration and preservation of its institutional memory; </li>
+			<li>To facilitate the management and access to information on USP scientific production, through the offer of reliable and validated indicators;</li>
+			<li>To contribute to the preservation of knowledge produced at the university, its use and scientific, academic and social impact, integrating with other national and international initiatives.</li>
                 </ul>';
+
 	    } elseif ($about == "bdta") {
 		$sobre_pt_br = '
 			<p>A Biblioteca Digital de Trabalhos Acadêmicos da USP proporciona à sociedade em geral o acesso ao texto completo dos Trabalhos de Conclusão de Curso da Universidade. Inclui em seu acervo: Trabalho de Conclusão de Curso de Graduação, Trabalho de Conclusão de Curso de Especialização (MBA), Trabalho de Conclusão de Residência (TCR) da Universidade de São Paulo.
