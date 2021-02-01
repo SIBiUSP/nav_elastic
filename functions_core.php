@@ -21,7 +21,8 @@ class elasticsearch
     public static function elastic_get($_id, $type, $fields, $alternative_index = "")
     {
         global $index;
-        global $client;
+	global $client;
+
         $params = [];
 
         if (strlen($alternative_index) > 0) {
@@ -35,7 +36,7 @@ class elasticsearch
         $params["_source"] = $fields;
 
         $response = $client->get($params);
-        return $response;
+        return __htmlspecialchars($response);
     }
 
     /**
@@ -62,10 +63,10 @@ class elasticsearch
         $params["type"] = $type;
         $params["_source"] = $fields;
         $params["size"] = $size;
-        $params["body"] = $body;
+	$params["body"] = $body;
 
         $response = $client->search($params);
-        return $response;
+        return __htmlspecialchars($response);
     }
 
     /**
@@ -232,8 +233,11 @@ class get
             $get['search'][] = 'authorUSP.codpes:'.$get['codpes'].'';
         }
 
-        /* Pagination */
+	/* Pagination */
         if (isset($get['page'])) {
+		if($get['page'] < 1){
+			$get['page'] = 1;
+		}
             $page = $get['page'];
             unset($get['page']);
         } else {
@@ -247,27 +251,30 @@ class get
         $prev = ($page - 1);
 
         $i_filter = 0;
-        if (!empty($get['filter'])) {
+	if (!empty($get['filter'])) {
             foreach ($get['filter'] as $filter) {
-                $filter_array = explode(":", $filter);
-                $filter_array_term = str_replace('"', "", (string)$filter_array[1]);
-                $query["query"]["bool"]["filter"][$i_filter]["term"][(string)$filter_array[0].".keyword"] = $filter_array_term;
+		    $filter_array = explode(":", $filter);
+		if(!empty($filter_array[1])){
+			$filter_array_term = str_replace('"', "", (string)$filter_array[1]);
+                    $query["query"]["bool"]["filter"][$i_filter]["term"][(string)$filter_array[0].".keyword"] = $filter_array_term;
+		}
                 $i_filter++;
             }
-
         }
 
         if (!empty($get['notFilter'])) {
             $i_notFilter = 0;
             foreach ($get['notFilter'] as $notFilter) {
-                $notFilterArray = explode(":", $notFilter);
-                $notFilterArrayTerm = str_replace('"', "", (string)$notFilterArray[1]);
-                $query["query"]["bool"]["must_not"][$i_notFilter]["term"][(string)$notFilterArray[0].".keyword"] = $notFilterArrayTerm;
+	        $notFilterArray = explode(":", $notFilter);
+		if(!empty($notFilterArray[1])){
+		    $notFilterArrayTerm = str_replace('"', "", (string)$notFilterArray[1]);
+                    $query["query"]["bool"]["must_not"][$i_notFilter]["term"][(string)$notFilterArray[0].".keyword"] = $notFilterArrayTerm;
+		}
                 $i_notFilter++;
             }
         }
 
-        if (!empty($get['search'])) {
+	if (!empty($get['search'])) {
             foreach ($get['search'] as $getSearch) {
                 if (strpos($getSearch, 'base.keyword') !== false) {
                     $query["query"]["bool"]["filter"][$i_filter]["term"]["base.keyword"] = "Produção científica";
@@ -275,16 +282,16 @@ class get
                 } else {
                     $getSearchArray[] = $getSearch;
                 }
-            }
-            $getSearchResult = implode(" ", $getSearchArray);
-            $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
+	    }
+	    $getSearchResult = implode(" ", $getSearchArray);
+	    $query["query"]["bool"]["must"]["query_string"]["query"] = str_replace(" ", " AND ", $getSearchResult);
         } 
 
         if (!empty($get['range'])) {
             $query["query"]["bool"]["must"]["query_string"]["query"] = $get['range'][0];
         }         
         
-        if (!isset($query["query"]["bool"]["must"]["query_string"]["query"])) {
+        if (empty($query["query"]["bool"]["must"]["query_string"]["query"])) {
             $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         }
 
@@ -355,7 +362,7 @@ class Users
 
 class Facets
 {
-    public function facet($field,$size,$field_name,$sort,$sort_type,$get_search)
+    public function facet($field,$size,$field_name,$sort,$sort_type,$get_search, $classHtmlElement = "capitalize")
     {
         global $type;
         $query = $this->query;
@@ -368,86 +375,71 @@ class Facets
 
         $response = elasticsearch::elastic_search($type, null, 0, $query);
 
-        $result_count = count($response["aggregations"]["counts"]["buckets"]);
+	$result_count = count($response["aggregations"]["counts"]["buckets"]);
 
-        if (($result_count != 0) && ($result_count <= 5)) {
-
-            echo '<li class="uk-parent">';
-            echo '<a href="#" style="color:#333">'.$field_name.'</a>';
+        if (($result_count > 0) && ($result_count <= 5)) {
+	    echo '<li class="uk-parent">';
+            echo '<a href="#" style="color:#123e72;">'.$field_name.'</a>';
             echo ' <ul class="uk-nav-sub">';
             foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
                 if ($facets['key'] == "Não preenchido") {
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.'" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.mb_strtolower($facets['key'], "UTF-8").' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
                         echo '</div></li>';
                     }
                 } else {
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
                         echo '<div uk-grid>
-                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].' (~'.number_format($facets['doc_count'],0,',','.').')</a></div>
+                        <div class="uk-width-2-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.'" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="font-size: 90%">'.mb_strtolower($facets['key'], "UTF-8").' (~'.number_format($facets['doc_count'],0,',','.').')</a></div>
                         <div class="uk-width-1-3" style="color:#333">
-                        <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                        <a class="link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Remover do resultado" ><span uk-icon="icon: minus-circle; ratio: 1"></span></a>
                         ';
                         echo '</div></div></li>';                       
 
                     } else {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facets['key'].'</a></div>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.' link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;"  title="E" style="font-size: 90%">'.mb_strtolower($facets['key'], "UTF-8").'</a></div>
                             <div class="uk-width-1-3" style="color:#333">
-                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                            <a class="link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Remover do resultado"><span uk-icon="icon: minus-circle; ratio: 1"></span></a>
                             ';
                         echo '</div></div></li>';
                     }
                 }
 
-            };
+            }
             echo '</ul></li>';
 
-        } else {
+        } elseif($result_count > 5) {
             $i = 0;
             echo '<li class="uk-parent">';
-            echo '<a href="#" style="color:#333">'.$field_name.'</a>';
+            echo '<a href="#"  style="color:#123e72;">'.$field_name.'</a>';
             echo ' <ul class="uk-nav-sub">';
-            while ($i <= 5) {
+            while ($i < 5) {
                 if ($response["aggregations"]["counts"]["buckets"][$i]['key'] == "Não preenchido") {
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' (~'.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>';
+                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.'" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.mb_strtolower($response["aggregations"]["counts"]["buckets"][$i]['key'], "UTF-8").' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>';
                         echo '</div></li>';
                     }
                 } else {
-                    if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]['key'].' (~'.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.' link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="font-size: 90%">'.mb_strtolower($response["aggregations"]["counts"]["buckets"][$i]['key'], "UTF-8").' ('.number_format($response["aggregations"]["counts"]["buckets"][$i]['doc_count'],0,',','.').')</a></div>
                             <div class="uk-width-1-3" style="color:#333">
-                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
+                            <a class="link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Remover do resultado"><span uk-icon="icon: minus-circle; ratio: 1"></span></a>
                             ';
                         echo '</div></div></li>';                                                
-
-                    } else {
-                        echo '<li>';
-                        echo '<div uk-grid>
-                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $response["aggregations"]["counts"]["buckets"][$i]['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$response["aggregations"]["counts"]["buckets"][$i]["key"].'</a></div>
-                            <div class="uk-width-1-3" style="color:#333">
-                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$response["aggregations"]["counts"]["buckets"][$i]['key'].'&quot;" title="Ocultar" style="color:#0040ff;font-size: 65%">Ocultar</a>
-                            ';
-                        echo '</div></div></li>';                        
-
-                    }
-
-
                 }
 
                 $i++;
             }
 
-            echo '<a href="#'.str_replace(".", "_", $field).'" uk-toggle>mais >></a>';
+            echo '<a id="link" href="#'.str_replace(".", "_", $field).'" uk-toggle>mais >></a>';
             echo   '</ul></li>';
 
 
@@ -466,8 +458,8 @@ class Facets
                 if ($facets['key'] == "Não preenchido") {
                     if (!empty($_SESSION['oauthuserdata'])) {
                         echo '<li>';
-                        echo '<div uk-grid>
-                            <div class="uk-width-3-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.$facets['key'].' (~'.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
+			echo '<div uk-grid>
+                             <div class="uk-width-3-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.'" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]=-_exists_:'.$field.'">'.mb_strtolower($facets['key'], "UTF-8").' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>';
                         echo '</div></li>';
                     }
 
@@ -475,17 +467,17 @@ class Facets
                     if ($facets['key'] == "Não preenchido") {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.$facets['key'].'</a></div>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.' link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.mb_strtolower($facets['key'], "UTF-8").'</a></div>
                             <div class="uk-width-1-3" style="color:#333">
-                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
+                            <a class="link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;" title="Remover do resultado"><span uk-icon="icon: minus-circle; ratio: 1"></span></a>
                             ';
                         echo '</div></div></li>';
                     } else {
                         echo '<li>';
                         echo '<div uk-grid>
-                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.$facets['key'].' (~'.number_format($facets['doc_count'], 0, ',', '.').')</a></div>
+                            <div class="uk-width-2-3 uk-text-small" style="color:#333"><a class="'.$classHtmlElement.' link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facets['key']).'&quot;">'.mb_strtolower($facets['key'], "UTF-8").' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></div>
                             <div class="uk-width-1-3" style="color:#333">
-                            <a href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;">Ocultar</a>
+                            <a class="link" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&notFilter[]='.$field.':&quot;'.$facets['key'].'&quot;"><span uk-icon="icon: minus-circle; ratio: 1"></span></a>
                             ';
                         echo '</div></div></li>';
                     }
@@ -580,7 +572,7 @@ class Facets
                 echo '<li>
                     <div uk-grid>
                     <div class="uk-width-3-3 uk-text-small" style="color:#333">';
-                    echo '<a style="color:#333" href="http://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]='.$field.':['.$facets_array[0].' TO '.$facets_array[1].']">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
+                    echo '<a style="color:#333" href="//'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"].'?'.$_SERVER["QUERY_STRING"].'&search[]='.$field.':['.$facets_array[0].' TO '.$facets_array[1].']">Intervalo '.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a>';
                     echo '</div>';
 
                 echo '</div></li>';
@@ -682,9 +674,8 @@ class citation
             }
         }
 
-
         $json = json_encode($array_citation);
-        $data = json_decode($json);
+	$data = json_decode($json);
         return $data;
     }
 
@@ -695,38 +686,100 @@ class ui {
     /* Montar a barra de paginação */
     static function pagination($page, $total, $limit, $t)
     {
-
-        echo '<div class="uk-child-width-expand@s uk-grid-divider" uk-grid>';
-        echo '<div>';
+	$total_pages = ceil($total/$limit);
+	if ($total_pages >= $page) {
+		$mod_result = $total % $limit;
+		$start_limit = $page * $limit - $limit + 1;
+		if($mod_result > 0 && $page == $total_pages){
+			$end_limit = $page * $limit - $limit + $mod_result;
+		} else {
+			$end_limit = $page * $limit;
+		}
+	}
+        //echo '<div class="uk-child-width-expand@s uk-grid-divider" uk-grid>';
+        echo '<div class="uk-grid-divider uk-child-width-expand@s menu" uk-grid>';
+        /*echo '<div>';
         echo '<ul class="uk-pagination uk-flex-center">';
         if ($page == 1) {
             echo '<li><a href="#"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
         } else {
             $_GET["page"] = $page-1 ;
-            echo '<li><a href="'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
+            echo '<li><a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span> '.$t->gettext('Anterior').'</a></li>';
         }
         echo '</ul>';
-        echo '</div>';
-        echo '<div>';
-        echo '<p class="uk-text-center">'.number_format($total, 0, ',', '.') .'&nbsp;'. $t->gettext('registros').'</p>';
-        echo '</div>';
-        echo '<div>';
+	echo '</div>';*/
+	echo '<div class="uk-width-auto@m">';
         if (isset($_GET["sort"])) {
-            echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace('&sort='.$_GET["sort"].'', "", $_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
+            echo '<a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.str_replace('&sort='.$_GET["sort"].'', "", $_SERVER['QUERY_STRING']).'">'.$t->gettext('Ordenar por Data').'</a>';
         } else {
-            echo '<a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=name.keyword">'.$t->gettext('Ordenar por Título').'</a>';
+            echo '<a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'].'&sort=name.keyword">'.$t->gettext('Ordenar por Título').'</a>';
         }
-        echo '</div>';
-        echo '<div>';
+	echo '</div>';
+	
+	/* Adiciona paginador numérico com 5 páginas antes e 5 páginas depois da página atual */
+	echo '<div class="uk-width-expand@m">';
+	echo '<ul class="uk-pagination uk-flex-center">';
+	if ($total_pages > 1 && $page <= $total_pages) {
+		$back_lvl = 0;
+		if($page > 1 && $page < 4){
+			$back_lvl = $page - 1;
+		} else if ($page > $back_lvl){
+			$back_lvl = 3;
+		}
+		if($page > 1){
+			$_GET["page"] = $page-1 ;
+			echo '<li><a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'"><span class="uk-margin-small-right" uk-pagination-previous></span></a></li>';
+		}
+		if($page > 4){
+			$_GET["page"] = 1 ;
+			echo '<li><a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'">1</a></li>';
+			echo '<li class="uk-disabled"><span>...</span></li>';
+		}
+		for($i=$back_lvl; $i > 0; $i--){
+			if(($page - $i) > 0){
+				$_GET["page"] =  $page - $i;
+			} else {
+				break;
+			}
+			echo '<li><a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'">'.$t->gettext(number_format($page - $i, 0, ',', '.')).'</a></li>';
+        	}
+		echo '<li class="uk-active">'.$t->gettext($page).'</li>';
+		$next_lvl = 3;
+		if (($total_pages - $page) >= 3 ){
+			$next_lvl = 3;
+		} else if(($total_pages - $page) < 3 && ($total_pages - $page) >= 1){
+			$next_lvl = $total_pages - $page;
+		} else {
+			$next_lvl = 0;
+		}
+		for($i=1; $i <= $next_lvl; $i++){
+			$_GET["page"] =  $page + $i;
+			 echo '<li><a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'">'.$t->gettext(number_format($page + $i, 0, ',', '.')).'</a></li>';
+		}
+		if($next_lvl > 0){
+			$_GET["page"] = $page+1;
+			echo '<li><a href="//'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'"><span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
+		}
+	} else {
+		echo '<li class="uk-active">'.$t->gettext($page).'</li>';
+	}
+	echo '</ul>';
+	echo '</div>';
+	/* Fim do paginador numérico */
+	echo '<div class="uk-width-auto@m">';
+	echo '<p class="uk-text-center">'. number_format($start_limit, 0, ',', '.') . " - " . number_format($end_limit, 0, ',', '.') . ' (' . number_format($total, 0, ',', '.') .'&nbsp;'. $t->gettext('registros').')</p>';
+	echo '</div>';
+
+        /*echo '<div>';
         echo '<ul class="uk-pagination uk-flex-center">';
-        if ($total/$limit > $page) {
+	if ($total/$limit > $page) {
             $_GET["page"] = $page+1;
             echo '<li class="uk-margin-auto-left"><a href="http://'.$_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?'.http_build_query($_GET).'">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
         } else {
             echo '<li class="uk-margin-auto-left"><a href="#">'.$t->gettext('Próxima').' <span class="uk-margin-small-left" uk-pagination-next></span></a></li>';
         }
         echo '</ul>';
-        echo '</div>';
+	echo '</div>';*/
         echo '</div>';
 
     }
@@ -879,6 +932,81 @@ class authorities {
 }
 
 /**
+ * ElasticPatch
+ *
+ *@category Class
+ *@package ElasticPatch
+ */
+class ElasticPatch
+{
+    static function syncElastic($sysno)
+    {
+	global $pythonBdpiApi;
+	$url = "$pythonBdpiApi/item/$sysno/";
+	$headers = array('Content-Type: application/json');
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+	$response = curl_exec($curl);
+	curl_close($curl);
+    }
+
+    static function doEmbargo($objectID, $policyID, $releaseDate)
+    {
+        global $pythonBdpiApi;
+	$url = "$pythonBdpiApi/embargo/$objectID/";
+	$headers = array('Content-Type: application/json');
+	$data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID,"release_date"=>$releaseDate));
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+	$response = curl_exec($curl);
+	curl_close($curl);
+    }
+
+    static function accountability($objectID, $numusp, $accountabilityType)
+    {
+	global $pythonBdpiApi;
+	$url = "$pythonBdpiApi/bitstream/$objectID/$accountabilityType/";
+	$headers = array('Content-Type: application/json');
+	$data = json_encode(array("dspace_object"=>$objectID,"numusp"=>$numusp));
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+	$response = curl_exec($curl);
+	curl_close($curl);
+    }
+
+    static function uploader($objectID)
+    {
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "uploader");
+    }
+
+    static function publisher($objectID)
+    {
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "publisher");
+    }
+
+    static function deleter($objectID)
+    {
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "deleter");
+    }
+
+    static function privater($objectID)
+    {
+	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "privater");
+    }
+}
+
+/**
  * DSpaceREST
  *
  * @category Class
@@ -1006,7 +1134,6 @@ class DSpaceREST
             )
         );
         $output = curl_exec($ch);
-        //var_dump($output);
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
@@ -1059,7 +1186,6 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        var_dump($output);
         //$result = json_decode($output, true);
         return $result;
         curl_close($ch);
