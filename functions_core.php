@@ -304,24 +304,6 @@ class get
 
 }
 
-class ElasticPatch
-{
-    static function syncElastic($sysno)
-    {
-        global $pythonBdpiApi;
-        $url = "$pythonBdpiApi/item/$sysno/";
-        $headers = array('Content-Type: application/json');
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $response = curl_exec($curl);
-        curl_close($curl);
-    }
-}
-
-
 class Users
 {
     static function store_user($userdata)
