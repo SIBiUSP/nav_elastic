@@ -97,6 +97,27 @@ class elasticsearch
     }
 
     /**
+     *Executa o comando index no Elasticsearch
+     */
+    public static function elastic_index($_id, $type, $body, $alternative_index = "")
+    {
+        global $index;
+        global $client;
+        $params = [];
+        if (strlen($alternative_index) > 0)
+            $params["index"] = $alternative_index;
+        else
+            $params["index"] = $index;
+        $params["type"] = $type;
+        $params["id"] = $_id;
+        $params["body"] = $body["doc"];
+	self::elastic_clean_record($_id, $type);
+        $response = $client->index($params);
+        ElasticPatch::syncElastic($_id);
+        return $response;
+    }
+
+    /**
      * Executa o commando delete no Elasticsearch
      *
      * @param string $_id  ID do documento
@@ -121,6 +142,31 @@ class elasticsearch
 
         $response = $client->delete($params);
         return $response;
+    }
+
+    /**
+     * Limpar um registro em todas as possíveis bases
+     *
+     * @param string $_id  ID do documento
+     * @param string $type Tipo de documento no índice do Elasticsearch
+     *
+     */
+    public static function elastic_clean_record($_id, $type)
+    {
+        global $client;
+    	$indexes = array('acorde', 'bdpi', 'bdta', 'bdta_homologacao', 'ebooks', 'opac');
+        $params = [];
+        $params["type"] = $type;
+        $params["id"] = $_id;
+        $params["client"]["ignore"] = 404;
+        	foreach ($indexes as $index) 
+    		{
+		        echo("\nCleaning record id " . $_id) . ' from index '. $index;
+			$params["index"] = $index;
+	    		$client->delete($params);
+		}
+	
+        return true;
     }
 
     /**
@@ -250,6 +296,24 @@ class get
     }
 
 }
+
+class ElasticPatch
+{
+    static function syncElastic($sysno)
+    {
+        global $pythonBdpiApi;
+        $url = "$pythonBdpiApi/item/$sysno/";
+        $headers = array('Content-Type: application/json');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+}
+
 
 class Users
 {
