@@ -903,6 +903,8 @@ class ElasticPatch
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 	$response = curl_exec($curl);
 	curl_close($curl);
+	$url_atual = 'https://repositorio.usp.br/item/'.str_replace('_id=', '', $_SERVER['QUERY_STRING']);
+	header("Location:$url_atual");
     }
 
     static function accountability($objectID, $numusp, $accountabilityType)
@@ -973,8 +975,8 @@ class DSpaceREST
         $output_parsed = explode(" ", $server_output);
 
         return $output_parsed[3];
-
         curl_close($ch);
+
 
     }
 
@@ -1053,8 +1055,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function deleteBitstreamPolicyDSpace($bitstreamID, $policyID, $DSpaceCookies)
@@ -1103,6 +1105,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
+	$url_atual = 'https://repositorio.usp.br/item/'.str_replace('_id=', '', $_SERVER['QUERY_STRING']);
+	header("Location:$url_atual");
         return $result;
         curl_close($ch);
     }
@@ -1123,7 +1127,7 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         //$result = json_decode($output, true);
-        return $result;
+        //return $result;
         curl_close($ch);
     }
 
@@ -1160,8 +1164,7 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        $result = json_decode($output, true);
-        return $result;
+	$result = json_decode($output, true);
         curl_close($ch);
     }
 
@@ -1182,8 +1185,8 @@ class DSpaceREST
         );
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        curl_close($ch);
         return $result;
+        curl_close($ch);
     }
 
     static function deleteBitstreamDSpace($bitstreamId, $DSpaceCookies)
@@ -1201,8 +1204,8 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        $result = json_decode($output, true);
-        return $result;
+        //$result = json_decode($output, true);
+        //return $result;
         curl_close($ch);
     }
 
