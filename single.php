@@ -69,7 +69,7 @@ catch (exception $e) {
               $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                       <fieldset data-uk-margin>
                       <legend>Enviar um arquivo</legend>
-		      <input type="file" name="file">';
+		      <input type="file" name="file" required>';
 		      if ($uploadVersion){
                       	  $uploadForm .= '<select class="uk-select" name="version" required>
                               <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
