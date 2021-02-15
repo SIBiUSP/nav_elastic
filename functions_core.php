@@ -949,8 +949,6 @@ class ElasticPatch
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 	$response = curl_exec($curl);
 	curl_close($curl);
-	$url_atual = 'https://repositorio.usp.br/item/'.str_replace('_id=', '', $_SERVER['QUERY_STRING']);
-	header("Location:$url_atual");
     }
 
     static function accountability($objectID, $numusp, $accountabilityType)
@@ -1151,8 +1149,6 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-	$url_atual = 'https://repositorio.usp.br/item/'.str_replace('_id=', '', $_SERVER['QUERY_STRING']);
-	header("Location:$url_atual");
         return $result;
         curl_close($ch);
     }
