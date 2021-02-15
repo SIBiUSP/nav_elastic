@@ -783,9 +783,9 @@ class metrics
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, true);
-        return $data;
         // Close request to clear up some resources
         curl_close($curl);
+        return $data;
     }
 
     static function get_aminer($title)
@@ -801,9 +801,9 @@ class metrics
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, true);
-        return $data;
         // Close request to clear up some resources
         curl_close($curl);
+        return $data;
     }
 
     static function get_opencitation_doi($doi)
@@ -840,9 +840,9 @@ class metrics
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, true);
-        return $data;
         // Close request to clear up some resources
         curl_close($curl);
+        return $data;
     }
 
 }
@@ -1018,8 +1018,8 @@ class DSpaceREST
         $server_output = curl_exec($ch);
         $output_parsed = explode(" ", $server_output);
 
-        return $output_parsed[3];
         curl_close($ch);
+        return $output_parsed[3];
 
 
     }
@@ -1055,12 +1055,12 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
+        curl_close($ch);
         if (!empty($result)) {
             return $result[0]["uuid"];
         } else {
             return "";
         }
-        curl_close($ch);
     }
 
     static function getBitstreamDSpace($itemID, $DSpaceCookies = NULL)
@@ -1079,8 +1079,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function getBitstreamPolicyDSpace($bitstreamID, $DSpaceCookies = null)
@@ -1117,8 +1117,8 @@ class DSpaceREST
         );
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function addBitstreamPolicyDSpace($bitstreamID, $policyAction, $groupId, $resourceType, $rpType, $DSpaceCookies)
@@ -1149,8 +1149,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function getBitstreamRestrictedDSpace($bitstreamID, $DSpaceCookies)
@@ -1168,9 +1168,9 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        //$result = json_decode($output, true);
-        //return $result;
+        $result = json_decode($output, true);
         curl_close($ch);
+        return $result;
     }
 
     static function createItemDSpace($dataString,$collection,$DSpaceCookies)
@@ -1227,8 +1227,8 @@ class DSpaceREST
         );
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function deleteBitstreamDSpace($bitstreamId, $DSpaceCookies)
@@ -1246,9 +1246,9 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        //$result = json_decode($output, true);
-        //return $result;
+        $result = json_decode($output, true);
         curl_close($ch);
+        return $result;
     }
 
     static function buildDC($cursor,$sysno)
