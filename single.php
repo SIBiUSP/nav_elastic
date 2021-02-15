@@ -145,6 +145,12 @@ catch (exception $e) {
               $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
 	            ElasticPatch::privater($_POST["makePrivateBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
+              echo "<script type='text/javascript'>
+              $(document).ready(function(){
+                      //Reload the page
+                      window.location = window.location.href;
+              });
+              </script>";
             } else {
               $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
@@ -159,6 +165,12 @@ catch (exception $e) {
               $resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
 	            ElasticPatch::publisher($_POST["makePublicBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
+              echo "<script type='text/javascript'>
+              $(document).ready(function(){
+                     //Reload the page
+                     window.location = window.location.href;
+              });
+              </script>";
             } else {
               $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
@@ -169,6 +181,12 @@ catch (exception $e) {
               ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
 	            ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
+              echo "<script type='text/javascript'>
+              $(document).ready(function(){
+                      //Reload the page
+                      window.location = window.location.href;
+              });
+              </script>";
             } else {
               $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
             }
