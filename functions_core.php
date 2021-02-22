@@ -115,6 +115,16 @@ class elasticsearch
 	self::elastic_clean_record($_id, $type);
         $response = $client->index($params);
         ElasticPatch::syncElastic($_id);
+	$DSpaceCookies = DSpaceREST::loginREST();
+	$uuid = DSpaceREST::searchItemDSpace($_id, $DSpaceCookies);
+	DSpaceREST::logoutREST($DSpaceCookies);
+	if (!empty($uuid)){
+	    echo("Found in dspace. UUID: " . $uuid . "\n");
+            DSpaceREST::refreshMetadata($_id);
+	    //$cursor = elasticsearch::elastic_get($_id, $type, null);
+            //$metadata = DSpaceREST::buildDC($cursor, $_id);
+	    //var_dump($metadata);
+	}
         return $response;
     }
 
@@ -160,13 +170,12 @@ class elasticsearch
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["client"]["ignore"] = 404;
+	echo("Cleaning record id " . $_id . " from all indexes\n");
         	foreach ($indexes as $index) 
     		{
-		        echo("\nCleaning record id " . $_id) . ' from index '. $index;
 			$params["index"] = $index;
 	    		$client->delete($params);
 		}
-	
         return true;
     }
 
@@ -967,6 +976,20 @@ class ElasticPatch
 	curl_close($curl);
     }
 
+    static function cleanMetadata($sysno)
+    {
+        global $pythonBdpiApi;
+        $url = "$pythonBdpiApi/item/$sysno/";
+        $headers = array('Content-Type: application/json');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+
     static function uploader($objectID)
     {
 	self::accountability($objectID, $_SESSION['oauthuserdata']->{'loginUsuario'}, "uploader");
@@ -1250,6 +1273,79 @@ class DSpaceREST
         $result = json_decode($output, true);
         return $result;
         curl_close($ch);
+    }
+
+    static function getMetadata($uuid, $DSpaceCookies)
+    {
+        global $dspaceRest;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/metadata");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        if (!empty($DSpaceCookies)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $DSpaceCookies",
+                'Content-Type: application/json'
+                )
+            );
+        }
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        if (!empty($result)) {
+            return $result;
+        } else {
+            return "";
+        }
+        curl_close($ch);
+    }
+
+    static function updateMetadata($uuid, $DSpaceCookies, $metadata)
+    {
+        global $dspaceRest;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "$dspaceRest/rest/items/$uuid/metadata");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $metadata);
+        if (!empty($DSpaceCookies)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Cookie: $DSpaceCookies",
+                'Content-Type: application/json'
+                )
+            );
+        }
+        $output = curl_exec($ch);
+        $result = json_decode($output, true);
+        return $result;
+        curl_close($ch);
+    }
+
+    static function refreshMetadata($sysno)
+    {
+        $return = false;
+        $cursor = NULL;
+	try{
+            try{
+                $cursor = elasticsearch::elastic_get($sysno, 'producao', null);
+            }catch(Exception $e){
+                $cursor = elasticsearch::elastic_get($sysno, 'producao', null, $alternative_index='bdta');
+            }
+        }catch(Exception $e){
+            echo('Error while trying refresh dspace metadata, registry not found in elastic search');
+        }
+        if (empty($cursor))
+            return $return;
+        $document = DSpaceREST::buildDC($cursor, $sysno);
+        $newMetadata = json_decode($document, true)['metadata'];
+        $DSpaceCookies = DSpaceREST::loginREST();
+        $uuid = DSpaceREST::searchItemDSpace($sysno, $DSpaceCookies);
+	if ($uuid){
+            ElasticPatch::cleanMetadata($sysno);
+            DSpaceREST::updateMetadata($uuid, $DSpaceCookies, json_encode($newMetadata));
+	    $return = true;
+        }
+        DSpaceREST::logoutREST($DSpaceCookies);
+        return $return;
     }
 
     static function buildDC($cursor,$sysno)
