@@ -951,6 +951,38 @@ class ElasticPatch
 	curl_close($curl);
     }
 
+    static function doPublic($objectID, $policyID)
+    {
+        global $pythonBdpiApi;
+        $url = "$pythonBdpiApi/public/$objectID/";
+        $headers = array('Content-Type: application/json');
+        $data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+
+    static function doPrivate($objectID, $policyID)
+    {
+        global $pythonBdpiApi;
+        $url = "$pythonBdpiApi/private/$objectID/";
+        $headers = array('Content-Type: application/json');
+        $data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+
     static function accountability($objectID, $numusp, $accountabilityType)
     {
 	global $pythonBdpiApi;
