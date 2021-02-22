@@ -164,7 +164,7 @@ catch (exception $e) {
               #$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
               /* Add Public Policy */
               #$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
-              ElasticPatch::doEmbargo($_POST["makePublicBitstream"],$_POST['policyID']);
+              ElasticPatch::doPublic($_POST["makePublicBitstream"],$_POST['policyID']);
 	      ElasticPatch::publisher($_POST["makePublicBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
