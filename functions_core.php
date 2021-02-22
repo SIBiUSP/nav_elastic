@@ -792,9 +792,9 @@ class metrics
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, true);
-        return $data;
         // Close request to clear up some resources
         curl_close($curl);
+        return $data;
     }
 
     static function get_aminer($title)
@@ -810,9 +810,9 @@ class metrics
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, true);
-        return $data;
         // Close request to clear up some resources
         curl_close($curl);
+        return $data;
     }
 
     static function get_opencitation_doi($doi)
@@ -849,9 +849,9 @@ class metrics
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
         $data = json_decode($resp, true);
-        return $data;
         // Close request to clear up some resources
         curl_close($curl);
+        return $data;
     }
 
 }
@@ -960,6 +960,38 @@ class ElasticPatch
 	curl_close($curl);
     }
 
+    static function doPublic($objectID, $policyID)
+    {
+        global $pythonBdpiApi;
+        $url = "$pythonBdpiApi/public/$objectID/";
+        $headers = array('Content-Type: application/json');
+        $data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+
+    static function doPrivate($objectID, $policyID)
+    {
+        global $pythonBdpiApi;
+        $url = "$pythonBdpiApi/private/$objectID/";
+        $headers = array('Content-Type: application/json');
+        $data = json_encode(array("dspace_object"=>$objectID,"policy_id"=>$policyID));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $response = curl_exec($curl);
+        curl_close($curl);
+    }
+
     static function accountability($objectID, $numusp, $accountabilityType)
     {
 	global $pythonBdpiApi;
@@ -1041,9 +1073,9 @@ class DSpaceREST
         $server_output = curl_exec($ch);
         $output_parsed = explode(" ", $server_output);
 
+        curl_close($ch);
         return $output_parsed[3];
 
-        curl_close($ch);
 
     }
 
@@ -1078,12 +1110,12 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
+        curl_close($ch);
         if (!empty($result)) {
             return $result[0]["uuid"];
         } else {
             return "";
         }
-        curl_close($ch);
     }
 
     static function getBitstreamDSpace($itemID, $DSpaceCookies = NULL)
@@ -1102,8 +1134,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function getBitstreamPolicyDSpace($bitstreamID, $DSpaceCookies = null)
@@ -1122,8 +1154,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function deleteBitstreamPolicyDSpace($bitstreamID, $policyID, $DSpaceCookies)
@@ -1140,8 +1172,8 @@ class DSpaceREST
         );
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function addBitstreamPolicyDSpace($bitstreamID, $policyAction, $groupId, $resourceType, $rpType, $DSpaceCookies)
@@ -1172,8 +1204,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function getBitstreamRestrictedDSpace($bitstreamID, $DSpaceCookies)
@@ -1191,9 +1223,9 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        //$result = json_decode($output, true);
-        return $result;
+        $result = json_decode($output, true);
         curl_close($ch);
+        return $result;
     }
 
     static function createItemDSpace($dataString,$collection,$DSpaceCookies)
@@ -1229,8 +1261,7 @@ class DSpaceREST
             );
         }
         $output = curl_exec($ch);
-        $result = json_decode($output, true);
-        return $result;
+	$result = json_decode($output, true);
         curl_close($ch);
     }
 
@@ -1271,8 +1302,8 @@ class DSpaceREST
         }
         $output = curl_exec($ch);
         $result = json_decode($output, true);
-        return $result;
         curl_close($ch);
+        return $result;
     }
 
     static function getMetadata($uuid, $DSpaceCookies)
