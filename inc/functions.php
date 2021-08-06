@@ -78,7 +78,6 @@ function __htmlspecialchars($data) {
     return $data;
 }
 
-
 function get_staffUsers(){
 	$staffUsers = array();
 	$arquivo = fopen($_SERVER["DOCUMENT_ROOT"].'/inc/staff.txt','r');
@@ -91,6 +90,52 @@ function get_staffUsers(){
 	}
 	fclose($arquivo);
 	return $staffUsers;
+}
+
+function is_staffDeveloper(){
+	if($_SESSION['oauthuserdata']->{'loginUsuario'} == "7936577")
+		return true;
+	else
+		return false;
+}
+
+function is_staffUser(){
+	$staffUsers = get_staffUsers();
+	if(in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers))
+		return true;
+	else
+		return false;
+}
+
+function is_json($string){
+	json_decode($string);
+	return (json_last_error() == JSON_ERROR_NONE);
+}
+
+function filtro_bdta_indicado($query){
+	if (is_bdta() && is_json($query)){
+		$add_query = '
+			"query" : {
+				"term" : {
+					"USP.indicado_por_orgao" : true
+				}
+			}	
+		},';
+		return substr_replace($query, $add_query, 1, 0);
+	} elseif (is_bdta() && !is_json($query)){
+		return "(" . $query . ")" . " AND (USP.indicado_por_orgao : true)";
+	} else {
+		return $query;
+	}
+}
+
+function is_bdta(){
+	$host = strtolower($_SERVER['HTTP_HOST']);
+	$clean = ["www", "https", "http", "aguia", "usp.br", ".", "sibi"];
+	if (str_replace($clean, "", $host) == "bdta")
+		return true;
+	else
+		return false;
 }
 
 /**
@@ -118,7 +163,11 @@ class Homepage
                     }
                 }
             }
-        }';
+	}';
+
+	/*if(is_bdta() && !is_staffUser()){
+		$query = filtro_bdta_indicado($query);
+		}*/
 
         $response = elasticsearch::elastic_search($type, null, 0, $query);
 
@@ -163,7 +212,12 @@ class Homepage
                     }
                 }
             }
-        }';
+	}';
+	
+	/*if(is_bdta() && !is_staffUser()){
+		$query = filtro_bdta_indicado($query);
+		}*/	
+
         $response = elasticsearch::elastic_search($type,null,0,$query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
             echo '<li><a href="result.php?filter[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'],0,',','.').')</a></li>';
@@ -181,7 +235,11 @@ class Homepage
                     }
                 }
             }
-        }';
+	}';
+	/*if(is_bdta() && !is_staffUser()){
+		$query = filtro_bdta_indicado($query);
+	
+		}*/
         $response = elasticsearch::elastic_search($type,null,0,$query);
         $total = round($response["hits"]["total"]);
         /*if ($total >= 0 && $total < 1000000) {
@@ -215,7 +273,11 @@ class Homepage
                     "sort" : [
                         {"_uid" : {"order" : "desc"}}
                         ]
-                    }';
+		    }';
+	/*if(is_bdta() && !is_staffUser()){
+		$query = filtro_bdta_indicado($query);
+		}*/	
+
         $response = elasticsearch::elastic_search($type, null, 10, $query);
 
         foreach ($response["hits"]["hits"] as $r) {
@@ -556,7 +618,7 @@ class Results
         if (isset($sort)) {
             $query["aggs"]["counts"]["terms"]["order"][$sort] = $sort_orientation;
         }
-        $query["aggs"]["counts"]["terms"]["size"] = $size;
+	$query["aggs"]["counts"]["terms"]["size"] = $size;
 
         $params = [
             'index' => $index,
@@ -1251,7 +1313,6 @@ class Exporters
  */
 class Record
 {
-
     public function __construct($record, $showMetrics)
     {
 	$this->id = $record["_id"];
@@ -1318,6 +1379,9 @@ class Record
         if (isset($record["_source"]["unidadeUSP"])) {
             $this->unidadeUSPArray = $record["_source"]["unidadeUSP"];
         }
+        if (is_bdta() && isset($record["_source"]["USP"]["indicado_por_orgao"])) {
+            $this->indicado_por_orgao = $record["_source"]["USP"]["indicado_por_orgao"];
+        }        
         if (isset($record["_source"]["USP"]["programa_pos_sigla"])) {
             $this->programa_pos_sigla = $record["_source"]["USP"]["programa_pos_sigla"];
         }        
@@ -1361,6 +1425,8 @@ class Record
         echo '<div class="uk-width-4-5@m">';
         echo '<article class="uk-article">';
         echo '<p class="uk-text-lead uk-margin-remove title-link"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
+	if (is_bdta() && is_staffDeveloper() && !$this->completeRecord["_source"]["USP"]["indicado_por_orgao"])
+		echo '<p class="uk-alert-danger" uk-alert>Registro inconsistente com as normas da BDTA. Este registro não está visível para o público, somente para os usuários logados que pertencem ao Staff do sistema. Por favor, verifique se este trabalho foi indicado pelo órgão competente da sua unidade. Caso tenha sido indicado, por favor, veriricar e preencher o campo 590$b no Aleph, caso contrário, por favor excluir os uploads realizados neste registro. Obrigado.</p>';
 
         /* Authors */
         echo '<p class="uk-article-meta uk-margin-remove"  style="color: #666">';
@@ -1433,7 +1499,6 @@ class Record
         }
 	
         echo '<div class="" style="margin-top: 0.7em; margin-bottom: 0.7em;">';
-        
 	// Alterado para também executar caso haja link no dspace 
 	if(isset($this->completeRecord["_source"]["files"]["database"])){
 	    $dspaceFileLink = $this->completeRecord["_source"]["files"]["database"];
@@ -1442,8 +1507,6 @@ class Record
 		$this->onlineAccess($t);
 	}
 
-	
-        
         /* Implementar AJAX */
         //if ($this->showMetrics == true) {
         //    if (!empty($this->doi)) {
@@ -1471,7 +1534,11 @@ class Record
         echo '<a href="'.$url_base.'/result.php?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a>';
         echo '</p>';
         //echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%"> ('.$this->datePublished.')</h1>';
-        echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
+	echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
+	
+	if (is_bdta() && is_staffDeveloper() && !$this->completeRecord["_source"]["USP"]["indicado_por_orgao"])
+		echo '<p class="uk-alert-danger" uk-alert>Registro inconsistente com as normas da BDTA. Este registro não está visível para o público, somente para os usuários logados que pertencem ao Staff do sistema. Por favor, verifique se este trabalho foi indicado pelo órgão competente da sua unidade. Caso tenha sido indicado, por favor, veriricar e preencher o campo 590$b no Aleph, caso contrário, por favor excluir os uploads realizados neste registro. Obrigado.</p>';
+
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
         foreach ($this->authorArray as $authors) {
