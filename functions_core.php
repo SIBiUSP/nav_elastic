@@ -33,8 +33,7 @@ class elasticsearch
 
         $params["type"] = $type;
         $params["id"] = $_id;
-        $params["_source"] = $fields;
-
+	$params["_source"] = $fields;
         $response = $client->get($params);
         return __htmlspecialchars($response);
     }
@@ -174,14 +173,13 @@ class get
 
     static function analisa_get($get)
     {
-        $query = [];
+	$query = [];
 
         if (!empty($get['fields'])) {
             $query["query"]["bool"]["must"]["query_string"]["fields"] = $get['fields'];
         } else {
             $query["query"]["bool"]["must"]["query_string"]["default_field"] = "*";
         }
-
         /* codpes */
         if (!empty($get['codpes'])) {
             $get['search'][] = 'authorUSP.codpes:'.$get['codpes'].'';
@@ -251,8 +249,13 @@ class get
 
         $query["query"]["bool"]["must"]["query_string"]["default_operator"] = "AND";
         $query["query"]["bool"]["must"]["query_string"]["analyzer"] = "portuguese";
-        $query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
+	$query["query"]["bool"]["must"]["query_string"]["phrase_slop"] = 10;
 
+	
+	if (is_bdta() && !is_staffUser()){
+		$query["query"]["bool"]["must"]["query_string"]["query"] = filtro_bdta_indicado($query["query"]["bool"]["must"]["query_string"]["query"]);
+	}
+	
         return compact('page', 'query', 'limit', 'skip');
     }
 
