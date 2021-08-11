@@ -92,13 +92,6 @@ function get_staffUsers(){
 	return $staffUsers;
 }
 
-function is_staffDeveloper(){
-	if($_SESSION['oauthuserdata']->{'loginUsuario'} == "7936577")
-		return true;
-	else
-		return false;
-}
-
 function is_staffUser(){
 	$staffUsers = get_staffUsers();
 	if(in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers))
@@ -116,14 +109,25 @@ function filtro_bdta_indicado($query){
 	if (is_bdta() && is_json($query)){
 		$add_query = '
 			"query" : {
-				"term" : {
-					"USP.indicado_por_orgao" : true
-				}
-			}	
-		},';
+			    "bool" : {
+			        "must": [
+			            {
+			                "term" : {
+		                            "USP.indicado_por_orgao" : true
+		                        }
+		                    },
+		                    {
+		                        "exists" : {
+		                            "field": "files.database"
+	                                }
+		                    }
+		                ]
+		            }
+		    }
+	        },';
 		return substr_replace($query, $add_query, 1, 0);
 	} elseif (is_bdta() && !is_json($query)){
-		return "(" . $query . ")" . " AND (USP.indicado_por_orgao : true)";
+		return "(" . $query . ")" . " AND (USP.indicado_por_orgao:true AND _exists_:files.database)";
 	} else {
 		return $query;
 	}
@@ -138,6 +142,15 @@ function is_bdta(){
 		return false;
 }
 
+function msg_staff_bdta($registro){
+	if(!$registro["_source"]["USP"]["indicado_por_orgao"] && $registro["_source"]["files"]["database"]){
+		echo '<p class="uk-alert-danger" uk-alert>Verifique se esse trabalho foi aprovado e indicado pelo órgão competente da sua unidade. <br />
+			Se SIM, incluir a nota no campo 590 $b na Base 06 no Banco Dedalus. Se NÃO, excluir o objeto digital (PDF) na BDTA.</p>';
+	} elseif($registro["_source"]["USP"]["indicado_por_orgao"] && !$registro["_source"]["files"]["database"]){
+		echo '<p class="uk-alert-danger" uk-alert>Verifique se esse trabalho foi aprovado e indicado pelo órgão competente da sua unidade. <br />
+		       	Se SIM, fazer o upload do objeto digital (PDF) na BDTA. Se NÃO, excluir o campo 590 $b na Base 06 no Banco Dedalus.</p>';
+	}
+}
 /**
  * Página Inicial
  *
@@ -165,9 +178,9 @@ class Homepage
             }
 	}';
 
-	/*if(is_bdta() && !is_staffUser()){
+	if(is_bdta() && !is_staffUser()){
 		$query = filtro_bdta_indicado($query);
-		}*/
+	}
 
         $response = elasticsearch::elastic_search($type, null, 0, $query);
 
@@ -214,9 +227,9 @@ class Homepage
             }
 	}';
 	
-	/*if(is_bdta() && !is_staffUser()){
+	if(is_bdta() && !is_staffUser()){
 		$query = filtro_bdta_indicado($query);
-		}*/	
+	}	
 
         $response = elasticsearch::elastic_search($type,null,0,$query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
@@ -236,10 +249,10 @@ class Homepage
                 }
             }
 	}';
-	/*if(is_bdta() && !is_staffUser()){
+	if(is_bdta() && !is_staffUser()){
 		$query = filtro_bdta_indicado($query);
 	
-		}*/
+	}
         $response = elasticsearch::elastic_search($type,null,0,$query);
         $total = round($response["hits"]["total"]);
         /*if ($total >= 0 && $total < 1000000) {
@@ -274,9 +287,9 @@ class Homepage
                         {"_uid" : {"order" : "desc"}}
                         ]
 		    }';
-	/*if(is_bdta() && !is_staffUser()){
+	if(is_bdta() && !is_staffUser()){
 		$query = filtro_bdta_indicado($query);
-		}*/	
+	}	
 
         $response = elasticsearch::elastic_search($type, null, 10, $query);
 
@@ -1423,10 +1436,11 @@ class Record
         }
         echo '</div>';
         echo '<div class="uk-width-4-5@m">';
-        echo '<article class="uk-article">';
+	echo '<article class="uk-article">';
         echo '<p class="uk-text-lead uk-margin-remove title-link"><a class="uk-link-reset" href="item/'.$this->id.'">'.$this->name.' ('.$this->datePublished.')</a></p>';
-	if (is_bdta() && is_staffDeveloper() && !$this->completeRecord["_source"]["USP"]["indicado_por_orgao"])
-		echo '<p class="uk-alert-danger" uk-alert>Registro inconsistente com as normas da BDTA. Este registro não está visível para o público, somente para os usuários logados que pertencem ao Staff do sistema. Por favor, verifique se este trabalho foi indicado pelo órgão competente da sua unidade. Caso tenha sido indicado, por favor, veriricar e preencher o campo 590$b no Aleph, caso contrário, por favor excluir os uploads realizados neste registro. Obrigado.</p>';
+	if (is_bdta() && is_staffUser()){
+		msg_staff_bdta($this->completeRecord);
+	} 
 
         /* Authors */
         echo '<p class="uk-article-meta uk-margin-remove"  style="color: #666">';
@@ -1536,8 +1550,9 @@ class Record
         //echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%"> ('.$this->datePublished.')</h1>';
 	echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
 	
-	if (is_bdta() && is_staffDeveloper() && !$this->completeRecord["_source"]["USP"]["indicado_por_orgao"])
-		echo '<p class="uk-alert-danger" uk-alert>Registro inconsistente com as normas da BDTA. Este registro não está visível para o público, somente para os usuários logados que pertencem ao Staff do sistema. Por favor, verifique se este trabalho foi indicado pelo órgão competente da sua unidade. Caso tenha sido indicado, por favor, veriricar e preencher o campo 590$b no Aleph, caso contrário, por favor excluir os uploads realizados neste registro. Obrigado.</p>';
+	if (is_bdta() && is_staffUser()){
+		msg_staff_bdta($this->completeRecord);
+	}
 
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */

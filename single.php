@@ -25,6 +25,10 @@ try {
 	} else {
 		throw new Exception('Id do registro não definido.');
 	}
+
+	if(is_bdta() && !is_staffUser() && (!$cursor["_source"]["USP"]["indicado_por_orgao"] || !isset($cursor["_source"]["files"]["database"])) ){
+		throw new Exception('Trabalho indisponível.');	
+	}
 }
 catch (exception $e) {
 	header('HTTP/1.1 404 Not Found');
@@ -202,7 +206,6 @@ catch (exception $e) {
                   </form>';
 
           if (isset($_POST["createRecord"]) && $_POST["createRecord"]) {
-
                   $dataString = DSpaceREST::buildDC($cursor, $_GET['_id']);
                   $resultCreateItemDSpace = DSpaceREST::createItemDSpace($dataString, $dspaceCollection, $_SESSION["DSpaceCookies"]);
 
