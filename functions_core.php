@@ -112,6 +112,10 @@ class elasticsearch
         $params["type"] = $type;
         $params["id"] = $_id;
         $params["body"] = $body["doc"];
+        if ($params["index"]=="bdta" && !$params["body"]["USP"]["indicado_por_orgao"]){
+            echo("\nIgnoring registry ").$params["id"]." because it was not indicated\n";
+            return;
+        }
 	self::elastic_clean_record($_id, $type);
         $response = $client->index($params);
         ElasticPatch::syncElastic($_id);
