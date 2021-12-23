@@ -224,7 +224,7 @@ if (!empty($_GET)) {
                                     $facets->facet("USP.about_BDTD", 50, $t->gettext('Palavras-chave do autor'), null, "_term", $_GET["search"]);
                                 ?>
                             </ul>
-                            <?php if(!empty($_SESSION['oauthuserdata'])) : ?>
+                            <?php if(is_staffUser()) : ?>
                                 <h3 class="uk-panel-title uk-margin-top">Informações administrativas</h3>
                                 <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
                                 <hr>
@@ -281,7 +281,7 @@ if (!empty($_GET)) {
                             <hr>
 
                             <!-- Gerar relatório - Início -->
-                            <?php if(!empty($_SESSION['oauthuserdata'])) : ?>
+                            <?php if(is_staffUser()) : ?>
                                     <fieldset>
                                         <legend>Gerar relatório</legend>
                                         <div class="uk-form-row"><a href="<?php echo 'report.php?'.$_SERVER["QUERY_STRING"].''; ?>" class="uk-button-primary">Gerar relatório</a>
