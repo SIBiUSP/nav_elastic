@@ -53,10 +53,9 @@ catch (exception $e) {
       $actual_link = "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
       /* Search for existing record on DSpace */
-      if(isset($cursor) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
+      if(isset($cursor) && is_staffUser()){
 	      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
 	      //$itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
-		
       }
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
@@ -69,7 +68,7 @@ catch (exception $e) {
               }
               return $array;
           }
-          if (isset($_SESSION['oauthuserdata'])) {
+          if (is_staffUser()) {
               $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                       <fieldset data-uk-margin>
                       <legend>Enviar um arquivo</legend>
@@ -87,32 +86,40 @@ catch (exception $e) {
                   </fieldset>
                   </form>';
           }
-
-          if (isset($_FILES['file']) and isset($_SESSION['oauthuserdata'])) {
-            if(checkDSpaceAPI($pythonBdpiApi)){
-              $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
-	      $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
-              if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
-                  $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+          if (is_staffUser() && isset($_FILES['file'])) {
+            if($_FILES['file']['size'] < $maxFileSize && $_FILES['file']['type'] == 'application/pdf'){
+              if(checkDSpaceAPI($pythonBdpiApi)){
+                $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
+	        $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
+                if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+                    $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
+                }
+                $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
+                //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
+                $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+                ElasticPatch::uploader($resultAddBitstream["uuid"]);
+                ElasticPatch::publisher($resultAddBitstream["uuid"]);
+                ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
+                echo "<script type='text/javascript'>
+                $(document).ready(function(){
+                        //Reload the page
+                        window.location = window.location.href;
+                });
+                </script>";
+              } else {
+                $responseMessage = getAlertMessage("Não é possível realizar o upload do arquivo", "danger");
               }
-              $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
-              //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
-              $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-	      ElasticPatch::uploader($resultAddBitstream["uuid"]);
-	      ElasticPatch::publisher($resultAddBitstream["uuid"]);
-              ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
-              echo "<script type='text/javascript'>
-              $(document).ready(function(){
-                      //Reload the page
-                      window.location = window.location.href;
-              });
-              </script>";
             } else {
-              $responseMessage = getAlertMessage("não é possível realizar o upload do arquivo", "danger");
+		$msg='';
+		if($_FILES['file']['type'] != 'application/pdf')
+			$msg = 'Somente arquivos no formato PDF são autorizados para upload.<br/>';
+		if($_FILES['file']['size'] > $maxFileSize)
+			$msg .= 'Upload não realizado. O tamanho do arquivo é <strong>'. number_format($_FILES['file']['size'] /1024 /1024, 2, '.', '' ) . 'MB</strong> e o limite para upload é de <strong>' . number_format($maxFileSize /1024/1024, 2, '.', '') . 'MB</strong>.'; 
+                $responseMessage = getAlertMessage($msg , "danger", true);
             }
           }
 
-          if (isset($_POST['deleteBitstream']) and isset($_SESSION['oauthuserdata'])) {
+          if (isset($_POST['deleteBitstream']) && is_staffUser()) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
               if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
@@ -141,7 +148,7 @@ catch (exception $e) {
             }
           }
 
-          if (isset($_POST['makePrivateBitstream']) and isset($_SESSION['oauthuserdata'])) {
+          if (isset($_POST['makePrivateBitstream']) && is_staffUser()) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               /* Delete Annonymous Policy */
               //$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
@@ -162,7 +169,7 @@ catch (exception $e) {
 
           }
 
-          if (isset($_POST['makePublicBitstream']) and isset($_SESSION['oauthuserdata'])) {
+          if (isset($_POST['makePublicBitstream']) && is_staffUser()) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               /* Delete Annonymous Policy */
               #$resultDeleteBitstreamPolicyDSpace = DSpaceREST::deleteBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyID'], $_SESSION["DSpaceCookies"]);
@@ -182,7 +189,7 @@ catch (exception $e) {
             }
           }
 
-          if (isset($_POST['doEmbargoBitstream']) and isset($_SESSION['oauthuserdata'])){
+          if (isset($_POST['doEmbargoBitstream']) && is_staffUser()){
             if(checkDSpaceAPI($pythonBdpiApi)){
               ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
 	      ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
@@ -602,7 +609,8 @@ catch (exception $e) {
 				foreach($cursor["_source"]["files"]["database"] as $file){
 					$file["link"] = "";
 					$file["direct_link"] = "";
-					$file["bitstreamPolicy"] = $bitstreamPolicy[$file["bitstream_id"]];
+					if(isset($bitstreamPolicy[$file["bitstream_id"]]))
+						$file["bitstreamPolicy"] = $bitstreamPolicy[$file["bitstream_id"]];
 					if(strlen($file["file_name"])>25){
 						$file["file_name"] = substr($file["file_name"],0,25).'...';
 					}
