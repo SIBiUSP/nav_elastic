@@ -30,11 +30,15 @@ function checkDSpaceAPI($url_api){
     return false;
 }
 
-function getAlertMessage($message, $type){
-    return '<div class="uk-alert-'. $type .'" uk-alert>
-              <a class="uk-alert-close" uk-close></a>
-              <p>No momento, '. $message . '. Tente mais tarde ou contate o administrador do sistema.</p>
-            </div>';
+function getAlertMessage($message, $type, $complete=false){
+    $msg = '<div class="uk-alert-'. $type .'" uk-alert>
+              <a class="uk-alert-close" uk-close></a>';
+    if($complete)
+        $msg .= '<p>'. $message . '</p>';
+    else
+        $msg .= '<p>No momento, '. $message . '. Tente mais tarde ou contate o administrador do sistema.</p>';
+    $msg .= '</div>';
+    return $msg;
 }
 
 function input_sanitize($input, $email=false){
@@ -94,10 +98,9 @@ function get_staffUsers(){
 
 function is_staffUser(){
 	$staffUsers = get_staffUsers();
-	if(in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers))
+	if(isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers))
 		return true;
-	else
-		return false;
+	return false;
 }
 
 function is_json($string){
