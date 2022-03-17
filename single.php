@@ -629,8 +629,8 @@ catch (exception $e) {
 							$file["icon"] = "/inc/images/pdf_submetido.svg";
 							$file["iconAlt"] = $t->gettext("Versão Submetida");
 						}
-						$file["link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$file["bitstream_id"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
-						$file["direct_link"] = '<a href="http://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$file["bitstream_id"].'/'.$file["file_name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
+						$file["link"] = '<a href="https://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$file["bitstream_id"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
+						$file["direct_link"] = '<a href="https://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$file["bitstream_id"].'/'.$file["file_name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
 					}
 					else if ($file["status"] == "embargoed") {
 						if($file["file_type"] == "publishedVersion"){
