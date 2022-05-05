@@ -44,7 +44,7 @@ catch (exception $e) {
     <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 
     <!-- PlumX Script -->
-    <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
+    <script src="https://cdn.plu.mx/widget-popup.js" integrity="sha256-AXguJKYxgZY9FzwZE8U8EZxUQjcYT6iSQLLGiZTVW84=" crossorigin="anonymous"></script>
 
   <?php require 'inc/meta-header.php'; ?>
   <?php

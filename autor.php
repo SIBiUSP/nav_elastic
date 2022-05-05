@@ -85,7 +85,7 @@ if (!empty($_GET)) {
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 
         <!-- PlumX Script -->
-        <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
+        <script type='text/javascript' src="https://cdn.plu.mx/widget-popup.js" integrity="sha256-AXguJKYxgZY9FzwZE8U8EZxUQjcYT6iSQLLGiZTVW84=" crossorigin="anonymous"></script>
 
 
     </head>
