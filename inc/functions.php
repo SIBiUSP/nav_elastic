@@ -328,7 +328,7 @@ class Homepage
             if (!empty($r["_source"]['author'])) {
                 foreach ($r["_source"]['author'] as $autores) {
 		    if (!empty($autores["person"]["orcid"])) {
-                        $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                        $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="inc/images/orcid_16x16.png"></a>';
                     } else {
                         $orcidLink = '';
                     }
@@ -1464,7 +1464,7 @@ class Record
         echo '<p class="uk-article-meta uk-margin-remove"  style="color: #666">';
         foreach ($this->authorArray as $authors) {
 	    if (!empty($authors["person"]["orcid"])) {
-                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="inc/images/orcid_16x16.png"></a>';
             } else {
                 $orcidLink = '';
             }
