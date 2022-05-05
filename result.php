@@ -88,13 +88,6 @@ if($total_pages > 0 && $page > $total_pages){
         <script type="text/javascript" src=inc/uvcharts/uvcharts.full.min.js></script>
     <?php endif; ?>
 
-    <!-- Altmetric Script -->
-    <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-
-    <!-- PlumX Script -->
-    <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
-
-
 </head>
 <body style="min-height: 45em; position: relative;">
     <?php require 'inc/navbar.php'; ?>
