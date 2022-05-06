@@ -69,7 +69,6 @@
                                     <p>Aqui você pode:</p>
                                     <ul>
                                     <li><a href="<?php echo $url_base; ?>/result.php?filter[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;">Pesquisar por sua produção</a></li>
-                                    <li><a href="<?php echo $url_base; ?>/dashboardQuery.php?filter[]=&quot;authorUSP.codpes.keyword%3A<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;">Dashboard de sua produção</a></li>
                                     <li><a href="<?php echo $url_base; ?>/tools/export.php?filter[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=ris">Exportar sua produçao em formato RIS</a></li>
                                     <li><a href="<?php echo $url_base; ?>/tools/export.php?filter[]=authorUSP.codpes%3A&quot;<?php echo($_SESSION['oauthuserdata']->{'loginUsuario'}); ?>&quot;&format=bibtex">Exportar sua produçao em formato Bibtex</a></li>
                                     <?php
@@ -77,7 +76,6 @@
                                         echo '<li><a href="'.$url_base.'/admin/index.php">Administração</a></li>';
                                     }
                                     ?>
-                                    <li><a href="<?php echo $url_base; ?>/dashboard.php">Acessar a Dashboard</a></li>
                                     <li><a href="<?php echo $url_base; ?>/aut/logout.php">Logout</a></li>
                                     </ul>
                                 </div>
