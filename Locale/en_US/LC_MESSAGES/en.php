@@ -224,6 +224,10 @@ Plural-Forms: nplurals=2; plural=(n != 1);
       array (
         0 => 'Publisher',
       ),
+      'Função do autor' => 
+      array (
+        0 => 'Author occupation',
+      ),
       'Grau' =>
        array (
          0 => 'Degree',
