@@ -103,6 +103,13 @@ function is_staffUser(){
 	return false;
 }
 
+function is_staffDeveloper(){
+	$staffUsers = get_staffUsers();
+	if(isset($_SESSION['oauthuserdata']) && $_SESSION['oauthuserdata']->{'loginUsuario'} == "7936577")
+		return true;
+	return false;
+}
+
 function is_json($string){
 	json_decode($string);
 	return (json_last_error() == JSON_ERROR_NONE);
@@ -321,7 +328,7 @@ class Homepage
             if (!empty($r["_source"]['author'])) {
                 foreach ($r["_source"]['author'] as $autores) {
 		    if (!empty($autores["person"]["orcid"])) {
-                        $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                        $orcidLink = ' <a href="'.$autores["person"]["orcid"].'"><img src="inc/images/orcid_16x16.png"></a>';
                     } else {
                         $orcidLink = '';
                     }
@@ -751,7 +758,7 @@ class USP
     {
         echo '<h4>Vocabulário Controlado do SIBiUSP</h4>';
 	//$xml = simplexml_load_file('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
-	
+/*	
         $externalxml = file_get_contents('http://vocab.sibi.usp.br/pt-br/services.php?task=fetch&arg='.$termo.'');
         $xml = simplexml_load_string($externalxml);
 
@@ -777,6 +784,7 @@ class USP
         } else {
             $termo_naocorrigido[] = $termo;
         }
+*/
     }
 
     static function aGlue($invalcheck)
@@ -1335,7 +1343,10 @@ class Record
 	$this->name = $record["_source"]["name"];
         $this->base = $record["_source"]["base"][0];
         $this->type = ucfirst(strtolower($record["_source"]["type"]));
-        $this->inSupportOf = $record["_source"]["inSupportOf"];
+	if(isset($record["_source"]["inSupportOf"])){
+       	    $this->inSupportOf = $record["_source"]["inSupportOf"];
+		
+	}
         if (isset($record["_source"]["datePublished"])) {
             $this->datePublished = $record["_source"]["datePublished"];
         }
@@ -1432,9 +1443,11 @@ class Record
         echo '<div class="uk-grid-divider uk-padding-small" uk-grid>';
         echo '<div class="uk-width-1-5@m">';
 
-        echo '<p><a href="https://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=inSupportOf:&quot;'.$this->inSupportOf.'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->inSupportOf.'</a></p>';
-        //echo '<p><a href="https://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
-
+	if($this->base == "Produção científica"){
+	        echo '<p><a href="https://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
+        } else {
+		echo '<p><a href="https://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=inSupportOf:&quot;'.$this->inSupportOf.'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->inSupportOf.'</a></p>';
+	}
         if (!empty($this->isbn)) {
             $cover_link = 'https://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
             echo  '<p><img src="'.$cover_link.'"></p>';
@@ -1451,7 +1464,7 @@ class Record
         echo '<p class="uk-article-meta uk-margin-remove"  style="color: #666">';
         foreach ($this->authorArray as $authors) {
 	    if (!empty($authors["person"]["orcid"])) {
-                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png"></a>';
+                $orcidLink = ' <a href="'.$authors["person"]["orcid"].'"><img src="inc/images/orcid_16x16.png"></a>';
             } else {
                 $orcidLink = '';
             }

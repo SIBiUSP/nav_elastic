@@ -17,7 +17,7 @@ if (isset($_GET["format"])) {
 
     if ($_GET["format"] == "table") {
 
-        $file = "export_bdpi.tsv";
+        $file = "export_repositorio.tsv";
         header('Content-type: text/tab-separated-values; charset=utf-8');
         header("Content-Disposition: attachment; filename=$file");
 
@@ -213,9 +213,8 @@ if (isset($_GET["format"])) {
                 }
 
                 $data_citation = citation::citation_query($r["_source"]);
-                $fields[] = $citeproc_abnt->render($data_citation, $mode);
-
-                $fields[] = $citeproc_apa->render($data_citation, $mode);
+                $fields[] = strip_tags($citeproc_abnt->render($data_citation, $mode));
+                $fields[] = strip_tags($citeproc_apa->render($data_citation, $mode));
 
                 if (!empty($r["_source"]["USP"]["qualis"]["qualis"]["2016"])) {
                     foreach ($r["_source"]["USP"]["qualis"]["qualis"]["2016"] as $qualis) {
@@ -413,9 +412,9 @@ if (isset($_GET["format"])) {
                     }
 
                     $data_citation = citation::citation_query($r["_source"]);
-                    $fields[] = $citeproc_abnt->render($data_citation, $mode);
+                    $fields[] = strip_tags($citeproc_abnt->render($data_citation, $mode));
 
-                    $fields[] = $citeproc_apa->render($data_citation, $mode);
+                    $fields[] = strip_tags($citeproc_apa->render($data_citation, $mode));
 
                     if (!empty($r["_source"]["USP"]["qualis"]["qualis"]["2016"])) {
                         foreach ($r["_source"]["USP"]["qualis"]["qualis"]["2016"] as $qualis) {

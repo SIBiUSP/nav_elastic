@@ -5,6 +5,7 @@ inc/analyticstracking.php
 inc/functions.php.orig
 inc/staff.php
 inc/staff.txt
+inc/staffDevelopers.txt
 admin/staffAdmins.php
 /robots.txt
 composer.lock
@@ -12,6 +13,7 @@ composer.phar
 vendor/
 upload/
 sitemaps/
+sh/
 BingSiteAuth.xml
 google23ba839ff7c5e6f4.html
 cookies.txt

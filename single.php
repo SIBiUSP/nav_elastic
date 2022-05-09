@@ -44,7 +44,7 @@ catch (exception $e) {
     <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 
     <!-- PlumX Script -->
-    <script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-popup.js"></script>
+    <script src="https://cdn.plu.mx/widget-popup.js" integrity="sha256-AXguJKYxgZY9FzwZE8U8EZxUQjcYT6iSQLLGiZTVW84=" crossorigin="anonymous"></script>
 
   <?php require 'inc/meta-header.php'; ?>
   <?php
@@ -57,6 +57,7 @@ catch (exception $e) {
 	      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
 	      //$itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
       }
+
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
           function removeElementWithValue($array, $key, $value)
@@ -69,12 +70,13 @@ catch (exception $e) {
               return $array;
           }
           if (is_staffUser()) {
-              $uploadForm = '<form class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+              $uploadForm = '<form id="upload-form" class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                       <fieldset data-uk-margin>
                       <legend>Enviar um arquivo</legend>
-		      <input type="file" name="file" required>';
+		      <input type="file" id="rep-file" onchange="enableUploadButton();" name="file" required>';
+
 		      if ($uploadVersion){
-                      	  $uploadForm .= '<select class="uk-select" name="version" required>
+                      	  $uploadForm .= '<select class="uk-select" name="version" id="file-version" onchange="enableUploadButton();" required>
                               <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
                               <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
                               <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
@@ -82,19 +84,22 @@ catch (exception $e) {
 		      } else {
 			 $uploadForm .= '<input type="hidden" name="version" value="publishedVersion"><br/>';
 		      }
-		$uploadForm .= '<button class="uk-button uk-button-primary" name="btn_submit">Upload</button>
-                  </fieldset>
-                  </form>';
+		
+		      $uploadForm .= '<button class="uk-button uk-button-primary" type="submit" onclick="loadAction(\'upload\');" name="btn_submit" id="upload">Upload</button>
+	                  </fieldset>
+        	          </form>';
           }
           if (is_staffUser() && isset($_FILES['file'])) {
             if($_FILES['file']['size'] < $maxFileSize && $_FILES['file']['type'] == 'application/pdf'){
               if(checkDSpaceAPI($pythonBdpiApi)){
                 $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
 	        $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
-                if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+                if (isset($cursor["_source"]["USP"]["fullTextFiles"]) && !empty($cursor["_source"]["USP"]["fullTextFiles"])) {
                     $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
                 }
-                $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
+		if(!empty($resultAddBitstream)){
+	                $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
+		}
                 //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
                 $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                 ElasticPatch::uploader($resultAddBitstream["uuid"]);
@@ -122,12 +127,11 @@ catch (exception $e) {
           if (isset($_POST['deleteBitstream']) && is_staffUser()) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
-              if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
+              if (isset($cursor["_source"]["USP"]["fullTextFiles"]) && !empty($cursor["_source"]["USP"]["fullTextFiles"])) {
                   $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
                   $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
                   //$body["doc"]["USP"]["fullTextFiles"] = [];
                   $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-                  print_r($resultUpdateFilesElastic);
               }
 	      ElasticPatch::deleter($_POST["deleteBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
@@ -209,7 +213,7 @@ catch (exception $e) {
         if(checkDSpaceAPI($pythonBdpiApi)){
           $createForm  = '<form action="' . $actual_link . '" method="post">
                   <input type="hidden" name="createRecord" value="true" />
-                  <button class="uk-button uk-button-danger" name="btn_submit">Criar registro no DSpace</button>
+                  <button class="uk-button uk-button-danger" name="btn_submit" id="dspace-record" onclick="loadAction(\'dspace-record\');">Criar registro no DSpace</button>
                   </form>';
 
           if (isset($_POST["createRecord"]) && $_POST["createRecord"]) {
@@ -733,7 +737,7 @@ catch (exception $e) {
                                         echo '    </div>';
                                         echo '    <div class="uk-modal-footer uk-text-right">';
                                         echo '      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>';
-                                        echo '<button class="uk-button uk-button-danger" name="btn_submit">'. $botao["acao"] .'</button>';
+                                        echo '<button onclick="loadAction(\'modal-action\');" class="uk-button uk-button-danger" name="btn_submit" id="modal-action">'. $botao["acao"] .'</button>';
                                         echo '    </div>';
                                         echo '    </form>';
                                         echo '  </div>';
@@ -864,10 +868,54 @@ catch (exception $e) {
 
                 </div>
             </div>
+		
+	<?php if(is_staffUser()): ?>
+		<div id="modal-center-action" class="uk-flex-top" uk-modal>
+			<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-padding-large">
+				<div class="uk-margin"><p class="uk-margin">Aguarde enquanto estamos processando a sua requisição...</p></div>
+			</div>
+			<div class="uk-position-center uk-margin uk-padding"><div uk-spinner></div></div>
+		</div>
+	<?php endif; ?>
             <hr class="uk-grid-divider">
             
         </div>
         <div style="position: relative; max-width: initial;">
+	<?php if(is_staffUser()): ?>
+		<script type="text/javascript">
+			var uploadButton = document.getElementById('upload');
+			uploadButton.disabled=true;
+			uploadButton.setAttribute("disabled",true);
+			uploadButton.classList.remove("uk-button-primary");
+			function enableUploadButton(){
+				var uploadButton = document.getElementById('upload');
+				var repFileContent = document.getElementById('rep-file').value;
+				var fileVersion = document.getElementById('file-version').value;
+				if(repFileContent !== null && repFileContent !== '' && fileVersion !== null && fileVersion !== ''){
+					uploadButton.disabled = false;
+					uploadButton.removeAttribute("disabled");
+					uploadButton.classList.add("uk-button-primary");
+				}
+				else{
+					uploadButton.disabled = true;
+					uploadButton.setAttribute("disabled",true);
+					uploadButton.classList.remove("uk-button-primary");
+				}
+			};
+			function loadAction(id){
+				UIkit.modal('#modal-center-action', {
+					escClose: false,
+					bgClose: false
+				}).show();
+			};
+			document.querySelector("input").addEventListener("keydown",function(e){
+				var charCode = e.charCode || e.keyCode || e.which;
+				if (charCode == 27){
+					return false;
+				}
+			});
+		</script>
+	<?php endif; ?>
           <?php require 'inc/footer.php'; ?>
       </div>
         <?php require 'inc/offcanvas.php'; ?>
