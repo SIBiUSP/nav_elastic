@@ -187,7 +187,6 @@ if($total_pages > 0 && $page > $total_pages){
                                 if (!isset($_GET["search"])) {
                                     $_GET["search"] = null;
                                 }
-				
 				if($sourcesFacet)
 					$facets->facet("base", 10, $t->gettext('Bases'), null, "_term", $_GET["search"]);
 				if($documentTypesFacet)
@@ -202,6 +201,8 @@ if($total_pages > 0 && $page > $total_pages){
 					$facets->facet("author.person.name", 150, $t->gettext('Autores'), null, "_term", $_GET["search"]);
 				if($authorsUSPFacet)
 					$facets->facet("authorUSP.name", 150, $t->gettext('Autores USP'), null, "_term", $_GET["search"]);
+				if($authorOccupationFacet && is_staffUser())
+					$facets->facet("author.person.potentialAction", 100, $t->gettext('Função do autor'), null, "_term", $_GET["search"]);
 				if($datePublishedFacet)
 					$facets->facet("datePublished", 120, $t->gettext('Ano de publicação'), "desc", "_term", $_GET["search"]);
 				if($subjectsFacet)
@@ -260,7 +261,7 @@ if($total_pages > 0 && $page > $total_pages){
 				if($departmentPostgraduateFacet)
 					$facets->facet("USP.programa_pos_nome", 100, "Departamento/Programa de Pós Graduação", null, "_term", $_GET["search"]);
 				if($keywordsFacet)
-					$facets->facet("USP.about_BDTD", 50, $t->gettext('Palavras-chave do autor'), null, "_term", $_GET["search"]);
+					$facets->facet("files.", 50, $t->gettext('Palavras-chave do autor'), null, "_term", $_GET["search"]);
 
                             ?>
                         </ul>
@@ -277,8 +278,6 @@ if($total_pages > 0 && $page > $total_pages){
 					$facets->facet("USP.fatorimpacto", 100, "Fator de impacto - 590m", null, "_term", $_GET["search"]);
 				if($workRegimeFacet)
 					$facets->facet("authorUSP.regime_de_trabalho", 50, $t->gettext('Regime de trabalho'), null, "_term", $_GET["search"]);
-				if($occupationFacet)
-					$facets->facet("authorUSP.funcao", 50, $t->gettext('Função'), null, "_term", $_GET["search"]);
 				if($changeDateFacet)
 					$facets->facet("USP.CAT.date", 100, "Data de registro e alterações", "desc", "_term", $_GET["search"]);
 				if($cataloguerFacet)
@@ -296,7 +295,8 @@ if($total_pages > 0 && $page > $total_pages){
 				if($completeTextDescriptionFacet)
 					$facets->facet("USP.fullTextFiles.description", 10, $t->gettext('Texto completo - Descrição'), null, "_term", $_GET["search"]);
 				if($nonStandardExternalAffiliationFacet)
-					$facets->rebuild_facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_term", $_GET["search"]);
+					$facets->rebuild_facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_exists", $_GET["search"]);
+
 
                             ?>
                             </ul>
