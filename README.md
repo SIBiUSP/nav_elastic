@@ -74,3 +74,6 @@ OAI-PMH (Package Metadata Harvesting) 2.0 Data Provider - https://github.com/dan
 ## Find new versions in composer
 
 php composer.phar update --dry-run
+
+# functions_core
+Core functions for search software
