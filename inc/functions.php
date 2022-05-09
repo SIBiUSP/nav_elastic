@@ -17,7 +17,7 @@ if (file_exists('functions_core/functions_core.php')) {
 } else {
     include_once '../../functions_core/functions_core.php';
 }
-
+include_once(__DIR__.'./unidadesUSP.php');
 function checkDSpaceAPI($url_api){
     $curl = curl_init($url_api);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -521,7 +521,7 @@ class PageSingle
         $links_upload = "";
         if (!empty($files_upload)) {
             foreach ($files_upload as $file) {
-                echo '<meta name="citation_pdf_url" content="http://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
+                echo '<meta name="citation_pdf_url" content="https://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
             ';
             }
         }
@@ -1335,6 +1335,7 @@ class Record
 	$this->name = $record["_source"]["name"];
         $this->base = $record["_source"]["base"][0];
         $this->type = ucfirst(strtolower($record["_source"]["type"]));
+        $this->inSupportOf = $record["_source"]["inSupportOf"];
         if (isset($record["_source"]["datePublished"])) {
             $this->datePublished = $record["_source"]["datePublished"];
         }
@@ -1431,7 +1432,8 @@ class Record
         echo '<div class="uk-grid-divider uk-padding-small" uk-grid>';
         echo '<div class="uk-width-1-5@m">';
 
-        echo '<p><a href="http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
+        echo '<p><a href="https://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=inSupportOf:&quot;'.$this->inSupportOf.'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->inSupportOf.'</a></p>';
+        //echo '<p><a href="https://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'].'?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;'.(empty($_SERVER['QUERY_STRING'])?'':'&'.$_SERVER['QUERY_STRING']).'">'.$this->type.'</a></p>';
 
         if (!empty($this->isbn)) {
             $cover_link = 'https://covers.openlibrary.org/b/isbn/'.$this->isbn.'-M.jpg';
@@ -1921,8 +1923,8 @@ class Record
     public function citation($t, $record)
     {
         /* Citeproc-PHP*/
-        include_once 'inc/citeproc-php/CiteProc.php';
-        $csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
+	include_once 'inc/citeproc-php/CiteProc.php';
+	$csl_abnt = file_get_contents('inc/citeproc-php/style/abnt-novo.csl');
         $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
         $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
         $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
