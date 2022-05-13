@@ -82,7 +82,7 @@ catch (exception $e) {
                               <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
 			  </select>';
 		      } else {
-			 $uploadForm .= '<input type="hidden" name="version" value="publishedVersion"><br/>';
+			 $uploadForm .= '<input type="hidden" name="version" id="file-version" value="publishedVersion"><br/>';
 		      }
 		
 		      $uploadForm .= '<button class="uk-button uk-button-primary" type="submit" onclick="loadAction(\'upload\');" name="btn_submit" id="upload">Upload</button>
