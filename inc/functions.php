@@ -523,13 +523,11 @@ class PageSingle
 
             }
         }
-
-        $files_upload = glob('upload/'.$_GET['_id'].'/*.{pdf,pptx}', GLOB_BRACE);
-        $links_upload = "";
-        if (!empty($files_upload)) {
-            foreach ($files_upload as $file) {
-                echo '<meta name="citation_pdf_url" content="https://'.$_SERVER['SERVER_NAME'].'/'.$file.'">
-            ';
+	
+        $files = $record['files']['database']; 
+        if (!empty($files)) {
+            foreach ($files as $file) {
+                echo '    <meta name="citation_pdf_url" content="https://'.$_SERVER['SERVER_NAME'].'/bitstreams/'.$file['bitstream_id'].'">';
             }
         }
 
