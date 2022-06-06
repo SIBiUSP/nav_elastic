@@ -167,7 +167,7 @@
   <macro name="access">
     <choose>
       <if type="article-magazine article-journal" match="any">
-        <text variable="URL" prefix=". Disponível em: &lt;" suffix="&gt;"/>
+        <text variable="URL" prefix=". Disponível em: " suffix=""/>
         <date variable="accessed" prefix=". Acesso em: ">
           <date-part name="day" suffix=" "/>
           <date-part name="month" form="short" suffix=" " text-case="lowercase"/>
@@ -175,7 +175,7 @@
         </date>
       </if>
       <else>
-        <text variable="URL" prefix="Disponível em: &lt;" suffix="&gt;"/>
+        <text variable="URL" prefix="Disponível em: " suffix=""/>
         <date variable="accessed" prefix=". Acesso em: ">
           <date-part name="day" suffix=" "/>
           <date-part name="month" form="short" suffix=" " text-case="lowercase"/>
