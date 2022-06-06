@@ -7,7 +7,7 @@ require 'inc/config.php';
 
 /* Citeproc-PHP*/
 require 'inc/citeproc-php/CiteProc.php';
-$csl_abnt = file_get_contents('inc/citeproc-php/style/abnt.csl');
+$csl_abnt = file_get_contents('inc/citeproc-php/style/abnt-novo.csl');
 $csl_apa = file_get_contents('inc/citeproc-php/style/apa.csl');
 $csl_nlm = file_get_contents('inc/citeproc-php/style/nlm.csl');
 $csl_vancouver = file_get_contents('inc/citeproc-php/style/vancouver.csl');
