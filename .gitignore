@@ -12,9 +12,10 @@ composer.lock
 composer.phar
 vendor/
 upload/
-sitemaps/
+sitemap*
 sh/
 BingSiteAuth.xml
 google23ba839ff7c5e6f4.html
 cookies.txt
 nohup.out
+
