@@ -1651,6 +1651,8 @@ class csl_mapper {
   function map_field($field) {
     if (!isset($this->field_map)) {
       $this->field_map = array('title' => 'title',
+                                'title-short' => 'title-short',
+                                'subtitle' => 'subtitle',
                                 'container-title' => 'container-title',
                                 'collection-title' => 'collection-title',
                                 'original-title' => 'original-title',

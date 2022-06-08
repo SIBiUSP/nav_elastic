@@ -189,8 +189,12 @@
       <if type="chapter bill paper-conference" match="any">
         <text variable="title"/>
       </if>
-      <else-if type="book thesis" match="any">
+      <else-if type="book" match="any">
         <text variable="title" font-weight="bold"/>
+      </else-if>
+      <else-if type="thesis" match="any">
+        <text variable="title-short" form="short" suffix=": " font-weight="bold"/>
+        <text variable="subtitle" font-weight="normal"/>
       </else-if>
       <else-if type="entry-dictionary entry-encyclopedia" match="any">
         <text variable="title" text-case="uppercase" font-weight="bold"/>
