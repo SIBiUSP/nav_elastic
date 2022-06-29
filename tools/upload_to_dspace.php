@@ -62,11 +62,6 @@ if ($handle = opendir('/var/www/html/bdpi/upload')) {
         //         print_r($userBitstream);
         //         echo "<br/><br/>";
         //         $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemIDCreated, $_FILES, $userBitstream, $DSpaceCookies);
-        //         if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
-        //             $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
-        //         }
-        //         $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
-        //         //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
         //         $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
         //         echo "<script type='text/javascript'>
         //         $(document).ready(function(){

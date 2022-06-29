@@ -1849,10 +1849,7 @@ class Record
 	    }
 	}
 
-	    //$fileLink = $this->completeRecord["_source"]["USP"]["fullTextFiles"][0]["link"];
         if (!empty($firstFile["file_link"])){
-        //$firstFile = substr($fileLink, 5);
-            //echo '<a id="button" class="uk-button uk-button-default uk-button-small" href="'.$fileLink.'" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;">PDF</a>';
             if($firstFile["status"] == "public" ){
                 echo '<a id="button" href="'. $firstFile["file_link"] . '" target="_blank" rel="noopener noreferrer" style="margin-right: 1em;" uk-tooltip="'. $firstFile["iconAlt"] .'"><img class="result-icons" src="../'. $firstFile["icon"] . '" alt="'. $firstFile["iconAlt"] .'"></a>';
             } else {

@@ -283,10 +283,6 @@ if($total_pages > 0 && $page > $total_pages){
 					$facets->facet("doi", 100, "DOI", null, "_term", $_GET["search"]);
 				if($promotionAgencyCrossRefFacet)
 					$facets->facet("USP.crossref.message.funder.name", 50, $t->gettext('Agência de fomento obtida na CrossRef'), null, "_term", $_GET["search"]);
-				if($completeTextFacet)
-					$facets->facet("USP.fullTextFiles.name", 10, $t->gettext('Texto completo'), null, "_term", $_GET["search"]);
-				if($completeTextDescriptionFacet)
-					$facets->facet("USP.fullTextFiles.description", 10, $t->gettext('Texto completo - Descrição'), null, "_term", $_GET["search"]);
 				if($nonStandardExternalAffiliationFacet)
 					$facets->rebuild_facet("author.person.affiliation.name_not_found", 50, $t->gettext('Afiliação dos autores externos não normalizada'), null, "_exists", $_GET["search"]);
 

@@ -57,7 +57,7 @@ catch (exception $e) {
 	      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
 	      //$itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
       }
-
+	
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
           function removeElementWithValue($array, $key, $value)
@@ -94,14 +94,7 @@ catch (exception $e) {
               if(checkDSpaceAPI($pythonBdpiApi)){
                 $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
 	        $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
-                if (isset($cursor["_source"]["USP"]["fullTextFiles"]) && !empty($cursor["_source"]["USP"]["fullTextFiles"])) {
-                    $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
-                }
-		if(!empty($resultAddBitstream)){
-	                $body["doc"]["USP"]["fullTextFiles"][] =  $resultAddBitstream;
-		}
-                //$body["doc"]["USP"]["fullTextFiles"]["count"] = count($body["doc"]["USP"]["fullTextFiles"]);
-                $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
+                //$resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
                 ElasticPatch::uploader($resultAddBitstream["uuid"]);
                 ElasticPatch::publisher($resultAddBitstream["uuid"]);
                 ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
@@ -127,12 +120,6 @@ catch (exception $e) {
           if (isset($_POST['deleteBitstream']) && is_staffUser()) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
-              if (isset($cursor["_source"]["USP"]["fullTextFiles"]) && !empty($cursor["_source"]["USP"]["fullTextFiles"])) {
-                  $body["doc"]["USP"]["fullTextFiles"] = $cursor["_source"]["USP"]["fullTextFiles"];
-                  $body["doc"]["USP"]["fullTextFiles"] = removeElementWithValue($body["doc"]["USP"]["fullTextFiles"], "uuid", $_POST['deleteBitstream']);
-                  //$body["doc"]["USP"]["fullTextFiles"] = [];
-                  $resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
-              }
 	      ElasticPatch::deleter($_POST["deleteBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               
