@@ -16,10 +16,10 @@ require 'oai2server.php';
  *
  */
 $identifyResponse = array();
-$identifyResponse["repositoryName"] = 'Biblioteca Digital da Produção Intelectual da USP';
+$identifyResponse["repositoryName"] = 'Repositório da Produção USP';
 $identifyResponse["baseURL"] = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].'';
 $identifyResponse["protocolVersion"] = '2.0';
-$identifyResponse['adminEmail'] = 'tiago.murakami@dt.sibi.usp.br';
+$identifyResponse['adminEmail'] = 'atendimento@aguia.usp.br';
 $identifyResponse["earliestDatestamp"] = '2016-01-01T12:00:00Z';
 $identifyResponse["deletedRecord"] = 'no'; // How your repository handles deletions
                                            // no:             The repository does not maintain status about deletions.
@@ -82,7 +82,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                } elseif ($set == "TD") {
                    $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Teses e dissertações";
                } elseif ($set == "OA") {
-                   $query["query"]["bool"]["should"]["exists"]["field"] = "USP.fullTextFiles.name";
+                   $query["query"]["bool"]["should"]["exists"]["field"] = "files.database.file_name";
                    $query["query"]["bool"]["should"]["exists"]["field"] = "USP.unpaywall.best_oa_location.url_for_pdf";
                } else {
                    $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
@@ -107,7 +107,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "120s";
+            $params["scroll"] = "10m";
             $params["body"] = $query;
 
             if (empty($scroll_id_token)) {
@@ -116,8 +116,9 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
 
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id_token,
-                    "scroll" => "120s"
+                    "scroll" => "10m",
+                    "scroll_id" => $scroll_id_token
+                    #"scroll" => "120s"
                     ]
                 );
             }
@@ -153,35 +154,25 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                   }
                 }
 
-                $i_bitstream = 0;
-                if (!empty($hit['_source']['USP']['fullTextFiles'])) {                  
-                  foreach ($hit['_source']['USP']['fullTextFiles'] as $bitstream) {
-                      if (count($bitstream) > 10) {
-                          $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstream["uuid"] . "/" . $bitstream["name"];
-                          $i_bitstream++;
-                      } else {
-                          foreach ($bitstream as $bitstreans) {
-                              $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstreans["uuid"] . "/" . $bitstreans["name"];
-                              $i_bitstream++;
-                          }
-                      }
+                if (!empty($hit['_source']['files']['database'])) {
+                  foreach ($hit['_source']['files']['database'] as $bitstream) {
+                      $fields['dc:relation'] = 'https:' . $url_base . '/directbitstream/' . $bitstream['bitstream_id'] . '/';
                   }
                 }
 
                 if (!empty($hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"])) {
-                    $fields['dc:bitstream_'.$i_bitstream] = $hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"];
-                    $i_bitstream++;
+                    $fields['dc:relation'] = $hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"];
                 }                
 
                 if (!empty($hit['_source']['author'])) {
                     foreach ($hit['_source']['author'] as $k => $authors) {
-                        $fields['dc:creator_'.$k] = $authors["person"]["name"];
+                        $fields['dc:creator'] = $authors["person"]["name"];
                     }
                 }
 
                 if (!empty($hit['_source']['about'])) {
                     foreach ($hit['_source']['about'] as $k => $subject) {
-                        $fields['dc:subject_'.$k] = $subject;
+                        $fields['dc:subject'] = $subject;
                     }
                 }
 
@@ -247,7 +238,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             //}
 
             foreach ($record['_source']['about'] as $k => $subject) {
-                $fields['dc:subject_'.$k] = $subject;
+                $fields['dc:subject'] = $subject;
             }
 
             if ($record["found"] === false) {
