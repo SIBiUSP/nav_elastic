@@ -1,8 +1,7 @@
 <?php
-
 require '../../inc/config.php';
 require 'oai2server.php';
-
+require 'functions_oai.php';
 /**
  * Identifier settings. It needs to have proper values to reflect the settings of the data provider.
  * Is MUST be declared in this order
@@ -16,10 +15,10 @@ require 'oai2server.php';
  *
  */
 $identifyResponse = array();
-$identifyResponse["repositoryName"] = 'Biblioteca Digital da Produção Intelectual da USP';
+$identifyResponse["repositoryName"] = 'Repositório da Produção USP';
 $identifyResponse["baseURL"] = 'http://'.$_SERVER['SERVER_NAME'].''.$_SERVER['SCRIPT_NAME'].'';
 $identifyResponse["protocolVersion"] = '2.0';
-$identifyResponse['adminEmail'] = 'tiago.murakami@dt.sibi.usp.br';
+$identifyResponse['adminEmail'] = 'atendimento@aguia.usp.br';
 $identifyResponse["earliestDatestamp"] = '2016-01-01T12:00:00Z';
 $identifyResponse["deletedRecord"] = 'no'; // How your repository handles deletions
                                            // no:             The repository does not maintain status about deletions.
@@ -82,7 +81,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                } elseif ($set == "TD") {
                    $query["query"]["bool"]["filter"]["term"]["base.keyword"] = "Teses e dissertações";
                } elseif ($set == "OA") {
-                   $query["query"]["bool"]["should"]["exists"]["field"] = "USP.fullTextFiles.name";
+                   $query["query"]["bool"]["should"]["exists"]["field"] = "files.database.file_name";
                    $query["query"]["bool"]["should"]["exists"]["field"] = "USP.unpaywall.best_oa_location.url_for_pdf";
                } else {
                    $query["query"]["bool"]["filter"]["term"]["unidadeUSP.keyword"] = "$set";
@@ -107,7 +106,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "120s";
+            $params["scroll"] = "10m";
             $params["body"] = $query;
 
             if (empty($scroll_id_token)) {
@@ -116,8 +115,8 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
 
                 $cursor = $client->scroll(
                     [
-                    "scroll_id" => $scroll_id_token,
-                    "scroll" => "120s"
+                    "scroll" => "10m",
+                    "scroll_id" => $scroll_id_token
                     ]
                 );
             }
@@ -131,64 +130,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
             $i = 0;
             foreach ($cursor["hits"]["hits"] as $hit) {
 
-                if (!empty($hit['_source']['name'])) {
-                    $fields['dc:title'] = str_replace("&", "", $hit['_source']['name']);
-                }
-
-                if (!empty($hit['_source']['type'])) {
-                    $fields['dc:type'] = $hit['_source']['type'];
-                }
-
-                if (!empty($hit['_source']['language'][0])) {
-                    $fields['dc:language'] = $hit['_source']['language'][0];
-                }
-
-                if (!empty($hit['_source']['doi'])) {
-                    $fields['dc:identifier'] = $hit['_source']['doi'];
-                }
-
-                if (!empty($hit['_source']['url'])) {
-                  foreach ($hit['_source']['url'] as $urlIdentifier) {
-                      $fields['dc:identifier'] = $urlIdentifier;
-                  }
-                }
-
-                $i_bitstream = 0;
-                if (!empty($hit['_source']['USP']['fullTextFiles'])) {                  
-                  foreach ($hit['_source']['USP']['fullTextFiles'] as $bitstream) {
-                      if (count($bitstream) > 10) {
-                          $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstream["uuid"] . "/" . $bitstream["name"];
-                          $i_bitstream++;
-                      } else {
-                          foreach ($bitstream as $bitstreans) {
-                              $fields['dc:bitstream_'.$i_bitstream] = $url_base . "/directbitstream/" . $bitstreans["uuid"] . "/" . $bitstreans["name"];
-                              $i_bitstream++;
-                          }
-                      }
-                  }
-                }
-
-                if (!empty($hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"])) {
-                    $fields['dc:bitstream_'.$i_bitstream] = $hit['_source']["USP"]["unpaywall"]["best_oa_location"]["url_for_pdf"];
-                    $i_bitstream++;
-                }                
-
-                if (!empty($hit['_source']['author'])) {
-                    foreach ($hit['_source']['author'] as $k => $authors) {
-                        $fields['dc:creator_'.$k] = $authors["person"]["name"];
-                    }
-                }
-
-                if (!empty($hit['_source']['about'])) {
-                    foreach ($hit['_source']['about'] as $k => $subject) {
-                        $fields['dc:subject_'.$k] = $subject;
-                    }
-                }
-
-                if (!empty($hit['_source']['datePublished'])) {
-                    $fields['dc:date'] = $hit['_source']['datePublished'];
-                }                  
-
+		$fields = getFieldsDC($hit);
                 $records[$i]["identifier"] = $hit['_id'];
                 $records[$i]["datestamp"] = $now;
                 if (!empty($set)) {
@@ -233,23 +175,7 @@ $oai2 = new OAI2Server ($uri, $args, $identifyResponse,
                 'id' => ''.$identifier.''
             ];
             $record = $client->get($params);
-
-            if (!empty($record['_source']['name'])) {
-                $fields['dc:title'] = $record['_source']['name'];
-            }
-
-            $fields['dc:type'] = $record['_source']['type'];
-
-            $fields['dc:language'] = $record['_source']['language'][0];
-
-            //foreach ($record['_source']['authors'] as $k => $authors){
-            //    $fields['dc:creator_'.$k] = $authors;
-            //}
-
-            foreach ($record['_source']['about'] as $k => $subject) {
-                $fields['dc:subject_'.$k] = $subject;
-            }
-
+            $fields = getFieldsDC($record);
             if ($record["found"] === false) {
                 throw new OAI2Exception('idDoesNotExist');
             }

@@ -3,7 +3,7 @@
 	$sobre_en = "";
 	
 	if($about == "repositorio"){
-		$sobre_pt_br = '<p>O Repositório de Acesso Aberto da Produção da USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
+		$sobre_pt_br = '<p>O Repositório da Produção USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
                 <ul class="uk-list uk-list-bullet">
 
 			<li>Aumentar a visibilidade, acessibilidade e difusão de conteúdos digitais dos resultados das atividades acadêmicas e de pesquisa da universidade por meio da coleta, organização, registro e preservação de sua memória institucional;</li>
@@ -53,7 +53,7 @@
             $sobre_en = '';
 
             if($about == "repositorio"){
-		$sobre_pt_br = '<p>O Repositório de Acesso Aberto da Produção da USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
+		$sobre_pt_br = '<p>O Repositório da Produção USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
 
 
                 <ul class="uk-list uk-list-bullet">

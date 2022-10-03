@@ -21,15 +21,17 @@ foreach ($recs as $rec) {
 				$itemID = DSpaceREST::searchItemDSpace($sysno, $_SESSION["DSpaceCookies"]);
 				$bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
 				$cursor = elasticsearch::elastic_get($sysno, $type, null);
-				if (isset($cursor["_source"]["USP"]["fullTextFiles"])) {
-					if (count($bitstreamsDSpace) != count($cursor["_source"]["USP"]["fullTextFiles"])) {
-						$body["doc"]["USP"]["fullTextFiles"] =  $bitstreamsDSpace;
+				if (!empty($cursor["_source"]["files"]["database"])) {
+					if (count($bitstreamsDSpace) != count($cursor["_source"]["files"]["database"])) {
+						$body["doc"]["files"]["database"] =  $bitstreamsDSpace;
 						$resultUpdateFilesElastic = elasticsearch::elastic_update($sysno, $type, $body);
+						var_dump($resultUpdateFilesElastic);
 						unset($body);
 					}
-				} else {
-					$body["doc"]["USP"]["fullTextFiles"] =  $bitstreamsDSpace;
+				} elseif (!empty($bitstreamsDSpace)) {
+					$body["doc"]["files"]["database"] =  $bitstreamsDSpace;
 					$resultUpdateFilesElastic = elasticsearch::elastic_update($sysno, $type, $body);
+					var_dump($resultUpdateFilesElastic);
 					unset($body);
 				}
 			break;

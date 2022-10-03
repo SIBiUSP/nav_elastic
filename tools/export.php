@@ -47,7 +47,7 @@ if (isset($_GET["format"])) {
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "30s";
+            $params["scroll"] = "120s";
             $params["body"] = $query;
 
             $cursor = $client->search($params);
@@ -250,7 +250,7 @@ if (isset($_GET["format"])) {
                 $cursor = $client->scroll(
                     [
                     "scroll_id" => $scroll_id,
-                    "scroll" => "30s"
+                    "scroll" => "120s"
                     ]
                 );
 
@@ -467,7 +467,7 @@ if (isset($_GET["format"])) {
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "30s";
+            $params["scroll"] = "120s";
             $params["_source"] = ["doi","USP.titleSearchCrossrefDOI"];
             $params["body"] = $query;
 
@@ -481,7 +481,7 @@ if (isset($_GET["format"])) {
                 $cursor = $client->scroll(
                     [
                     "scroll_id" => $scroll_id,
-                    "scroll" => "30s"
+                    "scroll" => "120s"
                     ]
                 );
 
@@ -541,7 +541,7 @@ if (isset($_GET["format"])) {
             $params["index"] = $index;
             $params["type"] = $type;
             $params["size"] = 50;
-            $params["scroll"] = "30s";
+            $params["scroll"] = "120s";
             $params["body"] = $query;
 
             $cursor = $client->search($params);
@@ -555,7 +555,7 @@ if (isset($_GET["format"])) {
                 $cursor = $client->scroll(
                     [
                     "scroll_id" => $scroll_id,
-                    "scroll" => "30s"
+                    "scroll" => "120s"
                     ]
                 );
 
@@ -712,7 +712,7 @@ if (isset($_GET["format"])) {
         $params["index"] = $index;
         $params["type"] = $type;
         $params["size"] = 50;
-        $params["scroll"] = "30s";
+        $params["scroll"] = "120s";
         $params["body"] = $query;
 
         $cursor = $client->search($params);
@@ -726,7 +726,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->scroll(
                 [
                 "scroll_id" => $scroll_id,
-                "scroll" => "30s"
+                "scroll" => "120s"
                 ]
             );
 
@@ -774,7 +774,7 @@ if (isset($_GET["format"])) {
         $params["index"] = $index;
         $params["type"] = $type;
         $params["size"] = 50;
-        $params["scroll"] = "30s";
+        $params["scroll"] = "120s";
         $params["body"] = $query;
 
         $cursor = $client->search($params);
@@ -788,7 +788,7 @@ if (isset($_GET["format"])) {
             $cursor = $client->scroll(
                 [
                 "scroll_id" => $scroll_id,
-                "scroll" => "30s"
+                "scroll" => "120s"
                 ]
             );
 
@@ -837,7 +837,7 @@ if (isset($_GET["format"])) {
           $params["index"] = $index;
           $params["type"] = $type;
           $params["size"] = 50;
-          $params["scroll"] = "30s";
+          $params["scroll"] = "120s";
           $params["_source"] = ["_id", $_GET['field']];
           $params["body"] = $query;
 
@@ -867,7 +867,7 @@ if (isset($_GET["format"])) {
               $cursor = $client->scroll(
                   [
                   "scroll_id" => $scroll_id,
-                  "scroll" => "30s"
+                  "scroll" => "120s"
                   ]
               );
 
