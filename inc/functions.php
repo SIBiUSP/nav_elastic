@@ -153,12 +153,15 @@ function is_bdta(){
 }
 
 function msg_staff_bdta($registro){
-	if(!$registro["_source"]["USP"]["indicado_por_orgao"] && $registro["_source"]["files"]["database"]){
+	if(empty($registro["_source"]["USP"]["indicado_por_orgao"]) && !empty($registro["_source"]["files"]["database"])){
 		echo '<p class="uk-alert-danger" uk-alert>Verifique se esse trabalho foi aprovado e indicado pelo órgão competente da sua unidade. <br />
 			Se SIM, incluir a nota no campo 590 $b na Base 06 no Banco Dedalus. Se NÃO, excluir o objeto digital (PDF) na BDTA.</p>';
-	} elseif($registro["_source"]["USP"]["indicado_por_orgao"] && !$registro["_source"]["files"]["database"]){
+	} elseif(!empty($registro["_source"]["USP"]["indicado_por_orgao"]) && empty($registro["_source"]["files"]["database"])){
 		echo '<p class="uk-alert-danger" uk-alert>Verifique se esse trabalho foi aprovado e indicado pelo órgão competente da sua unidade. <br />
 		       	Se SIM, fazer o upload do objeto digital (PDF) na BDTA. Se NÃO, excluir o campo 590 $b na Base 06 no Banco Dedalus.</p>';
+	} elseif(empty($registro["_source"]["USP"]["indicado_por_orgao"]) && empty($registro["_source"]["files"]["database"])){
+		echo '<p class="uk-alert-danger" uk-alert>Verifique se esse trabalho foi aprovado e indicado pelo órgão competente da sua unidade. <br />
+		       	Se SIM, incluir a nota no campo 590 $b na Base 06 no Banco Dedalus e fazer o upload do objeto digital (PDF) na BDTA. Se NÃO, excluir o campo 590 $b na Base 06 no Banco Dedalus.</p>';
 	}
 }
 /**
