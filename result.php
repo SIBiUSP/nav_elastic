@@ -28,7 +28,6 @@ if (isset($_GET["search"])) {
     }
     unset($_GET["search"]);
     $_GET["search"] = $getCleaned;
-    
 }
 
 if (isset($fields)) {
@@ -50,7 +49,8 @@ if (isset($_GET["sort"])) {
     $result_get['query']["sort"][$_GET["sort"]]["missing"] = "_last";
     $result_get['query']["sort"][$_GET["sort"]]["order"] = "desc";
     $result_get['query']["sort"][$_GET["sort"]]["mode"] = "max";
-} else {
+} 
+if(empty($_GET["search"][0])){
     $result_get['query']['sort']['datePublished.keyword']['order'] = "desc";
 }
 
