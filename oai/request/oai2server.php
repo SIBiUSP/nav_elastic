@@ -86,8 +86,10 @@ class OAI2Server {
             }
         }
         if (isset($this->args['identifier'])) {
+		echo('aqui');
             $identifier = $this->args['identifier'];
         } else {
+		echo('else');
             $identifier = '';
         }
         if (empty($this->errors)) {
