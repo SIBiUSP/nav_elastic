@@ -17,7 +17,7 @@ if (file_exists('functions_core/functions_core.php')) {
 } else {
     include_once '../../functions_core/functions_core.php';
 }
-include_once(__DIR__.'./unidadesUSP.php');
+include_once(__DIR__.'/unidadesUSP.php');
 function checkDSpaceAPI($url_api){
     $curl = curl_init($url_api);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
