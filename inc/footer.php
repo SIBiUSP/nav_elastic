@@ -15,13 +15,17 @@
 		<div id="sub-menu" class="uk-navbar-container" uk-navbar>
 		    <div class="uk-navbar-right">
 		        <ul class="uk-navbar-nav">
-		        	<li>
-	                    <a class="uk-link-muted" href="<?php echo $url_base; ?>/advanced_search.php"><?php echo $t->gettext('Busca técnica'); ?></a>
-	                </li>
+		            <li>
+	                        <a class="uk-link-muted" href="<?php echo $url_base; ?>/politicas.php"><?php echo $t->gettext('Política de Privacidade'); ?></a>
+	                    </li>
+		            
+                            <li>
+	                        <a class="uk-link-muted" href="<?php echo $url_base; ?>/advanced_search.php"><?php echo $t->gettext('Busca técnica'); ?></a>
+	                    </li>
 
-	                <li>
-	                    <a href="<?php echo $url_base; ?>/contact.php"><?php echo $t->gettext('Contato'); ?></a>
-	                </li>
+	                    <li>
+	                        <a href="<?php echo $url_base; ?>/contact.php"><?php echo $t->gettext('Contato'); ?></a>
+	                    </li>
 		        </ul>
 		    </div>
 		</div>
@@ -35,6 +39,7 @@
 	</div>
 </div>
 </div>
+<script src="<?php echo $url_base;?>/inc/js/politica.js">
 <script>
   $.validate({
       lang : 'pt',

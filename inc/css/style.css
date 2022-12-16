@@ -169,7 +169,62 @@ p:hover.title-link, a:hover#button.uk-button-default{
 .desativado {
 	opacity : 0.3;
 }
+.amarelo {
+    background-color: #fbb42a;
+}
 
+.azul_primario {
+    background-color: #268fa9;
+}
+
+.azul_secundario {
+    background-color: #62c2cf;
+}
+
+.azul_abcdusp {
+    background-color: #1094AB;
+}
+
+#cookiepolicy {
+    position: fixed;
+    z-index: 1000000;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 0.5em 1em 0.5em 1em;
+    box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.5), 0 -6px 20px 0 rgba(0, 0, 0, 0.3);
+    background-color rgb(244,244,244);
+    box-sizing: border-box;
+    clear: both;
+}
+
+#cookiepolicy .text {
+    width: 100%;
+    padding: 1em;
+    text-align: left;
+}
+#cookiepolicy .text a{
+    color: #333 !important;
+}
+
+#cookiepolicy .text a:hover{
+    color: #000 !important;
+}
+
+#cookiepolicy .but {
+    box-sizing: border-box;
+    margin: 1em auto 0 auto;
+    width: auto;
+    min-width: 7em;
+    text-align: center;
+    border: 1px black ridge;
+}
+
+#cookiepolicy .but:hover{
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5), 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+}
 @media only screen and (min-width: 960px) {
   .result-icons {
     height: 40px;
