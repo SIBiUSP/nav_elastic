@@ -56,7 +56,7 @@
                 
 		<li class="uk-active">
                     <?php if (empty($_SESSION['oauthuserdata'])) : ?>
-                    <li><a href="https://www.repositorio.usp.br/aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>
+		    <li><a href="https:<?=$url_base;?>/aut/oauth.php" rel="nofollow"><?php echo $t->gettext('Usuário'); ?></a></li>
                     <?php else: ?>
                     <li class="uk-active"><a href="#modal-user" uk-toggle><?php echo $_SESSION['oauthuserdata']->{'nomeUsuario'}; ?></a></li>
                     <div id="modal-user" class="uk-modal-full" uk-modal>
