@@ -5,7 +5,7 @@
             require 'inc/config.php'; 
             require 'inc/meta-header.php';
         ?>
-        <title><?php echo $branch_abrev . " - " . $t->gettext('Contato'); ?></title>
+	<title><?=$branch_abrev?> - <?=$t->gettext('Contato')?></title>
     </head>
 
     <body style="height: 100vh; min-height: 45em; position: relative;">
@@ -44,7 +44,7 @@
                     	$mensagem_email .= "Cidade/UF: {$cidade}/{$estado}\n";
                     	$mensagem_email .= "País: {$pais}\n";
                     	$mensagem_email .= "Mensagem:\n{$mensagem}\n";
-                    	$email_remetente = "Atendimento AGUIA <atendimento@aguia.usp.br>";
+                    	$email_remetente = $name_email_sender . " <" .$email_sender .">";
                     	$email_destinatario = $email_remetente;
                     	$assunto = "Contato do site $branch_abrev - $nome";
                     	$headers = "MIME-Version: 1.1\n";
@@ -84,46 +84,46 @@
                         <form class="uk-form uk-form-stacked" method="post" action="">
 
                             <div class="uk-form-row">
-                                <label class="uk-form-label"><?php echo $t->gettext('Nome'); ?></label>
+                                <label class="uk-form-label"><?=$t->gettext('Nome')?></label>
                                 <div class="uk-form-controls">
-                                    <input type="text" name="nome" placeholder="<?php echo $t->gettext('Digite o seu nome'); ?>" class="uk-input uk-width-1-1">
+                                    <input type="text" name="nome" placeholder="<?=$t->gettext('Digite o seu nome')?>" class="uk-input uk-width-1-1">
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
                                 <label class="uk-form-label">E-mail</label>
                                 <div class="uk-form-controls">
-                                    <input type="email" name="email" placeholder="<?php echo $t->gettext('Digite o seu e-mail'); ?>" class="uk-input uk-width-1-1">
+                                    <input type="email" name="email" placeholder="<?=$t->gettext('Digite o seu e-mail')?>" class="uk-input uk-width-1-1">
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
-                                <label class="uk-form-label"><?php echo $t->gettext('Cidade'); ?></label>
+                                <label class="uk-form-label"><?=$t->gettext('Cidade')?></label>
                                 <div class="uk-width-1-2@s">
-                                    <input class="uk-input" name="cidade" type="text" placeholder="<?php echo $t->gettext('Digite a sua cidade'); ?>">
+                                    <input class="uk-input" name="cidade" type="text" placeholder="<?=$t->gettext('Digite a sua cidade')?>">
                                 </div>
-                                <label class="uk-form-label"><?php echo $t->gettext('Estado'); ?></label>
+                                <label class="uk-form-label"><?=$t->gettext('Estado')?></label>
                                 <div class="uk-width-1-4@s">
-                                    <input class="uk-input" name="estado" type="text" placeholder="<?php echo $t->gettext('Digite o seu estado'); ?>">
+                                    <input class="uk-input" name="estado" type="text" placeholder="<?=$t->gettext('Digite o seu estado')?>">
                                 </div>
-                                <label class="uk-form-label"><?php echo $t->gettext('País'); ?></label>
+                                <label class="uk-form-label"><?=$t->gettext('País')?></label>
                                 <div class="uk-width-1-4@s">
-                                    <input class="uk-input" name="pais" type="text" placeholder="<?php echo $t->gettext('Digite o seu país'); ?>">
+                                    <input class="uk-input" name="pais" type="text" placeholder="<?=$t->gettext('Digite o seu país')?>">
                                 </div>
                             </div>
 
                             <div class="uk-form-row">
-                                <label class="uk-form-label"><?php echo $t->gettext('Mensagem'); ?></label>
+                                <label class="uk-form-label"><?=$t->gettext('Mensagem')?></label>
                                 <div class="uk-form-controls">
-                                    <textarea name="mensagem" placeholder="<?php echo $t->gettext('Digite a sua mensagem'); ?>" class="uk-textarea uk-width-1-1" id="form-h-t" cols="100" rows="9"></textarea>
+                                    <textarea name="mensagem" placeholder="<?=$t->gettext('Digite a sua mensagem')?>" class="uk-textarea uk-width-1-1" id="form-h-t" cols="100" rows="9"></textarea>
                                 </div>
                             </div>
 			    <div class="uk-form-row">
-			    <div class="g-recaptcha" data-sitekey="<?php echo $reCaptchaPublicKey; ?>"></div>
+			    <div class="g-recaptcha" data-sitekey="<?=$reCaptchaPublicKey?>"></div>
 			    </div>
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
-                                    <button class="uk-button uk-button-primary"><?php echo $t->gettext('Enviar'); ?></button>
+                                    <button class="uk-button uk-button-primary"><?=$t->gettext('Enviar')?></button>
                                 </div>
                             </div>
 
@@ -134,21 +134,36 @@
 
                 <div class="uk-width-1-3@m">
                     <div class="uk-panel uk-panel-box uk-panel-box-secondary">
-                        <h3 class="uk-panel-title"><?php echo $t->gettext('Contato'); ?></h3>
-                        <p>
-                            <strong><?php echo $t->gettext('Agência USP de Gestão da Informação Acadêmica'); ?></strong>
-                            <br>Rua da Praça do Relógio, 109 - Bloco L  Térreo
-                            <br>05508-050 - Cidade Universitária, São Paulo, SP - Brasil
-                        </p>
-                        <p>
-                            <a>atendimento@aguia.usp.br</a>
-                            <br>Tel: (0xx11) 2648-0948
-                        </p>
-                        <h3 class="uk-h4"><?php echo $t->gettext('Redes sociais'); ?></h3>
-                        <p>
-                            <a href="https://www.facebook.com/sibiusp/?fref=ts" uk-icon="icon: facebook" target="_blank" rel="noopener noreferrer"></a>
-                            <a href="https://twitter.com/sibiusp" uk-icon="icon: twitter" target="_blank" rel="noopener noreferrer"></a>
-                            <a href="https://github.com/sibiusp" uk-icon="icon: github" target="_blank" rel="noopener noreferrer"></a>
+                        <h3 class="uk-panel-title"><?=$t->gettext('Contato')?></h3>
+                        <address>
+                            <strong><?=$t->gettext($institution_name)?></strong><br/>
+			    <?=$street?>, <?=$street_number?> - <?=$complement?><br/>
+			    <?=$cep?> - <?=$district?>, <?=$city?>, <?=$state?> - <?=$country?><br/><br/>
+			    Tel: <?=$tel?><br/>
+			    Email: <a href="mailto:<?=$email?>"><?=$email?></a>
+                        </address>
+                        <h3 class="uk-h4"><?=$t->gettext('Redes sociais')?></h3>
+			<p>
+			<?if(isset($facebook)):?>
+			    <a href="<?=$facebook?>" class="uk-margin-small-right" uk-icon="icon: facebook; ratio: 1.5" target="_blank" rel="noopener noreferrer"></a>
+			<?endif;?>
+
+			<?if(isset($facebook)):?>
+			    <a href="<?=$twitter?>" class="uk-margin-small-right" uk-icon="icon: twitter; ratio: 1.5" target="_blank" rel="noopener noreferrer"></a>
+			<?endif;?>
+
+			<?if(isset($facebook)):?>
+			    <a href="<?=$instagram?>" class="uk-margin-small-right" uk-icon="icon: instagram; ratio: 1.5" target="_blank" rel="noopener noreferrer"></a>
+			<?endif;?>
+
+			<?if(isset($facebook)):?>
+			    <a href="<?=$youtube?>" class="uk-margin-small-right" uk-icon="icon: youtube; ratio: 1.5" target="_blank" rel="noopener noreferrer"></a>
+			<?endif;?>
+
+			<?if(isset($facebook)):?>
+			    <a href="<?=$github?>" class="uk-margin-small-right" uk-icon="icon: github; ratio: 1.5" target="_blank" rel="noopener noreferrer"></a>
+			<?endif;?>
+
                         </p>
                     </div>
                 </div>

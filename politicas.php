@@ -19,17 +19,17 @@
         <div class="uk-container uk-width-1-1@s uk-width-1-1@m uk-width-3-5@l uk-margin-large-top" style="position: relative; padding-bottom: 17em;">
             <h1><?=$t->gettext('Política de Privacidade e Cookies'); ?></h1>
             <hr class="uk-grid-divider">
-            <p>A sua privacidade é importante para nós. É política da ABCD USP &#8211; Agência de Bibliotecas e Coleções Digitais da Universidade de São Paulo respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site <a href="https:<?=$url_base;?>"><?=$branch;?></a>, e outros sites que possuímos e operamos.</p>
+	    <p>A sua privacidade é importante para nós. É política da <?=$institution_acronym?> &#8211; <?=$institution_name?> respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site <a href="https:<?=$url_base;?>"><?=$branch;?></a>, e outros sites que possuímos e operamos.</p>
             <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento. Também informamos por que estamos coletando e como será usado.</p>
             <p>Apenas retemos as informações coletadas pelo tempo necessário para fornecer o serviço solicitado. Quando armazenamos dados, protegemos dentro de meios comercialmente aceitáveis ​​para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados.</p>
             <p>Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei.</p>
             <p>O nosso site pode ter links para sites externos que não são operados por nós. Esteja ciente de que não temos controle sobre o conteúdo e práticas desses sites e não podemos aceitar responsabilidade por suas respectivas políticas de privacidade.</p>
             <p>Você é livre para recusar a nossa solicitação de informações pessoais, entendendo que talvez não possamos fornecer alguns dos serviços desejados.</p>
             <p>Nossa política é atualizada de forma constante.</p>
-            <p>Fica, desde já, o titular de dados ciente que o conteúdo desta Política de Privacidade pode ser alterado a critério da ABCD USP &#8211; Agência de Bibliotecas e Coleções Digitais da Universidade de São Paulo, independente de aviso ou notificação. Em caso de alteração, as modificações produzem todos os efeitos a partir do momento da disponibilização no site.</p>
-            <p>A ABCD USP &#8211; Agência de Bibliotecas e Coleções Digitais da Universidade de São Paulo não se responsabiliza caso você venha utilizar seus dados de forma incorreta ou inverídica, ficando excluído de qualquer responsabilidade neste sentido.</p>
+	    <p>Fica, desde já, o titular de dados ciente que o conteúdo desta Política de Privacidade pode ser alterado a critério da <?=$institution_acronym?> &#8211; <?=$institution_name?>, independente de aviso ou notificação. Em caso de alteração, as modificações produzem todos os efeitos a partir do momento da disponibilização no site.</p>
+	    <p>A <?=$institution_acronym?> &#8211; <?=$institution_name?> não se responsabiliza caso você venha utilizar seus dados de forma incorreta ou inverídica, ficando excluído de qualquer responsabilidade neste sentido.</p>
             <p>O uso continuado de nosso site será considerado como aceitação de nossas práticas em torno de privacidade e informações pessoais. Se você tiver alguma dúvida sobre como lidamos com dados do usuário e informações pessoais, entre em contato conosco.</p>
-           <h2>Política de Cookies ABCD USP &#8211; Agência de Bibliotecas e Coleções Digitais da Universidade de São Paulo</h2>
+	    <h2>Política de Cookies <?=$institution_acronym?> &#8211; <?=$institution_name?></h2>
            <h3>O que são cookies?</h3>
            <p>Como é prática comum em quase todos os sites profissionais, este site usa cookies, que são pequenos arquivos baixados no seu computador, para melhorar sua experiência. Esta página descreve quais informações eles coletam, como as usamos e por que às vezes precisamos armazenar esses cookies. Também compartilharemos como você pode impedir que esses cookies sejam armazenados, no entanto, isso pode fazer o downgrade ou &#8216;quebrar&#8217; certos elementos da funcionalidade do site.</p>
            <h3>Como usamos os cookies?</h3>
@@ -72,12 +72,12 @@
             <li>À medida que oferecemos produtos e serviços, é importante entendermos as estatísticas sobre quantos visitantes de nosso site realmente os consomem, portanto, esse é o tipo de dados que esses cookies rastrearão. Isso é importante para você, pois significa que podemos fazer previsões de negócios com precisão que nos permitem analisar nossos custos de produtos para garantir o melhor serviço possível.</li>
         </ul>
         <h3>Compromisso do Usuário</h3>
-        <p>O usuário se compromete a fazer uso adequado dos conteúdos e da informação que a ABCD USP &#8211; Agência de Bibliotecas e Coleções Digitais da Universidade de São Paulo oferece no site e com caráter enunciativo, mas não limitativo:</p>
+	<p>O usuário se compromete a fazer uso adequado dos conteúdos e da informação que a <?=$institution_acronym?> &#8211; <?=$institution_name?> oferece no site e com caráter enunciativo, mas não limitativo:</p>
         <ul class="uk-list uk-list-bullet">
             <li>A) Não se envolver em atividades que sejam ilegais ou contrárias à boa fé a à ordem pública;</li>
             <li>B) Respeito a todas as legislações nacionais ou internacionais em que o Brasil é signatário;</li>
             <li>C) Não difundir propaganda ou conteúdo de natureza racista, xenofóbica, ou casas de apostas, jogos de sorte e azar, qualquer tipo de pornografia ilegal, de apologia ao terrorismo ou contra os direitos humanos;</li>
-            <li>D) Não causar danos aos sistemas físicos (hardwares) e lógicos (softwares) da ABCD USP &#8211; Agência de Bibliotecas e Coleções Digitais da Universidade de São Paulo, de seus fornecedores ou terceiros, para introduzir ou disseminar vírus informáticos ou quaisquer outros sistemas de hardware ou software que sejam capazes de causar danos anteriormente mencionados.</li>
+	    <li>D) Não causar danos aos sistemas físicos (hardwares) e lógicos (softwares) da <?=$institution_acronym?> &#8211; <?=$institution_name?>, de seus fornecedores ou terceiros, para introduzir ou disseminar vírus informáticos ou quaisquer outros sistemas de hardware ou software que sejam capazes de causar danos anteriormente mencionados.</li>
             <li>E) Os conteúdos publicados, possuem direitos autorais e de propriedade intelectual reservados, conforme estabelece a Lei de Direitos Autorais n. 9.610, de 19.2.1998 do Governo Federal Brasileiro e correlatas. Qualquer infringência, serão comunicados às autoridades competentes.</li>
         </ul>
         <h3>Mais informações</h3>

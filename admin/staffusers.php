@@ -28,14 +28,14 @@ $users = get_users();
             //require_once '../inc/config.php';
             require_once '../inc/meta-header.php';
 	            ?>
-        <title><?php echo $branch; ?></title>
+        <title><?=$branch?></title>
         <!-- Facebook Tags - START -->
         <!--<meta property="og:locale" content="pt_BR">-->
-        <meta property="og:locale" content="<?php echo $locale ?>">
-        <meta property="og:url" content="<?php echo $url_base; ?>">
-        <meta property="og:title" content="<?php echo $t->gettext(''.$branch.''); ?> - <?php echo $t->gettext('Página Principal'); ?>">
-        <meta property="og:site_name" content="<?php echo $t->gettext(''.$branch.''); ?>">
-        <meta property="og:description" content="<?php echo $t->gettext(''.$branch_description.''); ?>">
+        <meta property="og:locale" content="<?=$locale?>">
+        <meta property="og:url" content="<?=$url_base?>">
+        <meta property="og:title" content="<?=$t->gettext($branch)?> - <?=$t->gettext('Página Principal')?>">
+        <meta property="og:site_name" content="<?=$t->gettext($branch)?>">
+        <meta property="og:description" content="<?=$t->gettext($branch_description)?>">
         <meta property="og:image" content="http://www.imagens.usp.br/wp-content/uploads/USP.jpg">
         <meta property="og:image:type" content="image/jpeg">
         <meta property="og:image:width" content="800">
@@ -91,43 +91,43 @@ $users = get_users();
 				<?php if($unidade_anterior != $user['unidade']):?>
 					<?php if($unidade_anterior == ""):?>
         					<div class="uk-card uk-card-default uk-card-body">
-							<h3 class="uk-card-title"><?php echo $user["unidade"];?></h3>
+							<h3 class="uk-card-title"><?=$user["unidade"]?></h3>
 							<table class="uk-table uk-table-striped">
 					<?php else: ?>
 							</table>
                                         	</div>
 						<div class="uk-card uk-card-default uk-card-body">
-                                                        <h3 class="uk-card-title"><?php echo $user["unidade"];?></h3>
+                                                        <h3 class="uk-card-title"><?=$user["unidade"]?></h3>
 							<table class="uk-table uk-table-striped">
 					<?php endif; ?>
 				<?php endif; ?>
 				    <tr>
 					<td>
-						<?php echo $user["nusp"];?>
+						<?=$user["nusp"]?>
 					</td>
 					<td>
-						<?php echo $user["nome"];?>
+						<?=$user["nome"]?>
 					</td>
 					<!--<td>
-						<?php echo $user["unidade"];?>
+						<?=$user["unidade"]?>
 					</td>-->
 					<td>
-						<a type="button" uk-toggle="target: #modal-delete-<?php echo $user["nusp"]; ?>" data-colaboradorid="<?php echo $user["nusp"];?>" data-colaborador="<?php echo $user["nome"];?>" data-unidade="<?php echo $user["unidade"];?>" uk-tooltip="Excluir" title="" aria-expanded="false">
-							<img class="register-icons" data-src="<?php echo $url_base; ?>/inc/images/excluir.svg" alt="Excluir" uk-img="" src="<?php echo $url_base;?>/inc/images/excluir.svg" style="height:24px;">
+						<a type="button" uk-toggle="target: #modal-delete-<?=$user["nusp"]?>" data-colaboradorid="<?=$user["nusp"]?>" data-colaborador="<?=$user["nome"]?>" data-unidade="<?=$user["unidade"]?>" uk-tooltip="Excluir" title="" aria-expanded="false">
+							<img class="register-icons" data-src="<?=$url_base?>/inc/images/excluir.svg" alt="Excluir" uk-img="" src="<?=$url_base?>/inc/images/excluir.svg" style="height:24px;">
 						</a>
 					</td>
 				    </tr>
 				<?php $unidade_anterior = $user["unidade"];?>
-			    <div id="modal-delete-<?php echo $user["nusp"];?>" uk-modal>
+			    <div id="modal-delete-<?=$user["nusp"]?>" uk-modal>
                 	                <div class="uk-modal-dialog">
         	                                <button class="uk-modal-close-default" type="button" uk-close></button>
 	                                        <div class="uk-modal-header">
                                                 	<h2 class="uk-modal-title">Excluir colaborador</h2>
                                         	</div>
                                 	        <div class="uk-modal-body">
-                        	                	<p id="confirmacao">Tem certeza que quer excluir o colaborador <?php echo $user["nome"] . " - " . $user["nusp"]; ?>?</p>
+							<p id="confirmacao">Tem certeza que quer excluir o colaborador <?=$user["nome"]?> - <?=$user["nusp"]?>?</p>
                 	                                <form action="" method="post">
-        	                                        <input type="hidden" name="deleta-colaborador" value="<?php echo $user["nusp"]; ?>" />
+        	                                        <input type="hidden" name="deleta-colaborador" value="<?=$user["nusp"]?>" />
 	                                        </div>
                                         	<div class="uk-modal-footer uk-text-right">
                                 	                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
@@ -151,7 +151,7 @@ $users = get_users();
 
 			<div class="uk-modal-body">
 				<form  class="uk-form-stacked" action="" method="post">
-				<!--<form  class="uk-form-stacked" action="<?php echo $url_base.'/admin/staffusers.php';?>" method="post">-->
+				<!--<form  class="uk-form-stacked" action="<?=$url_base?>/admin/staffusers.php" method="post">-->
 					<div class="uk-margin">
                             			<label hidden class="uk-form-label" for="form-stacked-text">Número USP</label>
                             			<div class="uk-form-controls uk-margin uk-search uk-search-default" style="width: 100%">
@@ -170,10 +170,10 @@ $users = get_users();
                 	            		<label hidden class="uk-form-label" for="form-stacked-select">Selecione a unidade USP onde o colaborador é vinculado</label>
                         	    		<div class="uk-form-controls">
 							<select class="uk-select" id="form-stacked-select" name="unidade">
-								<option value="<?php echo "AGUIA"; ?>" style="color:#333"><?php echo "Agência USP de Gestão da Informação Acadêmica (AGUIA)"; ?></option>
+								<option value="<?="ABCD"?>" style="color:#333"><?=$institution_name?> (<?=$institution_acronym?>)"; ?></option>
 								<?php foreach($unidades as $key => $value ): ?>
 									<?php if(!in_array($key, $schoolsManageUsersRemove)): ?>
-									<option value="<?php echo $key; ?>" style="color:#333"><?php echo $value; ?></option>
+									<option value="<?=$key?>" style="color:#333"><?=$value?></option>
 									<?php endif; ?>
                                     				<?php endforeach; ?>
 	                                		</select>
@@ -190,27 +190,6 @@ $users = get_users();
 			
 		    </div>
 		</div>
-
-		<!--<div id="modal-delete" uk-modal>
-			<div class="uk-modal-dialog">
-				<button class="uk-modal-close-default" type="button" uk-close></button>
-				<div class="uk-modal-header">
-					<h2 class="uk-modal-title">Excluir colaborador</h2>
-				</div>
-				<div class="uk-modal-body">
-					<p id="confirmacao">Tem certeza que quer excluir o colaborador?</p>
-					<form action="" method="post">
-						<input type="hidden" name="delete-colaborador" value="" />
-				</div>
-				
-				<div class="uk-modal-footer uk-text-right">
-					<button class="uk-button uk-button-default uk-modal-close" type="button">Cancelar</button>
-					<button class="uk-button uk-button-danger" name="btn_submit">Excluir</button>
-				</div>
-				</form>
-			</div>
-		</div>-->
-
 
             </div>
 	        <?php require_once('../inc/footer.php'); ?>
