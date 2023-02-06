@@ -1,32 +1,3 @@
-<?php
-	/*$sobre_pt_br = "";
-	$sobre_en = "";
-	
-	if($about == "repositorio"){
-		$sobre_pt_br = '<p>O Repositório da Produção USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
-                <ul class="uk-list uk-list-bullet">
-
-			<li>Aumentar a visibilidade, acessibilidade e difusão de conteúdos digitais dos resultados das atividades acadêmicas e de pesquisa da universidade por meio da coleta, organização, registro e preservação de sua memória institucional;</li>
-    			<li>Facilitar a gestão e o acesso à informação sobre a produção de pesquisa da USP, por meio da oferta de indicadores confiáveis e validados;</li>
-			<li>Contribuir para a preservação do conhecimento produzido na universidade, seu uso e impacto científico, acadêmico e social, integrando-se a outras iniciativas nacionais e internacionais.</li>
-                </ul>';
-
-		$sobre_en = '<p>The Open Access Repository of the Universidade de Sao Paulo is the Digital Library of Research Production of the university, launched on October 22, 2012.  It is the institutional and official repository of research publications and scientific, artistic, academic and technical production in digital format by its authors, departments, units, institutes, centers, museums and central bodies.</p><p>Its objectives are:</p>
-
-                <ul class="uk-list uk-list-bullet">
-			<li>To increase the visibility, accessibility and dissemination of digital contents of the results of research and academic activities through the collection, organization, registration and preservation of its institutional memory; </li>
-			<li>To facilitate the management and access to information on USP scientific production, through the offer of reliable and validated indicators;</li>
-			<li>To contribute to the preservation of knowledge produced at the university, its use and scientific, academic and social impact, integrating with other national and international initiatives.</li>
-                </ul>';
-
-	} elseif ($about == "bdta") {
-		$sobre_pt_br = "";
-		$sobre_en = "";
-	}*/
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
@@ -34,7 +5,7 @@
             require 'inc/config.php'; 
             require 'inc/meta-header.php';
         ?>
-        <title>BDPI USP - <?php echo $t->gettext('Sobre'); ?></title>
+	<title><?=$branch_abbrev?> - <?=$t->gettext('Sobre')?></title>
     </head>
 
     <body style="height: 100vh; min-height: 45em; position: relative;">
@@ -46,13 +17,13 @@
 
         <?php require 'inc/navbar.php'; ?>
         <div class="uk-container uk-width-1-1@s uk-width-1-1@m uk-width-3-5@l uk-margin-large-top" style="position: relative; padding-bottom: 17em;">
-            <h1><?php echo $t->gettext('Sobre'); ?></h1>
+            <h1><?=$t->gettext('Sobre')?></h1>
             <hr class="uk-grid-divider">
 	    <?php
             $sobre_pt_br = '';
             $sobre_en = '';
 
-            if($about == "repositorio"){
+            if(!is_bdta()){
 		$sobre_pt_br = '<p>O Repositório da Produção USP é a Biblioteca Digital da Produção Intelectual da Universidade de São Paulo (BDPI), inaugurada em 22 de outubro de 2012. É o Repositório institucional e oficial da Universidade de São Paulo que concentra o registro e armazena as publicações oriundas de pesquisa e a produção científica, artística, acadêmica e técnica em formato digital de seus autores, departamentos, unidades, institutos, centros, museus e órgãos centrais.</p><p>Tem como objetivos:</p>
 
 
@@ -71,7 +42,7 @@
 			<li>To contribute to the preservation of knowledge produced at the university, its use and scientific, academic and social impact, integrating with other national and international initiatives.</li>
                 </ul>';
 
-	    } elseif ($about == "bdta") {
+	    } else {
 		$sobre_pt_br = '
 			<p>A Biblioteca Digital de Trabalhos Acadêmicos da USP proporciona à sociedade em geral o acesso ao texto completo dos Trabalhos de Conclusão de Curso da Universidade. Inclui em seu acervo: Trabalho de Conclusão de Curso de Graduação, Trabalho de Conclusão de Curso de Especialização (MBA), Trabalho de Conclusão de Residência (TCR) da Universidade de São Paulo.
 A BDTA atende à <strong><a href="http://www.leginf.usp.br/?resolucao=resolucao-cocex-cog-no-7497-de-09-de-abril-de-2018" title="Resolução CoCEx-CoG número 7497" target="_blank">Resolução CoCEx-CoG Nº 7497, de 09 de abril de 2018</a></strong>, que Regulamenta a disponibilização de trabalhos de conclusão de curso ou outros trabalhos acadêmicos equivalentes na Biblioteca Digital de Trabalhos Acadêmicos da Universidade de São Paulo.</p>
@@ -91,7 +62,7 @@ A BDTA atende à <strong><a href="http://www.leginf.usp.br/?resolucao=resolucao-
 
 			<p>Nesse sentido, a Resolução estabelece os princípios para o depósito legal de Monografias e Trabalhos de Conclusão de Cursos de Graduação e Pós-Graduação Lato Sensu da Universidade de São Paulo na Biblioteca da Biblioteca Digital de Trabalhos Acadêmicos (BDTA).</p>
 
-			<p>A Agência USP de Gestão da Informação Acadêmica (AGUIA), que incorporou as atividades do antigo Sistema Integrado de Bibliotecas (SIBiUSP), é responsável pela hospedagem, manutenção e aprimoramento da BDTA, além da capacitação das equipes bibliotecárias das Unidades na execução do fluxo de submissão.</p>
+			<p>A ' . $institution_name . ' ('. $institution_acronym .'), que incorporou as atividades do antigo Sistema Integrado de Bibliotecas (SIBiUSP), é responsável pela hospedagem, manutenção e aprimoramento da BDTA, além da capacitação das equipes bibliotecárias das Unidades na execução do fluxo de submissão.</p>
 		';
 		$sobre_en = '
 			<p>The USP Digital Library of Academic Works provides society in general the access to the full text of the University\'s Course Completion Works. It includes in its collection: Graduation Course Conclusion Work, Specialization Course Conclusion Work (MBA), Residency Conclusion Work (TCR) of the University of São Paulo.</p>
@@ -114,7 +85,7 @@ A BDTA atende à <strong><a href="http://www.leginf.usp.br/?resolucao=resolucao-
 	
 			<p>In this sense, the Resolution establishes the principles for the legal deposit of Monographs of Lato Sensu Graduation and Post-Graduation from the Universidade de São Paulo at the Library of the Digital Library of Academic Works (BDTA).</p>
 
-			<p>The USP Academic Information Management Agency (AGUIA), which incorporated the activities of the old Integrated Library System (SIBiUSP), is responsible for hosting, maintaining and improving the BDTA, in addition to training the Units\' librarian teams in the execution of the flow of information submission.</p>
+			<p>The USP Libraries and Digital Collections Agency ('. $institution_acronym .'), which incorporated the activities of the old Integrated Library System (SIBiUSP), is responsible for hosting, maintaining and improving the BDTA, in addition to training the Units\' librarian teams in the execution of the flow of information submission.</p>
 		';
         }
 
