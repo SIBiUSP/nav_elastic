@@ -527,11 +527,13 @@ class PageSingle
         $files = $record['files']['database']; 
         if (!empty($files)) {
             foreach ($files as $file) {
-                echo '    <meta name="citation_pdf_url" content="https://'.$_SERVER['SERVER_NAME'].'/bitstreams/'.$file['bitstream_id'].'">';
+		    echo '    <meta name="citation_pdf_url" content="https://'.$_SERVER['SERVER_NAME'].'/directbitstream/'.$file['bitstream_id'].'/'.urlencode($file['file_name']).'">';
+		    echo "\n";
             }
         }
 
-
+	echo '    <meta name="citation_abstract_html_url" content="https://'.$_SERVER['SERVER_NAME'].'/item/'.$record['sysno'].'">';
+	echo "\n";
     }
 
     public static function jsonLD($record)
