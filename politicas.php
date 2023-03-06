@@ -19,7 +19,7 @@
         <div class="uk-container uk-width-1-1@s uk-width-1-1@m uk-width-3-5@l uk-margin-large-top" style="position: relative; padding-bottom: 17em;">
             <h1><?=$t->gettext('Política de Privacidade e Cookies'); ?></h1>
             <hr class="uk-grid-divider">
-	    <p>A sua privacidade é importante para nós. É política da <?=$institution_acronym?> &#8211; <?=$institution_name?> respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site <a href="https:<?=$url_base;?>"><?=$branch;?></a>, e outros sites que possuímos e operamos.</p>
+	    <p>A sua privacidade é importante para nós. É política da <?=$institution_acronym?> &#8211; <?=$institution_name?> respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site <a href="<?=$url_base;?>"><?=$branch;?></a>, e outros sites que possuímos e operamos.</p>
             <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo por meios justos e legais, com o seu conhecimento e consentimento. Também informamos por que estamos coletando e como será usado.</p>
             <p>Apenas retemos as informações coletadas pelo tempo necessário para fornecer o serviço solicitado. Quando armazenamos dados, protegemos dentro de meios comercialmente aceitáveis ​​para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados.</p>
             <p>Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei.</p>

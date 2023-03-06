@@ -536,6 +536,36 @@ class PageSingle
 	echo "\n";
     }
 
+    public static function metadataDC($record){
+        echo '    <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/">';
+        echo "\n";
+        echo '    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">';
+        echo "\n";
+        if (!empty($record['author'] && is_array($record['author']))) {
+            foreach ($record['author'] as $autores) {
+                echo '    <meta name="DC.creator" content="'.$autores["person"]["name"].'">';
+                echo "\n";
+            }
+	} elseif(!empty($autores["person"]["name"])){
+	    echo '    <meta name="DC.creator" content="'.$autores["person"]["name"].'">';
+	    echo "\n";
+	}
+	/*if (!empty($record['description'])){
+	    $description = '';
+            if(is_array($record['description']){
+                foreach ($record['description'] as $desc){
+                    $description .= $record['description'];
+                }
+	    } else {
+                $description = $record['description'];
+	    }
+	    echo '    <meta name="DC.description" content="'.$description.'">';
+	    echo "\n";
+
+    }*/
+	
+
+    }
     public static function jsonLD($record)
     {
         if (!empty($record["isPartOf"]["USP"]["dados_do_periodico"])) {

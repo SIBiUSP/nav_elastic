@@ -40,6 +40,7 @@ catch (exception $e) {
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
 <head>
+<link rel="canonical" href="<?=$url_base?>/item/<?=$cursor['_id']?>" />
     <!-- Altmetric Script -->
     <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
 
@@ -225,7 +226,7 @@ catch (exception $e) {
     
     <?php PageSingle::metadataGoogleScholar($cursor["_source"]); ?>
 
-    <title><?php echo $branch_abrev; ?> - Detalhe do registro: <?php echo $cursor["_source"]['name'];?></title>
+    <title><?=$branch_abrev?> - Detalhe do registro: <?=$cursor["_source"]['name']?></title>
 
     <?php
     if ($cursor["_source"]["type"] == "ARTIGO DE PERIODICO") {
@@ -251,20 +252,20 @@ catch (exception $e) {
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <!--<hr>-->
                             <li>
-                                <a class="uk-button exportacao" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?php echo $cursor["_id"];?>" target="_blank" rel="noopener noreferrer nofollow">Registro no Dedalus</a>
+                                <a class="uk-button exportacao" href="http://dedalus.usp.br/F/?func=direct&doc_number=<?=$cursor["_id"]?>" target="_blank" rel="noopener noreferrer nofollow">Registro no Dedalus</a>
                             </li>
                         </ul>
                         <h5 class="uk-panel-title">Exportar registro bibliográfico</h5>
                         <ul class="uk-nav uk-margin-top uk-margin-bottom">
                             <hr>
                             <li>
-                                <a class="uk-button exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
+                                <a class="uk-button exportacao" href="<?=$url_base?>/tools/export.php?search[]=sysno.keyword%3A<?=$cursor["_id"]?>&format=ris" rel="noopener noreferrer nofollow">RIS (EndNote)</a>
                             </li>
                             <li class="uk-nav-divider">
-                                <a class="uk-button exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=bibtex" rel="noopener noreferrer nofollow">Bibtex</a>
+                                <a class="uk-button exportacao" href="<?=$url_base?>/tools/export.php?search[]=sysno.keyword%3A<?=$cursor["_id"]?>&format=bibtex" rel="noopener noreferrer nofollow">Bibtex</a>
                             </li>
                             <li class="uk-nav-divider">
-                                <a class="uk-button exportacao" href="<?php echo $url_base; ?>/tools/export.php?search[]=sysno.keyword%3A<?php echo $cursor["_id"];?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
+                                <a class="uk-button exportacao" href="<?=$url_base?>/tools/export.php?search[]=sysno.keyword%3A<?=$cursor["_id"]?>&format=csvThesis" rel="noopener noreferrer nofollow">Tabela (TSV)</a>
                             </li>
                         </ul>
 
@@ -275,17 +276,17 @@ catch (exception $e) {
                             <?php if ($show_metrics) : ?>
                                 <?php if (!empty($cursor["_source"]['doi'])) : ?>
                             <div class="uk-alert-warning" uk-alert>
-                                <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                                <p><?=$t->gettext('Métricas')?>:</p>
                                 <div uk-grid>
-                                    <div data-badge-popover="right" data-badge-type="1" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
-                                    <div><a href="https://plu.mx/plum/a/?doi=<?php echo $cursor["_source"]['doi'];?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true" target="_blank" rel="noopener noreferrer nofollow"></a></div>
-                                    <div><object data="https://api.elsevier.com/content/abstract/citation-count?doi=<?php echo $cursor["_source"]['doi'];?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></div>
-                                    <div><span class="__dimensions_badge_embed__" data-doi="<?php echo $cursor["_source"]['doi'];?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
+                                    <div data-badge-popover="right" data-badge-type="1" data-doi="<?=$cursor["_source"]['doi']?>" data-hide-no-mentions="true" class="altmetric-embed"></div>
+                                    <div><a href="https://plu.mx/plum/a/?doi=<?=$cursor["_source"]['doi']?>" class="plumx-plum-print-popup" data-hide-when-empty="true" data-badge="true" target="_blank" rel="noopener noreferrer nofollow"></a></div>
+                                    <div><object data="https://api.elsevier.com/content/abstract/citation-count?doi=<?=$cursor["_source"]['doi']?>&apiKey=c7af0f4beab764ecf68568961c2a21ea&httpAccept=text/html"></object></div>
+                                    <div><span class="__dimensions_badge_embed__" data-doi="<?=$cursor["_source"]['doi']?>" data-hide-zero-citations="true" data-style="small_rectangle"></span></div>
                                     <?php if(!empty($cursor["_source"]["USP"]["opencitation"]["num_citations"])) :?>
-                                        <div>Citações no OpenCitations: <?php echo $cursor["_source"]["USP"]["opencitation"]["num_citations"]; ?></div>
+                                        <div>Citações no OpenCitations: <?=$cursor["_source"]["USP"]["opencitation"]["num_citations"]?></div>
                                     <?php endif; ?>
                                     <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
-                                        <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
+                                        <div>Citações no AMiner: <?=$cursor["_source"]["USP"]["aminer"]["num_citation"]?></div>
                                     <?php endif; ?>
                                     <div>
                                         <!--
@@ -304,9 +305,9 @@ catch (exception $e) {
                                 <?php if(isset($cursor["_source"]["USP"]["aminer"]["num_citation"])) :?>
                                     <?php if($cursor["_source"]["USP"]["aminer"]["num_citation"] > 0) :?>
                                     <div class="uk-alert-warning" uk-alert>
-                                        <p><?php echo $t->gettext('Métricas'); ?>:</p>
+                                        <p><?=$t->gettext('Métricas')?>:</p>
                                         <div uk-grid>
-                                            <div>Citações no AMiner: <?php echo $cursor["_source"]["USP"]["aminer"]["num_citation"]; ?></div>
+                                            <div>Citações no AMiner: <?=$cursor["_source"]["USP"]["aminer"]["num_citation"]?></div>
                                         </div>
                                     </div>
                                     <?php endif; ?>
@@ -742,7 +743,7 @@ catch (exception $e) {
 
                         <!-- Citation - Start -->
                         <div class="uk-text-small" style="color:black;">
-                            <h5><?php echo $t->gettext('Como citar'); ?></h5>
+                            <h5><?=$t->gettext('Como citar')?></h5>
                             <div class="uk-alert-danger">A citação é gerada automaticamente e pode não estar totalmente de acordo com as normas</div>
                             <p class="uk-text-small uk-margin-remove">
                             <ul>
@@ -782,7 +783,7 @@ catch (exception $e) {
                         <!-- References - CrossRef - Start -->
                         <?php if (!empty($cursor["_source"]["USP"]["crossref"]["message"]["reference"])) : ?>
                         <div class="uk-alert-primary" uk-alert>
-                        <h5><?php echo $t->gettext('Referências citadas na obra'); ?></h5>
+                        <h5><?=$t->gettext('Referências citadas na obra')?></h5>
                         <a class="uk-alert-close" uk-close></a>
                         <table class="uk-table uk-table-justify uk-table-divider uk-table-striped">
                             <tbody>
