@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
     <head>
-        <?php 
+	<?php
+            http_response_code(404);
             include('inc/config.php'); 
             include('inc/meta-header.php');
         ?>
