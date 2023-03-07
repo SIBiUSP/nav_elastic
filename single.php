@@ -292,11 +292,11 @@ catch (exception $e) {
                                     <div>
                                         <!--
                                         <?php
-                                            $citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
+                                            /*$citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
                                             if (!empty($citations_scopus['abstract-citations-response'])) {
                                                 echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
                                                 echo '<br/><br/>';
-                                            }
+					    }*/
                                         ?>-->
                                         
                                     </div>
