@@ -47,8 +47,9 @@ catch (exception $e) {
     <!-- PlumX Script -->
     <script src="https://cdn.plu.mx/widget-popup.js" integrity="sha256-AXguJKYxgZY9FzwZE8U8EZxUQjcYT6iSQLLGiZTVW84=" crossorigin="anonymous"></script>
 
-  <?php require 'inc/meta-header.php'; ?>
-  <?php
+  <?php 
+  require 'inc/meta-header.php';
+  
   /* DSpace */
   if (isset($dspaceRest)) {
       $actual_link = "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -290,14 +291,14 @@ catch (exception $e) {
                                     <?php endif; ?>
                                     <div>
                                         <!--
-                                        < ?php
+                                        <?php
                                             $citations_scopus = get_citations_elsevier($cursor["_source"]['doi'][0],$api_elsevier);
                                             if (!empty($citations_scopus['abstract-citations-response'])) {
                                                 echo '<a href="https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp='.$citations_scopus['abstract-citations-response']['identifier-legend']['identifier'][0]['scopus_id'].'&origin=inward">Citações na SCOPUS: '.$citations_scopus['abstract-citations-response']['citeInfoMatrix']['citeInfoMatrixXML']['citationMatrix']['citeInfo'][0]['rowTotal'].'</a>';
                                                 echo '<br/><br/>';
                                             }
-                                        ? >
-                                        -->
+                                        ?>-->
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -467,11 +468,11 @@ catch (exception $e) {
                         <!-- Qualis  - Fim -->
 
                         <!-- JCR - Início
-                        < ?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
+                        <?php if (!empty($cursor["_source"]["USP"]["JCR"])) : ?>
                             <div class="uk-alert-primary" uk-alert>
                                 <a class="uk-alert-close" uk-close></a>
                                 <h5>Informações sobre o JCR</h5>
-                                < ?php print_r($cursor["_source"]["USP"]["JCR"]); ?>
+                                <?=print_r($cursor["_source"]["USP"]["JCR"])?>
                                 <li class="uk-h6">
                                     <p class="uk-text-small uk-margin-remove">Título: < ?php print_r($cursor["_source"]["USP"]["JCR"]["title"]); ?></p>
                                     <p class="uk-text-small uk-margin-remove">ISSN: < ?php print_r($cursor["_source"]["USP"]["JCR"]["issn"]); ?></p>
@@ -481,7 +482,7 @@ catch (exception $e) {
                                     <p class="uk-text-small uk-margin-remove">JCR Rank - 2017: < ?php print_r($cursor["_source"]["USP"]["JCR"]["JCR"]["2017"]["JCR_Rank"]); ?></p>
                                 </li>
                             </div>
-                        < ?php endif; ?>
+                        <?php endif; ?>
                         JCR - Fim -->
 
                         <!-- Citescore - Início -->
