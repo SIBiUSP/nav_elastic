@@ -358,7 +358,7 @@ if($total_pages > 0 && $page > $total_pages){
                     <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
                         <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
-                        <?php $assunto = str_replace("about:", "", $expressao_busca); USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
+                        <?php $assunto = str_replace("about:", "", $expressao_busca); //USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -368,7 +368,7 @@ if($total_pages > 0 && $page > $total_pages){
                     <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
                         <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
-                        <?php $assunto = str_replace("about:", "", $expressao_busca); USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
+                        <?php $assunto = str_replace("about:", "", $expressao_busca); //USP::consultar_vcusp(str_replace("\"", "", $assunto)); ?>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
