@@ -352,7 +352,7 @@ if($total_pages > 0 && $page > $total_pages){
 
             <div class="uk-width-1-1">
 
-            <!-- Vocabulário controlado - Início -->
+            <!-- Vocabulário controlado - Início
             <?php if(isset($_GET["search"])) : ?>
                 <?php foreach ($_GET["search"] as $expressao_busca) : ?>
                     <?php if (preg_match("/\babout\b/i", $expressao_busca, $matches)) : ?>
@@ -373,19 +373,19 @@ if($total_pages > 0 && $page > $total_pages){
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-            <!-- Vocabulário controlado - Fim -->
+            Vocabulário controlado - Fim -->
 
             <!-- Informações sobre autores USP - Início
-            < ?php if(isset($_GET["search"])) : ?>
-                < ?php foreach ($_GET["search"] as $expressao_busca_codpes) : ?>
-                    < ?php if (preg_match("/\bcodpes\b/i", $expressao_busca_codpes, $matches)) : ?>
+            <?php if(isset($_GET["search"])) : ?>
+                <?php foreach ($_GET["search"] as $expressao_busca_codpes) : ?>
+                    <?php if (preg_match("/\bcodpes\b/i", $expressao_busca_codpes, $matches)) : ?>
                         <div class="uk-alert-primary" uk-alert>
                         <a class="uk-alert-close" uk-close></a>
-                        < ?php USP::consultar_codpes($expressao_busca_codpes); ?>
+                        <?php USP::consultar_codpes($expressao_busca_codpes); ?>
                         </div>
-                    < ?php endif; ?>
-                < ?php endforeach; ?>
-            < ?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
             Informações sobre autores USP - Fim -->
 
             <!-- Navegador de resultados - Início -->
