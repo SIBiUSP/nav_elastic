@@ -170,7 +170,7 @@ $users = get_users();
                 	            		<label hidden class="uk-form-label" for="form-stacked-select">Selecione a unidade USP onde o colaborador é vinculado</label>
                         	    		<div class="uk-form-controls">
 							<select class="uk-select" id="form-stacked-select" name="unidade">
-								<option value="<?="ABCD"?>" style="color:#333"><?=$institution_name?> (<?=$institution_acronym?>)"; ?></option>
+								<option value="<?="ABCD"?>" style="color:#333"><?=$institution_name?> (<?=$institution_acronym?>)</option>
 								<?php foreach($unidades as $key => $value ): ?>
 									<?php if(!in_array($key, $schoolsManageUsersRemove)): ?>
 									<option value="<?=$key?>" style="color:#333"><?=$value?></option>
