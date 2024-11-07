@@ -32,6 +32,8 @@ try {
 }
 catch (exception $e) {
 	header('HTTP/1.1 404 Not Found');
+	//http_response_code(404);
+	//header('Location: '.$url_base .'/item/404.php?_id='.$_GET['_id']);
 	header('Location: '.$url_base .'/404.php');
 	die();
 }
@@ -237,7 +239,7 @@ catch (exception $e) {
     ?>
 
 </head>
-<body style="min-height: 45em; position: relative;">
+<body onload="checkMobileUpdateURL();" style="min-height: 45em; position: relative;">
         <?php
         if (file_exists("inc/analyticstracking.php")) {
             include_once "inc/analyticstracking.php";
@@ -620,7 +622,7 @@ catch (exception $e) {
 							$file["iconAlt"] = $t->gettext("Versão Submetida");
 						}
 						$file["link"] = '<a href="https://'.$_SERVER["SERVER_NAME"].'/bitstreams/'.$file["bitstream_id"].'" target="_blank" rel="noopener noreferrer nofollow" uk-tooltip="'. $file["iconAlt"] .'"><img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-img></a>';
-						$file["direct_link"] = '<a href="https://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$file["bitstream_id"].'/'.$file["file_name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
+						$file["direct_link"] = '<a class="uk-button uk-button-primary" id="visualizar-pdf" href="https://'.$_SERVER["SERVER_NAME"].'/directbitstream/'.$file["bitstream_id"].'/'.$file["file_name"].'" target="_blank" rel="noopener noreferrer nofollow">Direct link</a>';
 					}
 					else if ($file["status"] == "embargoed") {
 						if($file["file_type"] == "publishedVersion"){
@@ -910,6 +912,7 @@ catch (exception $e) {
       </div>
         <?php require 'inc/offcanvas.php'; ?>
 
-        <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+	<script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+
     </body>
 </html>

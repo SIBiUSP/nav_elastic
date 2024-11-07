@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="<?=$url_base?>/inc/uikit/css/uikit.min.css" />
     <script src="<?=$url_base?>/inc/uikit/js/uikit.min.js"></script>
     <script src="<?=$url_base?>/inc/uikit/js/uikit-icons.min.js"></script>
+    <script src="<?=$url_base?>/inc/js/visualizar-pdf-mobile.js"></script>
 
     <!-- USP Custom -->
     <link rel="stylesheet" href="<?=$url_base?>/inc/css/style.css">
