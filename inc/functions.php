@@ -82,6 +82,12 @@ function __htmlspecialchars($data) {
     return $data;
 }
 
+function filename_sanitize($filename){
+	$specialCharacteres = array(' ', '"', "'", '&', '/', "\\", '?', '#', '^', '~', ';', ',', ':', '>', '<', '|', '[', ']', '{', '}', '!', '@', '$', '%', '*', '+', '=');
+	$filename = str_replace($specialCharacteres, '_', $filename);
+	return $filename;
+}
+
 function get_staffUsers(){
 	$staffUsers = array();
 	$arquivo = fopen($_SERVER["DOCUMENT_ROOT"].'/inc/staff.txt','r');
