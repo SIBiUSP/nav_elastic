@@ -18,21 +18,35 @@
         <div class="uk-container uk-margin-large-top" style="position: relative; padding-bottom: 15em;">
 	<?php
 		if(isset($_POST["nome"]) && isset($_POST["email"]) && isset($_POST["mensagem"]) && isset($_POST["cidade"])){
-		    if(isset($_POST['g-recaptcha-response'])){
-			$captcha=$_POST['g-recaptcha-response'];
+		    if(isset($_POST['h-captcha-response'])){
+			$captcha=$_POST['h-captcha-response'];
 		    }
                     if(!$captcha){
                         echo '<h4>Por favor, cheque o Captcha do formulário.</h4>';
 			exit;
 		    }
+		    $VERIFY_URL = 'https://hcaptcha.com/siteverify';
+
+		    $token = $captcha;
+		    $data = array(
+			        'secret'=> $captcha_secret_key,
+			        'response'=> $token
+			);
+		    $verify = curl_init();
+		    curl_setopt($verify, CURLOPT_URL, 'https://hcaptcha.com/siteverify');
+		    curl_setopt($verify, CURLOPT_POST, true);
+		    curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+		    curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+
+		    $response = curl_exec($verify);
+
+	            $responseData = json_decode($response);
+
+
                     $ip = $_SERVER['REMOTE_ADDR'];
                     // post request to server
-                    $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($reCaptchaPrivateKey) .  '&response=' . urlencode($captcha);
-                    $response = file_get_contents($url);
-                    $responseKeys = json_decode($response,true);
-
 		    // should return JSON with success as true
-                    if($responseKeys["success"]) {
+                    if($responseData->success) {
                     	$nome = input_sanitize($_POST["nome"]);
                 	$email_cliente = input_sanitize($_POST["email"], true);
        	            	$cidade = input_sanitize($_POST["cidade"]);
@@ -119,7 +133,7 @@
                                 </div>
                             </div>
 			    <div class="uk-form-row">
-			    <div class="g-recaptcha" data-sitekey="<?=$reCaptchaPublicKey?>"></div>
+			    <div class="h-captcha" data-sitekey="<?=$captcha_public_key;?>"></div>
 			    </div>
                             <div class="uk-form-row">
                                 <div class="uk-form-controls">
