@@ -5,6 +5,8 @@ inc/analyticstracking.php
 inc/functions.php.orig
 inc/staff.php
 inc/staff.txt
+inc/unidades.txt
+inc/bibliotecas.txt
 inc/staffDevelopers.txt
 admin/staffAdmins.php
 /robots.txt
