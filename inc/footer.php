@@ -3,7 +3,8 @@
     <div class="uk-width-1-2@m uk-width-1-2@s">
 	    <p id="logos-rodape"class="uk-text-small uk-text-left uk-text-left@m">
 	    	<a href="https://www.usp.br" target="_blank" rel="noopener noreferrer" style="font-family: arial; font-size:2.5em; font-weight: bold; line-height: 2.5em; color: #123e72">
-    			<img src="<?=$url_base?>/inc/images/usp-logo-png.png" style="width: 2.5em;">
+    			<img src="<?=$url_base?>/inc/images/usp_90anos_azul.png" style="width: 5em;">
+    			<!--<img src="<?=$url_base?>/inc/images/usp-logo-png.png" style="width: 2.5em;">-->
     		</a>
     		<!--<strong>Universidade de São Paulo</strong>-->
 		<a href="<?=$institution_site?>" target="_blank" rel="noopener noreferrer" style="font-family: arial; font-size:2.5em; font-weight: bold; line-height: 2.5em; color: #123e72">
