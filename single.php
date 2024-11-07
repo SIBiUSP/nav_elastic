@@ -94,6 +94,7 @@ catch (exception $e) {
           if (is_staffUser() && isset($_FILES['file'])) {
             if($_FILES['file']['size'] < $maxFileSize && $_FILES['file']['type'] == 'application/pdf'){
               if(checkDSpaceAPI($pythonBdpiApi)){
+		$_FILES['file']['name'] = filename_sanitize($_FILES['file']['name']);
                 $userBitstream = ''.$_POST["version"].'-'.$_SESSION['oauthuserdata']->{'loginUsuario'};
 	        $resultAddBitstream = DSpaceREST::addBitstreamDSpace($itemID, $_FILES, $userBitstream, $_SESSION["DSpaceCookies"]);
                 //$resultUpdateFilesElastic = elasticsearch::elastic_update($_GET['_id'], $type, $body);
@@ -368,7 +369,7 @@ catch (exception $e) {
 
                             if (isset($cursor["_source"]["USP"]["unpaywall"])) {
                                 echo '<div class="uk-alert-danger uk-h6 uk-padding-small">Versões disponíveis em Acesso Aberto do: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://unpaywall.org" target="_blank" rel="noopener noreferrer nofollow">Unpaywall API</a>)';
-                                echo '<p>Título do periódico: '.$cursor["_source"]["USP"]["unpaywall"]["journal_name"].'</p>';
+                                echo '<p>Título: '.$cursor["_source"]["USP"]["unpaywall"]["journal_name"].'</p>';
                                 echo '<p>ISSN: '.$cursor["_source"]["USP"]["unpaywall"]["journal_issns"].'</p>';
                                 echo '<ul>';
                                 if (!empty($cursor["_source"]["USP"]["unpaywall"]["best_oa_location"])) {
@@ -801,7 +802,7 @@ catch (exception $e) {
                                             echo ''.$t->gettext("Título: ").''.$crossRefReference["article-title"].'<br/>';
                                         }
                                         if (isset($crossRefReference["journal-title"])) {
-                                            echo ''.$t->gettext("Título do periódico: ").''.$crossRefReference["journal-title"].'<br/>';
+                                            echo ''.$t->gettext("Título: ").''.$crossRefReference["journal-title"].'<br/>';
                                         }
                                         if (isset($crossRefReference["volume"])) {
                                             echo ''.$t->gettext("Volume: ").''.$crossRefReference["volume"].'<br/>';
