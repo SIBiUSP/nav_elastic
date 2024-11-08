@@ -82,6 +82,13 @@ function __htmlspecialchars($data) {
     return $data;
 }
 
+function filename_sanitize($filename){
+        $specialCharacteres = array(' ', '"', "'", '&', '/', "\\", '?', '#', '^', '~', ';', ',', ':', '>', '<', '|', '[', ']', '{', '}', '!', '@', '$', '%', '*', '+', '=');
+        $filename = str_replace($specialCharacteres, '_', $filename);
+        return $filename;
+}
+
+
 function get_staffUsers(){
 	$staffUsers = array();
 	$arquivo = fopen($_SERVER["DOCUMENT_ROOT"].'/inc/staff.txt','r');
@@ -1596,11 +1603,11 @@ class Record
         echo '<a href="'.$url_base.'/result.php?filter[]=type:&quot;'.mb_strtoupper($this->type, "UTF-8").'&quot;">'.$this->type.'</a>';
         echo '</p>';
         //echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%"> ('.$this->datePublished.')</h1>';
-	echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
-	
-	if (is_bdta() && is_staffUser()){
-		msg_staff_bdta($this->completeRecord);
-	}
+        echo '<h1 class="uk-article-title uk-margin-remove-top uk-link-reset" style="font-size:150%">'.$this->name.' ('.$this->datePublished.')</h1>';
+        
+        if (is_bdta() && is_staffUser()){
+            msg_staff_bdta($this->completeRecord);
+        }
 
         echo '<ul class="uk-list uk-list-striped uk-text-small">';
         /* Authors */
@@ -1819,7 +1826,7 @@ class Record
         if (!empty($this->isPartOfArray)) {
             echo '<li>'.$t->gettext('Fonte').':<ul>';
             if (!empty($this->isPartOfArray["name"])) {
-                    echo '<li>Título do periódico: <a href="'.$url_base.'/result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></li>';
+                    echo '<li>Título: <a href="'.$url_base.'/result.php?filter[]=isPartOf.name:&quot;'.$this->isPartOfArray["name"].'&quot;">'.$this->isPartOfArray["name"].'</a></li>';
             }
             if (!empty($this->isPartOfArray['issn'][0])) {
                 echo '<li>ISSN: <a href="'.$url_base.'/result.php?filter[]=issn:&quot;'.$this->isPartOfArray['issn'][0].'&quot;">'.$this->isPartOfArray['issn'][0].'</a></li>';
