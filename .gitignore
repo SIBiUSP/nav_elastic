@@ -6,6 +6,8 @@ inc/functions.php.orig
 inc/staff.php
 inc/staff.txt
 inc/staffDevelopers.txt
+inc/bibliotecas.txt
+inc/unidades.txt
 admin/staffAdmins.php
 /robots.txt
 composer.lock
@@ -19,3 +21,7 @@ google23ba839ff7c5e6f4.html
 cookies.txt
 nohup.out
 googlee090d222f63703b4.html
+
+401.php
+tools/functions_tools.php
+
