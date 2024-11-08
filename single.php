@@ -58,38 +58,30 @@ catch (exception $e) {
 
       /* Search for existing record on DSpace */
       if(isset($cursor) && is_staffUser()){
-	      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
-	      //$itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
+	      //$itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+	      $itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
       }
 	
       /* Verify if item exists on DSpace */
       if (!empty($itemID)) {
-          function removeElementWithValue($array, $key, $value)
-          {
-              foreach ($array as $subKey => $subArray) {
-                  if ($subArray[$key] == $value) {
-                      unset($array[$subKey]);
-                  }
-              }
-              return $array;
-          }
-          if (is_staffUser()) {
-              $uploadForm = '<form id="upload-form" class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-                      <fieldset data-uk-margin>
-                      <legend>Enviar um arquivo</legend>
-		      <input type="file" id="rep-file" onchange="enableUploadButton();" name="file" required>';
 
-		      if ($uploadVersion){
-                      	  $uploadForm .= '<select class="uk-select" name="version" id="file-version" onchange="enableUploadButton();" required>
-                              <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
-                              <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
-                              <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option>
-			  </select>';
-		      } else {
-			 $uploadForm .= '<input type="hidden" name="version" id="file-version" value="publishedVersion"><br/>';
-		      }
+          if (is_staffUser()) {
+
+                $uploadForm = '<form id="upload-form" class="uk-form" action="'.$actual_link.'" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                 <fieldset data-uk-margin>
+                 <legend>Enviar um arquivo</legend>
+                 <input type="file" id="rep-file" onchange="enableUploadButton();" name="file" required>';
+
+                 if ($uploadVersion){
+                    $uploadForm .= '<select class="uk-select" name="version" id="file-version" onchange="enableUploadButton();" required >
+                    <option selected disabled value="">'. $t->gettext("Selecione a versão do arquivo") .'</option>
+                    <option value="publishedVersion">'. $t->gettext("Versão publicada") . '</option>
+                    <option value="acceptedVersion">' . $t->gettext("Versão aceita") . '</option></select>';
+                } else {
+                    $uploadForm .= '<input type="hidden" name="version" id="file-version" value="publishedVersion"><br/>';
+                }
 		
-		      $uploadForm .= '<button class="uk-button uk-button-primary" type="submit" onclick="loadAction(\'upload\');" name="btn_submit" id="upload">Upload</button>
+		        $uploadForm .= '<button class="uk-button uk-button-primary" type="submit" onclick="loadAction(\'upload\');" name="btn_submit" id="upload">Upload</button>
 	                  </fieldset>
         	          </form>';
           }
@@ -113,11 +105,9 @@ catch (exception $e) {
                 $responseMessage = getAlertMessage("Não é possível realizar o upload do arquivo", "danger");
               }
             } else {
-		$msg='';
-		if($_FILES['file']['type'] != 'application/pdf')
-			$msg = 'Somente arquivos no formato PDF são autorizados para upload.<br/>';
-		if($_FILES['file']['size'] > $maxFileSize)
-			$msg .= 'Upload não realizado. O tamanho do arquivo é <strong>'. number_format($_FILES['file']['size'] /1024 /1024, 2, '.', '' ) . 'MB</strong> e o limite para upload é de <strong>' . number_format($maxFileSize /1024/1024, 2, '.', '') . 'MB</strong>.'; 
+		        $msg='';
+		        if($_FILES['file']['type'] != 'application/pdf') $msg = 'Somente arquivos no formato PDF são autorizados para upload.<br/>';
+		        if($_FILES['file']['size'] > $maxFileSize) $msg .= 'Upload não realizado. O tamanho do arquivo é <strong>'. number_format($_FILES['file']['size'] /1024 /1024, 2, '.', '' ) . 'MB</strong> e o limite para upload é de <strong>' . number_format($maxFileSize /1024/1024, 2, '.', '') . 'MB</strong>.'; 
                 $responseMessage = getAlertMessage($msg , "danger", true);
             }
           }
@@ -125,7 +115,7 @@ catch (exception $e) {
           if (isset($_POST['deleteBitstream']) && is_staffUser()) {
             if(checkDSpaceAPI($pythonBdpiApi)){
               $resultDeleteBitstream = DSpaceREST::deleteBitstreamDSpace($_POST['deleteBitstream'], $_SESSION["DSpaceCookies"]);
-	      ElasticPatch::deleter($_POST["deleteBitstream"]);
+	          ElasticPatch::deleter($_POST["deleteBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               
               echo '<div class="uk-alert-danger" uk-alert>
@@ -151,7 +141,7 @@ catch (exception $e) {
               /* Add Restricted Policy */
               //$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePrivateBitstream'], $_POST['policyAction'], $dspaceRestrictedID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
               ElasticPatch::doPrivate($_POST["makePrivateBitstream"],$_POST['policyID']);
-	      ElasticPatch::privater($_POST["makePrivateBitstream"]);
+	          ElasticPatch::privater($_POST["makePrivateBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
               $(document).ready(function(){
@@ -172,7 +162,7 @@ catch (exception $e) {
               /* Add Public Policy */
               #$resultAddBitstreamPolicyDSpace = DSpaceREST::addBitstreamPolicyDSpace($_POST['makePublicBitstream'], $_POST['policyAction'], $dspaceAnnonymousID, $_POST['policyResourceType'], $_POST['policyRpType'], $_SESSION["DSpaceCookies"]);
               ElasticPatch::doPublic($_POST["makePublicBitstream"],$_POST['policyID']);
-	      ElasticPatch::publisher($_POST["makePublicBitstream"]);
+	          ElasticPatch::publisher($_POST["makePublicBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
               $(document).ready(function(){
@@ -188,7 +178,7 @@ catch (exception $e) {
           if (isset($_POST['doEmbargoBitstream']) && is_staffUser()){
             if(checkDSpaceAPI($pythonBdpiApi)){
               ElasticPatch::doEmbargo($_POST["doEmbargoBitstream"],$_POST['policyID'],$_POST['releaseDate']);
-	      ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
+	          ElasticPatch::publisher($_POST["doEmbargoBitstream"]);
               ElasticPatch::syncElastic($cursor["_source"]["sysno"]);
               echo "<script type='text/javascript'>
               $(document).ready(function(){
@@ -203,7 +193,7 @@ catch (exception $e) {
 
       } else {
         if(checkDSpaceAPI($pythonBdpiApi)){
-          $createForm  = '<form action="' . $actual_link . '" method="post">
+                $createForm  = '<form action="' . $actual_link . '" method="post">
                   <input type="hidden" name="createRecord" value="true" />
                   <button class="uk-button uk-button-danger" name="btn_submit" id="dspace-record" onclick="loadAction(\'dspace-record\');">Criar registro no DSpace</button>
                   </form>';
@@ -327,7 +317,7 @@ catch (exception $e) {
                     <article class="uk-article">
                         <?php
                         $record = new Record($cursor, $show_metrics);
-			$record->completeRecordMetadata($t, $url_base);
+			            $record->completeRecordMetadata($t, $url_base);
                         ?>
 
                         <?php
@@ -579,28 +569,27 @@ catch (exception $e) {
                             }
 
 			}
-			if(isset($cursor["_source"]["files"]["database"])){
-                            echo '<div class="" uk-alert>
-                            <h4>Download do texto completo</h4>
 
-                            <table class="uk-table uk-table-justify uk-table-divider">
-                            <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Nome</th>
-				                            <th>Link</th>
+            if(isset($cursor["_source"]["files"]["database"])){
+                echo '<div class="" uk-alert>
+                <h4>Download do texto completo</h4>
+                <table class="uk-table uk-table-justify uk-table-divider">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Nome</th>
+			<th>Link</th>';
 
-';
-				if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
-					$bitstreamPolicy = [];
-					$bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
-					foreach($bitstreamsDSpace as $bitstreamPolicyUnit){
-						$bitstreamPolicy[$bitstreamPolicyUnit["uuid"]] = DSpaceREST::getBitstreamPolicyDSpace($bitstreamPolicyUnit["uuid"], $_SESSION["DSpaceCookies"])[0];
-					}
-			}
-                            echo isset($table_headers) ? $table_headers : "";
-                            echo '</tr>
-                            </thead>
+            if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
+                $bitstreamPolicy = [];
+	        $bitstreamsDSpace = DSpaceREST::getBitstreamDSpace($itemID, $_SESSION["DSpaceCookies"]);
+        	foreach($bitstreamsDSpace as $bitstreamPolicyUnit){
+                    $bitstreamPolicy[$bitstreamPolicyUnit["uuid"]] = DSpaceREST::getBitstreamPolicyDSpace($bitstreamPolicyUnit["uuid"], $_SESSION["DSpaceCookies"])[0];
+                }
+            }
+                echo isset($table_headers) ? $table_headers : "";
+                echo '</tr>
+                    </thead>
 			    <tbody>';
 				foreach($cursor["_source"]["files"]["database"] as $file){
 					$file["link"] = "";
@@ -641,7 +630,6 @@ catch (exception $e) {
 							$file["release_date"] = date('Y/m/d', strtotime($file["release_date"]));
 						}
 						$file["iconAlt"] = $t->gettext("Disponível em ") . $file["release_date"];
-
 					} else if($file["status"] == "private") {
 						if($file["file_type"] == "publishedVersion"){
 							$file["icon"] = "/inc/images/pdf_publicado_privado.svg";
@@ -658,14 +646,15 @@ catch (exception $e) {
 						$file["link"] = '<img class="register-icons" data-src="'.$url_base. $file["icon"] .'" alt="'. $file["iconAlt"] .'" uk-tooltip="'. $file["iconAlt"] .'" uk-img>';
 					}
 	
-					echo '<tr>';                                                                                                                                                                                                                                 echo '<td>'.$file["link"].'</td>';
-                                        echo '<td>'.$file["file_name"].'</td>';
-                                        echo '<td>'.$file["direct_link"].'</td>';
+					echo "<tr>\n";
+                    echo "<td>".$file["link"]."</td>\n";
+                    echo "<td>".$file["file_name"]."</td>\n";
+                    echo "<td>".$file["direct_link"]."</td>\n";
 					
 					/*foreach ($bitstreamsDSpace as $key => $value) {*/
 
 					if (isset($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)){
-				    echo '<td>'.$file["accountability_info"]["uploader"].'</td>';
+				    echo "<td>".$file["accountability_info"]["uploader"]."</td>\n";
 
                                     $botoes["excluir"]["acao"] = "Excluir";
                                     $botoes["excluir"]["icon"] = "excluir.svg";
@@ -755,7 +744,7 @@ catch (exception $e) {
                                     <p><strong>ABNT</strong></p>
                                     <?php
                                         $data = citation::citation_query($cursor["_source"]);
-                                        print_r($citeproc_abnt->render($data, $mode));
+					print_r($citeproc_abnt->render($data, $mode));
                                     ?>
                                 </li>
                                 <li class="uk-margin-top">

@@ -88,7 +88,6 @@ function filename_sanitize($filename){
         return $filename;
 }
 
-
 function get_staffUsers(){
 	$staffUsers = array();
 	$arquivo = fopen($_SERVER["DOCUMENT_ROOT"].'/inc/staff.txt','r');
