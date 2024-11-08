@@ -151,12 +151,15 @@ if (isset($_GET["format"])) {
                     foreach ($r["_source"]['authorUSP'] as $numUSP) {
                         if (!empty($numUSP["codpes"])) {
                             $numUSP_array[]= $numUSP["codpes"];
-                        }
+                        } 
                     }
                     if (!empty($numUSP_array)) {
                         $fields[] = implode(";", $numUSP_array);
                         unset($numUSP_array);
+                    } else {
+                        $fields[] = "";
                     }
+
 
                     foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
                         $unidadesUSP_array[]= $unidadesUSP_aut["unidadeUSP"];
@@ -355,6 +358,8 @@ if (isset($_GET["format"])) {
                         if (!empty($numUSP_array)) {
                             $fields[] = implode(";", $numUSP_array);
                             unset($numUSP_array);
+                        } else {
+                            $fields[] = "";
                         }
 
                         foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
@@ -602,7 +607,6 @@ if (isset($_GET["format"])) {
                     } else {
                         $fields[] = "Não preenchido";
                     }
-
 
 
                     if (isset($r["_source"]['USP']['areaconcentracao'])) {
