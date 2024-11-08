@@ -1,6 +1,6 @@
 <?php 
-	include_once("inc/config.php");
-	include_once("admin/staffAdmins.php");
+	include_once(__DIR__."/config.php");
+	include_once(__DIR__."/../admin/staffAdmins.php");
 ?>
 
 <div style="height: 0.3em; background: #fcb421;"></div>
@@ -110,7 +110,7 @@
         </div>
     </div>
     <?php if(!empty($_SESSION['oauthuserdata']) && in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffAdmins)): ?>
-    <div class="uk-align-right" style="position: absolute; top: 25px; right: 20px;"><a href="<?=$url_base?>/admin/staffusers.php" style="color: #1094ab  !important;">Gerenciar Usuários</a></div>
+    <div class="uk-align-right" style="position: absolute; top: 25px; right: 20px;"><a href="<?=$url_base?>/admin/gerencia.php" style="color: #1094ab  !important;">Gerenciar Staff e Bibliotecas</a></div>
     <?php endif; ?>
 </div>
 
