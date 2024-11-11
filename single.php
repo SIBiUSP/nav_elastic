@@ -58,8 +58,8 @@ catch (exception $e) {
 
       /* Search for existing record on DSpace */
       if(isset($cursor) && is_staffUser()){
-	      //$itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
-	      $itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
+	      $itemID = DSpaceREST::searchItemDSpace($cursor["_id"], $_SESSION["DSpaceCookies"]);
+	      //$itemID = $cursor["_source"]["files"]["database"][0]["dspace_object_id"];
       }
 	
       /* Verify if item exists on DSpace */
@@ -322,7 +322,7 @@ catch (exception $e) {
 
                         <?php
                         if (!empty($cursor["_source"]['url'])||!empty($cursor["_source"]['doi'])) {
-                            if ($use_api_oadoi == true) {
+                            if ($use_api_oadoi) {
                                 if (!empty($cursor["_source"]['doi'])) {
                                     $oadoi = metrics::get_oadoi($cursor["_source"]['doi']);
                                     echo '<div class="uk-alert-primary uk-h6 uk-padding-small">Informações sobre o DOI: '.$cursor["_source"]['doi'].' (Fonte: <a href="http://oadoi.org" target="_blank" rel="noopener noreferrer nofollow">oaDOI API</a>)';
@@ -522,7 +522,7 @@ catch (exception $e) {
                             echo "</tbody></table></div>";
 
                         } else {
-                            if ($dedalus_single == true) {
+                            if ($dedalus_single) {
                                 Results::load_itens_aleph($cursor["_id"]);
                             }
                         }
@@ -538,7 +538,7 @@ catch (exception $e) {
 
                         //Query bitstreams on Dspace - Start
                             if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)) {
-                                if ($testDSpace == "true") {
+                                if ($testDSpace) {
 
                                     if (!empty($uploadForm)) {
                                         echo '<div class="" uk-alert>';
