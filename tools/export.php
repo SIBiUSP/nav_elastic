@@ -162,7 +162,7 @@ if (isset($_GET["format"])) {
 
 
                     foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
-                        $unidadesUSP_array[]= $unidadesUSP_aut["unidadeUSP"];
+                        $unidadesUSP_array[]= is_array($unidadesUSP_aut["unidadeUSP"])? $unidadesUSP_aut["unidadeUSP"][0] : $unidadesUSP_aut["unidadeUSP"];
                     }
                     $fields[] = implode(";", $unidadesUSP_array);
                     unset($unidadesUSP_array);
@@ -363,7 +363,7 @@ if (isset($_GET["format"])) {
                         }
 
                         foreach ($r["_source"]['authorUSP'] as $unidadesUSP_aut) {
-                            $unidadesUSP_array[]= $unidadesUSP_aut["unidadeUSP"];
+                            $unidadesUSP_array[]= is_array($unidadesUSP_aut["unidadeUSP"]) ? $unidadesUSP_aut["unidadeUSP"][0] : $unidadesUSP_aut["unidadeUSP"];
                         }
                         $fields[] = implode(";", $unidadesUSP_array);
                         unset($unidadesUSP_array);

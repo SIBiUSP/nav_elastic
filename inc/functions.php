@@ -1542,8 +1542,12 @@ class Record
             foreach ($unique as $unidadeUSP) {
                 if($i != 0){
                     echo ', ';
-                }
-                echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
+                
+	    }
+		if(is_array($unidadeUSP))
+                    echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP[0].'&quot;">'.$unidadeUSP[0].'</a>';
+		else
+                    echo '<a href="result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
                 $i++;
             }
             echo '</p>';
@@ -1629,7 +1633,8 @@ class Record
         /* USP Authors */
         if (!empty($this->authorUSPArray)) {
             foreach ($this->authorUSPArray as $autoresUSP) {
-                $authorsUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=authorUSP.name:&quot;'.$autoresUSP["name"].'&quot;">'.$autoresUSP["name"].' - '.$autoresUSP["unidadeUSP"].' </a>';
+                $authorUSPTemp = '<a href="'.$url_base.'/result.php?filter[]=authorUSP.name:&quot;'.$autoresUSP["name"].'&quot;">'.$autoresUSP["name"];
+		$authorsUSPList[] = is_array($autoresUSP["unidadeUSP"])? $authorUSPTemp .' - '.$autoresUSP["unidadeUSP"][0].' </a>' : $authorUSPTemp . ' - '.$autoresUSP["unidadeUSP"].' </a>';
             }
             echo '<li>'.$t->gettext(sizeof($authorsUSPList) > 1 ? 'Autores USP' : 'Autor USP').': '.implode("; ", $authorsUSPList).'</li>';
         }
@@ -1638,8 +1643,10 @@ class Record
 	    
             $i = 0;
             foreach ($this->unidadeUSPArray as $unidadeUSP) {
-
-		$unidadeUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
+		if(is_array($unidadeUSP))
+		    $unidadeUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP[0].'&quot;">'.$unidadeUSP[0].'</a>';
+		else
+		    $unidadeUSPList[] = '<a href="'.$url_base.'/result.php?filter[]=unidadeUSP:&quot;'.$unidadeUSP.'&quot;">'.$unidadeUSP.'</a>';
 	    }
 	    $unidadeUSPList = array_unique($unidadeUSPList);
             echo '<li>'.$t->gettext(sizeof($unidadeUSPList) > 1 ? 'Unidades' : 'Unidade').': '.implode("; ", $unidadeUSPList).'</li>';

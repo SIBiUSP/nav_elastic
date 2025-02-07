@@ -318,10 +318,14 @@ if($total_pages > 0 && $page > $total_pages){
                                 <input class="uk-input" type="text" id="date" readonly style="border:0; color:#f6931f;" name="range[]">
                                 </p>
                                 <div id="limitar-data" class="uk-margin-bottom"></div>
-                                <?php if (!empty($_GET["search"])) : ?>
-                                    <?php foreach($_GET["search"] as $search_expression): ?>
-                                        <input type="hidden" name="search[]" value="<?php echo str_replace('"', '&quot;', $search_expression); ?>">
-                                    <?php endforeach; ?>
+                                <?php if (!empty($_GET["search"])):
+                                          if(is_array($_GET["search"])): 
+				              foreach($_GET["search"] as $search_expression): ?>
+                                                  <input type="hidden" name="search[]" value="<?php echo str_replace('"', '&quot;', $search_expression); ?>">
+	                                    <?php endforeach; ?>
+			            <?php //else: ?>
+                                        	<?php //<input type="hidden" name="search[]" value="<?php echo str_replace('"', '&quot;', 'search:&quot;'.$_GET["search"].'&quot;'); ?>
+				    <?php endif; ?>
                                 <?php endif; ?>
                                 <?php if (!empty($_GET["filter"])) : ?>
                                     <?php foreach($_GET["filter"] as $filter_expression): ?>
