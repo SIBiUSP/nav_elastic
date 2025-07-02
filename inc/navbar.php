@@ -28,7 +28,7 @@
 				    <?php foreach($unidades as $key => $value ): ?>
 					<?php if(!in_array($key, $schoolsFilterRemove)): ?>
                                             <?php $count++;?>
-                                            <a href="result.php?filter[]=unidadeUSP:&quot;<?=$key?>&quot;" class="uk-text-small" style="color:#333">
+                                            <a href="<?=$url_base?>/result.php?filter[]=unidadeUSP:&quot;<?=$key?>&quot;" class="uk-text-small" style="color:#333">
                                                 <?=$value?>
                                             </a>
                                             <br/>
