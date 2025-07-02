@@ -1,4 +1,11 @@
-    <?php require_once('functions.php');?>
+    <?php 
+        require_once('functions.php');
+        require_once('config.php');
+	session_start();
+        if(!empty($_SESSION['oauthuserdata']) && $loginDisabled){
+	    logout();
+        }
+    ?>
 
     <link rel="shortcut icon" href="<?=$url_base?>/inc/images/faviconUSP.ico" type="image/x-icon">
 

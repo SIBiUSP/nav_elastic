@@ -116,6 +116,19 @@ function is_staffDeveloper(){
 	return false;
 }
 
+function logout(){
+	session_start();
+
+	// Apaga todas as variáveis da sessão
+	if(!empty($_SESSION['oauthuserdata'])){
+		unset($_SESSION['oauthuserdata']);
+	}
+
+	// Finalmente, destrói a sessão
+	session_destroy();
+
+}
+
 function is_json($string){
 	json_decode($string);
 	return (json_last_error() == JSON_ERROR_NONE);

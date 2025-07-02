@@ -55,7 +55,7 @@
                 
                 
 		<li class="uk-active">
-                    <?php if (empty($_SESSION['oauthuserdata'])) : ?>
+                    <?php if (empty($_SESSION['oauthuserdata']) && !$loginDisabled) : ?>
 		    <li><a href="<?=$url_base;?>/aut/oauth.php" rel="nofollow"><?=$t->gettext('Usuário')?></a></li>
                     <?php else: ?>
                     <li class="uk-active"><a href="#modal-user" uk-toggle><?=$_SESSION['oauthuserdata']->{'nomeUsuario'}?></a></li>
@@ -72,7 +72,7 @@
                                     <li><a href="<?=$url_base?>/tools/export.php?filter[]=authorUSP.codpes%3A&quot;<?=$_SESSION['oauthuserdata']->{'loginUsuario'}?>&quot;&format=ris">Exportar sua produçao em formato RIS</a></li>
                                     <li><a href="<?=$url_base?>/tools/export.php?filter[]=authorUSP.codpes%3A&quot;<?=$_SESSION['oauthuserdata']->{'loginUsuario'}?>&quot;&format=bibtex">Exportar sua produçao em formato Bibtex</a></li>
 				    <?php if (in_array($_SESSION['oauthuserdata']->{'loginUsuario'}, $staffUsers)): ?>
-				    <li><a href="<?=$url_base?>/admin/index.php">Administração</a></li>';
+				    <li><a href="<?=$url_base?>/admin/index.php">Administração</a></li>
 				    <?php endif;?>
                                     <li><a href="<?=$url_base?>/aut/logout.php">Logout</a></li>
                                     </ul>

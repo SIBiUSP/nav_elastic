@@ -8,6 +8,15 @@ ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
 
+include_once('../inc/config.php');
+
+if($loginDisabled){
+	die('Sistema em manutenção. Função de login desabilitada temporariamente.');
+}
+
+//$_SESSION['oauthuserdata']
+
+
 if( !empty( filter_input(INPUT_GET,'erro') ) ){
 ?>
  <HTML>
