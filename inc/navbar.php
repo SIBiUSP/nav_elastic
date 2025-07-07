@@ -57,7 +57,7 @@
 		<li class="uk-active">
                     <?php if (empty($_SESSION['oauthuserdata']) && !$loginDisabled) : ?>
 		    <li><a href="<?=$url_base;?>/aut/oauth.php" rel="nofollow"><?=$t->gettext('Usuário')?></a></li>
-                    <?php else: ?>
+                    <?php elseif (!$loginDisabled) : ?>
                     <li class="uk-active"><a href="#modal-user" uk-toggle><?=$_SESSION['oauthuserdata']->{'nomeUsuario'}?></a></li>
                     <div id="modal-user" class="uk-modal-full" uk-modal>
                         <div class="uk-modal-dialog uk-modal-body">
